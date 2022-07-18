@@ -1,0 +1,1479 @@
+openapi: 3.0.3
+info:
+  title: Polito Students API
+  version: 1.0.0
+servers:
+  - url: https://api.polito.it
+paths:
+  /booking-topics:
+    get:
+      tags:
+        - Bookings
+      summary: List booking topics | Elenca ambiti di prenotazione
+      operationId: getBookingTopics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BookingTopic'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /booking-topics/{bookingTopicId}/slots:
+    get:
+      tags:
+        - Bookings
+      summary: Show booking slots | Mostra turni prenotabili
+      operationId: getBookingTopicById
+      parameters:
+        - name: bookingTopicId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: First day - defaults to monday of current week
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Last day - defaults to sunday of current week
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BookingSlot'
+        404:
+          description: Booking topic not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /bookings:
+    get:
+      tags:
+        - Bookings
+      summary: List bookings | Elenca prenotazioni
+      operationId: getBookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Booking'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags:
+        - Bookings
+      summary: Create booking | Crea prenotazione
+      operationId: createBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slotId:
+                  type: integer
+                  example: 226439
+                seatId:
+                  type: integer
+                  example: 20018
+              required: [slotId]
+      responses:
+        200:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /bookings/{bookingId}:
+    patch:
+      tags:
+        - Bookings
+      summary: Update booking | Aggiorna prenotazione
+      operationId: updateBookingById
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isLocationChecked:
+                  type: boolean
+                  example: true
+              required: [isLocationChecked]
+      responses:
+        200:
+          description: Success
+        404:
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+        - Bookings
+      summary: Delete booking | Cancella prenotazione
+      operationId: deleteBookingById
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+        404:
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: List courses | Elenca corsi
+      operationId: getCourses
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseOverview'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}:
+    get:
+      tags:
+        - Courses
+      summary: Show course | Mostra corso
+      operationId: getCourseById
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Course'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /courses/{courseId}/files:
+    get:
+      tags:
+        - Courses
+      summary: List files | Elenca file
+      operationId: getCourseFiles
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseDirectory'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/files/{fileId}:
+    get:
+      tags:
+        - Courses
+      summary: Download file | Scarica file
+      operationId: get
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        302:
+          description: Redirect to file download
+        404:
+          description: Course or file not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/assignments:
+    get:
+      tags:
+        - Courses
+      summary: List assignments | Elenca elaborati
+      operationId: listCourseAssignments
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseAssignment'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags:
+        - Courses
+      summary: Upload assignment | Carica elaborato
+      operationId: addCourseAssignment
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseAssignmentUpload'
+        required: true
+      responses:
+        200:
+          description: Success
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/guide:
+    get:
+      tags:
+        - Courses
+      summary: Show guide | Mostra guida
+      operationId: getCourseGuide
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseGuideSection'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/notices:
+    get:
+      tags:
+        - Courses
+      summary: List notices | Elenca avvisi
+      operationId: getCourseNotices
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseNotices'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/virtual-classrooms:
+    get:
+      tags:
+        - Courses
+      summary: List virtual classrooms | Elenca virtual classroom
+      operationId: listCourseVirtualClassrooms
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: live
+          in: query
+          description: Filter virtual classrooms by their live status
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/VirtualClassroomLive'
+                        - $ref: '#/components/schemas/VirtualClassroom'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/videolectures:
+    get:
+      tags:
+        - Courses
+      summary: List videolectures | Elenca videolezioni
+      operationId: listCourseVideolectures
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VideoLecture'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /exams:
+    get:
+      tags:
+        - Exams
+      summary: List exams | Elenca esami
+      operationId: getExams
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Exam'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /exams/{examId}/booking:
+    post:
+      tags:
+        - Exams
+      summary: Book exam | Prenota esame
+      operationId: createExamBookingById
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: "Only needed if the exam you are booking includes a question"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionOption:
+                  type: integer
+                  description: The index of the chosen option (starting at 1)
+                  example: 1
+              example: { }
+        required: false
+      responses:
+        200:
+          description: Success
+        400:
+          description: Missing parameter questionOption
+        404:
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+        - Exams
+      summary: Delete exam booking | Annulla prenotazione esame
+      operationId: deleteExamBookingById
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+        404:
+          description: Exam or booking not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /lectures:
+    get:
+      tags:
+        - Lectures
+      parameters:
+        - name: fromDate
+          in: query
+          description: First day - defaults to monday of current week
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Last day - defaults to sunday of current week
+          required: false
+          schema:
+            type: string
+            format: date
+      summary: List lectures | Elenca lezioni
+      operationId: getLectures
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Lecture'
+
+  /people:
+    get:
+      tags:
+        - People
+      summary: Search people | Cerca persone
+      operationId: getPeople
+      parameters:
+        - name: search
+          in: query
+          description: Filter people containing 'search' in their full name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PersonOverview'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /people/{personId}:
+    get:
+      tags:
+        - People
+      summary: Show person | Mostra persona
+      operationId: getPersonById
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Person'
+        404:
+          description: Person not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /sites:
+    get:
+      tags:
+        - Places
+      summary: List sites | Elenca sedi
+      operationId: getSites
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Site'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /places:
+    get:
+      tags:
+        - Places
+      summary: Search places | Cerca luoghi
+      operationId: getPlaces
+      parameters:
+        - name: search
+          in: query
+          description: Filter places containing 'search' in their name
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: query
+          description: Filter places by their site
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlaceOverview'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+components:
+  parameters:
+    bookingIdParam:
+      name: bookingId
+      in: path
+      required: true
+      schema:
+        type: integer
+    bookingTopicIdParam:
+      name: bookingTopicId
+      in: path
+      required: true
+      schema:
+        type: integer
+    courseIdParam:
+      name: courseId
+      in: path
+      required: true
+      schema:
+        type: integer
+    examIdParam:
+      name: examId
+      in: path
+      required: true
+      schema:
+        type: integer
+    assignmentIdParam:
+      name: assignmentId
+      in: path
+      required: true
+      schema:
+        type: integer
+    fileIdParam:
+      name: fileId
+      in: path
+      required: true
+      schema:
+        type: string
+    lectureIdParam:
+      name: lectureId
+      in: path
+      required: true
+      schema:
+        type: integer
+    personIdParam:
+      name: personId
+      in: path
+      required: true
+      schema:
+        type: string
+    placeIdParam:
+      name: placeId
+      in: path
+      required: true
+      schema:
+        type: integer
+    acceptLanguageHeader:
+      name: acceptLanguage
+      in: header
+      required: true
+      schema:
+        type: string
+  responses:
+    ErrorResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  schemas:
+    BookingTopic:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DIDATTICA_ING
+        title:
+          type: string
+          example: Segreteria Didattica Ingegneria
+        description:
+          type: string
+          example: Servizi della Segreteria Didattica Ingegneria
+        type:
+          type: string
+          example: "Ufficio"
+        isEnabled:
+          type: boolean
+          example: true
+        subtopics:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingSubtopic'
+    BookingSubtopic:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DID_ING_VC_EN
+        title:
+          type: string
+          example: Aspetti didattici di carriera - Sportello virtuale in inglese
+        description:
+          type: string
+          example: ""
+        disclaimer:
+          type: string
+          example: ""
+        isEnabled:
+          type: boolean
+          example: true
+        showCalendar:
+          type: boolean
+        slotLength:
+          type: integer
+          example: 15
+        slotsPerHour:
+          type: integer
+          example: 4
+        startDate:
+          type: string
+          format: date
+          example: 2022-05-15
+        startHour:
+          type: integer
+          example: 9
+        endHour:
+          type: integer
+          example: 18
+        requirements:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Informativa Emergenza COVID-19
+              url:
+                type: string
+                example: https://didattica.polito.it/pdf/informativa_covid.pdf
+        maxBookingsPerDay:
+          type: integer
+          example: 1
+        canBeCancelled:
+          type: boolean
+          example: true
+
+    BookingSlot:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 103051
+        isBooked:
+          type: boolean
+          example: false
+        canBeBooked:
+          type: boolean
+          example: false
+        places:
+          type: integer
+          example: 2
+        bookedPlaces:
+          type: integer
+          example: 2
+        feedback:
+          type: string
+          example: Il turno è pieno
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Virtual Classroom della Segreteria Generale Studenti
+            description:
+              type: string
+              example: ""
+            type:
+              type: string
+              example: VC
+            address:
+              type: string
+              example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+        startsAt:
+          type: string
+          format: date-time
+          example: "2021-10-05T10:00:00.000Z"
+        endsAt:
+          type: string
+          format: date-time
+          example: "2021-10-05T10:15:00.000Z"
+        bookingStartsAt:
+          type: string
+          format: date-time
+          example: "2021-09-30T00:00:00.000Z"
+        bookingEndsAt:
+          type: string
+          format: date-time
+          example: "2021-10-04T16:00:00.000Z"
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 258674
+        topic:
+          type: object
+          properties:
+            id:
+              type: string
+              example: DIDATTICA_ING
+            title:
+              type: string
+              example: Segreteria Didattica Ingegneria
+            description:
+              type: string
+              example: Servizi della Segreteria Didattica Ingegneria
+            type:
+              type: string
+              example: "Ufficio"
+        subtopic:
+          type: object
+          properties:
+            id:
+              type: string
+              example: DID_ING_VC_EN
+            title:
+              type: string
+              example: Aspetti didattici di carriera - Sportello virtuale in inglese
+            description:
+              type: string
+              example: ""
+          default: null
+        startsAt:
+          type: string
+          format: date-time
+          example: "2021-10-05T10:00:00.000Z"
+        endsAt:
+          type: string
+          format: date-time
+          example: "2021-10-05T10:15:00.000Z"
+        seat:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 20018
+            row:
+              type: string
+              example: A
+            column:
+              type: string
+              example: 05
+          default: null
+        canBeCancelled:
+          type: boolean
+          example: true
+        hasLocationCheck:
+          type: boolean
+          example: true
+        isLocationChecked:
+          type: boolean
+          example: false
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Virtual Classroom della Segreteria Generale Studenti
+            description:
+              type: string
+              example: ""
+            type:
+              type: string
+              example: VC
+            address:
+              type: string
+              example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+            latitude:
+              type: string
+              example: "45.0626340000000000"
+            longitude:
+              type: string
+              example: "7.6605410000000000"
+            radiusInKm:
+              type: number
+              example: 0.1
+
+    CourseOverview:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 258674
+        name:
+          type: string
+          example: System and device programming
+        shortcode:
+          type: string
+          example: 01DVGSU
+        cfu:
+          type: number
+          example: 10.0
+        teachingPeriod:
+          type: number
+          description: The semester this course belongs to
+          example: 1.0
+        teacherId:
+          type: number
+          example: 12684.0
+        isOverBooking:
+          type: boolean
+          example: true
+        isInPersonalStudyPlan:
+          type: boolean
+          description: Included in the PSP | Incluso nel carico didattico
+          example: true
+        hasCoursePage:
+          type: boolean
+          example: true
+    Course:
+      allOf:
+        - $ref: '#/components/schemas/CourseOverview'
+        - type: object
+          properties:
+            year:
+              type: string
+              example: "2022"
+            otherEditions:
+              type: array
+              items:
+                type: object
+                properties:
+                  year:
+                    type: string
+                    example: "2021"
+                  id:
+                    type: integer
+                    example: 244577
+            vcCourses:
+              description: Other editions/courses to be included in virtual classrooms
+              type: array
+              items:
+                type: object
+                properties:
+                  year:
+                    type: string
+                    example: "2021"
+                  name:
+                    type: string
+                    example: Fisica II
+                  id:
+                    type: integer
+                    example: 247431
+
+            notifications:
+              type: object
+              properties:
+                avvisidoc:
+                  type: boolean
+                  example: true
+                matdid:
+                  type: boolean
+                  example: true
+                videolezioni:
+                  type: boolean
+                  example: true
+            staff:
+              type: array
+              items:
+                type: object
+                properties:
+                  role:
+                    type: string
+                  id:
+                    type: integer
+                    example: 244577
+    CourseAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 947503
+        description:
+          type: string
+          example: laboratorio 3
+        mimeType:
+          type: string
+          example: application/x-zip-compressed
+        filename:
+          type: string
+          example: lab_03.zip
+        uploadedAt:
+          type: string
+          format: date-time
+          example: 2022-09-02T14:00:00.000Z
+        deletedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+    CourseAssignmentUpload:
+      type: object
+      properties:
+        description:
+          type: string
+          example: laboratorio 3
+        file:
+          type: string
+          format: binary
+      required: [description, file]
+    CourseNotices:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 360724
+        publishedAt:
+          type: string
+          format: date-time
+          example: 2022-07-03T14:00:00Z
+        expiresAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        content:
+          type: string
+          example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
+    CourseGuideSection:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Presentazione
+        content:
+          type: string
+          example: The course will cover the design and implementation of server-side
+            architectures...
+    CourseDirectory:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "33352562"
+        type:
+          type: string
+          enum:
+            - directory
+        name:
+          type: string
+          example: Laboratori
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseFileOverview'
+    CourseFileOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "33352562"
+        type:
+          type: string
+          enum:
+            - file
+        name:
+          type: string
+          example: sebc-lab2.pdf
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+        mimeType:
+          type: string
+          example: application/x-zip-compressed
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+    CourseFile:
+      allOf:
+        - $ref: '#/components/schemas/CourseFileOverview'
+        - type: object
+          properties:
+            content:
+              pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+              type: string
+              description: Base-64 encoded file
+              format: byte
+              example: bG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQK
+    Exam:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 888122
+        courseShortcode:
+          type: string
+          example: 02JSKOV
+        courseName:
+          type: string
+          example: Human Computer Interaction
+        teacherId:
+          type: string
+          example: "002154"
+        type:
+          type: string
+          example: Esami scritti a risposta aperta o chiusa tramite PC
+        classrooms:
+          type: string
+          example: Aula 12; Aula 14
+        status:
+          type: string
+          example: available
+          enum:
+            - available
+            - booked
+            - requestable
+            - requested
+            - requestRejected
+            - unavailable
+        bookingStartsAt:
+          type: string
+          format: date-time
+        bookingEndsAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        examStartsAt:
+          type: string
+          format: date-time
+          example: 2022-09-02T14:00:00Z
+        bookedCount:
+          type: integer
+          example: 42
+        question:
+          type: object
+          default: null
+          properties:
+            statement:
+              type: string
+              example: Do you have a laptop to bring at the exam?
+            options:
+              type: array
+              items:
+                type: string
+              example: [ Yes, No ]
+        feedback:
+          type: string
+          example: null
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2
+        message:
+          type: string
+          example: Error message
+    PersonOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "002154"
+        firstName:
+          type: string
+          example: Fulvio
+        lastName:
+          type: string
+          example: Corno
+        picture:
+          type: string
+          example: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+    Person:
+      allOf:
+        - $ref: '#/components/schemas/PersonOverview'
+        - type: object
+          properties:
+            email:
+              type: string
+              example: fulvio.corno@polito.it
+            phoneNumbers:
+              type: array
+              items:
+                type: string
+                example: "0110907053"
+            role:
+              type: string
+              example: Docente
+            facilityShortName:
+              type: string
+              example: DAUIN
+            profileUrl:
+              type: string
+              example: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
+            courses:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 258674
+                  name:
+                    type: string
+                    example: Human Computer Interaction
+    PlaceOverview:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Aula 1D
+        type:
+          type: string
+          example: Aula
+        city:
+          type: string
+          example: Torino
+        site:
+          $ref: '#/components/schemas/Site'
+        structure:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Dipartimento di Ingegneria Strutturale, Edile e Geotecnica
+            shortName:
+              type: string
+              example: DISEG
+            email:
+              type: string
+              example: null
+            phone:
+              type: string
+              example: null
+        latitude:
+          type: string
+          example: "45.0626340000000000"
+        longitude:
+          type: string
+          example: "7.6605410000000000"
+        capacity:
+          type: integer
+          example: 300
+    Site:
+      type: object
+      properties:
+        id:
+          type: string
+          example: TO_CIT
+        name:
+          type: string
+          example: Sede Centrale - Cittadella Politecnica
+        city:
+          type: string
+          example: Torino
+        lat:
+          type: string
+          example: "45.0642540000000000"
+        lon:
+          type: string
+          example: "7.6578230000000000"
+    VideoLecture:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 888122
+        title:
+          type: string
+          example: Lecture 1
+        teacherId:
+          type: string
+          example: 888122
+        abstract:
+          type: string
+          example: Lecture 1
+        coverUrl:
+          type: string
+          example: https://
+        videoUrl:
+          type: string
+          example: https://
+        audioUrl:
+          type: string
+          example: https://
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        duration:
+          type: string
+          example: 00h 46m
+    VirtualClassroom:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 150157
+        title:
+          type: string
+          example: Lecture 1
+        teacherId:
+          type: string
+          example: 888122
+        coverUrl:
+          type: string
+          example: https://
+        videoUrl:
+          type: string
+          example: https://
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        duration:
+          type: string
+          example: 00h 46m
+        isLive:
+          type: boolean
+          example: false
+    VirtualClassroomLive:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 150157
+        title:
+          type: string
+          example: Lecture 1
+        teacherId:
+          type: string
+          example: 888122
+        meetingUrl:
+          type: string
+          example: https://
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        isLive:
+          type: boolean
+          example: true
+    Lecture:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "150157"
+        startsAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        endsAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        type:
+          type: string
+          example: Lezione / Esercitazione
+        description:
+          type: string
+          example: Lezione / Esercitazione
+        courseId:
+          type: integer
+          example: 150157
+        teacherId:
+          type: string
+          example: 150157
+        roomName:
+          type: string
+          example: 3S

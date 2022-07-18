@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: polito_api_swagger
+    environment:
+      SWAGGER_JSON: '/openapi.yaml'
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./openapi.yaml:/openapi.yaml
