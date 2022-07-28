@@ -4,7 +4,124 @@ info:
   version: 1.0.0
 servers:
   - url: https://api.polito.it
+security:
+  - bearerAuth: [ ]
 paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      security: [ ]
+      summary: Login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: s290683
+                password:
+                  type: string
+                  example: moreSecret
+                device:
+                  type: object
+                  properties:
+                    platform:
+                      type: string
+                      example: Android
+                    version:
+                      type: string
+                      example: 12
+                    model:
+                      type: string
+                      example: S10
+                    manufacturer:
+                      type: string
+                      example: Samsung
+              required: [ username, password ]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Identity'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/logout:
+    delete:
+      tags:
+        - Auth
+      summary: Logout
+      description: Invalidates all tokens related to the provided one (same UUID)
+      operationId: logout
+      responses:
+        200:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /students/{studentId}:
+    get:
+      tags:
+        - Students
+      summary: Retrieve student profile | Recupera il profilo studente
+      operationId: getStudent
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          description: Username of type s******
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Student'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /students/{studentId}/grades:
+    get:
+      tags:
+        - Students
+      summary: Retrieve student grades | Recupera i voti dello studente
+      operationId: getStudentGrades
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          description: Username of type s******
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ExamGrade'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics:
     get:
       tags:
@@ -108,7 +225,7 @@ paths:
                 seatId:
                   type: integer
                   example: 20018
-              required: [slotId]
+              required: [ slotId ]
       responses:
         200:
           description: Success
@@ -135,7 +252,7 @@ paths:
                 isLocationChecked:
                   type: boolean
                   example: true
-              required: [isLocationChecked]
+              required: [ isLocationChecked ]
       responses:
         200:
           description: Success
@@ -769,8 +886,102 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
 
   schemas:
+    Identity:
+      type: object
+      properties:
+        username:
+          type: string
+          example: 's290683'
+        type:
+          type: string
+          example: 'student'
+        token:
+          type: string
+          example: c679fa38ff665df6a676acd833194385
+        isDefault:
+          type: boolean
+          example: true
+    Student:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Pezzolla
+        status:
+          type: string
+          enum:
+            - active
+        #            TODO document all possible statuses
+        degreeCode:
+          type: string
+          example: LM-32
+        degreeName:
+          type: string
+          example: INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)
+        firstEnrollmentYear:
+          type: number
+          example: 2021
+        lastEnrollmentYear:
+          type: number
+          example: 2022
+        averageGrade:
+          type: number
+          example: 18.42
+        estimatedFinalGrade:
+          type: number
+          example: 99.99
+        averageGradePurged:
+          type: number
+          example: null
+        estimatedFinalGradePurged:
+          type: number
+          example: null
+        mastersAdmissionAverageGrade:
+          type: number
+          example: null
+        totalCredits:
+          type: number
+          example: 126
+        totalAttendedCredits:
+          type: number
+          example: 126
+        totalAcquiredCredits:
+          type: number
+          example: 68
+        enrollmentCredits:
+          type: number
+          example: 126
+        enrollmentAttendedCredits:
+          type: number
+          example: 126
+        enrollmentAcquiredCredits:
+          type: number
+          example: 68
+    ExamGrade:
+      type: object
+      properties:
+        courseName:
+          type: string
+          example: Human Computer Interaction
+        credits:
+          type: number
+          example: 6
+        grade:
+          type: number
+          example: 27
+        date:
+          type: string
+          example: 2022-05-15
+
     BookingTopic:
       type: object
       properties:
@@ -1115,7 +1326,7 @@ components:
         file:
           type: string
           format: binary
-      required: [description, file]
+      required: [ description, file ]
     CourseNotices:
       type: object
       properties:
