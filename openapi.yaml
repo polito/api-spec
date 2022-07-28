@@ -188,6 +188,41 @@ paths:
                 $ref: "#/components/schemas/Error"
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats:
+    get:
+      tags:
+        - Bookings
+      summary: Show seats for a booking slots | Mostra posti prenotabili
+      operationId: getBookingSeatsBySlot
+      parameters:
+        - name: bookingTopicId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: bookingSlotId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BookingSeats'
+        404:
+          description: Booking topic|slot not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /bookings:
     get:
       tags:
@@ -1070,6 +1105,9 @@ components:
         canBeBooked:
           type: boolean
           example: false
+        hasSeats:
+          type: boolean
+          example: false
         places:
           type: integer
           example: 2
@@ -1110,6 +1148,51 @@ components:
           type: string
           format: date-time
           example: "2021-10-04T16:00:00.000Z"
+
+    BookingSeats:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          example: 140
+        availableCount:
+          type: number
+          example: 42
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingSeatsRow'
+
+    BookingSeatsRow:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 2
+        label:
+          type: string
+          example: B
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingSeat'
+
+    BookingSeat:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 42
+        status:
+          type: string
+          enum:
+            - available
+            - booked
+            - unavailable
+        label:
+          type: string
+          example: B12
+
 
     Booking:
       type: object
