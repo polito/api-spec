@@ -28,7 +28,7 @@ jobs:
           }
           EOF
           
-          cat .Renviron
+          cat package.json
 
       - uses: actions/setup-node@v3
         working-directory: ./client
