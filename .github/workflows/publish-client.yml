@@ -20,8 +20,7 @@ jobs:
       - name: Assign client ownership to runner
         run: sudo chown -R runner client
 
-      - name: Get Version
-        id: get_version
+      - id: get_version
         uses: battila7/get-version-action@v2.2.1
 
       - name: Generate package.json
@@ -31,7 +30,7 @@ jobs:
         run: |
           cat <<EOF > package.json
           {
-          "name": "@polito-it/api-client",
+          "name": "@polito/api-client",
           "version": "$TAG_VERSION",
           "repository":"https://github.com/polito-it/api-spec"
           }
