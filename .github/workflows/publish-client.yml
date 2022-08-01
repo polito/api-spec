@@ -2,7 +2,7 @@ name: Publish API client derived from spec
 
 on:
   release:
-    types: [ created ]
+    types: [ created, updated ]
 
 jobs:
   publish:
@@ -14,6 +14,9 @@ jobs:
         uses: kpurdon/openapi-generator-action@v0.0.3
         with:
           args: "generate -i openapi.yaml -g typescript-fetch --skip-validate-spec -o ./client"
+
+      - name: Assign client ownership to runner
+        run: sudo chown -R runner client
 
       - name: Get Version
         uses: battila7/get-version-action@v2.2.1
