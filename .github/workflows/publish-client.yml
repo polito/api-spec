@@ -1,8 +1,8 @@
 name: Publish API client derived from spec
 
 on:
-  release:
-    types: [ created, updated ]
+  tags:
+    - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   publish:
