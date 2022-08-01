@@ -27,7 +27,7 @@ jobs:
           cat <<EOF > package.json
           {
           "name": "@polito-it/api-client",
-          "version": "$steps.get_version.outputs.version-without-v"
+          "version": "${{ steps.get_version.outputs.version-without-v }}"
           }
           EOF
           
