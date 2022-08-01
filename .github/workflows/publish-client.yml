@@ -15,12 +15,24 @@ jobs:
         with:
           args: "generate -i openapi.yaml -g typescript-fetch --skip-validate-spec -o ./client"
 
+      - name: Get Version
+        uses: battila7/get-version-action@v2.2.1
+
       - run: cd client
+        
+      - run: |
+          echo '{' >> package.json
+          echo '"name": "@polito-it/api-client",' >> package.json
+          echo "\"version\": \"${{ steps.get_version.outputs.version-without-v }}\"" >> package.json
+          echo '}' >> package.json
+        working-directory: ./client
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: `16.x'
           registry-url: 'https://npm.pkg.github.com'
+
       - run: npm publish
+        working-directory: ./client
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
