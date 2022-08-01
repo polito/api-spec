@@ -22,12 +22,14 @@ jobs:
         uses: battila7/get-version-action@v2.2.1
 
       - name: Generate package.json
+        env:
+          TAG_VERSION: ${{ steps.get_version.outputs.version-without-v }}
         working-directory: ./client
         run: |
           cat <<EOF > package.json
           {
           "name": "@polito-it/api-client",
-          "version": "1.0.0-rc1",
+          "version": "$TAG_VERSION",
           "repository":"https://github.com/polito-it/api-spec"
           }
           EOF
