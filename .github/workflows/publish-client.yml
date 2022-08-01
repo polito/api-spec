@@ -18,10 +18,8 @@ jobs:
       - name: Assign client ownership to runner
         run: sudo chown -R runner client
 
-      - name: Get Version
-        uses: battila7/get-version-action@v2.2.1
-
       - name: Generate package.json
+        uses: battila7/get-version-action@v2.2.1
         working-directory: ./client
         run: |
           cat <<EOF > package.json
