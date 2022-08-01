@@ -21,12 +21,12 @@ jobs:
         run: sudo chown -R runner client
 
       - name: Get Version
+        id: get_version
         uses: battila7/get-version-action@v2.2.1
 
       - name: Generate package.json
         env:
           TAG_VERSION: ${{ steps.get_version.outputs.version-without-v }}
-          BRANCH_NAME: ${{ github.ref }}
         working-directory: ./client
         run: |
           cat <<EOF > package.json
