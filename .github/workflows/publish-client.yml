@@ -18,16 +18,16 @@ jobs:
       - name: Get Version
         uses: battila7/get-version-action@v2.2.1
 
-      - run: cd client
-        
-      - run: |
+      - name: Generate package.json
+        working-directory: ./client
+        run: |
           echo '{' >> package.json
           echo '"name": "@polito-it/api-client",' >> package.json
           echo "\"version\": \"${{ steps.get_version.outputs.version-without-v }}\"" >> package.json
           echo '}' >> package.json
-        working-directory: ./client
 
       - uses: actions/setup-node@v3
+        working-directory: ./client
         with:
           node-version: `16.x'
           registry-url: 'https://npm.pkg.github.com'
