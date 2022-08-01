@@ -21,10 +21,14 @@ jobs:
       - name: Generate package.json
         working-directory: ./client
         run: |
-          echo '{' >> package.json
-          echo '"name": "@polito-it/api-client",' >> package.json
-          echo "\"version\": \"${{ steps.get_version.outputs.version-without-v }}\"" >> package.json
-          echo '}' >> package.json
+          cat <<EOF > package.json
+          {
+          "name": "@polito-it/api-client",
+          "version": "$steps.get_version.outputs.version-without-v"
+          }
+          EOF
+          
+          cat .Renviron
 
       - uses: actions/setup-node@v3
         working-directory: ./client
