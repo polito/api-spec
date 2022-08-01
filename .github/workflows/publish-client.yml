@@ -30,7 +30,7 @@ jobs:
         run: |
           cat <<EOF > package.json
           {
-          "name": "@polito/api-client",
+          "name": "@polito-it/api-client",
           "version": "$TAG_VERSION",
           "repository":"https://github.com/polito-it/api-spec"
           }
