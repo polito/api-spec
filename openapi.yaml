@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0
+  version: 1.0.0-rc1
 servers:
   - url: https://api.polito.it
 security:
@@ -69,10 +69,10 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /students/{studentId}:
+  /me:
     get:
       tags:
-        - Students
+        - Student
       summary: Retrieve student profile | Recupera il profilo studente
       operationId: getStudent
       parameters:
@@ -94,10 +94,10 @@ paths:
                     $ref: '#/components/schemas/Student'
         500:
           $ref: '#/components/responses/ErrorResponse'
-  /students/{studentId}/grades:
+  /grades:
     get:
       tags:
-        - Students
+        - Student
       summary: Retrieve student grades | Recupera i voti dello studente
       operationId: getStudentGrades
       parameters:
@@ -955,6 +955,7 @@ components:
           type: string
           enum:
             - active
+            - graduate
         #            TODO document all possible statuses
         degreeCode:
           type: string
