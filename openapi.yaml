@@ -759,7 +759,7 @@ paths:
       tags:
         - People
       summary: Show person | Mostra persona
-      operationId: getPersonById
+      operationId: getPerson
       parameters:
         - name: personId
           in: path
