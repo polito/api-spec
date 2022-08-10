@@ -347,7 +347,7 @@ paths:
       tags:
         - Courses
       summary: Show course | Mostra corso
-      operationId: getCourseById
+      operationId: getCourseOverview
       parameters:
         - name: courseId
           in: path
@@ -435,7 +435,7 @@ paths:
       tags:
         - Courses
       summary: List assignments | Elenca elaborati
-      operationId: listCourseAssignments
+      operationId: getCourseAssignments
       parameters:
         - name: courseId
           in: path
@@ -466,7 +466,7 @@ paths:
       tags:
         - Courses
       summary: Upload assignment | Carica elaborato
-      operationId: addCourseAssignment
+      operationId: uploadCourseAssignment
       parameters:
         - name: courseId
           in: path
@@ -559,7 +559,7 @@ paths:
       tags:
         - Courses
       summary: List virtual classrooms | Elenca virtual classroom
-      operationId: listCourseVirtualClassrooms
+      operationId: getCourseVirtualClassrooms
       parameters:
         - name: courseId
           in: path
@@ -598,7 +598,7 @@ paths:
       tags:
         - Courses
       summary: List videolectures | Elenca videolezioni
-      operationId: listCourseVideolectures
+      operationId: getCourseVideolectures
       parameters:
         - name: courseId
           in: path
