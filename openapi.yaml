@@ -651,7 +651,7 @@ paths:
       tags:
         - Exams
       summary: Book exam | Prenota esame
-      operationId: createExamBookingById
+      operationId: bookExam
       parameters:
         - name: examId
           in: path
