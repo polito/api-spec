@@ -333,7 +333,7 @@ paths:
       tags:
         - Courses
       summary: Show course | Mostra corso
-      operationId: getCourseOverview
+      operationId: getCourse
       parameters:
         - name: courseId
           in: path
