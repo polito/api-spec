@@ -133,7 +133,7 @@ paths:
       tags:
         - Bookings
       summary: Show booking slots | Mostra turni prenotabili
-      operationId: getBookingTopicById
+      operationId: getBookingTopic
       parameters:
         - name: bookingTopicId
           in: path
@@ -179,7 +179,7 @@ paths:
       tags:
         - Bookings
       summary: Show seats for a booking slots | Mostra posti prenotabili
-      operationId: getBookingSeatsBySlot
+      operationId: getBookingSeats
       parameters:
         - name: bookingTopicId
           in: path
@@ -257,7 +257,7 @@ paths:
       tags:
         - Bookings
       summary: Update booking | Aggiorna prenotazione
-      operationId: updateBookingById
+      operationId: updateBooking
       parameters:
         - name: bookingId
           in: path
@@ -289,7 +289,7 @@ paths:
       tags:
         - Bookings
       summary: Delete booking | Cancella prenotazione
-      operationId: deleteBookingById
+      operationId: deleteBooking
       parameters:
         - name: bookingId
           in: path
