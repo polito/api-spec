@@ -1,7 +1,7 @@
 # PoliTO API Spec
-The OpenAPI specification for the REST APIs of Politecnico di Torino.
+The OpenAPI specification for the REST API of Politecnico di Torino.
 
-## How to obtain an human-readable interface
+## How to obtain a human-readable interface
 You can start a Docker container of swagger-ui directly on your computer by running: 
 ```bash
 $ docker-compose up
