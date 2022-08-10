@@ -75,13 +75,6 @@ paths:
         - Student
       summary: Retrieve student profile | Recupera il profilo studente
       operationId: getStudent
-      parameters:
-        - name: studentId
-          in: path
-          required: true
-          description: Username of type s******
-          schema:
-            type: string
       responses:
         200:
           description: Success
@@ -100,13 +93,6 @@ paths:
         - Student
       summary: Retrieve student grades | Recupera i voti dello studente
       operationId: getStudentGrades
-      parameters:
-        - name: studentId
-          in: path
-          required: true
-          description: Username of type s******
-          schema:
-            type: string
       responses:
         200:
           description: Success
