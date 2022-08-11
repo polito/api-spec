@@ -950,44 +950,52 @@ components:
           type: string
           example: INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)
         firstEnrollmentYear:
-          type: number
+          type: integer
           example: 2021
         lastEnrollmentYear:
-          type: number
+          type: integer
           example: 2022
         averageGrade:
           type: number
+          nullable: true
           example: 18.42
         estimatedFinalGrade:
           type: number
+          nullable: true
           example: 99.99
         averageGradePurged:
+          description: Purged grade is only available for bachelor degree students
           type: number
+          nullable: true
           example: null
         estimatedFinalGradePurged:
+          description: Purged grade is only available for bachelor degree students
           type: number
+          nullable: true
           example: null
         mastersAdmissionAverageGrade:
+          description: Master's admission grade is only available for bachelor degree students
           type: number
+          nullable: true
           example: null
         totalCredits:
-          type: number
+          type: integer
           example: 126
         totalAttendedCredits:
-          type: number
+          type: integer
           example: 126
         totalAcquiredCredits:
-          type: number
+          type: integer
           example: 68
         enrollmentCredits:
-          type: number
-          example: 126
+          type: integer
+          example: 86
         enrollmentAttendedCredits:
-          type: number
-          example: 126
+          type: integer
+          example: 86
         enrollmentAcquiredCredits:
-          type: number
-          example: 68
+          type: integer
+          example: 28
     ExamGrade:
       type: object
       properties:
@@ -995,10 +1003,10 @@ components:
           type: string
           example: Human Computer Interaction
         credits:
-          type: number
+          type: integer
           example: 6
         grade:
-          type: number
+          type: integer
           example: 27
         date:
           type: string
@@ -1140,10 +1148,10 @@ components:
       type: object
       properties:
         totalCount:
-          type: number
+          type: integer
           example: 140
         availableCount:
-          type: number
+          type: integer
           example: 42
         rows:
           type: array
@@ -1154,7 +1162,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
           example: 2
         label:
           type: string
@@ -1168,7 +1176,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
           example: 42
         status:
           type: string
@@ -1285,15 +1293,15 @@ components:
           type: string
           example: 01DVGSU
         cfu:
-          type: number
-          example: 10.0
+          type: integer
+          example: 10
         teachingPeriod:
-          type: number
+          type: integer
           description: The semester this course belongs to
-          example: 1.0
+          example: 1
         teacherId:
-          type: number
-          example: 12684.0
+          type: integer
+          example: 12684
         isOverBooking:
           type: boolean
           example: true
@@ -1338,7 +1346,6 @@ components:
                   id:
                     type: integer
                     example: 247431
-
             notifications:
               type: object
               properties:
@@ -1361,6 +1368,27 @@ components:
                   id:
                     type: integer
                     example: 244577
+
+          examples:
+            hci:
+              value:
+                id: 258674
+                name: Human Computer
+                shortcode: 01DVGSU
+                cfu: 10.0
+                teachingPeriod: 1
+                teacherId: 12684
+                isOverBooking: true
+                isInPersonalStudyPlan: true
+                hasCoursePage: true
+                year: "2022"
+                vcPreviousYears: [ ]
+                vcOtherCourses: [ ]
+                notifications:
+                  avvisidoc: true
+                  matdid: true
+                  videolezioni: true
+                staff: [ ]
     CourseAssignment:
       type: object
       properties:
