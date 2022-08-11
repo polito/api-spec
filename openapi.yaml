@@ -1284,33 +1284,34 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          nullable: true
+          description: The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page
           example: 258674
         name:
           type: string
           example: System and device programming
         shortcode:
           type: string
-          example: 01DVGSU
+          example: 01NYHOV
         cfu:
           type: integer
           example: 10
         teachingPeriod:
           type: integer
+          nullable: true
           description: The semester this course belongs to
-          example: 1
+          example: 2
         teacherId:
           type: integer
-          example: 12684
+          nullable: true
+          example: 2893
         isOverBooking:
           type: boolean
-          example: true
+          example: false
         isInPersonalStudyPlan:
           type: boolean
           description: Included in the PSP | Incluso nel carico didattico
-          example: true
-        hasCoursePage:
-          type: boolean
           example: true
     Course:
       allOf:
@@ -1368,27 +1369,6 @@ components:
                   id:
                     type: integer
                     example: 244577
-
-          examples:
-            hci:
-              value:
-                id: 258674
-                name: Human Computer
-                shortcode: 01DVGSU
-                cfu: 10.0
-                teachingPeriod: 1
-                teacherId: 12684
-                isOverBooking: true
-                isInPersonalStudyPlan: true
-                hasCoursePage: true
-                year: "2022"
-                vcPreviousYears: [ ]
-                vcOtherCourses: [ ]
-                notifications:
-                  avvisidoc: true
-                  matdid: true
-                  videolezioni: true
-                staff: [ ]
     CourseAssignment:
       type: object
       properties:
