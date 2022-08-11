@@ -15,7 +15,7 @@ jobs:
       - name: OpenAPI Generator Action
         uses: kpurdon/openapi-generator-action@v0.0.3
         with:
-          args: "generate -i openapi.yaml -g typescript-fetch --skip-validate-spec -o ./client"
+          args: "generate -i openapi.yaml -g typescript-fetch -o ./client"
 
       - name: Assign client ownership to runner
         run: sudo chown -R runner client
