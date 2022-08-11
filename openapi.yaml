@@ -1312,7 +1312,7 @@ components:
             year:
               type: string
               example: "2022"
-            otherEditions:
+            vcPreviousYears:
               type: array
               items:
                 type: object
@@ -1323,7 +1323,7 @@ components:
                   id:
                     type: integer
                     example: 244577
-            vcCourses:
+            vcOtherCourses:
               description: Other editions/courses to be included in virtual classrooms
               type: array
               items:
