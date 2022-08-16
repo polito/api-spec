@@ -171,7 +171,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats:
@@ -206,7 +206,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /bookings:
@@ -282,7 +282,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
     delete:
@@ -304,7 +304,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -355,7 +355,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
   /courses/{courseId}/files:
     get:
       tags:
@@ -385,7 +385,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/files/{fileId}:
@@ -413,7 +413,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/assignments:
@@ -445,7 +445,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
     post:
@@ -473,7 +473,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/guide:
@@ -505,7 +505,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/notices:
@@ -537,7 +537,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/virtual-classrooms:
@@ -576,7 +576,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/videolectures:
@@ -608,7 +608,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -645,7 +645,7 @@ paths:
           schema:
             type: integer
       requestBody:
-        description: "Only needed if the exam you are booking includes a question"
+        description: 'Only needed if the exam you are booking includes a question'
         content:
           application/json:
             schema:
@@ -667,7 +667,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
     delete:
@@ -689,7 +689,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -781,7 +781,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -906,7 +906,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
@@ -1010,7 +1010,7 @@ components:
           example: 27
         date:
           type: string
-          example: 2022-05-15
+          example: '2022-05-15'
 
     BookingTopic:
       type: object
@@ -1026,7 +1026,7 @@ components:
           example: Servizi della Segreteria Didattica Ingegneria
         type:
           type: string
-          example: "Ufficio"
+          example: 'Ufficio'
         isEnabled:
           type: boolean
           example: true
@@ -1045,10 +1045,10 @@ components:
           example: Aspetti didattici di carriera - Sportello virtuale in inglese
         description:
           type: string
-          example: ""
+          example: ''
         disclaimer:
           type: string
-          example: ""
+          example: ''
         isEnabled:
           type: boolean
           example: true
@@ -1120,7 +1120,7 @@ components:
               example: Virtual Classroom della Segreteria Generale Studenti
             description:
               type: string
-              example: ""
+              example: ''
             type:
               type: string
               example: VC
@@ -1130,19 +1130,19 @@ components:
         startsAt:
           type: string
           format: date-time
-          example: "2021-10-05T10:00:00.000Z"
+          example: '2021-10-05T10:00:00.000Z'
         endsAt:
           type: string
           format: date-time
-          example: "2021-10-05T10:15:00.000Z"
+          example: '2021-10-05T10:15:00.000Z'
         bookingStartsAt:
           type: string
           format: date-time
-          example: "2021-09-30T00:00:00.000Z"
+          example: '2021-09-30T00:00:00.000Z'
         bookingEndsAt:
           type: string
           format: date-time
-          example: "2021-10-04T16:00:00.000Z"
+          example: '2021-10-04T16:00:00.000Z'
 
     BookingSeats:
       type: object
@@ -1209,7 +1209,7 @@ components:
               example: Servizi della Segreteria Didattica Ingegneria
             type:
               type: string
-              example: "Ufficio"
+              example: 'Ufficio'
         subtopic:
           type: object
           nullable: true
@@ -1222,16 +1222,16 @@ components:
               example: Aspetti didattici di carriera - Sportello virtuale in inglese
             description:
               type: string
-              example: ""
+              example: ''
           example: null
         startsAt:
           type: string
           format: date-time
-          example: "2021-10-05T10:00:00.000Z"
+          example: '2021-10-05T10:00:00.000Z'
         endsAt:
           type: string
           format: date-time
-          example: "2021-10-05T10:15:00.000Z"
+          example: '2021-10-05T10:15:00.000Z'
         seat:
           type: object
           nullable: true
@@ -1263,7 +1263,7 @@ components:
               example: Virtual Classroom della Segreteria Generale Studenti
             description:
               type: string
-              example: ""
+              example: ''
             type:
               type: string
               example: VC
@@ -1272,10 +1272,10 @@ components:
               example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
             latitude:
               type: string
-              example: "45.0626340000000000"
+              example: '45.0626340000000000'
             longitude:
               type: string
-              example: "7.6605410000000000"
+              example: '7.6605410000000000'
             radiusInKm:
               type: number
               example: 0.1
@@ -1287,7 +1287,7 @@ components:
           type: string
           nullable: true
           description: The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page
-          example: 258674
+          example: '258674'
         name:
           type: string
           example: System and device programming
@@ -1320,7 +1320,7 @@ components:
           properties:
             year:
               type: string
-              example: "2022"
+              example: '2022'
             vcPreviousYears:
               type: array
               items:
@@ -1328,7 +1328,7 @@ components:
                 properties:
                   year:
                     type: string
-                    example: "2021"
+                    example: '2021'
                   id:
                     type: integer
                     example: 244577
@@ -1340,7 +1340,7 @@ components:
                 properties:
                   year:
                     type: string
-                    example: "2021"
+                    example: '2021'
                   name:
                     type: string
                     example: Fisica II
@@ -1439,7 +1439,7 @@ components:
       properties:
         id:
           type: string
-          example: "33352562"
+          example: '33352562'
         type:
           type: string
           enum:
@@ -1456,7 +1456,7 @@ components:
       properties:
         id:
           type: string
-          example: "33352562"
+          example: '33352562'
         type:
           type: string
           enum:
@@ -1499,7 +1499,7 @@ components:
           example: Human Computer Interaction
         teacherId:
           type: string
-          example: "002154"
+          example: '002154'
         type:
           type: string
           example: Esami scritti a risposta aperta o chiusa tramite PC
@@ -1522,11 +1522,11 @@ components:
         bookingEndsAt:
           type: string
           format: date-time
-          example: 2022-08-31T14:00:00Z
+          example: '2022-08-31T14:00:00Z'
         examStartsAt:
           type: string
           format: date-time
-          example: 2022-09-02T14:00:00Z
+          example: '2022-09-02T14:00:00Z'
         bookedCount:
           type: integer
           example: 42
@@ -1545,6 +1545,7 @@ components:
           example: null
         feedback:
           type: string
+          nullable: true
           example: null
     Error:
       type: object
@@ -1560,7 +1561,7 @@ components:
       properties:
         id:
           type: string
-          example: "002154"
+          example: '002154'
         firstName:
           type: string
           example: Fulvio
@@ -1582,7 +1583,7 @@ components:
               type: array
               items:
                 type: string
-                example: "0110907053"
+                example: '0110907053'
             role:
               type: string
               example: Docente
@@ -1628,16 +1629,18 @@ components:
               example: DISEG
             email:
               type: string
+              nullable: true
               example: null
             phone:
               type: string
+              nullable: true
               example: null
         latitude:
           type: string
-          example: "45.0626340000000000"
+          example: '45.0626340000000000'
         longitude:
           type: string
-          example: "7.6605410000000000"
+          example: '7.6605410000000000'
         capacity:
           type: integer
           example: 300
@@ -1655,10 +1658,10 @@ components:
           example: Torino
         lat:
           type: string
-          example: "45.0642540000000000"
+          example: '45.0642540000000000'
         lon:
           type: string
-          example: "7.6578230000000000"
+          example: '7.6578230000000000'
     VideoLecture:
       type: object
       properties:
@@ -1670,7 +1673,7 @@ components:
           example: Lecture 1
         teacherId:
           type: string
-          example: 888122
+          example: '888122'
         abstract:
           type: string
           example: Lecture 1
@@ -1686,7 +1689,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: 2022-08-31T14:00:00Z
+          example: '2022-08-31T14:00:00Z'
         duration:
           type: string
           example: 00h 46m
@@ -1701,7 +1704,7 @@ components:
           example: Lecture 1
         teacherId:
           type: string
-          example: 888122
+          example: '888122'
         coverUrl:
           type: string
           example: https://
@@ -1711,7 +1714,7 @@ components:
         createdAt:
           type: string
           format: date-time
-          example: 2022-08-31T14:00:00Z
+          example: '2022-08-31T14:00:00Z'
         duration:
           type: string
           example: 00h 46m
@@ -1729,14 +1732,14 @@ components:
           example: Lecture 1
         teacherId:
           type: string
-          example: 888122
+          example: '888122'
         meetingUrl:
           type: string
           example: https://
         createdAt:
           type: string
           format: date-time
-          example: 2022-08-31T14:00:00Z
+          example: '2022-08-31T14:00:00Z'
         isLive:
           type: boolean
           example: true
@@ -1745,7 +1748,7 @@ components:
       properties:
         id:
           type: string
-          example: "150157"
+          example: '150157'
         startsAt:
           type: string
           format: date-time
