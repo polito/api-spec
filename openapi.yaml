@@ -4,6 +4,7 @@ info:
   version: 1.0.0-rc1
 servers:
   - url: https://api.polito.it
+  - url: http://192.168.178.22:4010
 security:
   - bearerAuth: [ ]
 paths:
@@ -424,6 +425,28 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Course'
+              example:
+                data:
+                  id: 252842
+                  name: Human Computer Interaction
+                  shortcode: 02JSKOV
+                  cfu: 6
+                  teachingPeriod: 1
+                  teacherId: 25734
+                  isOverBooking: false
+                  isInPersonalStudyPlan: true
+                  year: '2022'
+                  vcPreviousYears: [ ]
+                  vcOtherCourses: [ ]
+                  notifications:
+                    avvisidoc: true
+                    matdid: true
+                    videolezioni: true
+                  staff:
+                    - role: 'Titolare'
+                      id: 025734
+                    - role: 'Docente'
+                      id: 002154
         404:
           description: Course not found
           content:
@@ -453,7 +476,190 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CourseDirectory'
+                      anyOf:
+                        - $ref: '#/components/schemas/CourseDirectory'
+                        - $ref: '#/components/schemas/CourseFileOverview'
+              example:
+                data:
+                  - id: "33248655"
+                    type: "directory"
+                    name: "videolectures"
+                    files:
+                    - id: "33248890"
+                      type: "file"
+                      name: "HCI2021-L01 2021-09-28 13-06-26.m4v"
+                      sizeInKiloBytes: 123428
+                      mimeType: "video/x-m4v"
+                      createdAt: "2021-09-28T16:31:43Z"
+                    - id: "33251708"
+                      type: "file"
+                      name: "HCI2021-L02 2021-09-30 08-34-32.mp4"
+                      sizeInKiloBytes: 248172
+                      mimeType: "video/mp4"
+                      createdAt: "2021-09-30T10:20:50Z"
+                    - id: "33256476"
+                      type: "file"
+                      name: "HCI2021-L03 2021-10-05 13-06-47.mp4"
+                      sizeInKiloBytes: 243792
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-05T15:00:15Z"
+                    - id: "33257988"
+                      type: "file"
+                      name: "HCI2021-L04 2021-10-07 08-35-46.mp4"
+                      sizeInKiloBytes: 244993
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-07T11:12:25Z"
+                    - id: "33262287"
+                      type: "file"
+                      name: "HCI2021-L05 2021-10-12 13-05-46.mp4"
+                      sizeInKiloBytes: 298172
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-12T16:11:46Z"
+                    - id: "33265387"
+                      type: "file"
+                      name: "HCI2021-L06 2021-10-14 08-35-12.mp4"
+                      sizeInKiloBytes: 285926
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-14T11:25:20Z"
+                    - id: "33269079"
+                      type: "file"
+                      name: "HCI2021-L07 2021-10-19 13-10-40.mp4"
+                      sizeInKiloBytes: 234466
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-19T15:02:22Z"
+                    - id: "33270699"
+                      type: "file"
+                      name: "HCI2021-L08 2021-10-21 08-35-17.mp4"
+                      sizeInKiloBytes: 240828
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-21T10:44:22Z"
+                    - id: "33273765"
+                      type: "file"
+                      name: "HCI2021-L09 2021-10-26 13-08-27.mp4"
+                      sizeInKiloBytes: 321979
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-26T16:06:46Z"
+                    - id: "33275522"
+                      type: "file"
+                      name: "HCI2021-L10 2021-10-28 08-35-26.mp4"
+                      sizeInKiloBytes: 281542
+                      mimeType: "video/mp4"
+                      createdAt: "2021-10-28T10:59:56Z"
+                    - id: "33278303"
+                      type: "file"
+                      name: "HCI2021-L11 2021-11-02 13-07-13.mp4"
+                      sizeInKiloBytes: 259925
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-02T17:34:17Z"
+                    - id: "33280035"
+                      type: "file"
+                      name: "HCI2021-L12 2021-11-04 08-35-42.mp4"
+                      sizeInKiloBytes: 269000
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-04T15:18:00Z"
+                    - id: "33283202"
+                      type: "file"
+                      name: "HCI2021-L13 2021-11-09 13-05-21.mp4"
+                      sizeInKiloBytes: 124877
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-09T17:55:12Z"
+                    - id: "33285203"
+                      type: "file"
+                      name: "HCI2021-L14 2021-11-11 08-34-16.mp4"
+                      sizeInKiloBytes: 164749
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-11T18:54:08Z"
+                    - id: "33288841"
+                      type: "file"
+                      name: "HCI2021-L15 2021-11-16 13-08-31.mp4"
+                      sizeInKiloBytes: 413016
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-16T17:39:12Z"
+                    - id: "33290368"
+                      type: "file"
+                      name: "HCI2021-L16 2021-11-18 08-35-25.mp4"
+                      sizeInKiloBytes: 175214
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-18T16:32:30Z"
+                    - id: "33293068"
+                      type: "file"
+                      name: "HCI2021-L17 2021-11-23 13-07-21.mp4"
+                      sizeInKiloBytes: 167637
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-23T15:14:30Z"
+                    - id: "33294893"
+                      type: "file"
+                      name: "HCI2021-L18 2021-11-25 08-38-18.mp4"
+                      sizeInKiloBytes: 177894
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-25T19:07:01Z"
+                    - id: "33297785"
+                      type: "file"
+                      name: "HCI2021-L19 2021-11-30 13-05-06.mp4"
+                      sizeInKiloBytes: 204728
+                      mimeType: "video/mp4"
+                      createdAt: "2021-11-30T18:40:05Z"
+                    - id: "33298944"
+                      type: "file"
+                      name: "HCI2021-L20 2021-12-02 08-33-29.mp4"
+                      sizeInKiloBytes: 181211
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-02T14:28:22Z"
+                    - id: "33301586"
+                      type: "file"
+                      name: "HCI2021-L21 2021-12-07 13-10-43.mp4"
+                      sizeInKiloBytes: 161114
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-07T14:51:40Z"
+                    - id: "33302797"
+                      type: "file"
+                      name: "HCI2021-L22 2021-12-09 08-36-04.mp4"
+                      sizeInKiloBytes: 171358
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-09T18:13:39Z"
+                    - id: "33305668"
+                      type: "file"
+                      name: "HCI2021-L23 2021-12-14 13-04-34.mp4"
+                      sizeInKiloBytes: 236985
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-14T17:25:16Z"
+                    - id: "33307385"
+                      type: "file"
+                      name: "HCI2021-L24 2021-12-16 08-34-14.mp4"
+                      sizeInKiloBytes: 178860
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-16T19:18:25Z"
+                    - id: "33309925"
+                      type: "file"
+                      name: "HCI2021-L25 2021-12-21 13-04-41.mp4"
+                      sizeInKiloBytes: 166945
+                      mimeType: "video/mp4"
+                      createdAt: "2021-12-21T15:00:46Z"
+                    - id: "33314553"
+                      type: "file"
+                      name: "HCI2021-L26 2022-01-11 13-00-00.mp4"
+                      sizeInKiloBytes: 182258
+                      mimeType: "video/mp4"
+                      createdAt: "2022-01-11T14:49:59Z"
+                  - id: "33325555"
+                    type: "file"
+                    name: "2022-02-04-results-written-test.pdf"
+                    sizeInKiloBytes: 412
+                    mimeType: "application/pdf"
+                    createdAt: "2022-02-18T01:20:21Z"
+                  - id: "33357023"
+                    type: "file"
+                    name: "2022-02-23-results-written-test.pdf"
+                    sizeInKiloBytes: 404
+                    mimeType: "application/pdf"
+                    createdAt: "2022-03-18T22:29:45Z"
+                  - id: "33405431"
+                    type: "file"
+                    name: "2022-06-29-results-written-test.pdf"
+                    sizeInKiloBytes: 127
+                    mimeType: "application/pdf"
+                    createdAt: "2022-07-20T19:34:00Z"
+
         404:
           description: Course not found
           content:
@@ -514,6 +720,80 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseAssignment'
+              example:
+                data:
+                  - id: 1003948
+                    description: "extrapoints2"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "extrapoints2.zip"
+                    uploadedAt: "2022-01-21T14:38:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6"
+                    sizeInKiloBytes: 195
+                  - id: 993784
+                    description: "extrapoints1"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "extrapoints1.zip"
+                    uploadedAt: "2022-01-10T18:53:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6"
+                    sizeInKiloBytes: 401
+                  - id: 982517
+                    description: "lab_09"
+                    mimeType: "application/zip"
+                    filename: "lab_09.zip"
+                    uploadedAt: "2021-12-16T22:48:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6"
+                    sizeInKiloBytes: 126
+                  - id: 979076
+                    description: "lab_08"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "lab8.zip"
+                    uploadedAt: "2021-12-10T20:13:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/979076/S290683/3fecdf972707d6cbc439ed0fbbbe726a/6305eae6"
+                    sizeInKiloBytes: 136
+                  - id: 970722
+                    description: "lab_06"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "lab_06.zip"
+                    uploadedAt: "2021-11-26T12:11:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/970722/S290683/bc51c37cf1368917a24de8d571b069bd/6305eae6"
+                    sizeInKiloBytes: 169
+                  - id: 948012
+                    description: "lab_04"
+                    mimeType: "application/zip"
+                    filename: "lab_04.zip"
+                    uploadedAt: "2021-10-30T17:26:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/948012/S290683/ca52325301df0130d718c7a0525df288/6305eae6"
+                    sizeInKiloBytes: 259
+                  - id: 947503
+                    description: "lab_03"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "lab_03.zip"
+                    uploadedAt: "2021-10-29T12:33:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/947503/S290683/b829dada99af4b2576e551bd852e0a25/6305eae6"
+                    sizeInKiloBytes: 139
+                  - id: 941444
+                    description: "lab_02"
+                    mimeType: "application/zip"
+                    filename: "lab_02.zip"
+                    uploadedAt: "2021-10-22T12:12:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/941444/S290683/08ec123878543394393bd31719863eda/6305eae6"
+                    sizeInKiloBytes: 305
+                  - id: 934034
+                    description: "lab_01"
+                    mimeType: "application/x-zip-compressed"
+                    filename: "lab_01.zip"
+                    uploadedAt: "2021-10-13T11:20:00Z"
+                    deletedAt: null
+                    url: "https://file.didattica.polito.it/down/ELABORATI_PRE/934034/S290683/fd675d8a411d0747885b24e473a5d683/6305eae6"
+                    sizeInKiloBytes: 144
         404:
           description: Course not found
           content:
@@ -574,6 +854,29 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseGuideSection'
+              example:
+                data:
+                  - title: Presentazione
+                    content: 'Nowadays, computing devices are ubiquitously present and integrated in our daily life. Sensors and actuators are, indeed, embedded in home appliances, lights, or cars; wearable devices like smart watches provide information at glance and act as always-on and personal digital extensions; smartphones and tablets are widely spread. Moreover, most of such devices are Internet-connected and powered by Artificial Intelligence, and people communicate with them by using various interaction paradigms, ranging from \"click\", to touch, to gestures, speech, or tangible manipulation. As the technology improves, however, we are challenged of how to design suitable interfaces and interactions, so that people can use such technologies with \"joy\" rather than \"frustration\".\f\n\f\nThis course would provide a strong foundation to address this challenge. In addition, the course will give students hands-on practice to master this complexity and to develop innovative solutions by adopting a modern human-centered design process while building a web application to serve a set of target users. In the end, students will learn how to design and build technologies usable, useful, and used.'
+                  - title: Risultati attesi
+                    content: 'Knowledge:\f\n- Concepts of Usability, User Experience\f\n- User centered design processes and their application\f\n- Novel Interaction Technologies\f\n\f\nSkills:\f\n- Developing a working prototype according to a human-centered design process\f\n- Mastering some novel interaction technologies\f\n- Experience joint development of a project in a group of engineers'
+                  - title: Prerequisiti
+                    content: '- Programming skills\f\n- Knowledge on web and related technologies/languages (e.g., HTML, JS, client-server architectures, …)\f\n- Attitude towards working in teams\f\n'
+                  - title: Programma
+                    content: 'Course topics will cover three areas: \f\n\f\n
+                    - Introduction to Human-Computer Interaction: history, the human, the computer, vision of the future.\f\n\f\n
+                    - Building interactive applications with a human-centered process. The main tasks and methods to design, develop, and evaluate an interactive application: needfindings strategies, low- and high-fidelity prototypes, mental models and visual design, heuristic evaluation, and basic concepts and methods for controlled experiments (3 credits of lectures and exercises).\f\nThis part will focus, in general, on the design process. Such concepts will be applied to a specific application domain in the development of a group project, which will be carried on during the lab hours (2 credits). \f\n\f\n
+                    - \"Beyond WIMP\" paradigms: e.g., interaction with AI-powered systems, tangible interaction, voice user interfaces, wearables, gestures, and eye tracking. Selected paradigms will be discussed from different perspectives, ranging from rationale and vision, to contemporary examples and development tools (1 credit). Thematic seminars on emerging topics might also be included, as well as the illustration of specific \"case studies\".\f\n\f\nMost of the topics will have a theoretical (in-class) foundation plus hands-on (in-lab) experiences by using web technologies. Students projects will follow the proposed human-centered design process and will submit intermediate deliverables. Projects will consist of interactive prototypes as modern web applications, in which a \"beyond WIMP\" paradigm might be exploited for user interaction.\f\n\f\nDuring the course, communication within teams and with teachers as well as project development will adopt contemporary solutions and tools (e.g., Git and GitHub, Slack/Discord, …).'
+                  - title: Note
+                    content: ''
+                  - title: Organizzazione dell'insegnamento
+                    content: 'The learning method is both project-based (i.e., students learn by doing a project) and problem-based (i.e., the project work starts from real users’ needs), with teams of students working together towards a common goal. \f\n\f\nProject-related activities will start since the beginning of the course and teachers will provide support and guidance for the entire semester. The project will be accompanied by deliverables to be prepared before given deadlines. \f\n\f\nThe course may include live seminars by people from industry or other organizations.'
+                  - title: Bibliografia
+                    content: '* Course slides and related materials (e.g., links, readings, …)\f\n* Selected chapters of:\f\n
+                        - Alan Dix, Janet Finlay, Gregory Abowd, Russell Beale: Human Computer Interaction, 3rd Edition, Prentice Hall, 2004, ISBN 0-13-046109-1\f\n
+                        - Shneiderman, Plaisant, Cohen, Jacobs, Elmqvist & Diakopoulos: Designing the User Interface: Strategies for Effective Human-Computer Interaction, 6th Edition, Pearson, 2016, 013438038X / 9780134380384\f\n'
+                  - title: Regole d'esame
+                    content: 'The exam consists in a written test (in class) and in the evaluation of the group project. The two parts are mandatory and must be taken in the same academic year.\f\n\f\nThe written exam will be closed-note (no books nor notes) and on the topics covered during the lectures (i.e., no code or project-related questions). The duration will be 60 minutes, and will consist of a set of open questions. It will account for 40% of the score, with a minimum threshold.\f\n\f\nThe group project will be evaluated through an oral session, where all group components must be present.\f\nThe evaluation criteria for the group project include: effort invested in the project activity; originality, complexity, and richness of the solution; methodological and technical correctness; completeness and communication quality of the deliverables; presentation and oral discussion; individual contribution. It will account for 60% of the score'
         404:
           description: Course not found
           content:
@@ -606,6 +909,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseNotices'
+              example:
+                data:
+                  - id: 332559
+                    publishedAt: '2021-09-22T14:00:00Z'
+                    expiresAt: null
+                    content: '<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r'
         404:
           description: Course not found
           content:
@@ -645,6 +954,160 @@ paths:
                       anyOf:
                         - $ref: '#/components/schemas/VirtualClassroomLive'
                         - $ref: '#/components/schemas/VirtualClassroom'
+              example:
+                data:
+                  - id: 149336
+                    title: "CYB / lecture 28.09.2021 (TLS, slides 1-40)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/3D08112E645787401F78DFAE2FC8A446/6305E087/vc2021/252258/64cdcfc29ac1cd827d20ff1fa62c512eade6b3c0-1632832182985.jpg"
+                    videoUrl: "https://video.polito.it/dl/BE7C779FC37D50996EE1FF32B6BC7FAE/6305E087/vc2021/252258/64cdcfc29ac1cd827d20ff1fa62c512eade6b3c0-1632832182985.mp4"
+                    createdAt: "2021-09-28T14:29:00Z"
+                    duration: "02h 56m"
+                    isLive: false
+                  - id: 150397
+                    title: "CYB / lecture 01.10.2021 (TLS, slides 41-55)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/511A6496B086A6FED4CD12909F9C7AFB/6305E087/vc2021/252258/e5e7a53da68cebd5cff1a585659092fcfeca651a-1633074845891.jpg"
+                    videoUrl: "https://video.polito.it/dl/0BC53A27F4776D8A6809D28EB4CB3C9F/6305E087/vc2021/252258/e5e7a53da68cebd5cff1a585659092fcfeca651a-1633074845891.mp4"
+                    createdAt: "2021-10-01T09:54:00Z"
+                    duration: "01h 31m"
+                    isLive: false
+                  - id: 151650
+                    title: "CYB / lecture 5.10.2021 (TLS, slides 56-end, + SSH all slides)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/45F1CD855AA9BD5659F8544E2A6E9937/6305E087/vc2021/252258/c30092cca256f522f64774e19538d43909ce558b-1633437688385.jpg"
+                    videoUrl: "https://video.polito.it/dl/56DA5556ECD96ED30EC6F8CBAB704285/6305E087/vc2021/252258/c30092cca256f522f64774e19538d43909ce558b-1633437688385.mp4"
+                    createdAt: "2021-10-05T14:41:00Z"
+                    duration: "02h 43m"
+                    isLive: false
+                  - id: 152904
+                    title: "CYB / exercises 8.10.2021 (TLS, SSH, and laboratory introduction)"
+                    teacherId: 12066
+                    coverUrl: "https://video.polito.it/dl/A96411F0CFB35E7213F7A00596E1C57F/6305E087/vc2021/252258/6d7e5ddb4c6accf0ee0ac2f5694ff57b03452a33-1633680044979.jpg"
+                    videoUrl: "https://video.polito.it/dl/B738FA2018D0CEDAD999B09E88A0A5BC/6305E087/vc2021/252258/6d7e5ddb4c6accf0ee0ac2f5694ff57b03452a33-1633680044979.mp4"
+                    createdAt: "2021-10-08T10:00:00Z"
+                    duration: "01h 29m"
+                    isLive: false
+                  - id: 154120
+                    title: "CYB / lecture 12.10.2021 (X.509-PKI slides 1-37)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/765D49A58C509107679874B8D6C5C6FD/6305E087/vc2021/252258/7ed626fec39372a49de2789c02a30d42e4ed9550-1634041964568.jpg"
+                    videoUrl: "https://video.polito.it/dl/59B0F46ACE7A752394D15CFA7ABE1D04/6305E087/vc2021/252258/7ed626fec39372a49de2789c02a30d42e4ed9550-1634041964568.mp4"
+                    createdAt: "2021-10-12T14:32:00Z"
+                    duration: "02h 49m"
+                    isLive: false
+                  - id: 155289
+                    title: "CYB / lecture 15.10.2021 (X.509-PKI slides 38-50)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/4079AB7B771030E26FC668E8EF323E01/6305E087/vc2021/252258/80a41d52d94c236e8d076c959bdd6594df4c640d-1634287717877.jpg"
+                    videoUrl: "https://video.polito.it/dl/26673F1C1E978DD6EF3A936453977414/6305E087/vc2021/252258/80a41d52d94c236e8d076c959bdd6594df4c640d-1634287717877.mp4"
+                    createdAt: "2021-10-15T10:48:00Z"
+                    duration: "00h 29m"
+                    isLive: false
+                  - id: 156556
+                    title: "CYB / lecture 18.10.2021 (X.509-PKI slides 51-87)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/7AC518847AC11A84E4A7611A8FD04607/6305E087/vc2021/252258/26a670587a538805ca101505347c1f6b95945c7a-1634646791043.jpg"
+                    videoUrl: "https://video.polito.it/dl/683EC58FC3F66A232F871CE9AF6EC41F/6305E087/vc2021/252258/26a670587a538805ca101505347c1f6b95945c7a-1634646791043.mp4"
+                    createdAt: "2021-10-19T14:33:00Z"
+                    duration: "02h 46m"
+                    isLive: false
+                  - id: 157810
+                    title: "CYB / lecture 22.10.2021 (X.509-PKI slides 88-113)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/01AD32BC5D95192FF07FBC8E0E8DDDC0/6305E087/vc2021/252258/54879788014d7f876efa3e37eb0ab41b28ed5ec7-1634889548847.jpg"
+                    videoUrl: "https://video.polito.it/dl/E46149A506697BABF2D1F1F7D3BD93C4/6305E087/vc2021/252258/54879788014d7f876efa3e37eb0ab41b28ed5ec7-1634889548847.mp4"
+                    createdAt: "2021-10-22T09:59:00Z"
+                    duration: "01h 14m"
+                    isLive: false
+                  - id: 159051
+                    title: "CYB / lecture 26.10.2021 (PKCS#7 and XML dsig/enc, all slides)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/3D382BF6445B55B0E17B47964C739797/6305E087/vc2021/252258/a3ca5092848ddcfc8e40856f4a7e0d5e806b6612-1635251947471.jpg"
+                    videoUrl: "https://video.polito.it/dl/C8BC340269DC981A175B5532224C191A/6305E087/vc2021/252258/a3ca5092848ddcfc8e40856f4a7e0d5e806b6612-1635251947471.mp4"
+                    createdAt: "2021-10-26T14:39:00Z"
+                    duration: "02h 23m"
+                    isLive: false
+                  - id: 161152
+                    title: "CYB / lecture 2.11.2021 (Raccoon attack + WiFi slides 1-33)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/C78A538F215736513270EB76B67ADC7E/6305E087/vc2021/252258/a450be755938e9117692c396f27df27dfd17d1fc-1635859798379.jpg"
+                    videoUrl: "https://video.polito.it/dl/706BF0B4AEA847058A6D1C40FEA13C33/6305E087/vc2021/252258/a450be755938e9117692c396f27df27dfd17d1fc-1635859798379.mp4"
+                    createdAt: "2021-11-02T14:29:00Z"
+                    duration: "02h 58m"
+                    isLive: false
+                  - id: 162379
+                    title: "CYB / lecture 05.11.2021 (keypair attack + WiFi slides 34-end + e-identity slides 1-10)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/BA2A6D6841934868083748C8A158B4C6/6305E087/vc2021/252258/9e0127b8b6723430d3f984697abc288be39f9422-1636102419696.jpg"
+                    videoUrl: "https://video.polito.it/dl/1AB78C6B65D67B72C5CCE0F933225A32/6305E087/vc2021/252258/9e0127b8b6723430d3f984697abc288be39f9422-1636102419696.mp4"
+                    createdAt: "2021-11-05T09:53:00Z"
+                    duration: "01h 20m"
+                    isLive: false
+                  - id: 163693
+                    title: "CYB / lecture 09.11.2021 (e-identity slides 11-91)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/5F8982723E84B74A76AC5F033A3BDC7B/6305E087/vc2021/252258/548e5779bc1cfd66767c43aa610574c3c3a12dd9-1636464923945.jpg"
+                    videoUrl: "https://video.polito.it/dl/521B033D824BC6FC0B4D2950CB431960/6305E087/vc2021/252258/548e5779bc1cfd66767c43aa610574c3c3a12dd9-1636464923945.mp4"
+                    createdAt: "2021-11-09T14:35:00Z"
+                    duration: "02h 48m"
+                    isLive: false
+                  - id: 166121
+                    title: "CYB / lecture 16.11.2021 (trusted computing - all slides)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/C43DB4989CA4AB629EDBE8094D701B4E/6305E087/vc2021/252258/f3018da0ada1e0404dd3b35f5dd4b104bcfee8d3-1637069410236.jpg"
+                    videoUrl: "https://video.polito.it/dl/360E906166192D9BE6F6155D72E15F1E/6305E087/vc2021/252258/f3018da0ada1e0404dd3b35f5dd4b104bcfee8d3-1637069410236.mp4"
+                    createdAt: "2021-11-16T14:30:00Z"
+                    duration: "02h 46m"
+                    isLive: false
+                  - id: 168367
+                    title: "CYB / lecture 23.11.2021 (Intel SGX - all slides)"
+                    teacherId: 37572
+                    coverUrl: "https://video.polito.it/dl/5FD8B413ED7FB9ADCCFF0EF58FE514A4/6305E087/vc2021/252258/180a6a764703deffc12b2dcee1a424949e325f9d-1637674185628.jpg"
+                    videoUrl: "https://video.polito.it/dl/4FF040DFCF3A479A980291C8C3CCE6CC/6305E087/vc2021/252258/180a6a764703deffc12b2dcee1a424949e325f9d-1637674185628.mp4"
+                    createdAt: "2021-11-23T14:29:00Z"
+                    duration: "02h 58m"
+                    isLive: false
+                  - id: 170812
+                    title: "CYB / lecture 30.11.2021 (forensics, slides 1-40)"
+                    teacherId: 12066
+                    coverUrl: "https://video.polito.it/dl/59ADE3B54A000DE7B6E29C9464862F87/6305E087/vc2021/252258/87968954515.jpg"
+                    videoUrl: "https://video.polito.it/dl/71B3E9CBDDB642AAA77908985245A885/6305E087/vc2021/252258/87968954515.mp4"
+                    createdAt: "2021-11-30T14:32:00Z"
+                    duration: "02h 45m"
+                    isLive: false
+                  - id: 172948
+                    title: "CYB / lecture 7.12.2021 (forensics slides 41-end)"
+                    teacherId: 12066
+                    coverUrl: "https://video.polito.it/dl/33AF02F873F5A0330F4897AF7B237ADB/6305E087/vc2021/252258/81581203450.jpg"
+                    videoUrl: "https://video.polito.it/dl/739FC4C2625A96DA19EFB05A3FE043CD/6305E087/vc2021/252258/81581203450.mp4"
+                    createdAt: "2021-12-07T14:34:00Z"
+                    duration: "01h 18m"
+                    isLive: false
+                  - id: 173056
+                    title: "CYB / lecture 7.12.2021 (ATT&CK + CRING + privacy slides 1-9)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/09A2DE45A61DC5A763D1D0A14DCB84B6/6305E087/vc2021/252258/099bf783f435456027c06065201a0eb2d38bd41a-1638889616600.jpg"
+                    videoUrl: "https://video.polito.it/dl/D039EE5B83A12581050ED2B6B0416F70/6305E087/vc2021/252258/099bf783f435456027c06065201a0eb2d38bd41a-1638889616600.mp4"
+                    createdAt: "2021-12-07T16:06:00Z"
+                    duration: "01h 19m"
+                    isLive: false
+                  - id: 174893
+                    title: "CYB / lecture 14.12.2021 (Detract + TPM_Win11 + privacy slides 10-end)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/46ECB870BF31B5E53771C120A2AF4BD9/6305E087/vc2021/252258/be095df91592bf86178f6bfbf1c9f5bb0d0d0c26-1639488630242.jpg"
+                    videoUrl: "https://video.polito.it/dl/436BD1306E68AFE95AF46B2D0BC1C8DB/6305E087/vc2021/252258/be095df91592bf86178f6bfbf1c9f5bb0d0d0c26-1639488630242.mp4"
+                    createdAt: "2021-12-14T14:30:00Z"
+                    duration: "02h 31m"
+                    isLive: false
+                  - id: 175951
+                    title: "CYB / lecture 17.12.2021 (thesis topics and exam example)"
+                    teacherId: 1847
+                    coverUrl: "https://video.polito.it/dl/D645531B4CE310C7F3B1FD5C6263714A/6305E087/vc2021/252258/73e45093b2c0bc9c88d542d62c3fbe2639a7bd2b-1639731367509.jpg"
+                    videoUrl: "https://video.polito.it/dl/1EAD6B130FC26060ABF998EF8CF805BA/6305E087/vc2021/252258/73e45093b2c0bc9c88d542d62c3fbe2639a7bd2b-1639731367509.mp4"
+                    createdAt: "2021-12-17T09:56:00Z"
+                    duration: "00h 50m"
+                    isLive: false
         404:
           description: Course not found
           content:
@@ -704,6 +1167,60 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Exam'
+              example:
+                data:
+                  - id: 888137
+                    courseShortcode: 01UDROV
+                    courseName: Cybersecurity (AA-ZZ)
+                    teacherId: 001847
+                    type: Scritto
+                    classrooms: Aula 4P
+                    status: booked
+                    bookingStartsAt: null
+                    bookingEndsAt: '2022-08-23T14:00:00Z'
+                    examStartsAt: '2022-08-29T08:00:00Z'
+                    bookedCount: 12
+                    question: null
+                    feedback: Esiste già una prenotazione per l'esame in questione
+                  - id: 887981
+                    courseShortcode: 01NYHOV
+                    courseName: System and device programming (AA-ZZ)
+                    teacherId: 002893
+                    type: Esami scritti a risposta aperta o chiusa tramite PC
+                    classrooms: Aula R1
+                    status: available
+                    bookingStartsAt: null
+                    bookingEndsAt: '2022-09-02T14:00:00Z'
+                    examStartsAt: '2022-09-08T14:00:00Z'
+                    bookedCount: 42
+                    question: null
+                    feedback: null
+                  - id: 888212
+                    courseShortcode: 03LPYOV
+                    courseName: Cryptography (AA-ZZ)
+                    teacherId: 013461
+                    type: Esami scritti a risposta aperta o chiusa tramite PC
+                    classrooms: Aula R1
+                    status: booked
+                    bookingStartsAt: null
+                    bookingEndsAt: '2022-09-12T14:00:00Z'
+                    examStartsAt: '2022-09-16T11:00:00Z'
+                    bookedCount: 67
+                    question: null
+                    feedback: Esiste già una prenotazione per l'esame in questione
+                  - id: 888118
+                    courseShortcode: 01TYAOV
+                    courseName: Security verification and testing (AA-ZZ)
+                    teacherId: 001943
+                    type: Esami scritti a risposta aperta o chiusa tramite PC
+                    classrooms: Aula 1P
+                    status: booked
+                    bookingStartsAt: null
+                    bookingEndsAt: '2022-09-09T14:00:00Z'
+                    examStartsAt: '2022-09-15T14:00:00Z'
+                    bookedCount: 26
+                    question: null
+                    feedback: Esiste già una prenotazione per l'esame in questione
         500:
           $ref: '#/components/responses/ErrorResponse'
   /exams/{examId}/booking:
@@ -1204,19 +1721,19 @@ components:
         startsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:00:00.000Z'
+          example: '2021-10-05T10:00:00Z'
         endsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:15:00.000Z'
+          example: '2021-10-05T10:15:00Z'
         bookingStartsAt:
           type: string
           format: date-time
-          example: '2021-09-30T00:00:00.000Z'
+          example: '2021-09-30T00:00:00Z'
         bookingEndsAt:
           type: string
           format: date-time
-          example: '2021-10-04T16:00:00.000Z'
+          example: '2021-10-04T16:00:00Z'
 
     BookingSeats:
       type: object
@@ -1301,11 +1818,11 @@ components:
         startsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:00:00.000Z'
+          example: '2021-10-05T10:00:00Z'
         endsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:15:00.000Z'
+          example: '2021-10-05T10:15:00Z'
         seat:
           type: object
           nullable: true
@@ -1461,10 +1978,11 @@ components:
         uploadedAt:
           type: string
           format: date-time
-          example: 2022-09-02T14:00:00.000Z
+          example: 2022-09-02T14:00:00Z
         deletedAt:
           type: string
           format: date-time
+          nullable: true
         url:
           type: string
           example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
@@ -1494,6 +2012,7 @@ components:
         expiresAt:
           type: string
           format: date-time
+          nullable: true
           example: 2022-08-31T14:00:00Z
         content:
           type: string
@@ -1572,8 +2091,8 @@ components:
           type: string
           example: Human Computer Interaction
         teacherId:
-          type: string
-          example: '002154'
+          type: integer
+          example: 002154
         type:
           type: string
           example: Esami scritti a risposta aperta o chiusa tramite PC
@@ -1593,6 +2112,7 @@ components:
         bookingStartsAt:
           type: string
           format: date-time
+          nullable: true
         bookingEndsAt:
           type: string
           format: date-time
@@ -1746,8 +2266,8 @@ components:
           type: string
           example: Lecture 1
         teacherId:
-          type: string
-          example: '888122'
+          type: integer
+          example: 888122
         abstract:
           type: string
           example: Lecture 1
@@ -1777,10 +2297,11 @@ components:
           type: string
           example: Lecture 1
         teacherId:
-          type: string
-          example: '888122'
+          type: integer
+          example: 888122
         coverUrl:
           type: string
+          nullable: true
           example: https://
         videoUrl:
           type: string
@@ -1805,8 +2326,8 @@ components:
           type: string
           example: Lecture 1
         teacherId:
-          type: string
-          example: '888122'
+          type: integer
+          example: 888122
         meetingUrl:
           type: string
           example: https://
@@ -1841,7 +2362,7 @@ components:
           type: integer
           example: 150157
         teacherId:
-          type: string
+          type: integer
           example: 150157
         roomName:
           type: string
