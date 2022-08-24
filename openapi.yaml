@@ -326,6 +326,80 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseOverview'
+              example:
+                data:
+                  - id: 251007
+                    name: System and device programming
+                    shortcode: 01NYHOV
+                    cfu: 10
+                    teachingPeriod: 2
+                    teacherId: 2893
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252121
+                    name: Web Applications II
+                    shortcode: 01TXSOV
+                    cfu: 6
+                    teachingPeriod: 2
+                    teacherId: 2235
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252126
+                    name: Security verification and testing
+                    shortcode: 01TYAOV
+                    cfu: 6
+                    teachingPeriod: 1
+                    teacherId: 1943
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252138
+                    name: Information systems security
+                    shortcode: 01TYMOV
+                    cfu: 6
+                    teachingPeriod: 1
+                    teacherId: 1847
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252258
+                    name: Cybersecurity
+                    shortcode: 01UDROV
+                    cfu: 6
+                    teachingPeriod: 2
+                    teacherId: 1847
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252788
+                    name: Architetture dei sistemi di elaborazione
+                    shortcode: 02GOLOV
+                    cfu: 10
+                    teachingPeriod: 1
+                    teacherId: 12684
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 252842
+                    name: Human Computer Interaction
+                    shortcode: 02JSKOV
+                    cfu: 6
+                    teachingPeriod: 1
+                    teacherId: 25734
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: 253378
+                    name: Cryptography
+                    shortcode: 03LPYOV
+                    cfu: 6
+                    teachingPeriod: 2
+                    teacherId: 13461
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
+                  - id: null
+                    name: Tesi
+                    shortcode: 29EBHOV
+                    cfu: 30
+                    teachingPeriod: null
+                    teacherId: null
+                    isOverBooking: false
+                    isInPersonalStudyPlan: true
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}:
@@ -1284,10 +1358,10 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           nullable: true
           description: The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page
-          example: '258674'
+          example: 258674
         name:
           type: string
           example: System and device programming
