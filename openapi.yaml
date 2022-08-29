@@ -429,7 +429,7 @@ paths:
                 data:
                   id: 252842
                   name: Human Computer Interaction
-                  shortcode: 02JSKOV
+                  shortcode: 01NYHOV
                   cfu: 6
                   teachingPeriod: 1
                   teacherId: 25734
@@ -959,7 +959,7 @@ paths:
                   - id: 149336
                     title: "CYB / lecture 28.09.2021 (TLS, slides 1-40)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/3D08112E645787401F78DFAE2FC8A446/6305E087/vc2021/252258/64cdcfc29ac1cd827d20ff1fa62c512eade6b3c0-1632832182985.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/BE7C779FC37D50996EE1FF32B6BC7FAE/6305E087/vc2021/252258/64cdcfc29ac1cd827d20ff1fa62c512eade6b3c0-1632832182985.mp4"
                     createdAt: "2021-09-28T14:29:00Z"
                     duration: "02h 56m"
@@ -967,7 +967,7 @@ paths:
                   - id: 150397
                     title: "CYB / lecture 01.10.2021 (TLS, slides 41-55)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/511A6496B086A6FED4CD12909F9C7AFB/6305E087/vc2021/252258/e5e7a53da68cebd5cff1a585659092fcfeca651a-1633074845891.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/0BC53A27F4776D8A6809D28EB4CB3C9F/6305E087/vc2021/252258/e5e7a53da68cebd5cff1a585659092fcfeca651a-1633074845891.mp4"
                     createdAt: "2021-10-01T09:54:00Z"
                     duration: "01h 31m"
@@ -975,7 +975,7 @@ paths:
                   - id: 151650
                     title: "CYB / lecture 5.10.2021 (TLS, slides 56-end, + SSH all slides)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/45F1CD855AA9BD5659F8544E2A6E9937/6305E087/vc2021/252258/c30092cca256f522f64774e19538d43909ce558b-1633437688385.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/56DA5556ECD96ED30EC6F8CBAB704285/6305E087/vc2021/252258/c30092cca256f522f64774e19538d43909ce558b-1633437688385.mp4"
                     createdAt: "2021-10-05T14:41:00Z"
                     duration: "02h 43m"
@@ -983,7 +983,7 @@ paths:
                   - id: 152904
                     title: "CYB / exercises 8.10.2021 (TLS, SSH, and laboratory introduction)"
                     teacherId: 12066
-                    coverUrl: "https://video.polito.it/dl/A96411F0CFB35E7213F7A00596E1C57F/6305E087/vc2021/252258/6d7e5ddb4c6accf0ee0ac2f5694ff57b03452a33-1633680044979.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/B738FA2018D0CEDAD999B09E88A0A5BC/6305E087/vc2021/252258/6d7e5ddb4c6accf0ee0ac2f5694ff57b03452a33-1633680044979.mp4"
                     createdAt: "2021-10-08T10:00:00Z"
                     duration: "01h 29m"
@@ -991,7 +991,7 @@ paths:
                   - id: 154120
                     title: "CYB / lecture 12.10.2021 (X.509-PKI slides 1-37)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/765D49A58C509107679874B8D6C5C6FD/6305E087/vc2021/252258/7ed626fec39372a49de2789c02a30d42e4ed9550-1634041964568.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/59B0F46ACE7A752394D15CFA7ABE1D04/6305E087/vc2021/252258/7ed626fec39372a49de2789c02a30d42e4ed9550-1634041964568.mp4"
                     createdAt: "2021-10-12T14:32:00Z"
                     duration: "02h 49m"
@@ -999,7 +999,7 @@ paths:
                   - id: 155289
                     title: "CYB / lecture 15.10.2021 (X.509-PKI slides 38-50)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/4079AB7B771030E26FC668E8EF323E01/6305E087/vc2021/252258/80a41d52d94c236e8d076c959bdd6594df4c640d-1634287717877.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/26673F1C1E978DD6EF3A936453977414/6305E087/vc2021/252258/80a41d52d94c236e8d076c959bdd6594df4c640d-1634287717877.mp4"
                     createdAt: "2021-10-15T10:48:00Z"
                     duration: "00h 29m"
@@ -1007,7 +1007,7 @@ paths:
                   - id: 156556
                     title: "CYB / lecture 18.10.2021 (X.509-PKI slides 51-87)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/7AC518847AC11A84E4A7611A8FD04607/6305E087/vc2021/252258/26a670587a538805ca101505347c1f6b95945c7a-1634646791043.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/683EC58FC3F66A232F871CE9AF6EC41F/6305E087/vc2021/252258/26a670587a538805ca101505347c1f6b95945c7a-1634646791043.mp4"
                     createdAt: "2021-10-19T14:33:00Z"
                     duration: "02h 46m"
@@ -1015,7 +1015,7 @@ paths:
                   - id: 157810
                     title: "CYB / lecture 22.10.2021 (X.509-PKI slides 88-113)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/01AD32BC5D95192FF07FBC8E0E8DDDC0/6305E087/vc2021/252258/54879788014d7f876efa3e37eb0ab41b28ed5ec7-1634889548847.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/E46149A506697BABF2D1F1F7D3BD93C4/6305E087/vc2021/252258/54879788014d7f876efa3e37eb0ab41b28ed5ec7-1634889548847.mp4"
                     createdAt: "2021-10-22T09:59:00Z"
                     duration: "01h 14m"
@@ -1023,7 +1023,7 @@ paths:
                   - id: 159051
                     title: "CYB / lecture 26.10.2021 (PKCS#7 and XML dsig/enc, all slides)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/3D382BF6445B55B0E17B47964C739797/6305E087/vc2021/252258/a3ca5092848ddcfc8e40856f4a7e0d5e806b6612-1635251947471.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/C8BC340269DC981A175B5532224C191A/6305E087/vc2021/252258/a3ca5092848ddcfc8e40856f4a7e0d5e806b6612-1635251947471.mp4"
                     createdAt: "2021-10-26T14:39:00Z"
                     duration: "02h 23m"
@@ -1031,7 +1031,7 @@ paths:
                   - id: 161152
                     title: "CYB / lecture 2.11.2021 (Raccoon attack + WiFi slides 1-33)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/C78A538F215736513270EB76B67ADC7E/6305E087/vc2021/252258/a450be755938e9117692c396f27df27dfd17d1fc-1635859798379.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/706BF0B4AEA847058A6D1C40FEA13C33/6305E087/vc2021/252258/a450be755938e9117692c396f27df27dfd17d1fc-1635859798379.mp4"
                     createdAt: "2021-11-02T14:29:00Z"
                     duration: "02h 58m"
@@ -1039,7 +1039,7 @@ paths:
                   - id: 162379
                     title: "CYB / lecture 05.11.2021 (keypair attack + WiFi slides 34-end + e-identity slides 1-10)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/BA2A6D6841934868083748C8A158B4C6/6305E087/vc2021/252258/9e0127b8b6723430d3f984697abc288be39f9422-1636102419696.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/1AB78C6B65D67B72C5CCE0F933225A32/6305E087/vc2021/252258/9e0127b8b6723430d3f984697abc288be39f9422-1636102419696.mp4"
                     createdAt: "2021-11-05T09:53:00Z"
                     duration: "01h 20m"
@@ -1047,7 +1047,7 @@ paths:
                   - id: 163693
                     title: "CYB / lecture 09.11.2021 (e-identity slides 11-91)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/5F8982723E84B74A76AC5F033A3BDC7B/6305E087/vc2021/252258/548e5779bc1cfd66767c43aa610574c3c3a12dd9-1636464923945.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/521B033D824BC6FC0B4D2950CB431960/6305E087/vc2021/252258/548e5779bc1cfd66767c43aa610574c3c3a12dd9-1636464923945.mp4"
                     createdAt: "2021-11-09T14:35:00Z"
                     duration: "02h 48m"
@@ -1055,7 +1055,7 @@ paths:
                   - id: 166121
                     title: "CYB / lecture 16.11.2021 (trusted computing - all slides)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/C43DB4989CA4AB629EDBE8094D701B4E/6305E087/vc2021/252258/f3018da0ada1e0404dd3b35f5dd4b104bcfee8d3-1637069410236.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/360E906166192D9BE6F6155D72E15F1E/6305E087/vc2021/252258/f3018da0ada1e0404dd3b35f5dd4b104bcfee8d3-1637069410236.mp4"
                     createdAt: "2021-11-16T14:30:00Z"
                     duration: "02h 46m"
@@ -1063,7 +1063,7 @@ paths:
                   - id: 168367
                     title: "CYB / lecture 23.11.2021 (Intel SGX - all slides)"
                     teacherId: 37572
-                    coverUrl: "https://video.polito.it/dl/5FD8B413ED7FB9ADCCFF0EF58FE514A4/6305E087/vc2021/252258/180a6a764703deffc12b2dcee1a424949e325f9d-1637674185628.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/4FF040DFCF3A479A980291C8C3CCE6CC/6305E087/vc2021/252258/180a6a764703deffc12b2dcee1a424949e325f9d-1637674185628.mp4"
                     createdAt: "2021-11-23T14:29:00Z"
                     duration: "02h 58m"
@@ -1071,7 +1071,7 @@ paths:
                   - id: 170812
                     title: "CYB / lecture 30.11.2021 (forensics, slides 1-40)"
                     teacherId: 12066
-                    coverUrl: "https://video.polito.it/dl/59ADE3B54A000DE7B6E29C9464862F87/6305E087/vc2021/252258/87968954515.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/71B3E9CBDDB642AAA77908985245A885/6305E087/vc2021/252258/87968954515.mp4"
                     createdAt: "2021-11-30T14:32:00Z"
                     duration: "02h 45m"
@@ -1079,7 +1079,7 @@ paths:
                   - id: 172948
                     title: "CYB / lecture 7.12.2021 (forensics slides 41-end)"
                     teacherId: 12066
-                    coverUrl: "https://video.polito.it/dl/33AF02F873F5A0330F4897AF7B237ADB/6305E087/vc2021/252258/81581203450.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/739FC4C2625A96DA19EFB05A3FE043CD/6305E087/vc2021/252258/81581203450.mp4"
                     createdAt: "2021-12-07T14:34:00Z"
                     duration: "01h 18m"
@@ -1087,7 +1087,7 @@ paths:
                   - id: 173056
                     title: "CYB / lecture 7.12.2021 (ATT&CK + CRING + privacy slides 1-9)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/09A2DE45A61DC5A763D1D0A14DCB84B6/6305E087/vc2021/252258/099bf783f435456027c06065201a0eb2d38bd41a-1638889616600.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/D039EE5B83A12581050ED2B6B0416F70/6305E087/vc2021/252258/099bf783f435456027c06065201a0eb2d38bd41a-1638889616600.mp4"
                     createdAt: "2021-12-07T16:06:00Z"
                     duration: "01h 19m"
@@ -1095,7 +1095,7 @@ paths:
                   - id: 174893
                     title: "CYB / lecture 14.12.2021 (Detract + TPM_Win11 + privacy slides 10-end)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/46ECB870BF31B5E53771C120A2AF4BD9/6305E087/vc2021/252258/be095df91592bf86178f6bfbf1c9f5bb0d0d0c26-1639488630242.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/436BD1306E68AFE95AF46B2D0BC1C8DB/6305E087/vc2021/252258/be095df91592bf86178f6bfbf1c9f5bb0d0d0c26-1639488630242.mp4"
                     createdAt: "2021-12-14T14:30:00Z"
                     duration: "02h 31m"
@@ -1103,7 +1103,7 @@ paths:
                   - id: 175951
                     title: "CYB / lecture 17.12.2021 (thesis topics and exam example)"
                     teacherId: 1847
-                    coverUrl: "https://video.polito.it/dl/D645531B4CE310C7F3B1FD5C6263714A/6305E087/vc2021/252258/73e45093b2c0bc9c88d542d62c3fbe2639a7bd2b-1639731367509.jpg"
+                    coverUrl: "https://lucapezzolla.com/cover.jpg"
                     videoUrl: "https://video.polito.it/dl/1EAD6B130FC26060ABF998EF8CF805BA/6305E087/vc2021/252258/73e45093b2c0bc9c88d542d62c3fbe2639a7bd2b-1639731367509.mp4"
                     createdAt: "2021-12-17T09:56:00Z"
                     duration: "00h 50m"
