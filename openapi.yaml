@@ -4,7 +4,6 @@ info:
   version: 1.0.0-ALPHA.6
 servers:
   - url: https://api.polito.it
-  - url: http://192.168.178.22:4010
 security:
   - bearerAuth: [ ]
 paths:
