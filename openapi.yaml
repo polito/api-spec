@@ -78,7 +78,7 @@ paths:
       tags:
         - Auth
       summary: Logout
-      description: Invalidates all tokens related to the provided one (same UUID)
+      description: Invalidates the provided token
       operationId: logout
       responses:
         200:
