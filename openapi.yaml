@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-rc1
+  version: 1.0.0-ALPHA.6
 servers:
   - url: https://api.polito.it
   - url: http://192.168.178.22:4010
@@ -28,20 +28,7 @@ paths:
                   type: string
                   example: moreSecret
                 device:
-                  type: object
-                  properties:
-                    platform:
-                      type: string
-                      example: Android
-                    version:
-                      type: string
-                      example: 12
-                    model:
-                      type: string
-                      example: S10
-                    manufacturer:
-                      type: string
-                      example: Samsung
+                  $ref: '#/components/schemas/Device'
               required: [ username, password ]
       responses:
         200:
@@ -52,11 +39,41 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Identity'
+                    $ref: '#/components/schemas/Identity'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /auth/change-career:
+    post:
+      tags:
+        - Auth
+      summary: Change career | Cambia carriera
+      operationId: changeCareer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: s290683
+                device:
+                  $ref: '#/components/schemas/Device'
+              required: [ username ]
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Identity'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+
   /auth/logout:
     delete:
       tags:
@@ -485,162 +502,162 @@ paths:
                     type: "directory"
                     name: "videolectures"
                     files:
-                    - id: "33248890"
-                      type: "file"
-                      name: "HCI2021-L01 2021-09-28 13-06-26.m4v"
-                      sizeInKiloBytes: 123428
-                      mimeType: "video/x-m4v"
-                      createdAt: "2021-09-28T16:31:43Z"
-                    - id: "33251708"
-                      type: "file"
-                      name: "HCI2021-L02 2021-09-30 08-34-32.mp4"
-                      sizeInKiloBytes: 248172
-                      mimeType: "video/mp4"
-                      createdAt: "2021-09-30T10:20:50Z"
-                    - id: "33256476"
-                      type: "file"
-                      name: "HCI2021-L03 2021-10-05 13-06-47.mp4"
-                      sizeInKiloBytes: 243792
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-05T15:00:15Z"
-                    - id: "33257988"
-                      type: "file"
-                      name: "HCI2021-L04 2021-10-07 08-35-46.mp4"
-                      sizeInKiloBytes: 244993
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-07T11:12:25Z"
-                    - id: "33262287"
-                      type: "file"
-                      name: "HCI2021-L05 2021-10-12 13-05-46.mp4"
-                      sizeInKiloBytes: 298172
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-12T16:11:46Z"
-                    - id: "33265387"
-                      type: "file"
-                      name: "HCI2021-L06 2021-10-14 08-35-12.mp4"
-                      sizeInKiloBytes: 285926
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-14T11:25:20Z"
-                    - id: "33269079"
-                      type: "file"
-                      name: "HCI2021-L07 2021-10-19 13-10-40.mp4"
-                      sizeInKiloBytes: 234466
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-19T15:02:22Z"
-                    - id: "33270699"
-                      type: "file"
-                      name: "HCI2021-L08 2021-10-21 08-35-17.mp4"
-                      sizeInKiloBytes: 240828
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-21T10:44:22Z"
-                    - id: "33273765"
-                      type: "file"
-                      name: "HCI2021-L09 2021-10-26 13-08-27.mp4"
-                      sizeInKiloBytes: 321979
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-26T16:06:46Z"
-                    - id: "33275522"
-                      type: "file"
-                      name: "HCI2021-L10 2021-10-28 08-35-26.mp4"
-                      sizeInKiloBytes: 281542
-                      mimeType: "video/mp4"
-                      createdAt: "2021-10-28T10:59:56Z"
-                    - id: "33278303"
-                      type: "file"
-                      name: "HCI2021-L11 2021-11-02 13-07-13.mp4"
-                      sizeInKiloBytes: 259925
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-02T17:34:17Z"
-                    - id: "33280035"
-                      type: "file"
-                      name: "HCI2021-L12 2021-11-04 08-35-42.mp4"
-                      sizeInKiloBytes: 269000
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-04T15:18:00Z"
-                    - id: "33283202"
-                      type: "file"
-                      name: "HCI2021-L13 2021-11-09 13-05-21.mp4"
-                      sizeInKiloBytes: 124877
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-09T17:55:12Z"
-                    - id: "33285203"
-                      type: "file"
-                      name: "HCI2021-L14 2021-11-11 08-34-16.mp4"
-                      sizeInKiloBytes: 164749
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-11T18:54:08Z"
-                    - id: "33288841"
-                      type: "file"
-                      name: "HCI2021-L15 2021-11-16 13-08-31.mp4"
-                      sizeInKiloBytes: 413016
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-16T17:39:12Z"
-                    - id: "33290368"
-                      type: "file"
-                      name: "HCI2021-L16 2021-11-18 08-35-25.mp4"
-                      sizeInKiloBytes: 175214
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-18T16:32:30Z"
-                    - id: "33293068"
-                      type: "file"
-                      name: "HCI2021-L17 2021-11-23 13-07-21.mp4"
-                      sizeInKiloBytes: 167637
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-23T15:14:30Z"
-                    - id: "33294893"
-                      type: "file"
-                      name: "HCI2021-L18 2021-11-25 08-38-18.mp4"
-                      sizeInKiloBytes: 177894
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-25T19:07:01Z"
-                    - id: "33297785"
-                      type: "file"
-                      name: "HCI2021-L19 2021-11-30 13-05-06.mp4"
-                      sizeInKiloBytes: 204728
-                      mimeType: "video/mp4"
-                      createdAt: "2021-11-30T18:40:05Z"
-                    - id: "33298944"
-                      type: "file"
-                      name: "HCI2021-L20 2021-12-02 08-33-29.mp4"
-                      sizeInKiloBytes: 181211
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-02T14:28:22Z"
-                    - id: "33301586"
-                      type: "file"
-                      name: "HCI2021-L21 2021-12-07 13-10-43.mp4"
-                      sizeInKiloBytes: 161114
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-07T14:51:40Z"
-                    - id: "33302797"
-                      type: "file"
-                      name: "HCI2021-L22 2021-12-09 08-36-04.mp4"
-                      sizeInKiloBytes: 171358
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-09T18:13:39Z"
-                    - id: "33305668"
-                      type: "file"
-                      name: "HCI2021-L23 2021-12-14 13-04-34.mp4"
-                      sizeInKiloBytes: 236985
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-14T17:25:16Z"
-                    - id: "33307385"
-                      type: "file"
-                      name: "HCI2021-L24 2021-12-16 08-34-14.mp4"
-                      sizeInKiloBytes: 178860
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-16T19:18:25Z"
-                    - id: "33309925"
-                      type: "file"
-                      name: "HCI2021-L25 2021-12-21 13-04-41.mp4"
-                      sizeInKiloBytes: 166945
-                      mimeType: "video/mp4"
-                      createdAt: "2021-12-21T15:00:46Z"
-                    - id: "33314553"
-                      type: "file"
-                      name: "HCI2021-L26 2022-01-11 13-00-00.mp4"
-                      sizeInKiloBytes: 182258
-                      mimeType: "video/mp4"
-                      createdAt: "2022-01-11T14:49:59Z"
+                      - id: "33248890"
+                        type: "file"
+                        name: "HCI2021-L01 2021-09-28 13-06-26.m4v"
+                        sizeInKiloBytes: 123428
+                        mimeType: "video/x-m4v"
+                        createdAt: "2021-09-28T16:31:43Z"
+                      - id: "33251708"
+                        type: "file"
+                        name: "HCI2021-L02 2021-09-30 08-34-32.mp4"
+                        sizeInKiloBytes: 248172
+                        mimeType: "video/mp4"
+                        createdAt: "2021-09-30T10:20:50Z"
+                      - id: "33256476"
+                        type: "file"
+                        name: "HCI2021-L03 2021-10-05 13-06-47.mp4"
+                        sizeInKiloBytes: 243792
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-05T15:00:15Z"
+                      - id: "33257988"
+                        type: "file"
+                        name: "HCI2021-L04 2021-10-07 08-35-46.mp4"
+                        sizeInKiloBytes: 244993
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-07T11:12:25Z"
+                      - id: "33262287"
+                        type: "file"
+                        name: "HCI2021-L05 2021-10-12 13-05-46.mp4"
+                        sizeInKiloBytes: 298172
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-12T16:11:46Z"
+                      - id: "33265387"
+                        type: "file"
+                        name: "HCI2021-L06 2021-10-14 08-35-12.mp4"
+                        sizeInKiloBytes: 285926
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-14T11:25:20Z"
+                      - id: "33269079"
+                        type: "file"
+                        name: "HCI2021-L07 2021-10-19 13-10-40.mp4"
+                        sizeInKiloBytes: 234466
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-19T15:02:22Z"
+                      - id: "33270699"
+                        type: "file"
+                        name: "HCI2021-L08 2021-10-21 08-35-17.mp4"
+                        sizeInKiloBytes: 240828
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-21T10:44:22Z"
+                      - id: "33273765"
+                        type: "file"
+                        name: "HCI2021-L09 2021-10-26 13-08-27.mp4"
+                        sizeInKiloBytes: 321979
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-26T16:06:46Z"
+                      - id: "33275522"
+                        type: "file"
+                        name: "HCI2021-L10 2021-10-28 08-35-26.mp4"
+                        sizeInKiloBytes: 281542
+                        mimeType: "video/mp4"
+                        createdAt: "2021-10-28T10:59:56Z"
+                      - id: "33278303"
+                        type: "file"
+                        name: "HCI2021-L11 2021-11-02 13-07-13.mp4"
+                        sizeInKiloBytes: 259925
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-02T17:34:17Z"
+                      - id: "33280035"
+                        type: "file"
+                        name: "HCI2021-L12 2021-11-04 08-35-42.mp4"
+                        sizeInKiloBytes: 269000
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-04T15:18:00Z"
+                      - id: "33283202"
+                        type: "file"
+                        name: "HCI2021-L13 2021-11-09 13-05-21.mp4"
+                        sizeInKiloBytes: 124877
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-09T17:55:12Z"
+                      - id: "33285203"
+                        type: "file"
+                        name: "HCI2021-L14 2021-11-11 08-34-16.mp4"
+                        sizeInKiloBytes: 164749
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-11T18:54:08Z"
+                      - id: "33288841"
+                        type: "file"
+                        name: "HCI2021-L15 2021-11-16 13-08-31.mp4"
+                        sizeInKiloBytes: 413016
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-16T17:39:12Z"
+                      - id: "33290368"
+                        type: "file"
+                        name: "HCI2021-L16 2021-11-18 08-35-25.mp4"
+                        sizeInKiloBytes: 175214
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-18T16:32:30Z"
+                      - id: "33293068"
+                        type: "file"
+                        name: "HCI2021-L17 2021-11-23 13-07-21.mp4"
+                        sizeInKiloBytes: 167637
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-23T15:14:30Z"
+                      - id: "33294893"
+                        type: "file"
+                        name: "HCI2021-L18 2021-11-25 08-38-18.mp4"
+                        sizeInKiloBytes: 177894
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-25T19:07:01Z"
+                      - id: "33297785"
+                        type: "file"
+                        name: "HCI2021-L19 2021-11-30 13-05-06.mp4"
+                        sizeInKiloBytes: 204728
+                        mimeType: "video/mp4"
+                        createdAt: "2021-11-30T18:40:05Z"
+                      - id: "33298944"
+                        type: "file"
+                        name: "HCI2021-L20 2021-12-02 08-33-29.mp4"
+                        sizeInKiloBytes: 181211
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-02T14:28:22Z"
+                      - id: "33301586"
+                        type: "file"
+                        name: "HCI2021-L21 2021-12-07 13-10-43.mp4"
+                        sizeInKiloBytes: 161114
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-07T14:51:40Z"
+                      - id: "33302797"
+                        type: "file"
+                        name: "HCI2021-L22 2021-12-09 08-36-04.mp4"
+                        sizeInKiloBytes: 171358
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-09T18:13:39Z"
+                      - id: "33305668"
+                        type: "file"
+                        name: "HCI2021-L23 2021-12-14 13-04-34.mp4"
+                        sizeInKiloBytes: 236985
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-14T17:25:16Z"
+                      - id: "33307385"
+                        type: "file"
+                        name: "HCI2021-L24 2021-12-16 08-34-14.mp4"
+                        sizeInKiloBytes: 178860
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-16T19:18:25Z"
+                      - id: "33309925"
+                        type: "file"
+                        name: "HCI2021-L25 2021-12-21 13-04-41.mp4"
+                        sizeInKiloBytes: 166945
+                        mimeType: "video/mp4"
+                        createdAt: "2021-12-21T15:00:46Z"
+                      - id: "33314553"
+                        type: "file"
+                        name: "HCI2021-L26 2022-01-11 13-00-00.mp4"
+                        sizeInKiloBytes: 182258
+                        mimeType: "video/mp4"
+                        createdAt: "2022-01-11T14:49:59Z"
                   - id: "33325555"
                     type: "file"
                     name: "2022-02-04-results-written-test.pdf"
@@ -1516,12 +1533,12 @@ components:
         token:
           type: string
           example: c679fa38ff665df6a676acd833194385
-        isDefault:
-          type: boolean
-          example: true
     Student:
       type: object
       properties:
+        username:
+          type: string
+          example: 's290683'
         firstName:
           type: string
           example: Luca
@@ -1534,6 +1551,13 @@ components:
             - active
             - graduate
         #            TODO document all possible statuses
+        allCareerUsernames:
+          description: All the usernames related to this student
+          type: array
+          items:
+            type: string
+            example: 's213956'
+          example: ['s290683', 's213956']
         degreeCode:
           type: string
           example: LM-32
@@ -2367,3 +2391,19 @@ components:
         roomName:
           type: string
           example: 3S
+
+    Device:
+      type: object
+      properties:
+        platform:
+          type: string
+          example: Android
+        version:
+          type: string
+          example: 12
+        model:
+          type: string
+          example: S10
+        manufacturer:
+          type: string
+          example: Samsung
