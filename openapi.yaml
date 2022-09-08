@@ -26,6 +26,10 @@ paths:
                 password:
                   type: string
                   example: moreSecret
+                client:
+                  type: string
+                  nullable: true
+                  example: 'Students app'
                 device:
                   $ref: '#/components/schemas/Device'
               required: [ username, password ]
@@ -41,12 +45,12 @@ paths:
                     $ref: '#/components/schemas/Identity'
         500:
           $ref: '#/components/responses/ErrorResponse'
-  /auth/change-career:
+  /auth/switch-career:
     post:
       tags:
         - Auth
-      summary: Change career | Cambia carriera
-      operationId: changeCareer
+      summary: Switch career | Cambia carriera
+      operationId: switchCareer
       requestBody:
         content:
           application/json:
@@ -56,6 +60,10 @@ paths:
                 username:
                   type: string
                   example: s290683
+                client:
+                  type: string
+                  nullable: true
+                  example: 'Students app'
                 device:
                   $ref: '#/components/schemas/Device'
               required: [ username ]
@@ -2394,6 +2402,9 @@ components:
     Device:
       type: object
       properties:
+        name:
+          type: string
+          example: S10+ di Luca
         platform:
           type: string
           example: Android
