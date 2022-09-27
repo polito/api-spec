@@ -1628,8 +1628,11 @@ components:
           type: integer
           example: 6
         grade:
-          type: integer
-          example: 27
+          type: string
+          example: "27"
+        isProvisional:
+          type: boolean
+          example: false
         date:
           type: string
           example: '2022-05-15'
