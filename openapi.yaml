@@ -27,9 +27,7 @@ paths:
                   type: string
                   example: moreSecret
                 client:
-                  type: string
-                  nullable: true
-                  example: 'Students app'
+                  $ref: '#/components/schemas/Client'
                 device:
                   $ref: '#/components/schemas/Device'
               required: [ username, password ]
@@ -1537,6 +1535,9 @@ components:
         type:
           type: string
           example: 'student'
+        clientId:
+          type: string
+          example: '5a54f626-4b7e-488e-a0e3-300f54051510'
         token:
           type: string
           example: c679fa38ff665df6a676acd833194385
@@ -2420,3 +2421,14 @@ components:
         manufacturer:
           type: string
           example: Samsung
+
+    Client:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Students app
+        id:
+          type: string
+          example: '5a54f626-4b7e-488e-a0e3-300f54051510'
+      required: [name]
