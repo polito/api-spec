@@ -110,6 +110,27 @@ paths:
                     $ref: '#/components/schemas/Student'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
+  /deadlines:
+    get:
+      tags:
+        - Student
+      summary: List deadlines | Elenca scadenze
+      operationId: getDeadlines
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Deadline'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /grades:
     get:
       tags:
@@ -1565,7 +1586,7 @@ components:
           items:
             type: string
             example: 's213956'
-          example: ['s290683', 's213956']
+          example: [ 's290683', 's213956' ]
         degreeCode:
           type: string
           example: LM-32
@@ -1619,6 +1640,27 @@ components:
         enrollmentAcquiredCredits:
           type: integer
           example: 28
+
+    Deadline:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Chiusura del periodo per cambio di ordinamento e/o corso di studi
+        type:
+          type: string
+          example: Trasferimenti e valutazioni carriere precedenti
+        description:
+          type: string
+          example: Tutti gli studenti iscritti ad un Corso di Laurea Magistrale presso il Politecnico di Torino che intendono richiedere un passaggio interno su un altro corso di Laurea Magistrale erogato dall'Ateneo sono tenuti a sottoporre il loro percorso formativo ad una valutazione, tramite la procedura Apply della pagina personale del Portale della Didattica. Tale valutazione è effettuata per la verifica dei requisiti curriculari e per la valutazione ed eventuale convalida dei crediti superati.
+        url:
+          type: string
+          example: https://didattica.polito.it/guida/2021/it/passaggi_interni_su_corsi_di_laurea_magistrale?cds=28&sdu=32
+        endsAt:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+
     ExamGrade:
       type: object
       properties:
@@ -2431,4 +2473,4 @@ components:
         id:
           type: string
           example: '5a54f626-4b7e-488e-a0e3-300f54051510'
-      required: [name]
+      required: [ name ]
