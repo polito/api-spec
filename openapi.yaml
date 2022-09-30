@@ -115,6 +115,21 @@ paths:
     get:
       tags:
         - Student
+      parameters:
+        - name: fromDate
+          in: query
+          description: First day - defaults to 7 days before today
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Last day - defaults to 7 days after today
+          required: false
+          schema:
+            type: string
+            format: date
       summary: List deadlines | Elenca scadenze
       operationId: getDeadlines
       responses:
@@ -1339,14 +1354,14 @@ paths:
       parameters:
         - name: fromDate
           in: query
-          description: First day - defaults to monday of current week
+          description: First day - defaults to 7 days before today
           required: false
           schema:
             type: string
             format: date
         - name: toDate
           in: query
-          description: Last day - defaults to sunday of current week
+          description: Last day - defaults to 7 days after today
           required: false
           schema:
             type: string
