@@ -479,8 +479,13 @@ paths:
                   isOverBooking: false
                   isInPersonalStudyPlan: true
                   year: '2022'
-                  vcPreviousYears: [ ]
-                  vcOtherCourses: [ ]
+                  vcPreviousYears:
+                    - year: 2020
+                      id: 24343324
+                  vcOtherCourses:
+                    - year: 2020
+                      name: Fisica II
+                      id: 24343325
                   notifications:
                     avvisidoc: true
                     matdid: true
