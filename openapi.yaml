@@ -2035,7 +2035,7 @@ components:
                   role:
                     type: string
                   id:
-                    type: integer
+                    type: string
                     example: 244577
     CourseAssignment:
       type: object
