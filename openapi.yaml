@@ -144,6 +144,33 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Deadline'
+              example:
+                data:
+                  - name: Termine per l'iscrizione e pagamento della prima rata, per gli studenti di anni successivi al primo
+                    description: null
+                    type: Iscrizioni e pagamento tasse
+                    endsAt: "2022-10-11T23:59:59Z"
+                    url: null
+                  - name: Trasferimento da altri Atenei italiani
+                    description: Termine per l'invio della richiesta e chiusura della procedura
+                    type: Trasferimenti e valutazioni carriere precedenti
+                    endsAt: "2022-10-14T23:59:59Z"
+                    url: null
+                  - name: Termine per superare gli esami
+                    description: null
+                    type: Sessioni esami di laurea
+                    endsAt: "2022-11-12T23:59:59Z"
+                    url: null
+                  - name: Termine iscrizione esame finale
+                    description: null
+                    type: Sessioni esami di laurea
+                    endsAt: "2022-11-14T23:59:59Z"
+                    url: null
+                  - name: Periodo per la compilazione del piano carriera / carico didattico
+                    description: null
+                    type: Iscrizioni e pagamento tasse
+                    endsAt: "2022-11-25T23:59:59Z"
+                    url: null
         500:
           $ref: '#/components/responses/ErrorResponse'
   /grades:
