@@ -1380,6 +1380,384 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Lecture'
+              example:
+                data:
+                  - id: 12131312
+                    startsAt: "2021-09-28T14:30Z"
+                    endsAt: "2021-09-28T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131313
+                    startsAt: "2021-10-01T10:00Z"
+                    endsAt: "2021-10-01T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131314
+                    startsAt: "2021-10-05T14:30Z"
+                    endsAt: "2021-10-05T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131315
+                    startsAt: "2021-10-08T10:00Z"
+                    endsAt: "2021-10-08T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Esercitazione aula
+                    description: Demos about TLS and SSH. Introduction to the laboratory.
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131316
+                    startsAt: "2021-10-012T08:30Z"
+                    endsAt: "2021-10-12T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131317
+                    startsAt: "2021-10-12T10:00Z"
+                    endsAt: "2021-10-12T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131318
+                    startsAt: "2021-10-12T14:30Z"
+                    endsAt: "2021-10-12T17:30Z"
+                    roomName: R3
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131319
+                    startsAt: "2021-10-15T10:00Z"
+                    endsAt: "2021-10-15T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131320
+                    startsAt: "2021-10-019T08:30Z"
+                    endsAt: "2021-10-19T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131321
+                    startsAt: "2021-10-19T10:00Z"
+                    endsAt: "2021-10-19T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131322
+                    startsAt: "2021-10-19T14:30Z"
+                    endsAt: "2021-10-19T17:30Z"
+                    roomName: R3
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131323
+                    startsAt: "2021-10-22T10:00Z"
+                    endsAt: "2021-10-22T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131324
+                    startsAt: "2021-10-026T08:30Z"
+                    endsAt: "2021-10-26T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131325
+                    startsAt: "2021-10-26T10:00Z"
+                    endsAt: "2021-10-26T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131326
+                    startsAt: "2021-10-26T14:30Z"
+                    endsAt: "2021-10-26T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131327
+                    startsAt: "2021-11-02T08:30Z"
+                    endsAt: "2021-11-02T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131328
+                    startsAt: "2021-11-02T10:00Z"
+                    endsAt: "2021-11-02T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131329
+                    startsAt: "2021-11-02T14:30Z"
+                    endsAt: "2021-11-02T17:30Z"
+                    roomName: R3
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131330
+                    startsAt: "2021-11-05T10:00Z"
+                    endsAt: "2021-11-05T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131331
+                    startsAt: "2021-11-09T08:30Z"
+                    endsAt: "2021-11-09T10:00Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description: "squadra 1"
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131332
+                    startsAt: "2021-11-09T10:00Z"
+                    endsAt: "2021-11-09T11:30Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description: "squadra 1"
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131333
+                    startsAt: "2021-11-09T14:30Z"
+                    endsAt: "2021-11-09T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131334
+                    startsAt: "2021-11-016T08:30Z"
+                    endsAt: "2021-11-16T10:00Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131335
+                    startsAt: "2021-11-16T10:00Z"
+                    endsAt: "2021-11-16T11:30Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131336
+                    startsAt: "2021-11-16T14:30Z"
+                    endsAt: "2021-11-16T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131337
+                    startsAt: "2021-11-023T08:30Z"
+                    endsAt: "2021-11-23T10:00Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131338
+                    startsAt: "2021-11-23T10:00Z"
+                    endsAt: "2021-11-23T11:30Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131339
+                    startsAt: "2021-11-23T14:30Z"
+                    endsAt: "2021-11-23T17:30Z"
+                    roomName: R3
+                    type: Lezione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131340
+                    startsAt: "2021-11-030T08:30Z"
+                    endsAt: "2021-11-30T10:00Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131341
+                    startsAt: "2021-11-30T10:00Z"
+                    endsAt: "2021-11-30T11:30Z"
+                    roomName: LABINF
+                    type: Esercitazione Laboratorio
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131342
+                    startsAt: "2021-11-30T14:30Z"
+                    endsAt: "2021-11-30T17:30Z"
+                    roomName: R3
+                    type: Esercitazione aula
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131343
+                    startsAt: "2021-12-03T10:00Z"
+                    endsAt: "2021-12-03T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131344
+                    startsAt: "2021-12-07T08:30Z"
+                    endsAt: "2021-12-07T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131345
+                    startsAt: "2021-12-07T10:00Z"
+                    endsAt: "2021-12-07T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131346
+                    startsAt: "2021-12-07T14:30Z"
+                    endsAt: "2021-12-07T17:30Z"
+                    roomName: R3
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131347
+                    startsAt: "2021-12-10T10:00Z"
+                    endsAt: "2021-12-10T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131348
+                    startsAt: "2021-12-014T08:30Z"
+                    endsAt: "2021-12-14T10:00Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131349
+                    startsAt: "2021-12-14T10:00Z"
+                    endsAt: "2021-12-14T11:30Z"
+                    roomName: LABINF
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131350
+                    startsAt: "2021-12-14T14:30Z"
+                    endsAt: "2021-12-14T17:30Z"
+                    roomName: R3
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131351
+                    startsAt: "2021-12-17T10:00Z"
+                    endsAt: "2021-12-17T11:30Z"
+                    roomName: AULA VIRTUALE
+                    type: Lezione / Esercitazione
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131352
+                    startsAt: "2022-01-27T17:00Z"
+                    endsAt: "2022-01-27T20:00Z"
+                    roomName: R1
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131353
+                    startsAt: "2022-01-27T17:00Z"
+                    endsAt: "2022-01-27T20:00Z"
+                    roomName: R1b
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131354
+                    startsAt: "2022-01-27T17:00Z"
+                    endsAt: "2022-01-27T20:00Z"
+                    roomName: R2
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131355
+                    startsAt: "2022-02-10T11:00Z"
+                    endsAt: "2022-02-10T13:30Z"
+                    roomName: R1
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131356
+                    startsAt: "2022-02-10T11:00Z"
+                    endsAt: "2022-02-10T13:30Z"
+                    roomName: R2
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131357
+                    startsAt: "2022-04-07T17:30Z"
+                    endsAt: "2022-04-07T20:30Z"
+                    roomName: 12D
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
+                  - id: 12131358
+                    startsAt: "2022-06-17T14:00Z"
+                    endsAt: "2022-06-17T16:30Z"
+                    roomName: 12
+                    type: Esame
+                    description:
+                    courseId: 01UDROV
+                    teacherId: 001847
 
   /people:
     get:
