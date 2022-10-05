@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.6
+  version: 1.0.0-ALPHA.9
 servers:
   - url: https://api.polito.it
 security:
@@ -1262,7 +1262,7 @@ paths:
                   - id: 888137
                     courseShortcode: 01UDROV
                     courseName: Cybersecurity (AA-ZZ)
-                    teacherId: 001847
+                    teacherId: 1847
                     type: Scritto
                     classrooms: Aula 4P
                     status: booked
@@ -1275,7 +1275,7 @@ paths:
                   - id: 887981
                     courseShortcode: 01NYHOV
                     courseName: System and device programming (AA-ZZ)
-                    teacherId: 002893
+                    teacherId: 2893
                     type: Esami scritti a risposta aperta o chiusa tramite PC
                     classrooms: Aula R1
                     status: available
@@ -1288,7 +1288,7 @@ paths:
                   - id: 888212
                     courseShortcode: 03LPYOV
                     courseName: Cryptography (AA-ZZ)
-                    teacherId: 013461
+                    teacherId: 13461
                     type: Esami scritti a risposta aperta o chiusa tramite PC
                     classrooms: Aula R1
                     status: booked
@@ -1301,7 +1301,7 @@ paths:
                   - id: 888118
                     courseShortcode: 01TYAOV
                     courseName: Security verification and testing (AA-ZZ)
-                    teacherId: 001943
+                    teacherId: 1943
                     type: Esami scritti a risposta aperta o chiusa tramite PC
                     classrooms: Aula 1P
                     status: booked
@@ -1416,7 +1416,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131313
                     startsAt: "2021-10-01T10:00:00Z"
                     endsAt: "2021-10-01T11:30:00Z"
@@ -1424,7 +1424,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131314
                     startsAt: "2021-10-05T14:30:00Z"
                     endsAt: "2021-10-05T17:30:00Z"
@@ -1432,7 +1432,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131315
                     startsAt: "2021-10-08T10:00:00Z"
                     endsAt: "2021-10-08T11:30:00Z"
@@ -1440,7 +1440,7 @@ paths:
                     type: Esercitazione aula
                     description: Demos about TLS and SSH. Introduction to the laboratory.
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131316
                     startsAt: "2021-10-12T08:30:00Z"
                     endsAt: "2021-10-12T10:00:00Z"
@@ -1448,7 +1448,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131317
                     startsAt: "2021-10-12T10:00:00Z"
                     endsAt: "2021-10-12T11:30:00Z"
@@ -1456,7 +1456,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131318
                     startsAt: "2021-10-12T14:30:00Z"
                     endsAt: "2021-10-12T17:30:00Z"
@@ -1464,7 +1464,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131319
                     startsAt: "2021-10-15T10:00:00Z"
                     endsAt: "2021-10-15T11:30:00Z"
@@ -1472,7 +1472,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131320
                     startsAt: "2021-10-19T08:30:00Z"
                     endsAt: "2021-10-19T10:00:00Z"
@@ -1480,7 +1480,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131321
                     startsAt: "2021-10-19T10:00:00Z"
                     endsAt: "2021-10-19T11:30:00Z"
@@ -1488,7 +1488,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131322
                     startsAt: "2021-10-19T14:30:00Z"
                     endsAt: "2021-10-19T17:30:00Z"
@@ -1496,7 +1496,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131323
                     startsAt: "2021-10-22T10:00:00Z"
                     endsAt: "2021-10-22T11:30:00Z"
@@ -1504,7 +1504,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131324
                     startsAt: "2021-10-26T08:30:00Z"
                     endsAt: "2021-10-26T10:00:00Z"
@@ -1512,7 +1512,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131325
                     startsAt: "2021-10-26T10:00:00Z"
                     endsAt: "2021-10-26T11:30:00Z"
@@ -1520,7 +1520,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131326
                     startsAt: "2021-10-26T14:30:00Z"
                     endsAt: "2021-10-26T17:30:00Z"
@@ -1528,7 +1528,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131327
                     startsAt: "2021-11-02T08:30:00Z"
                     endsAt: "2021-11-02T10:00:00Z"
@@ -1536,7 +1536,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131328
                     startsAt: "2021-11-02T10:00:00Z"
                     endsAt: "2021-11-02T11:30:00Z"
@@ -1544,7 +1544,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131329
                     startsAt: "2021-11-02T14:30:00Z"
                     endsAt: "2021-11-02T17:30:00Z"
@@ -1552,7 +1552,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131330
                     startsAt: "2021-11-05T10:00:00Z"
                     endsAt: "2021-11-05T11:30:00Z"
@@ -1560,7 +1560,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131331
                     startsAt: "2021-11-09T08:30:00Z"
                     endsAt: "2021-11-09T10:00:00Z"
@@ -1568,7 +1568,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description: "squadra 1"
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131332
                     startsAt: "2021-11-09T10:00:00Z"
                     endsAt: "2021-11-09T11:30:00Z"
@@ -1576,7 +1576,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description: "squadra 1"
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131333
                     startsAt: "2021-11-09T14:30:00Z"
                     endsAt: "2021-11-09T17:30:00Z"
@@ -1584,7 +1584,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131334
                     startsAt: "2021-11-16T08:30:00Z"
                     endsAt: "2021-11-16T10:00:00Z"
@@ -1592,7 +1592,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131335
                     startsAt: "2021-11-16T10:00:00Z"
                     endsAt: "2021-11-16T11:30:00Z"
@@ -1600,7 +1600,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131336
                     startsAt: "2021-11-16T14:30:00Z"
                     endsAt: "2021-11-16T17:30:00Z"
@@ -1608,7 +1608,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131337
                     startsAt: "2021-11-23T08:30:00Z"
                     endsAt: "2021-11-23T10:00:00Z"
@@ -1616,7 +1616,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131338
                     startsAt: "2021-11-23T10:00:00Z"
                     endsAt: "2021-11-23T11:30:00Z"
@@ -1624,7 +1624,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131339
                     startsAt: "2021-11-23T14:30:00Z"
                     endsAt: "2021-11-23T17:30:00Z"
@@ -1632,7 +1632,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131340
                     startsAt: "2021-11-30T08:30:00Z"
                     endsAt: "2021-11-30T10:00:00Z"
@@ -1640,7 +1640,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131341
                     startsAt: "2021-11-30T10:00:00Z"
                     endsAt: "2021-11-30T11:30:00Z"
@@ -1648,7 +1648,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131342
                     startsAt: "2021-11-30T14:30:00Z"
                     endsAt: "2021-11-30T17:30:00Z"
@@ -1656,7 +1656,7 @@ paths:
                     type: Esercitazione aula
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131343
                     startsAt: "2021-12-03T10:00:00Z"
                     endsAt: "2021-12-03T11:30:00Z"
@@ -1664,7 +1664,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131344
                     startsAt: "2021-12-07T08:30:00Z"
                     endsAt: "2021-12-07T10:00:00Z"
@@ -1672,7 +1672,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131345
                     startsAt: "2021-12-07T10:00:00Z"
                     endsAt: "2021-12-07T11:30:00Z"
@@ -1680,7 +1680,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131346
                     startsAt: "2021-12-07T14:30:00Z"
                     endsAt: "2021-12-07T17:30:00Z"
@@ -1688,7 +1688,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131347
                     startsAt: "2021-12-10T10:00:00Z"
                     endsAt: "2021-12-10T11:30:00Z"
@@ -1696,7 +1696,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131348
                     startsAt: "2021-12-14T08:30:00Z"
                     endsAt: "2021-12-14T10:00:00Z"
@@ -1704,7 +1704,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131349
                     startsAt: "2021-12-14T10:00:00Z"
                     endsAt: "2021-12-14T11:30:00Z"
@@ -1712,7 +1712,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131350
                     startsAt: "2021-12-14T14:30:00Z"
                     endsAt: "2021-12-14T17:30:00Z"
@@ -1720,7 +1720,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131351
                     startsAt: "2021-12-17T10:00:00Z"
                     endsAt: "2021-12-17T11:30:00Z"
@@ -1728,7 +1728,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131352
                     startsAt: "2022-01-27T17:00:00Z"
                     endsAt: "2022-01-27T20:00:00Z"
@@ -1736,7 +1736,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131353
                     startsAt: "2022-01-27T17:00:00Z"
                     endsAt: "2022-01-27T20:00:00Z"
@@ -1744,7 +1744,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131354
                     startsAt: "2022-01-27T17:00:00Z"
                     endsAt: "2022-01-27T20:00:00Z"
@@ -1752,7 +1752,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131355
                     startsAt: "2022-02-10T11:00:00Z"
                     endsAt: "2022-02-10T13:30:00Z"
@@ -1760,7 +1760,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131356
                     startsAt: "2022-02-10T11:00:00Z"
                     endsAt: "2022-02-10T13:30:00Z"
@@ -1768,7 +1768,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131357
                     startsAt: "2022-04-07T17:30:00Z"
                     endsAt: "2022-04-07T20:30:00Z"
@@ -1776,7 +1776,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
                   - id: 12131358
                     startsAt: "2022-06-17T14:00:00Z"
                     endsAt: "2022-06-17T16:30:00Z"
@@ -1784,7 +1784,7 @@ paths:
                     type: Esame
                     description:
                     courseId: 252258
-                    teacherId: 001847
+                    teacherId: 1847
 
   /people:
     get:
@@ -1824,7 +1824,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: number
       responses:
         200:
           description: Success
@@ -2462,7 +2462,7 @@ components:
                   role:
                     type: string
                   id:
-                    type: string
+                    type: number
                     example: 244577
     CourseAssignment:
       type: object
@@ -2596,7 +2596,7 @@ components:
           example: Human Computer Interaction
         teacherId:
           type: integer
-          example: 002154
+          example: 2154
         type:
           type: string
           example: Esami scritti a risposta aperta o chiusa tramite PC
@@ -2658,8 +2658,8 @@ components:
       type: object
       properties:
         id:
-          type: string
-          example: '002154'
+          type: number
+          example: 2154
         firstName:
           type: string
           example: Fulvio
