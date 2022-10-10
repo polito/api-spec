@@ -564,11 +564,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      anyOf:
-                        - $ref: '#/components/schemas/CourseDirectory'
-                        - $ref: '#/components/schemas/CourseFileOverview'
+                    $ref: '#/components/schemas/CourseDirectoryContent'
               example:
                 data:
                   - id: "33248655"
@@ -2539,15 +2535,24 @@ components:
           example: '33352562'
         type:
           type: string
-          enum:
-            - directory
+          example: 'directory'
         name:
           type: string
           example: Laboratori
         files:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseFileOverview'
+          $ref: '#/components/schemas/CourseDirectoryContent'
+    CourseDirectoryContent:
+      type: array
+      items:
+        oneOf: 
+          - $ref: '#/components/schemas/CourseDirectory'
+          - $ref: '#/components/schemas/CourseFileOverview'
+        discriminator:
+          propertyName: type
+          mapping:
+            directory: '#/components/schemas/CourseDirectory'
+            file: '#/components/schemas/CourseFileOverview'
+
     CourseFileOverview:
       type: object
       properties:
@@ -2556,8 +2561,7 @@ components:
           example: '33352562'
         type:
           type: string
-          enum:
-            - file
+          example: 'file'
         name:
           type: string
           example: sebc-lab2.pdf
