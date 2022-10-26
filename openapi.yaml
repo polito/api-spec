@@ -3,7 +3,10 @@ info:
   title: Polito Students API
   version: 1.0.0-ALPHA.9
 servers:
-  - url: https://api.polito.it
+  - url: https://app.didattica.polito.it/api
+    description: Production server (uses live data)
+  - url: https://app.didattica.polito.it/mock/api
+    description: Mock server (uses example data)
 security:
   - bearerAuth: [ ]
 paths:

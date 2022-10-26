@@ -26,7 +26,7 @@ After installing it, you can start a mock server with the following command:
 ```bash
 prism mock -h YOUR-LOCAL-IP ./openapi.yaml
 ```
-You only need to specify your IP if you want them to be accessible from other devices in the same network (e.g. while working on [@polito-it/students-app](https://github.com/polito-it/students-app), since it will typically run on a distinct device).
+You only need to specify your IP if you want them to be accessible from other devices in the same network (e.g. while working on [@polito/students-app](https://github.com/polito/students-app), since it will typically run on a distinct device).
 
 ## Resources
 
