@@ -762,7 +762,7 @@ paths:
       tags:
         - Courses
       summary: Download file | Scarica file
-      operationId: get
+      operationId: getCourseFile
       parameters:
         - name: courseId
           in: path
