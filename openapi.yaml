@@ -2392,9 +2392,9 @@ components:
           type: integer
           example: 10
         teachingPeriod:
-          type: integer
+          type: string
           nullable: true
-          description: The semester this course belongs to
+          description: The semester(s) this course belongs to
           example: 2
         teacherId:
           type: integer
@@ -2547,7 +2547,7 @@ components:
     CourseDirectoryContent:
       type: array
       items:
-        oneOf: 
+        oneOf:
           - $ref: '#/components/schemas/CourseDirectory'
           - $ref: '#/components/schemas/CourseFileOverview'
         discriminator:
