@@ -421,7 +421,7 @@ paths:
                     name: System and device programming
                     shortcode: 01NYHOV
                     cfu: 10
-                    teachingPeriod: 2
+                    teachingPeriod: 2-2
                     teacherId: 2893
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -429,7 +429,7 @@ paths:
                     name: Web Applications II
                     shortcode: 01TXSOV
                     cfu: 6
-                    teachingPeriod: 2
+                    teachingPeriod: 2-2
                     teacherId: 2235
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -437,7 +437,7 @@ paths:
                     name: Security verification and testing
                     shortcode: 01TYAOV
                     cfu: 6
-                    teachingPeriod: 1
+                    teachingPeriod: 1-1
                     teacherId: 1943
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -445,7 +445,7 @@ paths:
                     name: Information systems security
                     shortcode: 01TYMOV
                     cfu: 6
-                    teachingPeriod: 1
+                    teachingPeriod: 1-1
                     teacherId: 1847
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -453,7 +453,7 @@ paths:
                     name: Cybersecurity
                     shortcode: 01UDROV
                     cfu: 6
-                    teachingPeriod: 2
+                    teachingPeriod: 2-2
                     teacherId: 1847
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -461,7 +461,7 @@ paths:
                     name: Architetture dei sistemi di elaborazione
                     shortcode: 02GOLOV
                     cfu: 10
-                    teachingPeriod: 1
+                    teachingPeriod: 1-1
                     teacherId: 12684
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -469,7 +469,7 @@ paths:
                     name: Human Computer Interaction
                     shortcode: 02JSKOV
                     cfu: 6
-                    teachingPeriod: 1
+                    teachingPeriod: 1-1
                     teacherId: 25734
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -477,7 +477,7 @@ paths:
                     name: Cryptography
                     shortcode: 03LPYOV
                     cfu: 6
-                    teachingPeriod: 2
+                    teachingPeriod: 2-2
                     teacherId: 13461
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -519,7 +519,7 @@ paths:
                   name: Human Computer Interaction
                   shortcode: 01NYHOV
                   cfu: 6
-                  teachingPeriod: 1
+                  teachingPeriod: 1-1
                   teacherId: 25734
                   isOverBooking: false
                   isInPersonalStudyPlan: true
@@ -2395,7 +2395,7 @@ components:
           type: string
           nullable: true
           description: The semester(s) this course belongs to
-          example: 2
+          example: 2-2
         teacherId:
           type: integer
           nullable: true
