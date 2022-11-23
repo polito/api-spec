@@ -2104,6 +2104,7 @@ components:
           example: false
         date:
           type: string
+          format: date
           example: '2022-05-15'
 
     BookingTopic:
