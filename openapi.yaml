@@ -2064,6 +2064,9 @@ components:
         enrollmentAcquiredCredits:
           type: integer
           example: 28
+        smartCardPicture:
+          type: string
+          example: https://
 
     Deadline:
       type: object
