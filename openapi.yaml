@@ -2691,8 +2691,7 @@ components:
             phoneNumbers:
               type: array
               items:
-                type: string
-                example: '0110907053'
+                $ref: '#/components/schemas/PhoneNumber'
             role:
               type: string
               example: Docente
@@ -2913,3 +2912,13 @@ components:
           type: string
           example: '5a54f626-4b7e-488e-a0e3-300f54051510'
       required: [ name ]
+
+    PhoneNumber:
+      type: object
+      properties:
+        full:
+          type: string
+          example: "0110907053"
+        internal:
+          type: string
+          example: "7053"
