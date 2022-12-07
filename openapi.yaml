@@ -1392,6 +1392,14 @@ paths:
           schema:
             type: string
             format: date
+        - name: courseIds[]
+          in: query
+          description: Only include lectures belonging to these courses
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
       summary: List lectures | Elenca lezioni
       operationId: getLectures
       responses:
