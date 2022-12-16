@@ -2706,14 +2706,27 @@ components:
             courses:
               type: array
               items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    example: 258674
-                  name:
-                    type: string
-                    example: Human Computer Interaction
+                $ref: "#/components/schemas/PersonCourse"
+    PersonCourse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The identifier for this course
+          example: 258674
+        name:
+          type: string
+          description: The name of the course
+          example: Computer sciences
+        role:
+          type: string
+          description: The role of the person in this course
+          example: Collaboratore
+        year:
+          type: number
+          description: The year this course was given in
+          example: 2021
+      required: [id, year, role, name]
     PlaceOverview:
       type: object
       properties:
