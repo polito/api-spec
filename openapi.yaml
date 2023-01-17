@@ -1949,6 +1949,53 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /ticket-faqs:
+    get:
+      tags:
+        - Tickets
+      summary: Search ticket FAQs | Ricerca FAQ ticket
+      operationsId: searchTicketFAQs
+      parameters:
+        - name: search
+          in: query
+          description: Find FAQs containing 'search' in the question
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TicketFAQ'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /ticket-topics:
+    get:
+      tags:
+        - Tickets
+      summary: List ticket topics | Elenca ambiti ticket
+      operationId: getTicketTopics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TicketTopic'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   parameters:
     bookingIdParam:
@@ -3031,4 +3078,45 @@ components:
           type: boolean
           example: true
       required: [id, title, message, type, sentAt, isRead]
-          
+
+    TicketSubtopic:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 103
+        name:
+          type: string
+          example: Accesso studenti esterni
+      required: [id, name]
+
+    TicketTopic:
+      allOf:
+        - $ref: '#/components/schemas/TicketSubtopic'
+        - type: object
+          properties:
+            subtopics:
+              type: array
+              items:
+                $ref: '#/components/schemas/TicketSubtopic'
+          example:
+            id: 61
+            name: ACCESSO LAUREE MAGISTRALI
+            subtopics:
+              - id: 103
+                name: Accesso studenti esterni
+          required: [subtopics]
+
+    TicketFAQ:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 3623
+        question:
+          type: string
+          example: Ho dimenticato il mio nome utente e/o la password e non riesco più ad accedere ad Apply@Polito. Come posso fare?
+        answer:
+          type: string
+          example: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href=\"https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT\">Log-in</a>&nbsp;e segui le istruzioni.
+      required: [id, question, answer]
