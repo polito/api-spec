@@ -1893,6 +1893,62 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /messages:
+    get:
+      tags:
+        - Student
+      summary: List messages | Elenca messaggi
+      operationId: getMessages
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+              example:
+                data:
+                  - id: 63775600
+                    title: "Nuovo messaggio dalla Segreteria Studenti"
+                    message: "Puoi venire a ritirare la tua smartcard"
+                    type: "secretariat"
+                    isRead: false
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /messages/{messageId}:
+    delete:
+      tags:
+        - Student
+      summary: Delete a message | Cancella un messaggio
+      operationId: deleteMessage
+      responses:
+        200:
+          description: Success
+        404:
+          description: Message not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /messages/{messageId}/read:
+    put:
+      tags:
+        - Student
+      summary: Mark a message as read | Segna un messaggio come letto
+      operationId: markMessageAsRead
+      responses:
+        200:
+          description: Success
+        404:
+          description: Message not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
 components:
   parameters:
     bookingIdParam:
@@ -2941,3 +2997,38 @@ components:
         internal:
           type: string
           example: "7053"
+
+    MessageType:
+      type: string
+      enum:
+        - emergency
+        - event
+        - personal
+        - teacher
+        - secretariat
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 63775600
+        title:
+          type: string
+          example: Nuovo messaggio dalla Segreteria Studenti
+        message:
+          type: string
+          nullable: true
+          example: Puoi venire a ritirare la tua smartcard
+        type:
+          $ref: '#/components/schemas/MessageType'
+          example: secretariat
+        sentAt:
+          type: string
+          format: date-time
+          example: '2021-10-05T10:00:00Z'
+        isRead:
+          type: boolean
+          example: true
+      required: [id, title, message, type, sentAt, isRead]
+          
