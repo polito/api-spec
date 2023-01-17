@@ -150,29 +150,24 @@ paths:
               example:
                 data:
                   - name: Termine per l'iscrizione e pagamento della prima rata, per gli studenti di anni successivi al primo
-                    description: null
                     type: Iscrizioni e pagamento tasse
-                    endsAt: "2022-10-11T23:59:59Z"
+                    date: "2022-10-11"
                     url: null
                   - name: Trasferimento da altri Atenei italiani
-                    description: Termine per l'invio della richiesta e chiusura della procedura
                     type: Trasferimenti e valutazioni carriere precedenti
-                    endsAt: "2022-10-14T23:59:59Z"
+                    date: "2022-10-14"
                     url: null
                   - name: Termine per superare gli esami
-                    description: null
                     type: Sessioni esami di laurea
-                    endsAt: "2022-11-12T23:59:59Z"
+                    date: "2022-11-12"
                     url: null
                   - name: Termine iscrizione esame finale
-                    description: null
                     type: Sessioni esami di laurea
-                    endsAt: "2022-11-14T23:59:59Z"
+                    date: "2022-11-14"
                     url: null
                   - name: Periodo per la compilazione del piano carriera / carico didattico
-                    description: null
                     type: Iscrizioni e pagamento tasse
-                    endsAt: "2022-11-25T23:59:59Z"
+                    date: "2022-11-25"
                     url: null
         500:
           $ref: '#/components/responses/ErrorResponse'
@@ -2079,18 +2074,14 @@ components:
         type:
           type: string
           example: Trasferimenti e valutazioni carriere precedenti
-        description:
-          type: string
-          nullable: true
-          example: Tutti gli studenti iscritti ad un Corso di Laurea Magistrale presso il Politecnico di Torino che intendono richiedere un passaggio interno su un altro corso di Laurea Magistrale erogato dall'Ateneo sono tenuti a sottoporre il loro percorso formativo ad una valutazione, tramite la procedura Apply della pagina personale del Portale della Didattica. Tale valutazione è effettuata per la verifica dei requisiti curriculari e per la valutazione ed eventuale convalida dei crediti superati.
         url:
           type: string
           nullable: true
           example: https://didattica.polito.it/guida/2021/it/passaggi_interni_su_corsi_di_laurea_magistrale?cds=28&sdu=32
-        endsAt:
+        date:
           type: string
-          format: date-time
-          example: '2022-08-31T14:00:00Z'
+          format: date
+          example: '2022-08-31'
 
     ExamGrade:
       type: object
