@@ -914,6 +914,31 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /courses/{courseId}/assignments/{assignmentId}:
+    patch:
+      tags:
+        - Courses
+      summary: Update assignment | Aggiorna elaborato
+      operationId: updateAssignment
+      parameters:
+        - $ref: '#/components/parameters/courseIdParam'
+        - $ref: '#/components/parameters/assignmentIdParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAssignmentRequest'
+      responses:
+        200:
+          description: Assignment successfully updated
+        404:
+          description: Course or assignment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}/guide:
     get:
       tags:
@@ -2764,6 +2789,15 @@ components:
           type: string
           format: binary
       required: [ description, file ]
+    UpdateAssignmentRequest:
+      type: object
+      properties:
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: 2022-07-03T14:00:00Z
+      required: [isDeleted]
     CourseNotices:
       type: object
       properties:
