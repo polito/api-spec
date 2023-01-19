@@ -1920,7 +1920,6 @@ paths:
                     isRead: false
         500:
           $ref: '#/components/responses/ErrorResponse'
-
   /messages/{messageId}:
     delete:
       tags:
@@ -1934,7 +1933,6 @@ paths:
           description: Message not found
         500:
           $ref: '#/components/responses/ErrorResponse'
-
   /messages/{messageId}/read:
     put:
       tags:
@@ -1954,7 +1952,7 @@ paths:
       tags:
         - Tickets
       summary: Search ticket FAQs | Ricerca FAQ ticket
-      operationsId: searchTicketFAQs
+      operationId: searchTicketFAQs
       parameters:
         - name: search
           in: query
@@ -1996,6 +1994,152 @@ paths:
                       $ref: '#/components/schemas/TicketTopic'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /tickets:
+    get:
+      tags:
+        - Tickets
+      summary: List tickets | Elenca ticket
+      operationId: getTickets
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TicketOverview'
+    post:
+      tags:
+        - Tickets
+      summary: Create ticket | Crea ticket
+      operationId: createTicket
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}:
+    get:
+      tags:
+        - Tickets
+      summary: Show a ticket | Mostra un ticket
+      operationId: getTicket
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Ticket'
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}/read:
+    put:
+      tags:
+        - Tickets
+      summary: Mark a ticket as read | Segna un ticket come letto
+      operationId: markTicketAsRead
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}/attachments/{attachmentId}:
+    get:
+      tags:
+        - Tickets
+      summary: Download ticket attachment | Scarica allegato del ticket
+      operationId: getTicketAttachment
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+        - $ref: '#/components/parameters/ticketAttachmentIdParam'
+      responses:
+        302:
+          description: Redirect to attachment download
+        404:
+          description: Ticket or attachment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}/replies:
+    post:
+      tags:
+        - Tickets
+      summary: Reply to a ticket | Rispondi ad un ticket
+      operationId: replyToTicket
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReplyTicketRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
+    get:
+      tags:
+        - Tickets
+      summary: Download ticket reply attachment | Scarica allegato di una risposta al ticket
+      operationId: getTicketReplyAttachment
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+        - $ref: '#/components/parameters/ticketReplyIdParam'
+        - $ref: '#/components/parameters/ticketAttachmentIdParam'
+      responses:
+        302:
+          description: Redirect to attachment download
+        404:
+          description: Ticket or attachment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
 components:
   parameters:
     bookingIdParam:
@@ -2048,6 +2192,24 @@ components:
         type: string
     placeIdParam:
       name: placeId
+      in: path
+      required: true
+      schema:
+        type: integer
+    ticketIdParam:
+      name: ticketId
+      in: path
+      required: true
+      schema:
+        type: integer
+    ticketReplyIdParam:
+      name: replyId
+      in: path
+      required: true
+      schema:
+        type: integer
+    ticketAttachmentIdParam:
+      name: attachmentId
       in: path
       required: true
       schema:
@@ -3053,7 +3215,6 @@ components:
         - personal
         - teacher
         - secretariat
-
     Message:
       type: object
       properties:
@@ -3089,7 +3250,6 @@ components:
           type: string
           example: Accesso studenti esterni
       required: [id, name]
-
     TicketTopic:
       allOf:
         - $ref: '#/components/schemas/TicketSubtopic'
@@ -3106,7 +3266,6 @@ components:
               - id: 103
                 name: Accesso studenti esterni
           required: [subtopics]
-
     TicketFAQ:
       type: object
       properties:
@@ -3120,3 +3279,129 @@ components:
           type: string
           example: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href=\"https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT\">Log-in</a>&nbsp;e segui le istruzioni.
       required: [id, question, answer]
+    TicketStatus:
+      type: string
+      enum:
+        - new
+        - pending
+        - closed
+    TicketOverview:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1145890
+        subject:
+          type: string
+          example: Sostituzione esame in piano carriera
+        message:
+          type: string
+          example: Buongiorno, vi contatto per sostituire A con B
+        status:
+          $ref: '#/components/schemas/TicketStatus'
+          example: secretariat
+        hasAttachments:
+          type: boolean
+          example: true
+        isFromAgent:
+          type: boolean
+          description: If true, this ticket was opened by an agent (not by the student)
+          example: false
+        unreadCount:
+          type: number
+          example: 2
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+      required: [id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt]
+    Ticket:
+      allOf:
+        - $ref: '#/components/schemas/TicketOverview'
+        - type: object
+          properties:
+            replies:
+              type: array
+              items:
+                $ref: '#/components/schemas/TicketReply'
+            attachments:
+              type: array
+              items:
+                $ref: '#/components/schemas/TicketAttachment'
+          required: [replies, attachments]
+    TicketReply:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1145890
+        message:
+          type: string
+          example: Non si può fare.
+        isFromAgent:
+          type: boolean
+          description: If true, this reply was sent by an agent (not by the student)
+          example: true
+        agentId:
+          type: number
+          example: 351
+          nullable: true
+        isRead:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketAttachment'
+      required: [id, message, senderId, isFromAgent, isRead, createdAt, attachments]
+    TicketAttachment:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 0
+        filename:
+          type: string
+          example: screenshot.png
+        mimeType:
+          type: string
+          example: image/png
+      required: [id, filename, mimeType]
+    ReplyTicketRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Ok scusa
+        attachment:
+          type: string
+          format: binary
+      required: [ message ]
+    CreateTicketRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+          example: Sostituzione esame in piano carriera
+        message:
+          type: string
+          example: Buongiorno, vi contatto per sostituire A con B
+        subtopicId:
+          type: number
+          example: 103
+        attachments:
+          type: array
+          items:
+            type: string
+            format: binary
+      required: [subject, message, subtopicId, attachments]
+
+
