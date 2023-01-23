@@ -3431,11 +3431,9 @@ components:
         subtopicId:
           type: number
           example: 103
-        attachments:
-          type: array
-          items:
-            type: string
-            format: binary
-      required: [subject, message, subtopicId, attachments]
+        attachment:
+          type: string
+          format: binary
+      required: [subject, message, subtopicId]
 
 
