@@ -2099,6 +2099,25 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /tickets/{ticketId}/close:
+    put:
+      tags:
+        - Tickets
+      summary: Mark a ticket as closed | Segna un ticket come chiuso
+      operationId: markTicketAsClosed
+      parameters:
+        - $ref: '#/components/parameters/ticketIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /tickets/{ticketId}/attachments/{attachmentId}:
     get:
       tags:
