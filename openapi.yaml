@@ -1979,6 +1979,7 @@ paths:
       summary: Search ticket FAQs | Ricerca FAQ ticket
       operationId: searchTicketFAQs
       parameters:
+        - $ref: '#/components/parameters/acceptLanguageHeader'
         - name: search
           in: query
           description: Find FAQs containing 'search' in the question
@@ -2240,9 +2241,10 @@ components:
       schema:
         type: integer
     acceptLanguageHeader:
-      name: acceptLanguage
+      name: Accept-Language
       in: header
-      required: true
+      enum: [it, en]
+      default: it
       schema:
         type: string
   responses:
