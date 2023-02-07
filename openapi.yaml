@@ -420,6 +420,7 @@ paths:
                     teacherId: 2893
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252121
                     name: Web Applications II
                     shortcode: 01TXSOV
@@ -428,6 +429,7 @@ paths:
                     teacherId: 2235
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252126
                     name: Security verification and testing
                     shortcode: 01TYAOV
@@ -436,6 +438,7 @@ paths:
                     teacherId: 1943
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252138
                     name: Information systems security
                     shortcode: 01TYMOV
@@ -444,6 +447,7 @@ paths:
                     teacherId: 1847
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252258
                     name: Cybersecurity
                     shortcode: 01UDROV
@@ -452,6 +456,7 @@ paths:
                     teacherId: 1847
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252788
                     name: Architetture dei sistemi di elaborazione
                     shortcode: 02GOLOV
@@ -460,6 +465,7 @@ paths:
                     teacherId: 12684
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 252842
                     name: Human Computer Interaction
                     shortcode: 02JSKOV
@@ -468,6 +474,7 @@ paths:
                     teacherId: 25734
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: 253378
                     name: Cryptography
                     shortcode: 03LPYOV
@@ -476,6 +483,7 @@ paths:
                     teacherId: 13461
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
                   - id: null
                     name: Tesi
                     shortcode: 29EBHOV
@@ -484,6 +492,7 @@ paths:
                     teacherId: null
                     isOverBooking: false
                     isInPersonalStudyPlan: true
+                    isModule: false
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}:
@@ -2714,6 +2723,10 @@ components:
         isInPersonalStudyPlan:
           type: boolean
           description: Included in the PSP | Incluso nel carico didattico
+          example: true
+        isModule:
+          type: boolean
+          description: If true, this course is actually a module
           example: true
     Course:
       allOf:
