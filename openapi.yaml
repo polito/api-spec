@@ -2328,13 +2328,13 @@ components:
             - active
             - graduate
         #            TODO document all possible statuses
-        allCareerUsernames:
-          description: All the usernames related to this student
+        allCareerIds:
+          description: All the ids related to this student
           type: array
           items:
             type: string
-            example: 's213956'
-          example: [ 's290683', 's213956' ]
+            example: 213956
+          example: [ 290683, 213956 ]
         degreeCode:
           type: string
           example: LM-32
