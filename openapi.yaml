@@ -3382,6 +3382,10 @@ components:
           type: boolean
           description: If true, this ticket was opened by an agent (not by the student)
           example: false
+        agentId:
+          type: number
+          example: null
+          nullable: true
         unreadCount:
           type: number
           example: 2
