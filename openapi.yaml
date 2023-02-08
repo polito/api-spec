@@ -2288,10 +2288,10 @@ components:
     acceptLanguageHeader:
       name: Accept-Language
       in: header
-      enum: [it, en]
-      default: it
       schema:
         type: string
+        enum: [ it, en ]
+        default: it
   responses:
     ErrorResponse:
       description: Server error
