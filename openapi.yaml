@@ -1960,6 +1960,8 @@ paths:
         - Student
       summary: Delete a message | Cancella un messaggio
       operationId: deleteMessage
+      parameters:
+        - $ref: '#/components/parameters/messageIdParam'
       responses:
         200:
           description: Success
@@ -1973,6 +1975,8 @@ paths:
         - Student
       summary: Mark a message as read | Segna un messaggio come letto
       operationId: markMessageAsRead
+      parameters:
+        - $ref: '#/components/parameters/messageIdParam'
       responses:
         200:
           description: Success
@@ -2241,6 +2245,12 @@ components:
         type: string
     lectureIdParam:
       name: lectureId
+      in: path
+      required: true
+      schema:
+        type: integer
+    messageIdParam:
+      name: messageId
       in: path
       required: true
       schema:
