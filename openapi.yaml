@@ -1457,6 +1457,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [
                       {
@@ -1476,6 +1477,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [
                       {
@@ -1495,6 +1497,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131315
@@ -1509,6 +1512,7 @@ paths:
                     type: Esercitazione aula
                     description: Demos about TLS and SSH. Introduction to the laboratory.
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131316
@@ -1523,6 +1527,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131317
@@ -1537,6 +1542,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131318
@@ -1551,6 +1557,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131319
@@ -1565,6 +1572,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131320
@@ -1579,6 +1587,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131321
@@ -1593,6 +1602,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131322
@@ -1607,6 +1617,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131323
@@ -1621,6 +1632,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131324
@@ -1635,6 +1647,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131325
@@ -1649,6 +1662,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131326
@@ -1663,6 +1677,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131327
@@ -1677,6 +1692,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131328
@@ -1691,6 +1707,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131329
@@ -1705,6 +1722,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131330
@@ -1719,6 +1737,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131331
@@ -1733,6 +1752,7 @@ paths:
                     type: Esercitazione Laboratorio con titolo esageratamente lungo che poi boh
                     description: "squadra 1"
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131332
@@ -1747,6 +1767,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description: "squadra 1"
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131333
@@ -1761,6 +1782,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131334
@@ -1775,6 +1797,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131335
@@ -1789,6 +1812,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131336
@@ -1803,6 +1827,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131337
@@ -1817,6 +1842,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131338
@@ -1831,6 +1857,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131339
@@ -1845,6 +1872,7 @@ paths:
                     type: Lezione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131340
@@ -1859,6 +1887,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131341
@@ -1873,6 +1902,7 @@ paths:
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131342
@@ -1887,6 +1917,7 @@ paths:
                     type: Esercitazione aula
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131343
@@ -1901,6 +1932,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131344
@@ -1915,6 +1947,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131345
@@ -1929,6 +1962,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131346
@@ -1943,6 +1977,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131347
@@ -1957,6 +1992,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131348
@@ -1971,6 +2007,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131349
@@ -1985,6 +2022,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131350
@@ -1999,6 +2037,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
                   - id: 12131351
@@ -2013,6 +2052,7 @@ paths:
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
+                    courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
 
@@ -3445,6 +3485,9 @@ components:
         courseId:
           type: integer
           example: 150157
+        courseName:
+          type: string
+          example: Human Computer Interaction
         teacherId:
           type: integer
           example: 150157
@@ -3517,6 +3560,8 @@ components:
         - personal
         - teacher
         - secretariat
+      example: secretariat
+
     Message:
       type: object
       properties:
@@ -3532,7 +3577,6 @@ components:
           example: Puoi venire a ritirare la tua smartcard
         type:
           $ref: '#/components/schemas/MessageType'
-          example: secretariat
         sentAt:
           type: string
           format: date-time
