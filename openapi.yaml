@@ -3680,7 +3680,10 @@ components:
         mimeType:
           type: string
           example: image/png
-      required: [ id, filename, mimeType ]
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+      required: [ id, filename, mimeType, sizeInKiloBytes ]
     ReplyTicketRequest:
       type: object
       properties:
