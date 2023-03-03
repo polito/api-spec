@@ -1448,7 +1448,12 @@ paths:
                   - id: 12131312
                     startsAt: "2021-09-28T14:30:00Z"
                     endsAt: "2021-09-28T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1462,7 +1467,12 @@ paths:
                   - id: 12131313
                     startsAt: "2021-10-01T10:00:00Z"
                     endsAt: "2021-10-01T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1476,7 +1486,12 @@ paths:
                   - id: 12131314
                     startsAt: "2021-10-05T14:30:00Z"
                     endsAt: "2021-10-05T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1485,7 +1500,12 @@ paths:
                   - id: 12131315
                     startsAt: "2021-10-08T10:00:00Z"
                     endsAt: "2021-10-08T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione aula
                     description: Demos about TLS and SSH. Introduction to the laboratory.
                     courseId: 252258
@@ -1494,7 +1514,12 @@ paths:
                   - id: 12131316
                     startsAt: "2021-10-12T08:30:00Z"
                     endsAt: "2021-10-12T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1503,7 +1528,12 @@ paths:
                   - id: 12131317
                     startsAt: "2021-10-12T10:00:00Z"
                     endsAt: "2021-10-12T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1512,7 +1542,12 @@ paths:
                   - id: 12131318
                     startsAt: "2021-10-12T14:30:00Z"
                     endsAt: "2021-10-12T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1521,7 +1556,12 @@ paths:
                   - id: 12131319
                     startsAt: "2021-10-15T10:00:00Z"
                     endsAt: "2021-10-15T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1530,7 +1570,12 @@ paths:
                   - id: 12131320
                     startsAt: "2021-10-19T08:30:00Z"
                     endsAt: "2021-10-19T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1539,7 +1584,12 @@ paths:
                   - id: 12131321
                     startsAt: "2021-10-19T10:00:00Z"
                     endsAt: "2021-10-19T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1548,7 +1598,12 @@ paths:
                   - id: 12131322
                     startsAt: "2021-10-19T14:30:00Z"
                     endsAt: "2021-10-19T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1557,7 +1612,12 @@ paths:
                   - id: 12131323
                     startsAt: "2021-10-22T10:00:00Z"
                     endsAt: "2021-10-22T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1566,7 +1626,12 @@ paths:
                   - id: 12131324
                     startsAt: "2021-10-26T08:30:00Z"
                     endsAt: "2021-10-26T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1575,7 +1640,12 @@ paths:
                   - id: 12131325
                     startsAt: "2021-10-26T10:00:00Z"
                     endsAt: "2021-10-26T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1584,7 +1654,12 @@ paths:
                   - id: 12131326
                     startsAt: "2021-10-26T14:30:00Z"
                     endsAt: "2021-10-26T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1593,7 +1668,12 @@ paths:
                   - id: 12131327
                     startsAt: "2021-11-02T08:30:00Z"
                     endsAt: "2021-11-02T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1602,7 +1682,12 @@ paths:
                   - id: 12131328
                     startsAt: "2021-11-02T10:00:00Z"
                     endsAt: "2021-11-02T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1611,7 +1696,12 @@ paths:
                   - id: 12131329
                     startsAt: "2021-11-02T14:30:00Z"
                     endsAt: "2021-11-02T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1620,7 +1710,12 @@ paths:
                   - id: 12131330
                     startsAt: "2021-11-05T10:00:00Z"
                     endsAt: "2021-11-05T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1629,8 +1724,13 @@ paths:
                   - id: 12131331
                     startsAt: "2021-11-09T08:30:00Z"
                     endsAt: "2021-11-09T10:00:00Z"
-                    roomName: LABINF
-                    type: Esercitazione Laboratorio
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
+                    type: Esercitazione Laboratorio con titolo esageratamente lungo che poi boh
                     description: "squadra 1"
                     courseId: 252258
                     teacherId: 1847
@@ -1638,7 +1738,12 @@ paths:
                   - id: 12131332
                     startsAt: "2021-11-09T10:00:00Z"
                     endsAt: "2021-11-09T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description: "squadra 1"
                     courseId: 252258
@@ -1647,7 +1752,12 @@ paths:
                   - id: 12131333
                     startsAt: "2021-11-09T14:30:00Z"
                     endsAt: "2021-11-09T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1656,7 +1766,12 @@ paths:
                   - id: 12131334
                     startsAt: "2021-11-16T08:30:00Z"
                     endsAt: "2021-11-16T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1665,7 +1780,12 @@ paths:
                   - id: 12131335
                     startsAt: "2021-11-16T10:00:00Z"
                     endsAt: "2021-11-16T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1674,7 +1794,12 @@ paths:
                   - id: 12131336
                     startsAt: "2021-11-16T14:30:00Z"
                     endsAt: "2021-11-16T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1683,7 +1808,12 @@ paths:
                   - id: 12131337
                     startsAt: "2021-11-23T08:30:00Z"
                     endsAt: "2021-11-23T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1692,7 +1822,12 @@ paths:
                   - id: 12131338
                     startsAt: "2021-11-23T10:00:00Z"
                     endsAt: "2021-11-23T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1701,7 +1836,12 @@ paths:
                   - id: 12131339
                     startsAt: "2021-11-23T14:30:00Z"
                     endsAt: "2021-11-23T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione
                     description:
                     courseId: 252258
@@ -1710,7 +1850,12 @@ paths:
                   - id: 12131340
                     startsAt: "2021-11-30T08:30:00Z"
                     endsAt: "2021-11-30T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1719,7 +1864,12 @@ paths:
                   - id: 12131341
                     startsAt: "2021-11-30T10:00:00Z"
                     endsAt: "2021-11-30T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
                     courseId: 252258
@@ -1728,7 +1878,12 @@ paths:
                   - id: 12131342
                     startsAt: "2021-11-30T14:30:00Z"
                     endsAt: "2021-11-30T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Esercitazione aula
                     description:
                     courseId: 252258
@@ -1737,7 +1892,12 @@ paths:
                   - id: 12131343
                     startsAt: "2021-12-03T10:00:00Z"
                     endsAt: "2021-12-03T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1746,7 +1906,12 @@ paths:
                   - id: 12131344
                     startsAt: "2021-12-07T08:30:00Z"
                     endsAt: "2021-12-07T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1755,7 +1920,12 @@ paths:
                   - id: 12131345
                     startsAt: "2021-12-07T10:00:00Z"
                     endsAt: "2021-12-07T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1764,7 +1934,12 @@ paths:
                   - id: 12131346
                     startsAt: "2021-12-07T14:30:00Z"
                     endsAt: "2021-12-07T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1773,7 +1948,12 @@ paths:
                   - id: 12131347
                     startsAt: "2021-12-10T10:00:00Z"
                     endsAt: "2021-12-10T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1782,7 +1962,12 @@ paths:
                   - id: 12131348
                     startsAt: "2021-12-14T08:30:00Z"
                     endsAt: "2021-12-14T10:00:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1791,7 +1976,12 @@ paths:
                   - id: 12131349
                     startsAt: "2021-12-14T10:00:00Z"
                     endsAt: "2021-12-14T11:30:00Z"
-                    roomName: LABINF
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1800,7 +1990,12 @@ paths:
                   - id: 12131350
                     startsAt: "2021-12-14T14:30:00Z"
                     endsAt: "2021-12-14T17:30:00Z"
-                    roomName: R3
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -1809,7 +2004,12 @@ paths:
                   - id: 12131351
                     startsAt: "2021-12-17T10:00:00Z"
                     endsAt: "2021-12-17T11:30:00Z"
-                    roomName: AULA VIRTUALE
+                    place:
+                      buildingId: TO_CIT22
+                      floorId: XPTE
+                      name: Aula 1P
+                      roomId: 036
+                      siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
                     courseId: 252258
@@ -2848,7 +3048,7 @@ components:
           format: date-time
           nullable: true
           example: 2022-07-03T14:00:00Z
-      required: [isDeleted]
+      required: [ isDeleted ]
     CourseNotices:
       type: object
       properties:
@@ -3067,7 +3267,7 @@ components:
           type: number
           description: The year this course was given in
           example: 2021
-      required: [id, year, role, name]
+      required: [ id, year, role, name ]
     PlaceOverview:
       type: object
       properties:
@@ -3248,10 +3448,27 @@ components:
         teacherId:
           type: integer
           example: 150157
-        roomName:
-          type: string
-          example: 3S
+        place:
+          $ref: '#/components/schemas/LecturePlace'
 
+    LecturePlace:
+      type: object
+      properties:
+        buildingId:
+          type: string
+          example: TO_CIT22
+        floorId:
+          type: string
+          example: XPTE
+        name:
+          type: string
+          example: Aula 1P
+        roomId:
+          type: string
+          example: 036
+        siteId:
+          type: string
+          example: TO_CIT
     Device:
       type: object
       properties:
@@ -3323,7 +3540,7 @@ components:
         isRead:
           type: boolean
           example: true
-      required: [id, title, message, type, sentAt, isRead]
+      required: [ id, title, message, type, sentAt, isRead ]
 
     TicketSubtopic:
       type: object
@@ -3334,7 +3551,7 @@ components:
         name:
           type: string
           example: Accesso studenti esterni
-      required: [id, name]
+      required: [ id, name ]
     TicketTopic:
       allOf:
         - $ref: '#/components/schemas/TicketSubtopic'
@@ -3350,7 +3567,7 @@ components:
             subtopics:
               - id: 103
                 name: Accesso studenti esterni
-          required: [subtopics]
+          required: [ subtopics ]
     TicketFAQ:
       type: object
       properties:
@@ -3363,7 +3580,7 @@ components:
         answer:
           type: string
           example: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href=\"https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT\">Log-in</a>&nbsp;e segui le istruzioni.
-      required: [id, question, answer]
+      required: [ id, question, answer ]
     TicketStatus:
       type: string
       enum:
@@ -3407,7 +3624,7 @@ components:
           type: string
           format: date-time
           example: 2022-08-31T14:00:00Z
-      required: [id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt]
+      required: [ id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt ]
     Ticket:
       allOf:
         - $ref: '#/components/schemas/TicketOverview'
@@ -3421,7 +3638,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/TicketAttachment'
-          required: [replies, attachments]
+          required: [ replies, attachments ]
     TicketReply:
       type: object
       properties:
@@ -3450,7 +3667,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
-      required: [id, message, senderId, isFromAgent, isRead, createdAt, attachments]
+      required: [ id, message, senderId, isFromAgent, isRead, createdAt, attachments ]
     TicketAttachment:
       type: object
       properties:
@@ -3463,7 +3680,7 @@ components:
         mimeType:
           type: string
           example: image/png
-      required: [id, filename, mimeType]
+      required: [ id, filename, mimeType ]
     ReplyTicketRequest:
       type: object
       properties:
@@ -3489,6 +3706,6 @@ components:
         attachment:
           type: string
           format: binary
-      required: [subject, message, subtopicId]
+      required: [ subject, message, subtopicId ]
 
 
