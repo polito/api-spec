@@ -3256,6 +3256,10 @@ components:
           type: string
           nullable: true
           example: null
+        notes:
+          type: string
+          nullable: true
+          example: null
     Error:
       type: object
       properties:
