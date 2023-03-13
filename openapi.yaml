@@ -2388,6 +2388,13 @@ paths:
         - $ref: '#/components/parameters/ticketIdParam'
         - $ref: '#/components/parameters/ticketAttachmentIdParam'
       responses:
+        200:
+          description: Attachment
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
         302:
           description: Redirect to attachment download
         404:
@@ -2434,6 +2441,13 @@ paths:
         - $ref: '#/components/parameters/ticketReplyIdParam'
         - $ref: '#/components/parameters/ticketAttachmentIdParam'
       responses:
+        200:
+          description: Attachment
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
         302:
           description: Redirect to attachment download
         404:
@@ -3682,7 +3696,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/TicketAttachment'
-          required: [ replies, attachments ]
+          required: [ id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt, replies, attachments ]
     TicketReply:
       type: object
       properties:
