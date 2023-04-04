@@ -2604,6 +2604,9 @@ components:
         degreeCode:
           type: string
           example: LM-32
+        degreeLevel:
+          type: string
+          example: Corso di Laurea Magistrale in
         degreeName:
           type: string
           example: INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)
@@ -2613,6 +2616,9 @@ components:
         lastEnrollmentYear:
           type: integer
           example: 2022
+        isCurrentlyEnrolled:
+          type: boolean
+          example: false
         averageGrade:
           type: number
           nullable: true
