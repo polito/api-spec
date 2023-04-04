@@ -3037,6 +3037,19 @@ components:
             year:
               type: string
               example: '2022'
+            previousEditions:
+              description: Previous editions of this course that were part of the student's PSP
+              type: array
+              items:
+                type: object
+                properties:
+                    year:
+                      type: string
+                      example: '2021'
+                    id:
+                      type: integer
+                      example: 244577
+                required: [ year, id ]
             vcPreviousYears:
               type: array
               items:
@@ -3089,7 +3102,7 @@ components:
                     type: number
                     example: 244577
                 required: [ role, id ]
-          required: [ year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+          required: [ year, previousEditions, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
