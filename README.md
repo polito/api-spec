@@ -2,13 +2,13 @@
 The OpenAPI specification for the REST API of Politecnico di Torino.
 
 ## How to obtain a human-readable interface
-You can start a Docker container of swagger-ui directly on your computer by running: 
+If you are accustomed to using Postman, you can just import the .yaml file containing the specification.
+
+Alternatively, you can start a Docker container of swagger-ui directly on your computer by running: 
 ```bash
 docker-compose up
 ``` 
 By default, the web interface will start on port 8080.
-
-Alternatively, you can import the .yaml file on https://editor.swagger.io.
 
 ## About OpenAPI
 These definitions provide a single point of truth that can be used end-to-end:
