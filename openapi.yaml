@@ -2590,8 +2590,10 @@ components:
           type: string
           enum:
             - active
-            - graduate
-        #            TODO document all possible statuses
+            - closed
+            - cancelled
+            - graduated
+            - career_closed
         allCareerIds:
           description: All the ids related to this student
           type: array
