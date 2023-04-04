@@ -2574,6 +2574,7 @@ components:
         token:
           type: string
           example: c679fa38ff665df6a676acd833194385
+      required: [ username, type, clientId, token ]
     Student:
       type: object
       properties:
@@ -2663,6 +2664,30 @@ components:
         smartCardPicture:
           type: string
           example: https://
+      required:
+        - username
+        - firstName
+        - lastName
+        - status
+        - allCareerIds
+        - degreeCode
+        - degreeLevel
+        - degreeName
+        - firstEnrollmentYear
+        - lastEnrollmentYear
+        - isCurrentlyEnrolled
+        - averageGrade
+        - estimatedFinalGrade
+        - averageGradePurged
+        - estimatedFinalGradePurged
+        - mastersAdmissionAverageGrade
+        - totalCredits
+        - totalAttendedCredits
+        - totalAcquiredCredits
+        - enrollmentCredits
+        - enrollmentAttendedCredits
+        - enrollmentAcquiredCredits
+        - smartCardPicture
 
     Deadline:
       type: object
@@ -2681,6 +2706,7 @@ components:
           type: string
           format: date
           example: '2022-08-31'
+      required: [ name, type, url, date ]
 
     ExamGrade:
       type: object
@@ -2701,6 +2727,7 @@ components:
           type: string
           format: date
           example: '2022-05-15'
+      required: [ courseName, credits, grade, isProvisional, date ]
 
     BookingTopic:
       type: object
@@ -2777,7 +2804,6 @@ components:
         canBeCancelled:
           type: boolean
           example: true
-
     BookingSlot:
       type: object
       properties:
@@ -2833,7 +2859,6 @@ components:
           type: string
           format: date-time
           example: '2021-10-04T16:00:00Z'
-
     BookingSeats:
       type: object
       properties:
@@ -2847,7 +2872,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingSeatsRow'
-
     BookingSeatsRow:
       type: object
       properties:
@@ -2861,7 +2885,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingSeat'
-
     BookingSeat:
       type: object
       properties:
@@ -2877,8 +2900,6 @@ components:
         label:
           type: string
           example: B12
-
-
     Booking:
       type: object
       properties:
@@ -3007,6 +3028,7 @@ components:
           type: boolean
           description: If true, this course is actually a module
           example: true
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule ]
     Course:
       allOf:
         - $ref: '#/components/schemas/CourseOverview'
@@ -3026,6 +3048,7 @@ components:
                   id:
                     type: integer
                     example: 244577
+                required: [ year, id ]
             vcOtherCourses:
               description: Other editions/courses to be included in virtual classrooms
               type: array
@@ -3041,6 +3064,7 @@ components:
                   id:
                     type: integer
                     example: 247431
+                required: [ year, name, id ]
             notifications:
               type: object
               properties:
@@ -3053,6 +3077,7 @@ components:
                 videolezioni:
                   type: boolean
                   example: true
+              required: [ avvisidoc, matdid, videolezioni ]
             staff:
               type: array
               items:
@@ -3063,6 +3088,8 @@ components:
                   id:
                     type: number
                     example: 244577
+                required: [ role, id ]
+          required: [ year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
@@ -3092,6 +3119,7 @@ components:
         sizeInKiloBytes:
           type: integer
           example: 305
+      required: [ id, description, mimeType, filename, uploadedAt, deletedAt, url, sizeInKiloBytes ]
     CourseAssignmentUpload:
       type: object
       properties:
@@ -3110,7 +3138,7 @@ components:
           format: date-time
           nullable: true
           example: 2022-07-03T14:00:00Z
-      required: [ isDeleted ]
+      required: [ deletedAt ]
     CourseNotices:
       type: object
       properties:
@@ -3129,6 +3157,7 @@ components:
         content:
           type: string
           example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
+      required: [ id, publishedAt, expiresAt, content ]
     CourseGuideSection:
       type: object
       properties:
@@ -3139,6 +3168,7 @@ components:
           type: string
           example: The course will cover the design and implementation of server-side
             architectures...
+      required: [ title, content ]
     CourseDirectory:
       type: object
       properties:
@@ -3153,6 +3183,7 @@ components:
           example: Laboratori
         files:
           $ref: '#/components/schemas/CourseDirectoryContent'
+      required: [ id, type, name, files ]
     CourseDirectoryContent:
       type: array
       items:
@@ -3164,7 +3195,6 @@ components:
           mapping:
             directory: '#/components/schemas/CourseDirectory'
             file: '#/components/schemas/CourseFileOverview'
-
     CourseFileOverview:
       type: object
       properties:
@@ -3187,17 +3217,8 @@ components:
           type: string
           format: date-time
           example: 2022-08-31T14:00:00Z
-    CourseFile:
-      allOf:
-        - $ref: '#/components/schemas/CourseFileOverview'
-        - type: object
-          properties:
-            content:
-              pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
-              type: string
-              description: Base-64 encoded file
-              format: byte
-              example: bG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQK
+      required: [ id, type, name, sizeInKiloBytes, mimeType, createdAt ]
+
     Exam:
       type: object
       properties:
@@ -3259,6 +3280,7 @@ components:
               items:
                 type: string
               example: [ Yes, No ]
+          required: [ statement, options ]
           example: null
         feedback:
           type: string
@@ -3268,6 +3290,22 @@ components:
           type: string
           nullable: true
           example: null
+      required:
+        - id
+        - courseId
+        - courseShortcode
+        - courseName
+        - teacherId
+        - type
+        - classrooms
+        - status
+        - bookingStartsAt
+        - bookingEndsAt
+        - examStartsAt
+        - bookedCount
+        - question
+        - feedback
+        - notes
     Error:
       type: object
       properties:
@@ -3277,6 +3315,7 @@ components:
         message:
           type: string
           example: Error message
+
     PersonOverview:
       type: object
       properties:
@@ -3291,7 +3330,9 @@ components:
           example: Corno
         picture:
           type: string
+          nullable: true
           example: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+      required: [ id, firstName, lastName, picture ]
     Person:
       allOf:
         - $ref: '#/components/schemas/PersonOverview'
@@ -3309,14 +3350,17 @@ components:
               example: Docente
             facilityShortName:
               type: string
+              nullable: true
               example: DAUIN
             profileUrl:
               type: string
               example: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
             courses:
               type: array
+              nullable: true
               items:
                 $ref: "#/components/schemas/PersonCourse"
+          required: [ email, phoneNumbers, role, facilityShortName, profileUrl, courses ]
     PersonCourse:
       type: object
       properties:
@@ -3353,6 +3397,7 @@ components:
           $ref: '#/components/schemas/Site'
         structure:
           type: object
+          nullable: true
           properties:
             name:
               type: string
@@ -3368,6 +3413,7 @@ components:
               type: string
               nullable: true
               example: null
+          required: [ name, shortName, email, phone ]
         latitude:
           type: string
           example: '45.0626340000000000'
@@ -3377,6 +3423,7 @@ components:
         capacity:
           type: integer
           example: 300
+      required: [ name, type, city, site, structure, latitude, longitude, capacity ]
     Site:
       type: object
       properties:
@@ -3395,6 +3442,7 @@ components:
         lon:
           type: string
           example: '7.6578230000000000'
+      required: [ id, name, city, lat, lon ]
     VideoLecture:
       type: object
       properties:
@@ -3426,6 +3474,7 @@ components:
         duration:
           type: string
           example: 00h 46m
+      required: [ id, title, teacherId, abstract, coverUrl, videoUrl, audioUrl, createdAt, duration ]
     RelatedVirtualClassroom:
       type: object
       properties:
@@ -3435,6 +3484,7 @@ components:
         title:
           type: string
           example: Lecture 1
+      required: [ id, title ]
     VirtualClassroom:
       type: object
       properties:
@@ -3464,6 +3514,7 @@ components:
         isLive:
           type: boolean
           example: false
+      required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, isLive ]
     VirtualClassroomLive:
       type: object
       properties:
@@ -3486,6 +3537,7 @@ components:
         isLive:
           type: boolean
           example: true
+      required: [ id, title, teacherId, meetingUrl, createdAt, isLive ]
     Lecture:
       type: object
       properties:
@@ -3522,9 +3574,10 @@ components:
           example: 150157
         place:
           $ref: '#/components/schemas/LecturePlace'
-
+      required: [ id, startsAt, endsAt, type, virtualClassrooms, description, courseId, courseName, teacherId, place ]
     LecturePlace:
       type: object
+      nullable: true
       properties:
         buildingId:
           type: string
@@ -3541,6 +3594,8 @@ components:
         siteId:
           type: string
           example: TO_CIT
+      required: [ buildingId, floorId, name, roomId, siteId ]
+
     Device:
       type: object
       properties:
@@ -3559,6 +3614,7 @@ components:
         manufacturer:
           type: string
           example: Samsung
+      required: [ platform ]
 
     Client:
       type: object
@@ -3580,6 +3636,7 @@ components:
         internal:
           type: string
           example: "7053"
+      required: [ full, internal ]
 
     MessageType:
       type: string
@@ -3590,7 +3647,6 @@ components:
         - teacher
         - secretariat
       example: secretariat
-
     Message:
       type: object
       properties:
@@ -3674,7 +3730,6 @@ components:
           example: Buongiorno, vi contatto per sostituire A con B
         status:
           $ref: '#/components/schemas/TicketStatus'
-          example: secretariat
         hasAttachments:
           type: boolean
           example: true
@@ -3697,7 +3752,7 @@ components:
           type: string
           format: date-time
           example: 2022-08-31T14:00:00Z
-      required: [ id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt ]
+      required: [ id, subject, message, status, hasAttachments, isFromAgent, agentId, unreadCount, createdAt, updatedAt ]
     Ticket:
       allOf:
         - $ref: '#/components/schemas/TicketOverview'
@@ -3740,7 +3795,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
-      required: [ id, message, senderId, isFromAgent, isRead, createdAt, attachments ]
+      required: [ id, message, senderId, isFromAgent, agentId, isRead, createdAt, attachments ]
     TicketAttachment:
       type: object
       properties:
