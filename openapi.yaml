@@ -44,6 +44,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Identity'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /auth/switch-career:
@@ -78,10 +79,9 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Identity'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
-
-
   /auth/logout:
     delete:
       tags:
@@ -111,6 +111,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Student'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -147,6 +148,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Deadline'
+                required: [ data ]
               example:
                 data:
                   - name: Termine per l'iscrizione e pagamento della prima rata, per gli studenti di anni successivi al primo
@@ -189,6 +191,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ExamGrade'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -210,6 +213,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/BookingTopic'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /booking-topics/{bookingTopicId}/slots:
@@ -250,6 +254,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/BookingSlot'
+                required: [ data ]
         404:
           description: Booking topic not found
           content:
@@ -285,6 +290,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/BookingSeats'
+                required: [ data ]
         404:
           description: Booking topic|slot not found
           content:
@@ -311,6 +317,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Booking'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
     post:
@@ -410,6 +417,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseOverview'
+                required: [ data ]
               example:
                 data:
                   - id: 251007
@@ -517,6 +525,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Course'
+                required: [ data ]
               example:
                 data:
                   id: 252842
@@ -572,6 +581,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/CourseDirectoryContent'
+                required: [ data ]
               example:
                 data:
                   - id: "33248655"
@@ -813,6 +823,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseAssignment'
+                required: [ data ]
               example:
                 data:
                   - id: 1003948
@@ -972,6 +983,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseGuideSection'
+                required: [ data ]
               example:
                 data:
                   - title: Presentazione
@@ -1027,6 +1039,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CourseNotices'
+                required: [ data ]
               example:
                 data:
                   - id: 332559
@@ -1072,6 +1085,7 @@ paths:
                       anyOf:
                         - $ref: '#/components/schemas/VirtualClassroomLive'
                         - $ref: '#/components/schemas/VirtualClassroom'
+                required: [ data ]
               example:
                 data:
                   - id: 149336
@@ -1258,6 +1272,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/VideoLecture'
+                required: [ data ]
         404:
           description: Course not found
           content:
@@ -1285,6 +1300,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Exam'
+                required: [ data ]
               example:
                 data:
                   - id: 888137
@@ -1443,6 +1459,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Lecture'
+                required: [ data ]
               example:
                 data:
                   - id: 12131312
@@ -2081,6 +2098,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/PersonOverview'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /people/{personId}:
@@ -2105,6 +2123,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Person'
+                required: [ data ]
         404:
           description: Person not found
           content:
@@ -2132,6 +2151,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Site'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /places:
@@ -2164,6 +2184,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/PlaceOverview'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -2185,6 +2206,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Message'
+                required: [ data ]
               example:
                 data:
                   - id: 63775600
@@ -2251,6 +2273,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TicketFAQ'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /ticket-topics:
@@ -2271,6 +2294,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TicketTopic'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /tickets:
@@ -2291,6 +2315,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TicketOverview'
+                required: [ data ]
     post:
       tags:
         - Tickets
@@ -2312,6 +2337,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TicketOverview'
+                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
   /tickets/{ticketId}:
@@ -2332,6 +2358,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Ticket'
+                required: [ data ]
         404:
           description: Ticket not found
           content:
