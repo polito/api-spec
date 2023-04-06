@@ -2948,6 +2948,7 @@ components:
             type:
               type: string
               example: 'Ufficio'
+          required: [ id, title, description, type ]
         subtopic:
           type: object
           nullable: true
@@ -2961,6 +2962,7 @@ components:
             description:
               type: string
               example: ''
+          required: [ id, title, description ]
           example: null
         startsAt:
           type: string
@@ -3017,6 +3019,7 @@ components:
             radiusInKm:
               type: number
               example: 0.1
+      required: [id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location]
 
     CourseOverview:
       type: object
