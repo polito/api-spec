@@ -3131,7 +3131,7 @@ components:
                     type: number
                     example: 244577
                 required: [ role, id ]
-          required: [ year, previousEditions, vcPreviousYears, vcOtherCourses, notifications, staff ]
+          required: [ year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
