@@ -2627,8 +2627,8 @@ components:
           type: array
           items:
             type: string
-            example: 213956
-          example: [ 290683, 213956 ]
+            example: "213956"
+          example: [ "290683", "213956" ]
         degreeCode:
           type: string
           example: LM-32
