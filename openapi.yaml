@@ -2486,6 +2486,53 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /job-offers:
+    get:
+      tags:
+        - Job offers
+      summary: List job offers | Elenca offerte di lavoro
+      operationId: getJobOffers
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobOfferOverview'
+                required: [ data ]
+  /job-offers/{jobOfferId}:
+    get:
+      tags:
+        - Job offers
+      parameters:
+        - $ref: '#/components/parameters/jobOfferIdParam'
+      summary: Show a job offer | Mostra un'offerta di lavoro
+      operationId: getJobOffer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/JobOffer'
+                required: [ data ]
+        404:
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
 components:
   parameters:
     bookingIdParam:
@@ -2573,6 +2620,12 @@ components:
         type: string
         enum: [ it, en ]
         default: it
+    jobOfferIdParam:
+      name: jobOfferId
+      in: path
+      required: true
+      schema:
+        type: integer
   responses:
     ErrorResponse:
       description: Server error
@@ -3882,4 +3935,66 @@ components:
           format: binary
       required: [ subject, message, subtopicId ]
 
-
+    JobOfferOverview:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 43834
+        title:
+          type: string
+          example: "Progettista"
+        location:
+          type: string
+          example: "BOLLENGO (TO),IVREA (TO)"
+        companyId:
+            type: number
+            example: 3243
+        companyName:
+          type: string
+          example: "Synergie Italia spa"
+        createdAtDate:
+          type: string
+          format: date
+          example: 2022-08-31
+        endsAtDate:
+          type: string
+          format: date
+          example: 2022-08-31
+      required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate ]
+    JobOffer:
+      allOf:
+        - $ref: '#/components/schemas/JobOfferOverview'
+        - type: object
+          properties:
+            companyLocation:
+              type: string
+              example: "Torino 10152 TORINO (TO)"
+            companyMission:
+              type: string
+              example: "Synergie Agenzia per il lavoro ricerca per importante azienda metalmeccanica produttrice di articoli elettronici"
+            description:
+              type: string
+              example: "Il candidato, in affiancamento al tutor, parteciperà alla progettazione e allo sviluppo di sistemi meccatronici avanzati utilizzando LabVIEW, svolgere attività di test e debug dei sistemi meccatronici progettati."
+            requirements:
+              type: string
+              example: "Preferibile conoscenza di LabVIEW, Matlab, Python e dei motori elettrici in particolare motori step."
+            contractType:
+              type: string
+              example: "Contratto a tempo determinato di 6 mesi\nOrario di lavoro: dal Lunedì al Venerdì dalle 8 alle 17\nSede di lavoro: Ivrea"
+            contactInformation:
+              type: string
+              example: "Pinco Pallo - 0111111111"
+              nullable: true
+            url:
+              type: string
+              example: "https://..."
+              nullable: true
+            email:
+              type: string
+              example: "anyone@example.com"
+              nullable: true
+            freePositions:
+              type: number
+              example: 2
+          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, contactInformation, url, email, freePositions ]
