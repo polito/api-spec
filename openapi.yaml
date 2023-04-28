@@ -3994,4 +3994,7 @@ components:
               type: string
               example: "anyone@example.com"
               nullable: true
-          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, contactInformation, url, email ]
+            freePositions:
+              type: number
+              example: 2
+          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, contactInformation, url, email, freePositions ]
