@@ -2133,6 +2133,27 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /place-categories:
+    get:
+      tags:
+        - Places
+      summary: List place categories | Elenca categorie luoghi
+      operationId: getPlaceCategories
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlaceCategory'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /sites:
     get:
       tags:
@@ -2154,6 +2175,36 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /sites/{siteId}/buildings:
+    get:
+      tags:
+        - Places
+      summary: List buildings | Elenca edifici
+      operationId: getBuildings
+      parameters:
+        - $ref: '#/components/parameters/pathSiteId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Building'
+                required: [ data ]
+        404:
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /places:
     get:
       tags:
@@ -2167,11 +2218,10 @@ paths:
           required: true
           schema:
             type: string
-        - name: siteId
-          in: query
-          description: Filter places by their site
-          schema:
-            type: string
+        - $ref: '#/components/parameters/queryPlaceCategoryId'
+        - $ref: '#/components/parameters/querySiteId'
+        - $ref: '#/components/parameters/queryBuildingId'
+        - $ref: '#/components/parameters/queryFloorId'
       responses:
         200:
           description: Success
@@ -2185,9 +2235,33 @@ paths:
                     items:
                       $ref: '#/components/schemas/PlaceOverview'
                 required: [ data ]
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
-
+  /places/{placeId}:
+    get:
+      tags:
+        - Places
+      summary: Show place | Mostra luogo
+      operationId: getPlace
+      parameters:
+        - $ref: '#/components/parameters/pathPlaceId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Place'
+                required: [ data ]
   /messages:
     get:
       tags:
@@ -2589,12 +2663,44 @@ components:
       required: true
       schema:
         type: string
-    placeIdParam:
+    pathSiteId:
+      name: siteId
+      in: path
+      required: true
+      schema:
+        type: string
+    queryPlaceCategoryId:
+      name: placeCategoryId
+      in: query
+      required: false
+      schema:
+        type: string
+    querySiteId:
+      name: siteId
+      in: query
+      required: false
+      schema:
+        type: string
+    queryBuildingId:
+      name: buildingId
+      in: query
+      required: false
+      schema:
+        type: string
+    queryFloorId:
+      name: floorId
+      in: query
+      required: false
+      schema:
+        type: string
+
+
+    pathPlaceId:
       name: placeId
       in: path
       required: true
       schema:
-        type: integer
+        type: string
     ticketIdParam:
       name: ticketId
       in: path
@@ -3072,7 +3178,7 @@ components:
             radiusInKm:
               type: number
               example: 0.1
-      required: [id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location]
+      required: [ id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location ]
 
     CourseOverview:
       type: object
@@ -3125,12 +3231,12 @@ components:
               items:
                 type: object
                 properties:
-                    year:
-                      type: string
-                      example: '2021'
-                    id:
-                      type: integer
-                      example: 244577
+                  year:
+                    type: string
+                    example: '2021'
+                  id:
+                    type: integer
+                    example: 244577
                 required: [ year, id ]
             vcPreviousYears:
               type: array
@@ -3477,50 +3583,17 @@ components:
           description: The year this course was given in
           example: 2021
       required: [ id, year, role, name ]
-    PlaceOverview:
+    GeoLocation:
       type: object
       properties:
-        name:
-          type: string
-          example: Aula 1D
-        type:
-          type: string
-          example: Aula
-        city:
-          type: string
-          example: Torino
-        site:
-          $ref: '#/components/schemas/Site'
-        structure:
-          type: object
-          nullable: true
-          properties:
-            name:
-              type: string
-              example: Dipartimento di Ingegneria Strutturale, Edile e Geotecnica
-            shortName:
-              type: string
-              example: DISEG
-            email:
-              type: string
-              nullable: true
-              example: null
-            phone:
-              type: string
-              nullable: true
-              example: null
-          required: [ name, shortName, email, phone ]
         latitude:
-          type: string
-          example: '45.0626340000000000'
+          type: number
+          example: 45.064254
         longitude:
-          type: string
-          example: '7.6605410000000000'
-        capacity:
-          type: integer
-          example: 300
-      required: [ name, type, city, site, structure, latitude, longitude, capacity ]
-    Site:
+          type: number
+          example: 7.657823
+      required: [ latitude, longitude ]
+    SiteOverview:
       type: object
       properties:
         id:
@@ -3529,16 +3602,105 @@ components:
         name:
           type: string
           example: Sede Centrale - Cittadella Politecnica
-        city:
+      required: [ id, name ]
+    Site:
+      allOf:
+        - $ref: '#/components/schemas/SiteOverview'
+        - type: object
+          properties:
+            floors:
+              type: array
+              items:
+                $ref: '#/components/schemas/Floor'
+          required: [ floors ]
+        - $ref: '#/components/schemas/GeoLocation'
+    BuildingOverview:
+      type: object
+      properties:
+        id:
           type: string
-          example: Torino
-        lat:
+          example: TO_CIT09
+        name:
           type: string
-          example: '45.0642540000000000'
-        lon:
+          example: Aule T
+      required: [ id, name ]
+    Building:
+      allOf:
+        - $ref: '#/components/schemas/BuildingOverview'
+        - $ref: '#/components/schemas/GeoLocation'
+    Floor:
+      type: object
+      properties:
+        id:
           type: string
-          example: '7.6578230000000000'
-      required: [ id, name, city, lat, lon ]
+          example: XPTE
+        name:
+          type: string
+          example: Piano Terra
+        level:
+          type: integer
+          example: 0
+      required: [ id, name, level ]
+
+    PlaceCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          example: AULA
+        name:
+          type: string
+          example: Aula
+      required: [ id, name ]
+    PlaceOverview:
+      allOf:
+        - type: object
+          properties:
+            id:
+                type: number
+                example: 1
+            name:
+              type: string
+              example: Aula 1D
+            category:
+              $ref: '#/components/schemas/PlaceCategory'
+            site:
+              $ref: '#/components/schemas/SiteOverview'
+            building:
+              $ref: '#/components/schemas/BuildingOverview'
+            floor:
+              $ref: '#/components/schemas/Floor'
+          required: [ name, category, site, building, floor ]
+        - $ref: '#/components/schemas/GeoLocation'
+    Place:
+      allOf:
+        - $ref: '#/components/schemas/PlaceOverview'
+        - type: object
+          properties:
+            capacity:
+              type: integer
+              example: 300
+            structure:
+              type: object
+              nullable: true
+              properties:
+                name:
+                  type: string
+                  example: Dipartimento di Ingegneria Strutturale, Edile e Geotecnica
+                shortName:
+                  type: string
+                  example: DISEG
+                email:
+                  type: string
+                  nullable: true
+                  example: null
+                phone:
+                  type: string
+                  nullable: true
+                  example: null
+              required: [ name, shortName, email, phone ]
+            # TODO add more
+          required: [ capacity, structure ]
     VideoLecture:
       type: object
       properties:
@@ -3948,8 +4110,8 @@ components:
           type: string
           example: "BOLLENGO (TO),IVREA (TO)"
         companyId:
-            type: number
-            example: 3243
+          type: number
+          example: 3243
         companyName:
           type: string
           example: "Synergie Italia spa"
