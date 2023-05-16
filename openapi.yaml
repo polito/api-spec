@@ -3982,6 +3982,9 @@ components:
             contractType:
               type: string
               example: "Contratto a tempo determinato di 6 mesi\nOrario di lavoro: dal Lunedì al Venerdì dalle 8 alle 17\nSede di lavoro: Ivrea"
+            salary:
+              type: string
+              example: "1200"
             contactInformation:
               type: string
               example: "Pinco Pallo - 0111111111"
@@ -3997,4 +4000,4 @@ components:
             freePositions:
               type: number
               example: 2
-          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, contactInformation, url, email, freePositions ]
+          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
