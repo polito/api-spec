@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.18
+  version: 1.0.0-ALPHA.20
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -2073,6 +2073,50 @@ paths:
                     teacherId: 1847
                     virtualClassrooms: [ ]
 
+  /news:
+    get:
+      tags:
+        - News
+      summary: List news | Lista news
+      operationId: getNews
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsItemOverview'
+                required: [ data ]
+
+  /news/{newsItemId}:
+    get:
+      tags:
+        - News
+      summary: Show news | Mostra news
+      operationId: getNewsItem
+      parameters:
+        - name: newsItemId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsItem'
+                required: [ data ]
+
   /people:
     get:
       tags:
@@ -3072,7 +3116,7 @@ components:
             radiusInKm:
               type: number
               example: 0.1
-      required: [id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location]
+      required: [ id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location ]
 
     CourseOverview:
       type: object
@@ -3125,12 +3169,12 @@ components:
               items:
                 type: object
                 properties:
-                    year:
-                      type: string
-                      example: '2021'
-                    id:
-                      type: integer
-                      example: 244577
+                  year:
+                    type: string
+                    example: '2021'
+                  id:
+                    type: integer
+                    example: 244577
                 required: [ year, id ]
             vcPreviousYears:
               type: array
@@ -3934,6 +3978,71 @@ components:
           type: string
           format: binary
       required: [ subject, message, subtopicId ]
+    NewsItemOverview:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 123
+        title:
+          type: string
+          example: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
+        isEvent:
+          type: boolean
+          example: false
+        shortDescription:
+          type: string
+          example: Seminario di presentazione del progetto
+        eventStartTime:
+          type: string
+          example: Dal 30 agosto 2023
+          nullable: true
+        eventEndTime:
+            type: string
+            example: Al 30 agosto 2023
+            nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+      required: [ id, title, isEvent, shortDescription, eventStartTime, eventEndTime, createdAt ]
+    NewsItem:
+      allOf:
+        - $ref: '#/components/schemas/NewsItemOverview'
+        - type: object
+          properties:
+            location:
+              type: string
+              example: Energy Center - Via Paolo Borsellino 38, Torino
+            htmlContent:
+              type: string
+              example: Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium dell'Energy Center del Politecnico</strong>...
+            extras:
+              type: array
+              items:
+                $ref: '#/components/schemas/NewsItemExtra'
+          required: [ id, title, isEvent, shortDescription, eventStartTime, eventEndTime, createdAt, location, htmlContent, extras ]
+    NewsItemExtra:
+      type: object
+      properties:
+        url:
+          type: string
+          example: https://
+        description:
+          type: string
+          example: Bando
+        type:
+          type: string
+          enum:
+            - link
+            - file
+            - image
+          example: image
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+          nullable: true
+      required: [ url, description, type, sizeInKiloBytes ]
 
     JobOfferOverview:
       type: object
