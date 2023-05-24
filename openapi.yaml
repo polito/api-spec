@@ -3699,8 +3699,22 @@ components:
                   nullable: true
                   example: null
               required: [ name, shortName, email, phone ]
-            # TODO add more
-          required: [ capacity, structure ]
+            resources:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Personal Computer
+                    description:
+                      type: string
+                      example: Computer fisso da tavolo cablato per la proiezione
+                    category:
+                      type: string
+                      example: Technology
+                  required: [ name, description, category ]
+          required: [ capacity, structure, resources ]
     VideoLecture:
       type: object
       properties:
