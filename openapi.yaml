@@ -3802,6 +3802,10 @@ components:
           example: Puoi venire a ritirare la tua smartcard
         type:
           $ref: '#/components/schemas/MessageType'
+        senderId:
+          type: number
+          example: 150157
+          nullable: true
         sentAt:
           type: string
           format: date-time
@@ -3809,7 +3813,7 @@ components:
         isRead:
           type: boolean
           example: true
-      required: [ id, title, message, type, sentAt, isRead ]
+      required: [ id, title, message, type, senderId, sentAt, isRead ]
 
     TicketSubtopic:
       type: object
