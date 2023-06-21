@@ -3405,6 +3405,11 @@ components:
           format: date-time
           nullable: true
           example: '2022-09-02T14:00:00Z'
+        examEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-09-02T17:00:00Z'
         bookedCount:
           type: integer
           example: 42
@@ -3442,6 +3447,7 @@ components:
         - bookingStartsAt
         - bookingEndsAt
         - examStartsAt
+        - examEndsAt
         - bookedCount
         - question
         - feedback
