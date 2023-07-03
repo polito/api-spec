@@ -3593,6 +3593,16 @@ components:
           type: number
           example: 7.657823
       required: [ latitude, longitude ]
+    RoomOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '088'
+        name:
+          type: string
+          example: Aula 1D
+      required: [ id, name ]
     SiteOverview:
       type: object
       properties:
@@ -3657,11 +3667,10 @@ components:
         - type: object
           properties:
             id:
-                type: number
-                example: 1
-            name:
-              type: string
-              example: Aula 1D
+                type: string
+                example: 'TO_CIT09_XPTE_088'
+            room:
+              $ref: '#/components/schemas/RoomOverview'
             category:
               $ref: '#/components/schemas/PlaceCategory'
             site:
@@ -3670,7 +3679,7 @@ components:
               $ref: '#/components/schemas/BuildingOverview'
             floor:
               $ref: '#/components/schemas/Floor'
-          required: [ name, category, site, building, floor ]
+          required: [ id, room, name, category, site, building, floor ]
         - $ref: '#/components/schemas/GeoLocation'
     Place:
       allOf:
