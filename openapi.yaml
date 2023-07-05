@@ -2291,6 +2291,22 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /preferences:
+    patch:
+      tags:
+        - Student
+      summary: Update device preferences | Aggiorna preferenze del dispositivo
+      operationId: updateDevicePreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePreferencesRequest'
+      responses:
+        200:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /ticket-faqs:
     get:
       tags:
@@ -4053,6 +4069,15 @@ components:
           example: 305
           nullable: true
       required: [ url, description, type, sizeInKiloBytes ]
+
+    UpdatePreferencesRequest:
+      type: object
+      properties:
+        language:
+          type: string
+          enum: [ it, en ]
+          example: it
+      required: [  ]
 
     JobOfferOverview:
       type: object
