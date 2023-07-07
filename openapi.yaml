@@ -2667,6 +2667,81 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /offering:
+    get:
+      tags:
+        - Offering
+      summary: Get offering | Mostra offerta formativa
+      operationId: getOffering
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OfferingClass'
+                required: [data]
+
+  /offering/degrees/{degreeId}:
+    get:
+      tags:
+        - Offering
+      parameters:
+        - $ref: '#/components/parameters/degreeIdParam'
+        - $ref: '#/components/parameters/yearQueryParam'
+      summary: Show a degree | Mostra un corso di laurea
+      operationId: getOfferingDegree
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Degree'
+        404:
+          description: Degree not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /offering/courses/{courseShortcode}:
+    get:
+      tags:
+        - Offering
+      parameters:
+        - $ref: '#/components/parameters/courseShortcodeParam'
+        - $ref: '#/components/parameters/yearQueryParam'
+      summary: Show offering course | Mostra corso dell'offerta formativa
+      operationId: getOfferingCourse
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/OfferingCourse'
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   parameters:
     bookingIdParam:
@@ -2792,6 +2867,26 @@ components:
       required: true
       schema:
         type: integer
+    degreeIdParam:
+      name: degreeId
+      in: path
+      required: true
+      schema:
+        type: string
+      example: '81-6'
+    courseShortcodeParam:
+      name: courseShortcode
+      in: path
+      required: true
+      schema:
+        type: string
+    yearQueryParam:
+      name: year
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 2022
   responses:
     ErrorResponse:
       description: Server error
@@ -4339,3 +4434,189 @@ components:
               type: number
               example: 2
           required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
+
+    DegreeOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '81-6'
+        name:
+          type: string
+          example: 'Design e comunicazione'
+      required: [id, name]
+
+    OfferingClass:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Disegno industriale"
+        code:
+          type: string
+          example: 'L-4'
+        degrees:
+          type: array
+          items:
+            $ref: '#/components/schemas/DegreeOverview'
+      required: [name, code, degrees]
+
+    Degree:
+      allOf:
+        - $ref: '#/components/schemas/DegreeOverview'
+        - type: object
+          properties:
+            level:
+              type: string
+              example: Corso di laurea di 1°livello
+            department:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Dipartimento di Architettura e Design
+              required: [name]
+            faculty:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 'CL002'
+                name:
+                  type: string
+                  example: Design e comunicazione
+            location:
+              type: string
+              example: Torino
+            duration:
+              type: string
+              example: 3 anni
+            class:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: 'L-4'
+                name:
+                  type: string
+                  example: Disegno industriale
+              required: [code, name]
+            year:
+              type: string
+              example: '2022'
+            editions:
+              description: All the available editions of this degree
+              type: array
+              items:
+                type: string
+                example: '2021'
+            notes:
+              type: array
+              items:
+                type: string
+                example: Corso tenuto in italiano
+            objectives:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Objettivi formativi
+                content:
+                  type: string
+                  example: 'Il Corso di Laurea in Design e Comunicazione forma un \"designer laureato di primo livello\" ...'
+              required: [title, content]
+            jobOpportunities:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Sbocchi occupazionali e professionali
+                content:
+                  type: string
+                  example: 'Il Corso di Laurea in Design e Comunicazione forma un \"designer laureato di primo livello\" ...'
+              required: [ title, content ]
+            tracks:
+              type: array
+              items:
+                $ref: '#/components/schemas/Track'
+
+          required: [level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks]
+
+
+    Track:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 2060
+        name:
+          type: string
+          example: Design per la comunicazione
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferingCourseOverview'
+      required: [id, name, courses]
+
+    OfferingCourseOverview:
+      type: object
+      properties:
+        name:
+          type: string
+          example: System and device programming
+        shortcode:
+          type: string
+          example: 01NYHOV
+        cfu:
+          type: integer
+          example: 10
+        teachingYear:
+          type: integer
+          description: The year this course belongs to in this degree
+          example: 1
+        language:
+          type: string
+          enum: [it, en]
+      required: [name, shortcode, cfu, teachingYear, language]
+
+    OfferingCourse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: System and device programming
+        shortcode:
+          type: string
+          example: 01NYHOV
+        cfu:
+          type: integer
+          example: 10
+        teachingPeriod:
+          type: string
+          description: The semester(s) this course belongs to
+          example: 2-2
+        year:
+          type: string
+          example: '2022'
+        editions:
+          description: All the available editions of this course
+          type: array
+          items:
+            type: string
+            example: '2021'
+        staff:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              id:
+                type: number
+                example: 244577
+            required: [ role, id ]
+        guide:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseGuideSection'
+      required: [name, shortcode, cfu, teachingPeriod, year, editions, staff, guide]
