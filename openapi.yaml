@@ -3688,6 +3688,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Floor'
+            extent:
+              type: number
+              example: 0.0015
+              description: A delta in degrees that applied to the centroid coordinates of the site determines its extent
           required: [ floors ]
         - $ref: '#/components/schemas/GeoLocation'
     BuildingOverview:
@@ -3724,6 +3728,9 @@ components:
         id:
           type: string
           example: AULA
+        subCategory:
+          type: string
+          example: AULA_INF
         name:
           type: string
           example: Aula
@@ -3752,6 +3759,8 @@ components:
         - $ref: '#/components/schemas/PlaceOverview'
         - type: object
           properties:
+            geoJson:
+              $ref: 'https://gist.githubusercontent.com/codan-telcikt/e1d59ccc9a3af83e083f1a514c84026c/raw/b0c7fb9e3d6b074f55ec2758f98fbb8a770149d1/geometry_geojson.yaml#/definitions/Geometry'
             capacity:
               type: integer
               example: 300
