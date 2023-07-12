@@ -21,19 +21,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  example: s290683
-                password:
-                  type: string
-                  example: moreSecret
-                client:
-                  $ref: '#/components/schemas/Client'
-                device:
-                  $ref: '#/components/schemas/Device'
-              required: [ username, password ]
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         200:
           description: Success
@@ -4373,6 +4361,23 @@ components:
           type: string
           enum: [ it, en ]
           example: it
+
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: s290683
+        password:
+          type: string
+          example: moreSecret
+        client:
+          $ref: '#/components/schemas/Client'
+        device:
+          $ref: '#/components/schemas/Device'
+        preferences:
+          $ref: '#/components/schemas/UpdatePreferencesRequest'
+      required: [ username, password ]
 
     JobOfferOverview:
       type: object
