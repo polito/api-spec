@@ -2682,9 +2682,16 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OfferingClass'
+                    type: object
+                    properties:
+                      bachelor:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OfferingClass'
+                      master:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OfferingClass'
                 required: [data]
 
   /offering/degrees/{degreeId}:
@@ -4366,7 +4373,6 @@ components:
           type: string
           enum: [ it, en ]
           example: it
-      required: [  ]
 
     JobOfferOverview:
       type: object
