@@ -2194,7 +2194,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/PlaceCategory'
+                      $ref: '#/components/schemas/RootPlaceCategory'
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
@@ -2263,6 +2263,7 @@ paths:
           schema:
             type: string
         - $ref: '#/components/parameters/queryPlaceCategoryId'
+        - $ref: '#/components/parameters/queryPlaceSubCategoryId'
         - $ref: '#/components/parameters/querySiteId'
         - $ref: '#/components/parameters/queryBuildingId'
         - $ref: '#/components/parameters/queryFloorId'
@@ -2735,6 +2736,14 @@ components:
       required: false
       schema:
         type: string
+    queryPlaceSubCategoryId:
+      name: placeSubCategoryId[]
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
     querySiteId:
       name: siteId
       in: query
@@ -3721,7 +3730,6 @@ components:
           type: integer
           example: 0
       required: [ id, name, level ]
-
     PlaceCategory:
       type: object
       properties:
@@ -3731,10 +3739,27 @@ components:
         name:
           type: string
           example: Aula
-        subCategory:
-          type: string
-          example: AULA_INF
-      required: [ id, name, subCategory ]
+      required: [ id, name ]
+    RootPlaceCategory:
+      allOf:
+        - $ref: '#/components/schemas/PlaceCategory'
+        - type: object
+          properties:
+            subCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlaceCategory'
+          required: [ subCategories ]
+
+    PlaceCategoryOverview:
+      allOf:
+        - $ref: '#/components/schemas/PlaceCategory'
+        - type: object
+          properties:
+            subCategory:
+              type: string
+              example: AULA_INF
+          required: [ subCategory ]
     PlaceOverview:
       allOf:
         - type: object
@@ -3745,7 +3770,7 @@ components:
             room:
               $ref: '#/components/schemas/RoomOverview'
             category:
-              $ref: '#/components/schemas/PlaceCategory'
+              $ref: '#/components/schemas/PlaceCategoryOverview'
             site:
               $ref: '#/components/schemas/SiteOverview'
             building:
@@ -3760,7 +3785,7 @@ components:
         - type: object
           properties:
             geoJson:
-              $ref: 'https://gist.githubusercontent.com/codan-telcikt/e1d59ccc9a3af83e083f1a514c84026c/raw/b0c7fb9e3d6b074f55ec2758f98fbb8a770149d1/geometry_geojson.yaml#/definitions/Geometry'
+              $ref: 'https://gist.githubusercontent.com/zit0un/3ac0575eb0f3aabdc645c3faad47ab4a/raw/8db5e3ab89418def3a15474979e494c92b69592e/GeoJSON-OAS3.yaml#/components/schemas/Feature'
             capacity:
               type: integer
               example: 300
@@ -3799,6 +3824,7 @@ components:
                       example: Technology
                   required: [ name, description, category ]
           required: [ capacity, structure, resources, geoJson ]
+
     VideoLecture:
       type: object
       properties:
