@@ -2247,7 +2247,6 @@ paths:
         - name: search
           in: query
           description: Filter places containing 'search' in their name
-          required: true
           schema:
             type: string
         - $ref: '#/components/parameters/queryPlaceCategoryId'
