@@ -3846,8 +3846,7 @@ components:
         - type: object
           properties:
             subCategory:
-              type: string
-              example: AULA_INF
+              $ref: '#/components/schemas/PlaceCategory'
           required: [ subCategory ]
     PlaceOverview:
       allOf:
