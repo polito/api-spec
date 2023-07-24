@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.27
+  version: 1.0.0-ALPHA.28
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -1364,10 +1364,18 @@ paths:
             schema:
               type: object
               properties:
+                questionId:
+                  type: integer
+                  description: The id of the question
+                  example: 123456
                 questionOption:
                   type: integer
                   description: The index of the chosen option (starting at 1)
                   example: 1
+                requestReason:
+                  type: string
+                  description: The reason for the exam booking request
+                  example: "I'm not sure"
               example: { }
         required: false
       responses:
@@ -4401,7 +4409,7 @@ components:
           $ref: '#/components/schemas/Device'
         preferences:
           $ref: '#/components/schemas/UpdatePreferencesRequest'
-      required: [ username, password ]
+      required: [ username, password, preferences ]
 
     JobOfferOverview:
       type: object
