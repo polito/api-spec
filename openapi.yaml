@@ -3646,6 +3646,9 @@ components:
           type: object
           nullable: true
           properties:
+            id:
+              type: integer
+              example: 1
             statement:
               type: string
               example: Do you have a laptop to bring at the exam?
@@ -3654,7 +3657,7 @@ components:
               items:
                 type: string
               example: [ Yes, No ]
-          required: [ statement, options ]
+          required: [ id, statement, options ]
           example: null
         feedback:
           type: string
