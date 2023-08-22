@@ -3710,7 +3710,10 @@ components:
           type: string
           nullable: true
           example: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
-      required: [ id, firstName, lastName, picture ]
+        role:
+          type: string
+          example: Docente
+      required: [ id, firstName, lastName, picture, role ]
     Person:
       allOf:
         - $ref: '#/components/schemas/PersonOverview'
@@ -3723,9 +3726,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PhoneNumber'
-            role:
-              type: string
-              example: Docente
             facilityShortName:
               type: string
               nullable: true
@@ -3738,7 +3738,7 @@ components:
               nullable: true
               items:
                 $ref: "#/components/schemas/PersonCourse"
-          required: [ email, phoneNumbers, role, facilityShortName, profileUrl, courses ]
+          required: [ email, phoneNumbers, facilityShortName, profileUrl, courses ]
     PersonCourse:
       type: object
       properties:
