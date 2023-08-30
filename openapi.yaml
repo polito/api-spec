@@ -4626,6 +4626,23 @@ components:
           enum: [it, en]
       required: [name, shortcode, cfu, teachingYear, language]
 
+    CourseHours:
+      type: object
+      properties:
+        lecture:
+          type: integer
+          example: 48
+        tutoring:
+          type: integer
+          example: 12
+        classroomExercise:
+          type: integer
+          example: 24
+        labExercise:
+          type: integer
+          example: 24
+      required: []
+
     OfferingCourse:
       type: object
       properties:
@@ -4645,6 +4662,11 @@ components:
         year:
           type: string
           example: '2022'
+        examMode:
+          type: string
+          example: 'Prova scritta (in aula) ed elaborato Progettuale in gruppo'
+        hours:
+          $ref: '#/components/schemas/CourseHours'
         editions:
           description: All the available editions of this course
           type: array
@@ -4666,4 +4688,4 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseGuideSection'
-      required: [name, shortcode, cfu, teachingPeriod, year, editions, staff, guide]
+      required: [name, shortcode, cfu, teachingPeriod, year, examMode, hours, editions, staff, guide]
