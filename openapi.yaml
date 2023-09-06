@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.29
+  version: 1.0.0-ALPHA.31
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3487,7 +3487,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-          required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
