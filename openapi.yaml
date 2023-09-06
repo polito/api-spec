@@ -3371,6 +3371,19 @@ components:
           type: integer
           nullable: true
           example: 2893
+        previousEditions:
+          description: Previous editions of this course that were part of the student's PSP
+          type: array
+          items:
+            type: object
+            properties:
+              year:
+                type: string
+                example: '2021'
+              id:
+                type: integer
+                example: 244577
+            required: [ year, id ]
         isOverBooking:
           type: boolean
           example: false
@@ -3382,81 +3395,99 @@ components:
           type: boolean
           description: If true, this course is actually a module
           example: true
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule ]
     Course:
-      allOf:
-        - $ref: '#/components/schemas/CourseOverview'
-        - type: object
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: true
+          description: The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page
+          example: 258674
+        name:
+          type: string
+          example: System and device programming
+        shortcode:
+          type: string
+          example: 01NYHOV
+        cfu:
+          type: integer
+          example: 10
+        teachingPeriod:
+          type: string
+          description: The semester(s) this course belongs to
+          example: 2-2
+        teacherId:
+          type: integer
+          nullable: true
+          example: 2893
+        isOverBooking:
+          type: boolean
+          example: false
+        isInPersonalStudyPlan:
+          type: boolean
+          description: Included in the PSP | Incluso nel carico didattico
+          example: true
+        isModule:
+          type: boolean
+          description: If true, this course is actually a module
+          example: true
+        year:
+          type: string
+          example: '2022'
+        vcPreviousYears:
+          type: array
+          items:
+            type: object
+            properties:
+              year:
+                type: string
+                example: '2021'
+              id:
+                type: integer
+                example: 244577
+            required: [ year, id ]
+        vcOtherCourses:
+          description: Other editions/courses to be included in virtual classrooms
+          type: array
+          items:
+            type: object
+            properties:
+              year:
+                type: string
+                example: '2021'
+              name:
+                type: string
+                example: Fisica II
+              id:
+                type: integer
+                example: 247431
+            required: [ year, name, id ]
+        notifications:
+          type: object
           properties:
-            year:
-              type: string
-              example: '2022'
-            previousEditions:
-              description: Previous editions of this course that were part of the student's PSP
-              type: array
-              items:
-                type: object
-                properties:
-                  year:
-                    type: string
-                    example: '2021'
-                  id:
-                    type: integer
-                    example: 244577
-                required: [ year, id ]
-            vcPreviousYears:
-              type: array
-              items:
-                type: object
-                properties:
-                  year:
-                    type: string
-                    example: '2021'
-                  id:
-                    type: integer
-                    example: 244577
-                required: [ year, id ]
-            vcOtherCourses:
-              description: Other editions/courses to be included in virtual classrooms
-              type: array
-              items:
-                type: object
-                properties:
-                  year:
-                    type: string
-                    example: '2021'
-                  name:
-                    type: string
-                    example: Fisica II
-                  id:
-                    type: integer
-                    example: 247431
-                required: [ year, name, id ]
-            notifications:
-              type: object
-              properties:
-                avvisidoc:
-                  type: boolean
-                  example: true
-                matdid:
-                  type: boolean
-                  example: true
-                videolezioni:
-                  type: boolean
-                  example: true
-              required: [ avvisidoc, matdid, videolezioni ]
-            staff:
-              type: array
-              items:
-                type: object
-                properties:
-                  role:
-                    type: string
-                  id:
-                    type: number
-                    example: 244577
-                required: [ role, id ]
-          required: [ year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+            avvisidoc:
+              type: boolean
+              example: true
+            matdid:
+              type: boolean
+              example: true
+            videolezioni:
+              type: boolean
+              example: true
+          required: [ avvisidoc, matdid, videolezioni ]
+        staff:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              id:
+                type: number
+                example: 244577
+            required: [ role, id ]
+          required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
