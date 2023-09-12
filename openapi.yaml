@@ -2709,6 +2709,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Degree'
+                required: [data]
         404:
           description: Degree not found
           content:
@@ -2737,6 +2738,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/OfferingCourse'
+                required: [data]
         404:
           description: Course not found
           content:
