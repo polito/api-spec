@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.31
+  version: 1.0.0-ALPHA.32
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
