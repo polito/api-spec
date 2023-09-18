@@ -4660,7 +4660,11 @@ components:
         language:
           type: string
           enum: [it, en]
-      required: [name, shortcode, cfu, teachingYear, language]
+        group:
+          type: string
+          example: Insegnamento a scelta 1
+          nullable: true
+      required: [name, shortcode, cfu, teachingYear, language, group]
 
     CourseHours:
       type: object
