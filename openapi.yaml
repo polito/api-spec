@@ -3779,6 +3779,10 @@ components:
           type: integer
           description: The identifier for this course
           example: 258674
+        shortcode:
+          type: string
+          description: The shortcode for this course
+          example: 01NYHOV
         name:
           type: string
           description: The name of the course
