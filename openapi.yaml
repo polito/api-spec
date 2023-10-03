@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.34
+  version: 1.0.0-ALPHA.35
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -1074,10 +1074,10 @@ paths:
                         - $ref: '#/components/schemas/VirtualClassroomLive'
                         - $ref: '#/components/schemas/VirtualClassroom'
                       discriminator:
-                        propertyName: isLive
+                        propertyName: type
                         mapping:
-                          true: '#/components/schemas/VirtualClassroomLive'
-                          false: '#/components/schemas/VirtualClassroom'
+                          live: '#/components/schemas/VirtualClassroomLive'
+                          recording: '#/components/schemas/VirtualClassroom'
                 required: [ data ]
               example:
                 data:
@@ -4066,10 +4066,11 @@ components:
         duration:
           type: string
           example: 00h 46m
-        isLive:
-          type: boolean
-          example: false
-      required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, isLive ]
+        type:
+          type: string
+          enum:
+            - recording
+      required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, type ]
     VirtualClassroomLive:
       type: object
       properties:
@@ -4089,9 +4090,10 @@ components:
           type: string
           format: date-time
           example: '2022-08-31T14:00:00Z'
-        isLive:
-          type: boolean
-          example: true
+        type:
+          type: string
+          enum:
+            - live
       required: [ id, title, teacherId, meetingUrl, createdAt, isLive ]
     Lecture:
       type: object
