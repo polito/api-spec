@@ -209,7 +209,7 @@ paths:
       tags:
         - Bookings
       summary: Show booking slots | Mostra turni prenotabili
-      operationId: getBookingTopic
+      operationId: getBookingSlots
       parameters:
         - name: bookingTopicId
           in: path
@@ -1070,9 +1070,14 @@ paths:
                   data:
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/VirtualClassroomLive'
                         - $ref: '#/components/schemas/VirtualClassroom'
+                      discriminator:
+                        propertyName: isLive
+                        mapping:
+                          true: '#/components/schemas/VirtualClassroomLive'
+                          false: '#/components/schemas/VirtualClassroom'
                 required: [ data ]
               example:
                 data:
@@ -3095,9 +3100,6 @@ components:
         description:
           type: string
           example: Servizi della Segreteria Didattica Ingegneria
-        type:
-          type: string
-          example: 'Ufficio'
         isEnabled:
           type: boolean
           example: true
@@ -3254,6 +3256,60 @@ components:
         label:
           type: string
           example: B12
+
+    BookingLocationCheck:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: true
+        checked:
+          type: boolean
+          example: false
+        latitude:
+          type: string
+          example: '45.0626340000000000'
+          nullable: true
+        longitude:
+          type: string
+          example: '7.6605410000000000'
+          nullable: true
+        radiusInKm:
+          type: number
+          example: 0.1
+          nullable: true
+      required: [ enabled, checked, latitude, longitude, radiusInKm ]
+
+    BookingPlaceRef:
+      allOf:
+        - $ref: '#/components/schemas/PlaceRef'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - place
+            description:
+              type: string
+              nullable: true
+              example: 'Description'
+          required: [ type, description ]
+
+    BookingVirtualPlaceRef:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Virtual Classroom della Segreteria Generale Studenti
+        type:
+          type: string
+          enum:
+            - virtualPlace
+        url:
+          type: string
+          example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+      required: [ name, type, url ]
+
     Booking:
       type: object
       properties:
@@ -3272,9 +3328,6 @@ components:
             description:
               type: string
               example: Servizi della Segreteria Didattica Ingegneria
-            type:
-              type: string
-              example: 'Ufficio'
           required: [ id, title, description, type ]
         subtopic:
           type: object
@@ -3313,40 +3366,23 @@ components:
               type: string
               example: 05
           example: null
-        canBeCancelled:
-          type: boolean
-          example: true
-        hasLocationCheck:
-          type: boolean
-          example: true
-        isLocationChecked:
-          type: boolean
-          example: false
+        cancelableUntil:
+          type: string
+          format: date-time
+          example: '2021-10-05T10:00:00Z'
         location:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Virtual Classroom della Segreteria Generale Studenti
-            description:
-              type: string
-              example: ''
-            type:
-              type: string
-              example: VC
-            address:
-              type: string
-              example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
-            latitude:
-              type: string
-              example: '45.0626340000000000'
-            longitude:
-              type: string
-              example: '7.6605410000000000'
-            radiusInKm:
-              type: number
-              example: 0.1
-      required: [ id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location ]
+          oneOf:
+            - $ref: '#/components/schemas/BookingPlaceRef'
+            - $ref: '#/components/schemas/BookingVirtualPlaceRef'
+          discriminator:
+            propertyName: type
+            mapping:
+              place: '#/components/schemas/BookingPlaceRef'
+              virtualPlace: '#/components/schemas/BookingVirtualPlaceRef'
+        locationCheck:
+          $ref: '#/components/schemas/BookingLocationCheck'
+
+      required: [ id, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
     CourseOverview:
       type: object
@@ -4046,9 +4082,9 @@ components:
         teacherId:
           type: integer
           example: 888122
-        meetingUrl:
+        meetingId:
           type: string
-          example: https://
+          example: ""
         createdAt:
           type: string
           format: date-time
@@ -4092,9 +4128,9 @@ components:
           type: integer
           example: 150157
         place:
-          $ref: '#/components/schemas/LecturePlace'
+          $ref: '#/components/schemas/PlaceRef'
       required: [ id, startsAt, endsAt, type, virtualClassrooms, description, courseId, courseName, teacherId, place ]
-    LecturePlace:
+    PlaceRef:
       type: object
       nullable: true
       properties:
