@@ -4703,12 +4703,14 @@ components:
           type: string
           description: The semester(s) this course belongs to
           example: 2-2
+        languages:
+          type: array
+          items:
+            type: string
+            enum: [ it, en ]
         year:
           type: string
           example: '2022'
-        examMode:
-          type: string
-          example: 'Prova scritta (in aula) ed elaborato Progettuale in gruppo'
         hours:
           $ref: '#/components/schemas/CourseHours'
         editions:
@@ -4727,9 +4729,12 @@ components:
               id:
                 type: number
                 example: 244577
-            required: [ role, id ]
+              courseId:
+                type: number
+                example: 262147
+            required: [ role, id, courseId ]
         guide:
           type: array
           items:
             $ref: '#/components/schemas/CourseGuideSection'
-      required: [name, shortcode, cfu, teachingPeriod, year, examMode, hours, editions, staff, guide]
+      required: [name, shortcode, cfu, teachingPeriod, languages, year, hours, editions, staff, guide]
