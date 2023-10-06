@@ -3433,6 +3433,10 @@ components:
           type: boolean
           description: If true, this course is actually a module
           example: true
+        moduleNumber:
+            type: integer
+            description: The module number, if this is a module
+            example: 1
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule ]
     Course:
       type: object
@@ -3525,7 +3529,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
@@ -3736,6 +3740,10 @@ components:
           type: string
           nullable: true
           example: null
+        moduleNumber:
+          type: integer
+          description: The module number, if this is a module
+          example: 1
       required:
         - id
         - courseId
@@ -3753,6 +3761,7 @@ components:
         - question
         - feedback
         - notes
+        - moduleNumber
     Error:
       type: object
       properties:
