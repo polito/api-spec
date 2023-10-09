@@ -2220,6 +2220,49 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /sites/{siteId}/free-rooms:
+    get:
+      tags:
+        - Places
+      summary: List free rooms | Elenca aule libere
+      operationId: getFreeRooms
+      parameters:
+        - name: fromDate
+          in: query
+          description: Start date
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: End date
+          required: false
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/querySiteId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FreeRoom'
+                required: [ data ]
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /sites/{siteId}/buildings:
     get:
       tags:
@@ -2289,49 +2332,6 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /places/free-rooms:
-    get:
-      tags:
-        - Places
-      summary: List free rooms | Elenca aule libere
-      operationId: getFreeRooms
-      parameters:
-        - name: fromDate
-          in: query
-          description: Start date
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: toDate
-          in: query
-          description: End date
-          required: false
-          schema:
-            type: string
-            format: date
-        - $ref: '#/components/parameters/querySiteId'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/FreeRoom'
-                required: [ data ]
-        404:
-          description: Site|Building|Floor not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
   /places/{placeId}:
     get:
       tags:
