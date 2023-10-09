@@ -2694,7 +2694,6 @@ paths:
                         items:
                           $ref: '#/components/schemas/OfferingClass'
                 required: [ data ]
-
   /offering/degrees/{degreeId}:
     get:
       tags:
@@ -2723,7 +2722,6 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
-
   /offering/courses/{courseShortcode}:
     get:
       tags:
@@ -2752,6 +2750,26 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
+  /guides:
+    get:
+      tags:
+        - Student
+      summary: Get guides | Mostra guide
+      operationId: getGuides
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Guide'
+                required: [ data ]
 components:
   parameters:
     bookingIdParam:
@@ -4586,7 +4604,6 @@ components:
           type: string
           example: 'Design e comunicazione'
       required: [ id, name ]
-
     OfferingClass:
       type: object
       properties:
@@ -4601,7 +4618,6 @@ components:
           items:
             $ref: '#/components/schemas/DegreeOverview'
       required: [ name, code, degrees ]
-
     Degree:
       allOf:
         - $ref: '#/components/schemas/DegreeOverview'
@@ -4682,8 +4698,6 @@ components:
                 $ref: '#/components/schemas/Track'
 
           required: [ level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks ]
-
-
     Track:
       type: object
       properties:
@@ -4698,7 +4712,6 @@ components:
           items:
             $ref: '#/components/schemas/OfferingCourseOverview'
       required: [ id, name, courses ]
-
     OfferingCourseOverview:
       type: object
       properties:
@@ -4723,7 +4736,6 @@ components:
           example: Insegnamento a scelta 1
           nullable: true
       required: [ name, shortcode, cfu, teachingYear, language, group ]
-
     CourseHours:
       type: object
       properties:
@@ -4739,7 +4751,6 @@ components:
         labExercise:
           type: integer
           example: 24
-
     OfferingCourse:
       type: object
       properties:
@@ -4791,3 +4802,51 @@ components:
           items:
             $ref: '#/components/schemas/CourseGuideSection'
       required: [ name, shortcode, cfu, teachingPeriod, languages, year, hours, editions, staff, guide ]
+
+    GuideField:
+      type: object
+      properties:
+        label:
+          type: string
+          example: 'Label'
+        value:
+          type: string
+          example: 'Value'
+        isCopyEnabled:
+          type: boolean
+          example: true
+      required: [ label, value ]
+
+    GuideSection:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Title'
+        content:
+          type: string
+          example: "HTML content"
+      required: [ title, content ]
+
+    Guide:
+      type: object
+      properties:
+        listTitle:
+          type: string
+          example: 'List title'
+        title:
+          type: string
+          example: 'Title'
+        intro:
+          type: string
+          example: 'Intro'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuideField'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuideSection'
+
+      required: [ listTitle, title, intro, fields, sections ]
