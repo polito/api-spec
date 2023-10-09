@@ -4831,6 +4831,9 @@ components:
     Guide:
       type: object
       properties:
+        id:
+          type: string
+          example: 'dropbox'
         listTitle:
           type: string
           example: 'List title'
@@ -4849,4 +4852,4 @@ components:
           items:
             $ref: '#/components/schemas/GuideSection'
 
-      required: [ listTitle, title, intro, fields, sections ]
+      required: [ id, listTitle, title, intro, fields, sections ]
