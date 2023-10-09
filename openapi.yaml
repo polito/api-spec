@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.33
+  version: 1.0.0-ALPHA.38
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -209,7 +209,7 @@ paths:
       tags:
         - Bookings
       summary: Show booking slots | Mostra turni prenotabili
-      operationId: getBookingTopic
+      operationId: getBookingSlots
       parameters:
         - name: bookingTopicId
           in: path
@@ -1070,9 +1070,14 @@ paths:
                   data:
                     type: array
                     items:
-                      anyOf:
+                      oneOf:
                         - $ref: '#/components/schemas/VirtualClassroomLive'
                         - $ref: '#/components/schemas/VirtualClassroom'
+                      discriminator:
+                        propertyName: type
+                        mapping:
+                          live: '#/components/schemas/VirtualClassroomLive'
+                          recording: '#/components/schemas/VirtualClassroom'
                 required: [ data ]
               example:
                 data:
@@ -2732,8 +2737,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/OfferingClass'
-                required: [data]
-
+                required: [ data ]
   /offering/degrees/{degreeId}:
     get:
       tags:
@@ -2753,7 +2757,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Degree'
-                required: [data]
+                required: [ data ]
         404:
           description: Degree not found
           content:
@@ -2762,7 +2766,6 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
-
   /offering/courses/{courseShortcode}:
     get:
       tags:
@@ -2782,7 +2785,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/OfferingCourse'
-                required: [data]
+                required: [ data ]
         404:
           description: Course not found
           content:
@@ -2791,6 +2794,26 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
+  /guides:
+    get:
+      tags:
+        - Student
+      summary: Get guides | Mostra guide
+      operationId: getGuides
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Guide'
+                required: [ data ]
 components:
   parameters:
     bookingIdParam:
@@ -3139,9 +3162,6 @@ components:
         description:
           type: string
           example: Servizi della Segreteria Didattica Ingegneria
-        type:
-          type: string
-          example: 'Ufficio'
         isEnabled:
           type: boolean
           example: true
@@ -3149,6 +3169,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingSubtopic'
+      required: [ id, title, description, isEnabled, subtopics ]
     BookingSubtopic:
       type: object
       properties:
@@ -3202,6 +3223,7 @@ components:
         canBeCancelled:
           type: boolean
           example: true
+      required: [ id, title, description, isEnabled, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, requirements, maxBookingsPerDay, canBeCancelled ]
     BookingSlot:
       type: object
       properties:
@@ -3298,6 +3320,89 @@ components:
         label:
           type: string
           example: B12
+
+    BookingLocationCheck:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: true
+        checked:
+          type: boolean
+          example: false
+        latitude:
+          type: string
+          example: '45.0626340000000000'
+          nullable: true
+        longitude:
+          type: string
+          example: '7.6605410000000000'
+          nullable: true
+        radiusInKm:
+          type: number
+          example: 0.1
+          nullable: true
+      required: [ enabled, checked, latitude, longitude, radiusInKm ]
+
+    BookingPlaceRef:
+      allOf:
+        - $ref: '#/components/schemas/PlaceRef'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - place
+            description:
+              type: string
+              nullable: true
+              example: 'Description'
+          required: [ type, description ]
+
+    BookingVirtualPlaceRef:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Virtual Classroom della Segreteria Generale Studenti
+        type:
+          type: string
+          enum:
+            - virtualPlace
+        url:
+          type: string
+          example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+      required: [ name, type, url ]
+
+    BookingTopicOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DIDATTICA_ING
+        title:
+          type: string
+          example: Segreteria Didattica Ingegneria
+        description:
+          type: string
+          example: Servizi della Segreteria Didattica Ingegneria
+      required: [ id, title, description ]
+
+    BookingSubtopicOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DID_ING_VC_EN
+        title:
+          type: string
+          example: Aspetti didattici di carriera - Sportello virtuale in inglese
+        description:
+          type: string
+          example: ''
+      nullable: true
+      example: null
+      required: [ id, title, description ]
     Booking:
       type: object
       properties:
@@ -3305,36 +3410,9 @@ components:
           type: integer
           example: 258674
         topic:
-          type: object
-          properties:
-            id:
-              type: string
-              example: DIDATTICA_ING
-            title:
-              type: string
-              example: Segreteria Didattica Ingegneria
-            description:
-              type: string
-              example: Servizi della Segreteria Didattica Ingegneria
-            type:
-              type: string
-              example: 'Ufficio'
-          required: [ id, title, description, type ]
+          $ref: '#/components/schemas/BookingTopicOverview'
         subtopic:
-          type: object
-          nullable: true
-          properties:
-            id:
-              type: string
-              example: DID_ING_VC_EN
-            title:
-              type: string
-              example: Aspetti didattici di carriera - Sportello virtuale in inglese
-            description:
-              type: string
-              example: ''
-          required: [ id, title, description ]
-          example: null
+          $ref: '#/components/schemas/BookingSubtopicOverview'
         startsAt:
           type: string
           format: date-time
@@ -3357,40 +3435,23 @@ components:
               type: string
               example: 05
           example: null
-        canBeCancelled:
-          type: boolean
-          example: true
-        hasLocationCheck:
-          type: boolean
-          example: true
-        isLocationChecked:
-          type: boolean
-          example: false
+        cancelableUntil:
+          type: string
+          format: date-time
+          example: '2021-10-05T10:00:00Z'
         location:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Virtual Classroom della Segreteria Generale Studenti
-            description:
-              type: string
-              example: ''
-            type:
-              type: string
-              example: VC
-            address:
-              type: string
-              example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
-            latitude:
-              type: string
-              example: '45.0626340000000000'
-            longitude:
-              type: string
-              example: '7.6605410000000000'
-            radiusInKm:
-              type: number
-              example: 0.1
-      required: [ id, topic, subtopic, startsAt, endsAt, seat, canBeCancelled, hasLocationCheck, isLocationChecked, location ]
+          oneOf:
+            - $ref: '#/components/schemas/BookingPlaceRef'
+            - $ref: '#/components/schemas/BookingVirtualPlaceRef'
+          discriminator:
+            propertyName: type
+            mapping:
+              place: '#/components/schemas/BookingPlaceRef'
+              virtualPlace: '#/components/schemas/BookingVirtualPlaceRef'
+        locationCheck:
+          $ref: '#/components/schemas/BookingLocationCheck'
+
+      required: [ id, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
     CourseOverview:
       type: object
@@ -3441,6 +3502,10 @@ components:
           type: boolean
           description: If true, this course is actually a module
           example: true
+        moduleNumber:
+          type: integer
+          description: The module number, if this is a module
+          example: 1
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule ]
     Course:
       type: object
@@ -3533,7 +3598,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
@@ -3744,6 +3809,10 @@ components:
           type: string
           nullable: true
           example: null
+        moduleNumber:
+          type: integer
+          description: The module number, if this is a module
+          example: 1
       required:
         - id
         - courseId
@@ -3761,6 +3830,7 @@ components:
         - question
         - feedback
         - notes
+        - moduleNumber
     Error:
       type: object
       properties:
@@ -3823,6 +3893,10 @@ components:
           type: integer
           description: The identifier for this course
           example: 258674
+        shortcode:
+          type: string
+          description: The shortcode for this course
+          example: 01NYHOV
         name:
           type: string
           description: The name of the course
@@ -3942,8 +4016,8 @@ components:
         - type: object
           properties:
             id:
-                type: string
-                example: 'TO_CIT09_XPTE_088'
+              type: string
+              example: 'TO_CIT09_XPTE_088'
             room:
               $ref: '#/components/schemas/RoomOverview'
             category:
@@ -3998,20 +4072,20 @@ components:
                   example: null
               required: [ name, shortName, email, phone ]
             resources:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      example: Personal Computer
-                    description:
-                      type: string
-                      example: Computer fisso da tavolo cablato per la proiezione
-                    category:
-                      type: string
-                      example: Technology
-                  required: [ name, description, category ]
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Personal Computer
+                  description:
+                    type: string
+                    example: Computer fisso da tavolo cablato per la proiezione
+                  category:
+                    type: string
+                    example: Technology
+                required: [ name, description, category ]
           required: [ capacity, structure, resources, geoJson ]
 
     VideoLecture:
@@ -4082,10 +4156,11 @@ components:
         duration:
           type: string
           example: 00h 46m
-        isLive:
-          type: boolean
-          example: false
-      required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, isLive ]
+        type:
+          type: string
+          enum:
+            - recording
+      required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, type ]
     VirtualClassroomLive:
       type: object
       properties:
@@ -4098,16 +4173,17 @@ components:
         teacherId:
           type: integer
           example: 888122
-        meetingUrl:
+        meetingId:
           type: string
-          example: https://
+          example: ""
         createdAt:
           type: string
           format: date-time
           example: '2022-08-31T14:00:00Z'
-        isLive:
-          type: boolean
-          example: true
+        type:
+          type: string
+          enum:
+            - live
       required: [ id, title, teacherId, meetingUrl, createdAt, isLive ]
     Lecture:
       type: object
@@ -4144,9 +4220,9 @@ components:
           type: integer
           example: 150157
         place:
-          $ref: '#/components/schemas/LecturePlace'
+          $ref: '#/components/schemas/PlaceRef'
       required: [ id, startsAt, endsAt, type, virtualClassrooms, description, courseId, courseName, teacherId, place ]
-    LecturePlace:
+    PlaceRef:
       type: object
       nullable: true
       properties:
@@ -4433,9 +4509,9 @@ components:
           example: Dal 30 agosto 2023
           nullable: true
         eventEndTime:
-            type: string
-            example: Al 30 agosto 2023
-            nullable: true
+          type: string
+          example: Al 30 agosto 2023
+          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -4583,8 +4659,7 @@ components:
         name:
           type: string
           example: 'Design e comunicazione'
-      required: [id, name]
-
+      required: [ id, name ]
     OfferingClass:
       type: object
       properties:
@@ -4598,8 +4673,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DegreeOverview'
-      required: [name, code, degrees]
-
+      required: [ name, code, degrees ]
     Degree:
       allOf:
         - $ref: '#/components/schemas/DegreeOverview'
@@ -4614,7 +4688,7 @@ components:
                 name:
                   type: string
                   example: Dipartimento di Architettura e Design
-              required: [name]
+              required: [ name ]
             faculty:
               type: object
               properties:
@@ -4639,7 +4713,7 @@ components:
                 name:
                   type: string
                   example: Disegno industriale
-              required: [code, name]
+              required: [ code, name ]
             year:
               type: string
               example: '2022'
@@ -4663,7 +4737,7 @@ components:
                 content:
                   type: string
                   example: 'Il Corso di Laurea in Design e Comunicazione forma un \"designer laureato di primo livello\" ...'
-              required: [title, content]
+              required: [ title, content ]
             jobOpportunities:
               type: object
               properties:
@@ -4679,9 +4753,7 @@ components:
               items:
                 $ref: '#/components/schemas/Track'
 
-          required: [level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks]
-
-
+          required: [ level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks ]
     Track:
       type: object
       properties:
@@ -4695,8 +4767,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OfferingCourseOverview'
-      required: [id, name, courses]
-
+      required: [ id, name, courses ]
     OfferingCourseOverview:
       type: object
       properties:
@@ -4715,13 +4786,12 @@ components:
           example: 1
         language:
           type: string
-          enum: [it, en]
+          enum: [ it, en ]
         group:
           type: string
           example: Insegnamento a scelta 1
           nullable: true
-      required: [name, shortcode, cfu, teachingYear, language, group]
-
+      required: [ name, shortcode, cfu, teachingYear, language, group ]
     CourseHours:
       type: object
       properties:
@@ -4737,8 +4807,6 @@ components:
         labExercise:
           type: integer
           example: 24
-      required: []
-
     OfferingCourse:
       type: object
       properties:
@@ -4755,12 +4823,14 @@ components:
           type: string
           description: The semester(s) this course belongs to
           example: 2-2
+        languages:
+          type: array
+          items:
+            type: string
+            enum: [ it, en ]
         year:
           type: string
           example: '2022'
-        examMode:
-          type: string
-          example: 'Prova scritta (in aula) ed elaborato Progettuale in gruppo'
         hours:
           $ref: '#/components/schemas/CourseHours'
         editions:
@@ -4779,9 +4849,63 @@ components:
               id:
                 type: number
                 example: 244577
-            required: [ role, id ]
+              courseId:
+                type: number
+                example: 262147
+            required: [ role, id, courseId ]
         guide:
           type: array
           items:
             $ref: '#/components/schemas/CourseGuideSection'
-      required: [name, shortcode, cfu, teachingPeriod, year, examMode, hours, editions, staff, guide]
+      required: [ name, shortcode, cfu, teachingPeriod, languages, year, hours, editions, staff, guide ]
+
+    GuideField:
+      type: object
+      properties:
+        label:
+          type: string
+          example: 'Label'
+        value:
+          type: string
+          example: 'Value'
+        isCopyEnabled:
+          type: boolean
+          example: true
+      required: [ label, value ]
+
+    GuideSection:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'Title'
+        content:
+          type: string
+          example: "HTML content"
+      required: [ title, content ]
+
+    Guide:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'dropbox'
+        listTitle:
+          type: string
+          example: 'List title'
+        title:
+          type: string
+          example: 'Title'
+        intro:
+          type: string
+          example: 'Intro'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuideField'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuideSection'
+
+      required: [ id, listTitle, title, intro, fields, sections ]
