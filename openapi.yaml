@@ -2693,7 +2693,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/OfferingClass'
-                required: [data]
+                required: [ data ]
 
   /offering/degrees/{degreeId}:
     get:
@@ -2714,7 +2714,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Degree'
-                required: [data]
+                required: [ data ]
         404:
           description: Degree not found
           content:
@@ -2743,7 +2743,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/OfferingCourse'
-                required: [data]
+                required: [ data ]
         404:
           description: Course not found
           content:
@@ -3107,6 +3107,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingSubtopic'
+      required: [ id, title, description, isEnabled, subtopics ]
     BookingSubtopic:
       type: object
       properties:
@@ -3160,6 +3161,7 @@ components:
         canBeCancelled:
           type: boolean
           example: true
+      required: [ id, title, description, isEnabled, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, requirements, maxBookingsPerDay, canBeCancelled ]
     BookingSlot:
       type: object
       properties:
@@ -3434,9 +3436,9 @@ components:
           description: If true, this course is actually a module
           example: true
         moduleNumber:
-            type: integer
-            description: The module number, if this is a module
-            example: 1
+          type: integer
+          description: The module number, if this is a module
+          example: 1
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule ]
     Course:
       type: object
@@ -3947,8 +3949,8 @@ components:
         - type: object
           properties:
             id:
-                type: string
-                example: 'TO_CIT09_XPTE_088'
+              type: string
+              example: 'TO_CIT09_XPTE_088'
             room:
               $ref: '#/components/schemas/RoomOverview'
             category:
@@ -3991,20 +3993,20 @@ components:
                   example: null
               required: [ name, shortName, email, phone ]
             resources:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      example: Personal Computer
-                    description:
-                      type: string
-                      example: Computer fisso da tavolo cablato per la proiezione
-                    category:
-                      type: string
-                      example: Technology
-                  required: [ name, description, category ]
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Personal Computer
+                  description:
+                    type: string
+                    example: Computer fisso da tavolo cablato per la proiezione
+                  category:
+                    type: string
+                    example: Technology
+                required: [ name, description, category ]
           required: [ capacity, structure, resources, geoJson ]
 
     VideoLecture:
@@ -4428,9 +4430,9 @@ components:
           example: Dal 30 agosto 2023
           nullable: true
         eventEndTime:
-            type: string
-            example: Al 30 agosto 2023
-            nullable: true
+          type: string
+          example: Al 30 agosto 2023
+          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -4578,7 +4580,7 @@ components:
         name:
           type: string
           example: 'Design e comunicazione'
-      required: [id, name]
+      required: [ id, name ]
 
     OfferingClass:
       type: object
@@ -4593,7 +4595,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DegreeOverview'
-      required: [name, code, degrees]
+      required: [ name, code, degrees ]
 
     Degree:
       allOf:
@@ -4609,7 +4611,7 @@ components:
                 name:
                   type: string
                   example: Dipartimento di Architettura e Design
-              required: [name]
+              required: [ name ]
             faculty:
               type: object
               properties:
@@ -4634,7 +4636,7 @@ components:
                 name:
                   type: string
                   example: Disegno industriale
-              required: [code, name]
+              required: [ code, name ]
             year:
               type: string
               example: '2022'
@@ -4658,7 +4660,7 @@ components:
                 content:
                   type: string
                   example: 'Il Corso di Laurea in Design e Comunicazione forma un \"designer laureato di primo livello\" ...'
-              required: [title, content]
+              required: [ title, content ]
             jobOpportunities:
               type: object
               properties:
@@ -4674,7 +4676,7 @@ components:
               items:
                 $ref: '#/components/schemas/Track'
 
-          required: [level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks]
+          required: [ level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks ]
 
 
     Track:
@@ -4690,7 +4692,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OfferingCourseOverview'
-      required: [id, name, courses]
+      required: [ id, name, courses ]
 
     OfferingCourseOverview:
       type: object
@@ -4710,12 +4712,12 @@ components:
           example: 1
         language:
           type: string
-          enum: [it, en]
+          enum: [ it, en ]
         group:
           type: string
           example: Insegnamento a scelta 1
           nullable: true
-      required: [name, shortcode, cfu, teachingYear, language, group]
+      required: [ name, shortcode, cfu, teachingYear, language, group ]
 
     CourseHours:
       type: object
@@ -4732,7 +4734,6 @@ components:
         labExercise:
           type: integer
           example: 24
-      required: []
 
     OfferingCourse:
       type: object
@@ -4784,4 +4785,4 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseGuideSection'
-      required: [name, shortcode, cfu, teachingPeriod, languages, year, hours, editions, staff, guide]
+      required: [ name, shortcode, cfu, teachingPeriod, languages, year, hours, editions, staff, guide ]
