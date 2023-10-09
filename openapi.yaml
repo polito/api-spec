@@ -3312,6 +3312,35 @@ components:
           example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
       required: [ name, type, url ]
 
+    BookingTopicOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DIDATTICA_ING
+        title:
+          type: string
+          example: Segreteria Didattica Ingegneria
+        description:
+          type: string
+          example: Servizi della Segreteria Didattica Ingegneria
+      required: [ id, title, description ]
+
+    BookingSubtopicOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          example: DID_ING_VC_EN
+        title:
+          type: string
+          example: Aspetti didattici di carriera - Sportello virtuale in inglese
+        description:
+          type: string
+          example: ''
+      nullable: true
+      example: null
+      required: [ id, title, description ]
     Booking:
       type: object
       properties:
@@ -3319,33 +3348,9 @@ components:
           type: integer
           example: 258674
         topic:
-          type: object
-          properties:
-            id:
-              type: string
-              example: DIDATTICA_ING
-            title:
-              type: string
-              example: Segreteria Didattica Ingegneria
-            description:
-              type: string
-              example: Servizi della Segreteria Didattica Ingegneria
-          required: [ id, title, description, type ]
+          $ref: '#/components/schemas/BookingTopicOverview'
         subtopic:
-          type: object
-          nullable: true
-          properties:
-            id:
-              type: string
-              example: DID_ING_VC_EN
-            title:
-              type: string
-              example: Aspetti didattici di carriera - Sportello virtuale in inglese
-            description:
-              type: string
-              example: ''
-          required: [ id, title, description ]
-          example: null
+          $ref: '#/components/schemas/BookingSubtopicOverview'
         startsAt:
           type: string
           format: date-time
