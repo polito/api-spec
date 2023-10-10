@@ -4752,6 +4752,20 @@ components:
         labExercise:
           type: integer
           example: 24
+
+    OfferingCourseStaff:
+      type: object
+      properties:
+        role:
+          type: string
+        id:
+          type: number
+          example: 244577
+        courseId:
+          type: number
+          example: 262147
+      required: [ role, id, courseId ]
+
     OfferingCourse:
       type: object
       properties:
@@ -4785,19 +4799,7 @@ components:
             type: string
             example: '2021'
         staff:
-          type: array
-          items:
-            type: object
-            properties:
-              role:
-                type: string
-              id:
-                type: number
-                example: 244577
-              courseId:
-                type: number
-                example: 262147
-            required: [ role, id, courseId ]
+          $ref: '#/components/schemas/OfferingCourseStaff'
         guide:
           type: array
           items:
