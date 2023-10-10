@@ -3705,9 +3705,10 @@ components:
         type:
           type: string
           example: Esami scritti a risposta aperta o chiusa tramite PC
-        classrooms:
-          type: string
-          example: Aula 12; Aula 14
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
         status:
           type: string
           example: available
