@@ -3069,6 +3069,9 @@ components:
     Deadline:
       type: object
       properties:
+        id:
+            type: number
+            example: 42
         name:
           type: string
           example: Chiusura del periodo per cambio di ordinamento e/o corso di studi
