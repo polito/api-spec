@@ -2227,21 +2227,26 @@ paths:
       summary: List free rooms | Elenca aule libere
       operationId: getFreeRooms
       parameters:
-        - name: fromDate
+        - name: date
           in: query
-          description: Start date
-          required: false
+          description: Date
+          required: true
           schema:
             type: string
             format: date
-        - name: toDate
+        - name: timeFrom
           in: query
-          description: End date
-          required: false
+          description: Start time
+          required: true
           schema:
             type: string
-            format: date
-        - $ref: '#/components/parameters/querySiteId'
+        - name: timeTo
+          in: query
+          description: End time
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/pathSiteId'
       responses:
         200:
           description: Success
@@ -4036,7 +4041,7 @@ components:
         - $ref: '#/components/schemas/GeoLocation'
     FreeRoom:
       allOf:
-        - $ref: '#/components/schemas/PlaceOverview'
+        - $ref: '#/components/schemas/PlaceRef'
         - type: object
           properties:
             freeFrom:
