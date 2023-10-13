@@ -3027,6 +3027,9 @@ components:
             type: string
             example: "213956"
           example: [ "290683", "213956" ]
+        degreeId:
+          type: string
+          example: '81-6'
         degreeCode:
           type: string
           example: LM-32
@@ -3095,6 +3098,7 @@ components:
         - lastName
         - status
         - allCareerIds
+        - degreeId
         - degreeCode
         - degreeLevel
         - degreeName
