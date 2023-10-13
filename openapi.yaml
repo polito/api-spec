@@ -2233,7 +2233,6 @@ paths:
           required: true
           schema:
             type: string
-            format: date
         - name: timeFrom
           in: query
           description: Start time
@@ -4044,6 +4043,8 @@ components:
         - $ref: '#/components/schemas/PlaceRef'
         - type: object
           properties:
+            id:
+              type: string
             freeFrom:
               type: string
               format: date-time
