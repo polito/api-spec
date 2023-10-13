@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.43
+  version: 1.0.0-ALPHA.44
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3027,6 +3027,9 @@ components:
             type: string
             example: "213956"
           example: [ "290683", "213956" ]
+        degreeId:
+          type: string
+          example: '81-6'
         degreeCode:
           type: string
           example: LM-32
@@ -3095,6 +3098,7 @@ components:
         - lastName
         - status
         - allCareerIds
+        - degreeId
         - degreeCode
         - degreeLevel
         - degreeName
