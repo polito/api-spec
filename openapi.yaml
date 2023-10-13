@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.38
+  version: 1.0.0-ALPHA.41
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3113,6 +3113,9 @@ components:
     Deadline:
       type: object
       properties:
+        id:
+            type: number
+            example: 42
         name:
           type: string
           example: Chiusura del periodo per cambio di ordinamento e/o corso di studi
@@ -3749,9 +3752,10 @@ components:
         type:
           type: string
           example: Esami scritti a risposta aperta o chiusa tramite PC
-        classrooms:
-          type: string
-          example: Aula 12; Aula 14
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
         status:
           type: string
           example: available
@@ -4807,6 +4811,20 @@ components:
         labExercise:
           type: integer
           example: 24
+
+    OfferingCourseStaff:
+      type: object
+      properties:
+        role:
+          type: string
+        id:
+          type: number
+          example: 244577
+        courseId:
+          type: number
+          example: 262147
+      required: [ role, id, courseId ]
+
     OfferingCourse:
       type: object
       properties:
@@ -4842,17 +4860,7 @@ components:
         staff:
           type: array
           items:
-            type: object
-            properties:
-              role:
-                type: string
-              id:
-                type: number
-                example: 244577
-              courseId:
-                type: number
-                example: 262147
-            required: [ role, id, courseId ]
+            $ref: '#/components/schemas/OfferingCourseStaff'
         guide:
           type: array
           items:
