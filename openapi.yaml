@@ -3972,7 +3972,12 @@ components:
         name:
           type: string
           example: Aule T
-      required: [ id, name ]
+        siteId:
+          type: string
+          example: TO_CIT
+        category:
+          $ref: '#/components/schemas/PlaceCategory'
+      required: [ id, name, siteId ]
     Building:
       allOf:
         - $ref: '#/components/schemas/BuildingOverview'
