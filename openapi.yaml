@@ -2220,6 +2220,54 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /sites/{siteId}/free-rooms:
+    get:
+      tags:
+        - Places
+      summary: List free rooms | Elenca aule libere
+      operationId: getFreeRooms
+      parameters:
+        - name: date
+          in: query
+          description: Date
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: timeFrom
+          in: query
+          description: Start time
+          required: true
+          schema:
+            type: string
+        - name: timeTo
+          in: query
+          description: End time
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/pathSiteId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FreeRoom'
+                required: [ data ]
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /sites/{siteId}/buildings:
     get:
       tags:
@@ -2288,6 +2336,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /places/{placeId}:
     get:
       tags:
@@ -3990,6 +4039,18 @@ components:
               $ref: '#/components/schemas/Floor'
           required: [ id, room, name, category, site, building, floor ]
         - $ref: '#/components/schemas/GeoLocation'
+    FreeRoom:
+      allOf:
+        - $ref: '#/components/schemas/PlaceRef'
+        - type: object
+          properties:
+            freeFrom:
+              type: string
+              format: date-time
+            freeTo:
+              type: string
+              format: date-time
+          required: [ freeFrom, freeTo ]
     Place:
       allOf:
         - $ref: '#/components/schemas/PlaceOverview'
