@@ -3303,6 +3303,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookingSeatsRow'
+      required: [ totalCount, availableCount, rows ]
     BookingSeatsRow:
       type: object
       properties:
@@ -3315,8 +3316,9 @@ components:
         seats:
           type: array
           items:
-            $ref: '#/components/schemas/BookingSeat'
-    BookingSeat:
+            $ref: '#/components/schemas/BookingSeatCell'
+      required: [ label, seats ]
+    BookingSeatCell:
       type: object
       properties:
         id:
@@ -3331,6 +3333,7 @@ components:
         label:
           type: string
           example: B12
+      required: [ id, status, label ]
 
     BookingLocationCheck:
       type: object
