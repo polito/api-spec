@@ -3250,6 +3250,9 @@ components:
         hasSeats:
           type: boolean
           example: false
+        hasSeatSelection:
+          type: boolean
+          example: false
         places:
           type: integer
           example: 2
@@ -3290,6 +3293,7 @@ components:
           type: string
           format: date-time
           example: '2021-10-04T16:00:00Z'
+      required: [ id, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
     BookingSeats:
       type: object
       properties:
