@@ -3161,44 +3161,12 @@ components:
           example: '2022-05-15'
       required: [ courseName, credits, grade, isProvisional, date ]
 
-    BookingTopic:
+    BookingTopicLeaf:
       type: object
       properties:
-        id:
-          type: string
-          example: DIDATTICA_ING
-        title:
-          type: string
-          example: Segreteria Didattica Ingegneria
-        description:
-          type: string
-          example: Servizi della Segreteria Didattica Ingegneria
-        isEnabled:
-          type: boolean
-          example: true
-        subtopics:
-          type: array
-          items:
-            $ref: '#/components/schemas/BookingSubtopic'
-      required: [ id, title, description, isEnabled, subtopics ]
-    BookingSubtopic:
-      type: object
-      properties:
-        id:
-          type: string
-          example: DID_ING_VC_EN
-        title:
-          type: string
-          example: Aspetti didattici di carriera - Sportello virtuale in inglese
-        description:
-          type: string
-          example: ''
         disclaimer:
           type: string
           example: ''
-        isEnabled:
-          type: boolean
-          example: true
         showCalendar:
           type: boolean
         slotLength:
@@ -3219,17 +3187,6 @@ components:
         endHour:
           type: integer
           example: 18
-        requirements:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Informativa Emergenza COVID-19
-              url:
-                type: string
-                example: https://didattica.polito.it/pdf/informativa_covid.pdf
         maxBookingsPerDay:
           type: integer
           example: 1
@@ -3240,7 +3197,58 @@ components:
           type: integer
           example: 1
           description: Number of days per week the booking is available, starting from startDate weekday, or monday if missing
-      required: [ id, title, description, isEnabled, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, requirements, maxBookingsPerDay, canBeCancelled, daysPerWeek ]
+      required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek ]
+    BookingTopic:
+      allOf:
+        - $ref: '#/components/schemas/BookingTopicLeaf'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: DIDATTICA_ING
+            title:
+              type: string
+              example: Segreteria Didattica Ingegneria
+            description:
+              type: string
+              example: Servizi della Segreteria Didattica Ingegneria
+            isEnabled:
+              type: boolean
+              example: true
+            subtopics:
+              type: array
+              items:
+                $ref: '#/components/schemas/BookingSubtopic'
+          required: [ id, title, description, isEnabled, subtopics ]
+    BookingSubtopic:
+      allOf:
+        - $ref: '#/components/schemas/BookingTopicLeaf'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: DID_ING_VC_EN
+            title:
+              type: string
+              example: Aspetti didattici di carriera - Sportello virtuale in inglese
+            description:
+              type: string
+              example: ''
+            isEnabled:
+              type: boolean
+              example: true
+            requirements:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Informativa Emergenza COVID-19
+                  url:
+                    type: string
+                    example: https://didattica.polito.it/pdf/informativa_covid.pdf
+          required: [ id, title, description, isEnabled, requirements ]
     BookingSlot:
       type: object
       properties:
