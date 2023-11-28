@@ -2824,7 +2824,7 @@ paths:
       tags:
         - Surveys
       summary: Get surveys | Mostra survey
-      operationId: getGuides
+      operationId: getSurveys
       responses:
         200:
           description: Success
