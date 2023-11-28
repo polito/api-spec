@@ -2818,6 +2818,27 @@ paths:
                     items:
                       $ref: '#/components/schemas/Guide'
                 required: [ data ]
+
+  /surveys:
+    get:
+      tags:
+        - Surveys
+      summary: Get surveys | Mostra survey
+      operationId: getGuides
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Survey'
+                required: [ data ]
+
 components:
   parameters:
     bookingIdParam:
@@ -4958,3 +4979,56 @@ components:
             $ref: '#/components/schemas/GuideSection'
 
       required: [ id, listTitle, title, intro, fields, sections ]
+
+    SurveyCourseRef:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: 'Course name'
+        shortcode:
+          type: string
+          example: '01NYHOV'
+      nullable: true
+      required: [ id, name, shortcode ]
+
+    Survey:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: 'Survey title'
+        category:
+          type: string
+          example: 'CPD'
+        type:
+          type: string
+          example: 'Esame'
+        isCompiled:
+          type: boolean
+          example: false
+        compileDate:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+          nullable: true
+        url:
+          type: string
+          example: 'https://'
+        startsAt:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+        endsAt:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+        course:
+          $ref: '#/components/schemas/SurveyCourseRef'
+      required: [ id, title, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
