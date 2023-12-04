@@ -5034,4 +5034,4 @@ components:
           example: '2022-08-31T14:00:00Z'
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
-      required: [ id, title, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
+      required: [ id, title, category, categoryName, type, isCompiled, compileDate, url, startsAt, endsAt ]
