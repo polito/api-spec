@@ -4994,7 +4994,16 @@ components:
           example: '01NYHOV'
       nullable: true
       required: [ id, name, shortcode ]
-
+    SurveyTaxonomy:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'CPD'
+        name:
+          type: string
+          example: 'CPD'
+      required: [ id, name ]
     Survey:
       type: object
       properties:
@@ -5005,14 +5014,9 @@ components:
           type: string
           example: 'Survey title'
         category:
-          type: string
-          example: 'CPD'
-        categoryName:
-          type: string
-          example: 'CPD'
+          $ref: '#/components/schemas/SurveyTaxonomy'
         type:
-          type: string
-          example: 'Esame'
+          $ref: '#/components/schemas/SurveyTaxonomy'
         isCompiled:
           type: boolean
           example: false
@@ -5034,4 +5038,4 @@ components:
           example: '2022-08-31T14:00:00Z'
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
-      required: [ id, title, category, categoryName, type, isCompiled, compileDate, url, startsAt, endsAt ]
+      required: [ id, title, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
