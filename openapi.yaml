@@ -5007,6 +5007,9 @@ components:
         category:
           type: string
           example: 'CPD'
+        categoryName:
+          type: string
+          example: 'CPD'
         type:
           type: string
           example: 'Esame'
