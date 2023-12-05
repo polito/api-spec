@@ -4781,8 +4781,8 @@ components:
                   example: Disegno industriale
               required: [ code, name ]
             year:
-              type: string
-              example: '2022'
+              type: number
+              example: 2022
             editions:
               description: All the available editions of this degree
               type: array
