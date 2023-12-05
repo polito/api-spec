@@ -5013,6 +5013,10 @@ components:
         title:
           type: string
           example: 'Survey title'
+        subtitle:
+          type: string
+          example: 'Survey subtitle'
+          nullable: true
         category:
           $ref: '#/components/schemas/SurveyTaxonomy'
         type:
@@ -5038,4 +5042,4 @@ components:
           example: '2022-08-31T14:00:00Z'
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
-      required: [ id, title, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
+      required: [ id, title, subtitle, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
