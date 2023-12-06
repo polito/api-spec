@@ -5021,6 +5021,9 @@ components:
           $ref: '#/components/schemas/SurveyTaxonomy'
         type:
           $ref: '#/components/schemas/SurveyTaxonomy'
+        isMandatory:
+          type: boolean
+          example: true
         isCompiled:
           type: boolean
           example: false
@@ -5042,4 +5045,4 @@ components:
           example: '2022-08-31T14:00:00Z'
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
-      required: [ id, title, subtitle, category, type, isCompiled, compileDate, url, startsAt, endsAt ]
+      required: [ id, title, subtitle, category, type, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
