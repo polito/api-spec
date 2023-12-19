@@ -1363,12 +1363,15 @@ paths:
           schema:
             type: integer
       requestBody:
-        description: 'Only needed if the exam you are booking includes a question'
         content:
           application/json:
             schema:
               type: object
               properties:
+                courseShortcode:
+                  type: string
+                  description: The course shortcode
+                  example: 01UDROV
                 questionId:
                   type: integer
                   description: The id of the question
@@ -1381,8 +1384,8 @@ paths:
                   type: string
                   description: The reason for the exam booking request
                   example: "I'm not sure"
-              example: { }
-        required: false
+              required: [ courseShortcode ]
+        required: true
       responses:
         200:
           description: Success
