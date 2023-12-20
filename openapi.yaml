@@ -2447,6 +2447,65 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /notifications:
+    get:
+      tags:
+        - Student
+      summary: List notifications | Elenca notifiche
+      operationId: getNotifications
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+                required: [ data ]
+              example:
+                data:
+                  - id: 63775600
+                    title: "Nuovo materiale nel corso di Fisica"
+                    message: "Nuovo file presentazione.pdf aggiunto al materiale del corso di Fisica"
+                    scope: ["teaching", "courses", "FIS000", "files"]
+                    isRead: false
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /notifications/{notificationId}:
+    delete:
+      tags:
+        - Student
+      summary: Delete a notification | Cancella una notifica
+      operationId: deleteNotification
+      parameters:
+        - $ref: '#/components/parameters/notificationIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Notification not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+  /notifications/{notificationId}/read:
+    put:
+      tags:
+        - Student
+      summary: Mark a notification as read | Segna uns notifica come letta
+      operationId: markNotificationAsRead
+      parameters:
+        - $ref: '#/components/parameters/notificationIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Notification not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /preferences:
     patch:
       tags:
@@ -2918,6 +2977,12 @@ components:
         type: integer
     messageIdParam:
       name: messageId
+      in: path
+      required: true
+      schema:
+        type: integer
+    notificationIdParam:
+      name: notificationId
       in: path
       required: true
       schema:
@@ -4429,6 +4494,34 @@ components:
           type: number
           example: 150157
           nullable: true
+        sentAt:
+          type: string
+          format: date-time
+          example: '2021-10-05T10:00:00Z'
+        isRead:
+          type: boolean
+          example: true
+      required: [ id, title, message, type, senderId, sentAt, isRead ]
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 63775600
+        title:
+          type: string
+          example: Nuovo materiale nel corso di Fisica
+        message:
+          type: string
+          nullable: true
+          example: Nuovo file presentazione.pdf aggiunto al materiale del corso di Fisica
+        scope:
+          type: array
+          description: An array representing the hierarchical path to the object this notification is related to (replicates the navigation/modules structure)
+          items:
+            type: string
+          example: ["teaching", "courses", "FIS000", "files"]
         sentAt:
           type: string
           format: date-time
