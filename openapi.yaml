@@ -533,9 +533,9 @@ paths:
                       name: Fisica II
                       id: 24343325
                   notifications:
-                    avvisidoc: true
-                    matdid: true
-                    videolezioni: true
+                    notices: true
+                    files: true
+                    lectures: true
                   staff:
                     - role: 'Titolare'
                       id: 025734
@@ -1266,6 +1266,36 @@ paths:
                     items:
                       $ref: '#/components/schemas/VideoLecture'
                 required: [ data ]
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /courses/{courseId}/preferences:
+    patch:
+      tags:
+        - Courses
+      summary: Update course preferences | Aggiorna preferenze del corso
+      operationId: updateCoursePreferences
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoursePreferencesRequest'
+        required: true
+      responses:
+        200:
+          description: Success
         404:
           description: Course not found
           content:
@@ -3146,8 +3176,8 @@ components:
       type: object
       properties:
         id:
-            type: number
-            example: 42
+          type: number
+          example: 42
         name:
           type: string
           example: Chiusura del periodo per cambio di ordinamento e/o corso di studi
@@ -3566,6 +3596,23 @@ components:
           type: string
           example: '2022'
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year ]
+
+    CoursePreferencesRequest:
+      type: object
+      properties:
+        notifications:
+          type: object
+          properties:
+            notices:
+              type: boolean
+              example: true
+            files:
+              type: boolean
+              example: true
+            lectures:
+              type: boolean
+              example: true
+
     Course:
       type: object
       properties:
@@ -3636,16 +3683,16 @@ components:
         notifications:
           type: object
           properties:
-            avvisidoc:
+            notices:
               type: boolean
               example: true
-            matdid:
+            files:
               type: boolean
               example: true
-            videolezioni:
+            lectures:
               type: boolean
               example: true
-          required: [ avvisidoc, matdid, videolezioni ]
+          required: [ notices, files, lectures ]
         staff:
           type: array
           items:
