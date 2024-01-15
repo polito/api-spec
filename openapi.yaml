@@ -183,6 +183,60 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /provisional-grades:
+    get:
+      tags:
+        - Student
+      summary: Retrieve student provisional grades | Recupera le valutazioni provvisorie dello studente
+      operationId: getStudentProvisionalGrades
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProvisionalGrade'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /provisional-grades/{provisionalGradeId}/accept:
+    put:
+      tags:
+        - Student
+      summary: Accept provisional grade | Accetta valutazione provvisoria
+      operationId: acceptProvisionalGrade
+      parameters:
+        - $ref: '#/components/parameters/provisionalGradeIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Provisional grade not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /provisional-grades/{provisionalGradeId}/reject:
+    put:
+      tags:
+        - Student
+      summary: Reject provisional grade | Rifiuta valutazione provvisoria
+      operationId: rehectProvisionalGrade
+      parameters:
+        - $ref: '#/components/parameters/provisionalGradeIdParam'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Provisional grade not found
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics:
     get:
       tags:
@@ -2999,6 +3053,12 @@ components:
       required: true
       schema:
         type: string
+    provisionalGradeIdParam:
+      name: provisionalGradeId
+      in: path
+      required: true
+      schema:
+        type: integer
     queryPlaceCategoryId:
       name: placeCategoryId
       in: query
@@ -3271,14 +3331,76 @@ components:
         grade:
           type: string
           example: "27"
-        isProvisional:
-          type: boolean
-          example: false
         date:
           type: string
           format: date
           example: '2022-05-15'
-      required: [ courseName, credits, grade, isProvisional, date ]
+      required: [ courseName, credits, grade, date ]
+
+    ProvisionalGrade:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 5817523
+        examId:
+          type: number
+          example: 903380
+        courseShortcode:
+          type: string
+          example: 02JSKOV
+        courseName:
+          type: string
+          example: Human Computer Interaction
+        teacherId:
+          type: integer
+          example: 2154
+        credits:
+          type: integer
+          example: 6
+        grade:
+          type: string
+          example: "27"
+        date:
+          type: string
+          format: date
+          example: '2022-05-15'
+        state:
+          type: string
+          enum: [ published, confirmed, rejected ]
+        stateDescription:
+          type: string
+          example: Pubblicato
+        teacherMessage:
+          type: string
+          nullable: true
+          example: sono disponibili aggiornamenti dei risultati relativi all'appello del 26/06/2023 per l'insegnamento Il processo logistico (02TGJRY). Alstom mi ha appena trasmesso la valutazione della parte di formazione svolta in azienda (Flusso fisico e contabile di materiale) e, alla luce dell'ottimo giudizio che avete ricevuto, ho ritenuto opportuno confermare i voti conseguiti durante lo svolgimento del case study in aula e già comunicati al termine del mio corso. La registrazione di questi voti verrà consolidata la prossima settimana.
+        isWithdrawn:
+          type: boolean
+          example: false
+        isFailure:
+          type: boolean
+          example: false
+        canBeAccepted:
+          type: boolean
+          example: true
+        canBeRejected:
+          type: boolean
+          example: true
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        rejectedAt:
+          type: string
+          format: date-time
+          nullable: true
+        rejectingExpiresAt:
+          type: string
+          format: date-time
+          nullable: false
+      required: [id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt]
+
 
     BookingTopicLeaf:
       type: object
