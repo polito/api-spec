@@ -226,7 +226,7 @@ paths:
       tags:
         - Student
       summary: Reject provisional grade | Rifiuta valutazione provvisoria
-      operationId: rehectProvisionalGrade
+      operationId: rejectProvisionalGrade
       parameters:
         - $ref: '#/components/parameters/provisionalGradeIdParam'
       responses:
