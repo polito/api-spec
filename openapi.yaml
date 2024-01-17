@@ -188,7 +188,7 @@ paths:
       tags:
         - Student
       summary: Retrieve student provisional grades | Recupera le valutazioni provvisorie dello studente
-      operationId: getStudentProvisionalGrades
+      operationId: getStudentGrades
       responses:
         200:
           description: Success
@@ -3389,7 +3389,7 @@ components:
           example: true
         confirmedAt:
           type: string
-          format: date-time
+          format: date
           nullable: true
         rejectedAt:
           type: string
