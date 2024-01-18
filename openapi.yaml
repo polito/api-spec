@@ -210,7 +210,7 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 
   /provisional-grades/{provisionalGradeId}/accept:
-    put:
+    post:
       tags:
         - Student
       summary: Accept provisional grade | Accetta valutazione provvisoria
@@ -226,7 +226,7 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 
   /provisional-grades/{provisionalGradeId}/reject:
-    put:
+    post:
       tags:
         - Student
       summary: Reject provisional grade | Rifiuta valutazione provvisoria
@@ -3372,6 +3372,9 @@ components:
         state:
           type: string
           enum: [ published, confirmed, rejected ]
+        stateDescription:
+          type: string
+          example: Pubblicato
         teacherMessage:
           type: string
           nullable: true
