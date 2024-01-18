@@ -188,7 +188,7 @@ paths:
       tags:
         - Student
       summary: Retrieve student provisional grades | Recupera le valutazioni provvisorie dello studente
-      operationId: getStudentGrades
+      operationId: getStudentProvisionalGrades
       responses:
         200:
           description: Success
