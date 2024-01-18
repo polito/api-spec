@@ -201,7 +201,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProvisionalGrade'
-                required: [ data ]
+                  states:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProvisionalGradeState'
+                required: [ data, states ]
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -3368,9 +3372,6 @@ components:
         state:
           type: string
           enum: [ published, confirmed, rejected ]
-        stateDescription:
-          type: string
-          example: Pubblicato
         teacherMessage:
           type: string
           nullable: true
@@ -3401,6 +3402,19 @@ components:
           nullable: false
       required: [id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt]
 
+    ProvisionalGradeState:
+      type: object
+      properties:
+        id:
+          type: string
+          example: published
+        name:
+          type: string
+          example: Provvisorio
+        description:
+            type: string
+            example: La valutazione e consolidata. Il docente non ha piu la possibilita di modificarla. Dal momento del consolidamento lo studente ha 48h per esercitare il rifiuto del voto
+      required: [ id, name, description ]
 
     BookingTopicLeaf:
       type: object
