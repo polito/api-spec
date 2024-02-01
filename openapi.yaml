@@ -2533,6 +2533,39 @@ paths:
                     isRead: false
         500:
           $ref: '#/components/responses/ErrorResponse'
+
+  /notifications/preferences:
+    get:
+      tags:
+        - Student
+      summary: Get notification preferences | Ottieni preferenze notifiche
+      operationId: getNotificationPreferences
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    patch:
+      tags:
+        - Student
+      summary: Update notification preferences | Aggiorna preferenze notifiche
+      operationId: updateNotificationPreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotificationPreferencesRequest'
+      responses:
+        200:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+
   /notifications/{notificationId}:
     delete:
       tags:
@@ -4913,6 +4946,53 @@ components:
           type: string
           enum: [ it, en ]
           example: it
+
+    NotificationPreferences:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            notices:
+              type: boolean
+              example: true
+            files:
+              type: boolean
+              example: true
+            lectures:
+              type: boolean
+              example: true
+            bookings:
+              type: boolean
+              example: true
+            tickets:
+              type: boolean
+              example: true
+          required: [ notices, files, lectures, bookings, tickets]
+      required: [ data ]
+
+    UpdateNotificationPreferencesRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            notices:
+              type: boolean
+              example: true
+            files:
+              type: boolean
+              example: true
+            lectures:
+              type: boolean
+              example: true
+            bookings:
+              type: boolean
+              example: true
+            tickets:
+              type: boolean
+              example: true
+      required: [ data ]
 
     LoginRequest:
       type: object
