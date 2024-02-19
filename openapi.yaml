@@ -4630,7 +4630,7 @@ components:
           type: string
           example: '1.6.2'
 
-      required: [ name, builNumber, appVersion ]
+      required: [ name, buildNumber, appVersion ]
 
     PhoneNumber:
       type: object
