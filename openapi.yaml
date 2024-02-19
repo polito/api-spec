@@ -51,7 +51,7 @@ paths:
                   type: string
                   example: s290683
                 client:
-                  $ref: '#/components/schemas/Device'
+                  $ref: '#/components/schemas/Client'
                 device:
                   $ref: '#/components/schemas/Device'
               required: [ username ]
