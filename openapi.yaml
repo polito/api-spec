@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.58
+  version: 1.0.0-ALPHA.59
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -2980,6 +2980,36 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /offering/courses/{courseShortcode}/statistics:
+    get:
+      tags:
+        - Offering
+      parameters:
+        - $ref: '#/components/parameters/courseShortcodeParam'
+        - $ref: '#/components/parameters/yearQueryParam'
+        - $ref: '#/components/parameters/teacherIdQueryParam'
+      summary: Retrieve course statistics | Recupera le statistiche dell'insegnamento
+      operationId: getCourseStatistics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CourseStatistics'
+                required: [ data ]
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'                
+
   /guides:
     get:
       tags:
@@ -3185,6 +3215,13 @@ components:
       schema:
         type: string
         example: 2022
+    teacherIdQueryParam:
+      name: teacherId
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 1843
   responses:
     ErrorResponse:
       description: Server error
@@ -4068,6 +4105,53 @@ components:
           format: date-time
           example: 2022-08-31T14:00:00Z
       required: [ id, type, name, sizeInKiloBytes, mimeType, createdAt ]
+
+    GradeCount:
+      type: object
+      properties:
+        grade: 
+          type: string
+        count: 
+          type: integer
+      required: [grade, count]
+    YearStatistics:
+      type: object
+      properties:
+        succeded: 
+          type: integer
+        failed: 
+          type: integer
+        grades: 
+          type: array
+          items:
+            $ref: '#/components/schemas/GradeCount'
+      required: [succeded, failed, grades]
+    CourseStatistics:
+      type: object
+      properties:
+        shortcode: 
+          type: string
+        year: 
+          type: integer
+        teacherId: 
+          type: integer
+        totalEnrolled: 
+          type: integer
+        totalSucceded: 
+          type: integer
+        totalFailed: 
+          type: integer
+        firtsYear: 
+          $ref: '#/components/schemas/YearStatistics'
+        secondYear: 
+          $ref: '#/components/schemas/YearStatistics'
+        otherYears: 
+          $ref: '#/components/schemas/YearStatistics'
+        firstYearExamCalls: 
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamCallStatistics'
+    
 
     Exam:
       type: object
