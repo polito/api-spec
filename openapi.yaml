@@ -4112,7 +4112,8 @@ components:
         name:
           type: string
         id:
-         type: integer 
+         type: integer
+      required: [ name, id ]
     GradeCount:
       type: object
       properties:
@@ -4125,7 +4126,7 @@ components:
     YearStatistics:
       type: object
       properties:
-        succeded: 
+        succeeded:
           type: integer
         failed: 
           type: integer
@@ -4133,7 +4134,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GradeCount'
-      required: [succeded, failed, grades]
+      required: [succeeded, failed, grades]
     
     CourseStatistics:
       type: object
@@ -4146,11 +4147,11 @@ components:
           $ref: '#/components/schemas/Teacher'
         totalEnrolled: 
           type: integer
-        totalSucceded: 
+        totalSucceeded:
           type: integer
         totalFailed: 
           type: integer
-        firtsYear: 
+        firstYear:
           $ref: '#/components/schemas/YearStatistics'
         secondYear: 
           $ref: '#/components/schemas/YearStatistics'
@@ -4164,7 +4165,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Teacher'
-      required: [succeded, failed, grades]
+      required: [shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, years, teachers]
     
 
     Exam:
