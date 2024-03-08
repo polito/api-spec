@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.58
+  version: 1.0.0-ALPHA.59
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -4109,7 +4109,9 @@ components:
     Teacher:
       type: object
       properties:
-        name:
+        firstName:
+          type: string
+        lastName:
           type: string
         id:
          type: integer
@@ -4134,7 +4136,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GradeCount'
-      required: [succeeded, failed, grades]
+        averageGrade:
+          type: string
+          enum: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 30L ]
+      required: [succeeded, failed, grades, averageGrade]
+    PreviousYearsToCompare:
+      type: object
+      properties:
+        year:
+          type: integer
+        succeded:
+          type: integer
+        failed:
+          type: integer
     
     CourseStatistics:
       type: object
@@ -4157,6 +4171,10 @@ components:
           $ref: '#/components/schemas/YearStatistics'
         otherYears: 
           $ref: '#/components/schemas/YearStatistics'
+        previousYearsToCompare:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreviousYearsToCompare'
         years:
           type: array
           items:
