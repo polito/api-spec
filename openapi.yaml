@@ -2527,7 +2527,7 @@ paths:
                   - id: 63775600
                     title: "Nuovo materiale nel corso di Fisica"
                     message: "Nuovo file presentazione.pdf aggiunto al materiale del corso di Fisica"
-                    scope: ["teaching", "courses", "FIS000", "files"]
+                    scope: [ "teaching", "courses", "FIS000", "files" ]
                     isRead: false
         500:
           $ref: '#/components/responses/ErrorResponse'
@@ -3008,7 +3008,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         500:
-          $ref: '#/components/responses/ErrorResponse'                
+          $ref: '#/components/responses/ErrorResponse'
 
   /guides:
     get:
@@ -3471,7 +3471,7 @@ components:
           type: string
           format: date-time
           nullable: false
-      required: [id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt]
+      required: [ id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt ]
 
     ProvisionalGradeState:
       type: object
@@ -3483,8 +3483,8 @@ components:
           type: string
           example: Provvisorio
         description:
-            type: string
-            example: La valutazione e consolidata. Il docente non ha piu la possibilita di modificarla. Dal momento del consolidamento lo studente ha 48h per esercitare il rifiuto del voto
+          type: string
+          example: La valutazione e consolidata. Il docente non ha piu la possibilita di modificarla. Dal momento del consolidamento lo studente ha 48h per esercitare il rifiuto del voto
       required: [ id, name, description ]
 
     BookingTopicLeaf:
@@ -4109,67 +4109,69 @@ components:
     Teacher:
       type: object
       properties:
+        id:
+          type: integer
         firstName:
           type: string
         lastName:
           type: string
-        id:
-         type: integer
-      required: [ name, id ]
+      required: [ id, firstName, lastName ]
     GradeCount:
       type: object
       properties:
-        grade: 
+        grade:
           type: string
           enum: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 30L ]
-        count: 
+        count:
           type: integer
-      required: [grade, count]
+      required: [ grade, count ]
     YearStatistics:
       type: object
       properties:
         succeeded:
           type: integer
-        failed: 
+        failed:
           type: integer
-        grades: 
+        grades:
           type: array
           items:
             $ref: '#/components/schemas/GradeCount'
         averageGrade:
-          type: string
-          enum: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 30L ]
-      required: [succeeded, failed, grades, averageGrade]
+          type: number
+          example: 18.01
+      required: [ succeeded, failed, grades, averageGrade ]
+
     PreviousYearsToCompare:
       type: object
       properties:
         year:
           type: integer
-        succeded:
+        succeeded:
           type: integer
         failed:
           type: integer
+      required: [ year, succeeded, failed ]
     
     CourseStatistics:
       type: object
       properties:
-        shortcode: 
+        shortcode:
           type: string
-        year: 
+        year:
           type: integer
-        teacher: 
+        teacher:
           $ref: '#/components/schemas/Teacher'
-        totalEnrolled: 
+        totalEnrolled:
           type: integer
         totalSucceeded:
           type: integer
-        totalFailed: 
+        totalFailed:
           type: integer
         firstYear:
           $ref: '#/components/schemas/YearStatistics'
-        secondYear: 
+        secondYear:
           $ref: '#/components/schemas/YearStatistics'
-        otherYears: 
+        otherYears:
           $ref: '#/components/schemas/YearStatistics'
         previousYearsToCompare:
           type: array
@@ -4183,7 +4185,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Teacher'
-      required: [shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, years, teachers]
+      required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, previousYearsToCompare, years, teachers ]
     
 
     Exam:
@@ -4815,7 +4817,7 @@ components:
           description: An array representing the hierarchical path to the object this notification is related to (replicates the navigation/modules structure)
           items:
             type: string
-          example: ["teaching", "courses", "FIS000", "files"]
+          example: [ "teaching", "courses", "FIS000", "files" ]
         sentAt:
           type: string
           format: date-time
@@ -5090,7 +5092,7 @@ components:
             tickets:
               type: boolean
               example: true
-          required: [ notices, files, lectures, bookings, tickets]
+          required: [ notices, files, lectures, bookings, tickets ]
       required: [ data ]
 
     UpdateNotificationPreferencesRequest:
