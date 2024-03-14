@@ -4138,6 +4138,7 @@ components:
             $ref: '#/components/schemas/GradeCount'
         averageGrade:
           type: number
+          nullable: true
           example: 18.01
       required: [ succeeded, failed, grades, averageGrade ]
 
