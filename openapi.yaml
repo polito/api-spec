@@ -3581,6 +3581,9 @@ components:
         id:
           type: integer
           example: 103051
+        description: 
+          type: string
+          example: ''
         isBooked:
           type: boolean
           example: false
@@ -3633,7 +3636,7 @@ components:
           type: string
           format: date-time
           example: '2021-10-04T16:00:00Z'
-      required: [ id, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
+      required: [ id, description, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
     BookingSeats:
       type: object
       properties:
@@ -3767,6 +3770,9 @@ components:
         id:
           type: integer
           example: 258674
+        description:
+          type: string
+          example: ""
         topic:
           $ref: '#/components/schemas/BookingTopicOverview'
         subtopic:
@@ -3809,7 +3815,7 @@ components:
         locationCheck:
           $ref: '#/components/schemas/BookingLocationCheck'
 
-      required: [ id, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
+      required: [ id, description, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
     CourseOverview:
       type: object
