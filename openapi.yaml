@@ -3526,7 +3526,7 @@ components:
         agendaView:
           type: boolean
           example: false
-          description: Specifies if the scope requires the default agenda display     
+          description: Specifies if the topic requires the agenda display     
       required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek, agendaView ]
     BookingTopic:
       allOf:
