@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.59
+  version: 1.0.0-ALPHA.60
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3523,7 +3523,11 @@ components:
           type: integer
           example: 1
           description: Number of days per week the booking is available, starting from startDate weekday, or monday if missing
-      required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek ]
+        agendaView:
+          type: boolean
+          example: false
+          description: Specifies if the topic requires the agenda display     
+      required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek, agendaView ]
     BookingTopic:
       allOf:
         - $ref: '#/components/schemas/BookingTopicLeaf'
@@ -3581,6 +3585,9 @@ components:
         id:
           type: integer
           example: 103051
+        description: 
+          type: string
+          example: ''
         isBooked:
           type: boolean
           example: false
@@ -3633,7 +3640,7 @@ components:
           type: string
           format: date-time
           example: '2021-10-04T16:00:00Z'
-      required: [ id, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
+      required: [ id, description, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
     BookingSeats:
       type: object
       properties:
@@ -3767,6 +3774,9 @@ components:
         id:
           type: integer
           example: 258674
+        description:
+          type: string
+          example: ""
         topic:
           $ref: '#/components/schemas/BookingTopicOverview'
         subtopic:
@@ -3809,7 +3819,7 @@ components:
         locationCheck:
           $ref: '#/components/schemas/BookingLocationCheck'
 
-      required: [ id, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
+      required: [ id, description, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
     CourseOverview:
       type: object
