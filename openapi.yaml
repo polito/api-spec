@@ -3523,7 +3523,11 @@ components:
           type: integer
           example: 1
           description: Number of days per week the booking is available, starting from startDate weekday, or monday if missing
-      required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek ]
+        agendaView:
+          type: boolean
+          example: false
+          description: Specifies if the scope requires the default agenda display     
+      required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek, agendaView ]
     BookingTopic:
       allOf:
         - $ref: '#/components/schemas/BookingTopicLeaf'
