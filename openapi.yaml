@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.60
+  version: 1.0.0-ALPHA.61
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -4072,9 +4072,6 @@ components:
         id:
           type: string
           example: '33352562'
-        type:
-          type: string
-          example: 'directory'
         name:
           type: string
           example: Laboratori
@@ -4098,9 +4095,6 @@ components:
         id:
           type: string
           example: '33352562'
-        type:
-          type: string
-          example: 'file'
         name:
           type: string
           example: sebc-lab2.pdf
