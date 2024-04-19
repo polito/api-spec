@@ -570,33 +570,6 @@ paths:
                   data:
                     $ref: '#/components/schemas/Course'
                 required: [ data ]
-              example:
-                data:
-                  id: 252842
-                  name: Human Computer Interaction
-                  shortcode: 01NYHOV
-                  cfu: 6
-                  teachingPeriod: 1-1
-                  teacherId: 25734
-                  isOverBooking: false
-                  isInPersonalStudyPlan: true
-                  year: '2022'
-                  vcPreviousYears:
-                    - year: 2020
-                      id: 24343324
-                  vcOtherCourses:
-                    - year: 2020
-                      name: Fisica II
-                      id: 24343325
-                  notifications:
-                    notices: true
-                    files: true
-                    lectures: true
-                  staff:
-                    - role: 'Titolare'
-                      id: 025734
-                    - role: 'Docente'
-                      id: 002154
         404:
           description: Course not found
           content:
@@ -3934,6 +3907,17 @@ components:
         year:
           type: string
           example: '2022'
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                example: 'https://docs.google.com/document/d/13hpWEDQxziSkhSU0PuqxMXntqZYp3ffDKZ2-umQ7Ywo/edit?usp=sharing'
+              description:
+                type: string
+                example: 'Calendario settimanale dei contenuti del corso'
         vcPreviousYears:
           type: array
           items:
@@ -3986,7 +3970,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
