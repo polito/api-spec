@@ -3918,6 +3918,7 @@ components:
               description:
                 type: string
                 example: 'Calendario settimanale dei contenuti del corso'
+            required: [ url ]
         vcPreviousYears:
           type: array
           items:
