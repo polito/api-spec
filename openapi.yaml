@@ -5574,6 +5574,6 @@ components:
       type: object
       properties:
         unreadEmails:
-          type: number
-          example: 9
+          type: string
+          example: "99+"
       required: [ unreadEmails ]
