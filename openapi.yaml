@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.61
+  version: 1.0.0-ALPHA.62
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3023,6 +3023,47 @@ paths:
                       $ref: '#/components/schemas/Survey'
                 required: [ data ]
 
+  /linkToWebmail:
+    get:
+      tags:
+        - Webmail
+      summary: Retrieve student's webmail link | Recupera il link alla webmail dello studente
+      operationId: getWebmailLink
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToWebmail'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /unreadEmails:
+    get:
+      tags:
+        - Webmail
+      summary: Retrieve student's unread emails number | Recupera il numero di email non lette dello studente
+      operationId: getUnreadEmailslNumber
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmailBadge'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+
 components:
   parameters:
     bookingIdParam:
@@ -5522,3 +5563,18 @@ components:
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
       required: [ id, title, subtitle, category, type, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
+      
+    LinkToWebmail:
+      type: object
+      properties:
+        url:
+          type: string
+          example: 'https://...'
+      required: [ url ] 
+    EmailBadge:
+      type: object
+      properties:
+        unreadEmails:
+          type: string
+          example: "99+"
+      required: [ unreadEmails ]
