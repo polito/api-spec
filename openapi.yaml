@@ -3336,6 +3336,11 @@ components:
           type: number
           nullable: true
           example: null
+        excludedCreditsNumber:
+          description: Credits excluded from calculating the purged grade
+          type: number
+          nullable: true
+          example: 16
         totalCredits:
           type: integer
           example: 126
@@ -3375,6 +3380,7 @@ components:
         - averageGradePurged
         - estimatedFinalGradePurged
         - mastersAdmissionAverageGrade
+        - excludedCreditsNumber
         - totalCredits
         - totalAttendedCredits
         - totalAcquiredCredits
