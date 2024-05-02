@@ -4447,11 +4447,21 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Floor'
+            city:
+              type: object
+              properties: 
+                id:
+                  type: string
+                  example: 1272
+                name:
+                  type: string
+                  example: "Torino"
+              required: [ id, name ]
             extent:
               type: number
               example: 0.0015
               description: A delta in degrees that applied to the centroid coordinates of the site determines its extent
-          required: [ floors, extent ]
+          required: [ floors, extent, city ]
         - $ref: '#/components/schemas/GeoLocation'
     BuildingOverview:
       type: object
