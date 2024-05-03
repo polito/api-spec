@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.62
+  version: 1.0.0-ALPHA.63
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -4447,11 +4447,21 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Floor'
+            city:
+              type: object
+              properties: 
+                id:
+                  type: string
+                  example: 1272
+                name:
+                  type: string
+                  example: "Torino"
+              required: [ id, name ]
             extent:
               type: number
               example: 0.0015
               description: A delta in degrees that applied to the centroid coordinates of the site determines its extent
-          required: [ floors, extent ]
+          required: [ floors, extent, city ]
         - $ref: '#/components/schemas/GeoLocation'
     BuildingOverview:
       type: object
