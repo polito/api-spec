@@ -3571,7 +3571,7 @@ components:
         agendaView:
           type: boolean
           example: false
-          description: Specifies if the topic requires the agenda display     
+          description: Specifies if the topic requires the agenda display
       required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek, agendaView ]
     BookingTopic:
       allOf:
@@ -3630,7 +3630,7 @@ components:
         id:
           type: integer
           example: 103051
-        description: 
+        description:
           type: string
           example: ''
         isBooked:
@@ -4213,7 +4213,7 @@ components:
         failed:
           type: integer
       required: [ year, succeeded, failed ]
-    
+
     CourseStatistics:
       type: object
       properties:
@@ -4248,7 +4248,7 @@ components:
           items:
             $ref: '#/components/schemas/Teacher'
       required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, previousYearsToCompare, years, teachers ]
-    
+
 
     Exam:
       type: object
@@ -4478,7 +4478,7 @@ components:
                 $ref: '#/components/schemas/Floor'
             city:
               type: object
-              properties: 
+              properties:
                 id:
                   type: string
                   example: 1272
@@ -4535,6 +4535,28 @@ components:
         name:
           type: string
           example: Aula
+        icon:
+          type: string
+          example: water
+          default: pin
+        color:
+          type: string
+          example: lightBlue
+          default: gray
+        shade:
+          type: number
+          example: 600
+          default: 500
+        priority:
+          description: A MapBox style priority number. 0 means most important, larger numbers are less important
+          type: number
+          example: 60
+          default: 100
+        highlighted:
+          description: If tue, markers of this category should be shown initially on the map
+          type: boolean
+          example: true
+          default: false
       required: [ id, name ]
     RootPlaceCategory:
       allOf:
@@ -5627,14 +5649,13 @@ components:
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
       required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
-      
     LinkToWebmail:
       type: object
       properties:
         url:
           type: string
           example: 'https://...'
-      required: [ url ] 
+      required: [ url ]
     EmailBadge:
       type: object
       properties:
