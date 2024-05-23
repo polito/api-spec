@@ -81,17 +81,17 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /core/appInfo:
-    post:
+  /auth/client:
+    patch:
       tags:
-        - core
-      summary: Send app info to the server | Invia al server le informazioni sulla app
+        - Auth
+      summary: Update client version fields | Aggiorna i campi di versione del client
       operationId: appInfo
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AppInfo'
+              $ref: '#/components/schemas/ClientVersionRequest'
       responses:
         200:
           description: Success
@@ -4813,7 +4813,7 @@ components:
           example: true
       required: [ suggestUpdate ]
 
-    AppInfo:
+    ClientVersionRequest:
       type: object
       properties:
         buildNumber:
@@ -4825,7 +4825,6 @@ components:
       required: [ buildNumber, appVersion ]
     Client:
       allOf:
-        - $ref: '#/components/schemas/AppInfo'
         - type: object
           properties:
             name:
@@ -4835,6 +4834,7 @@ components:
               type: string
               example: '5a54f626-4b7e-488e-a0e3-300f54051510'
           required: [ name, id ]
+        - $ref: '#/components/schemas/ClientVersionRequest'
 
     PhoneNumber:
       type: object
