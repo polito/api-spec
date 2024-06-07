@@ -4282,6 +4282,9 @@ components:
         bookedCount:
           type: integer
           example: 42
+        availableCount:
+          type: integer
+          example: 8
         question:
           type: object
           nullable: true
@@ -4325,6 +4328,7 @@ components:
         - examStartsAt
         - examEndsAt
         - bookedCount
+        - availableCount
         - question
         - feedback
         - notes
