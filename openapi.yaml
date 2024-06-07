@@ -81,6 +81,31 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /auth/client:
+    patch:
+      tags:
+        - Auth
+      summary: Update client version fields | Aggiorna i campi di versione del client
+      operationId: appInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientVersionRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UpdateInfo'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /me:
     get:
       tags:
@@ -4784,23 +4809,36 @@ components:
           example: Samsung
       required: [ platform ]
 
-    Client:
+    UpdateInfo:
       type: object
       properties:
-        name:
-          type: string
-          example: Students app
-        id:
-          type: string
-          example: '5a54f626-4b7e-488e-a0e3-300f54051510'
+        suggestUpdate:
+          type: boolean
+          example: true
+      required: [ suggestUpdate ]
+
+    ClientVersionRequest:
+      type: object
+      properties:
         buildNumber:
           type: string
           example: '1060200'
         appVersion:
           type: string
           example: '1.6.2'
-
-      required: [ name, buildNumber, appVersion ]
+      required: [ buildNumber, appVersion ]
+    Client:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+              example: Students app
+            id:
+              type: string
+              example: '5a54f626-4b7e-488e-a0e3-300f54051510'
+          required: [ name, id ]
+        - $ref: '#/components/schemas/ClientVersionRequest'
 
     PhoneNumber:
       type: object
