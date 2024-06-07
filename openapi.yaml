@@ -5558,6 +5558,12 @@ components:
           $ref: '#/components/schemas/SurveyTaxonomy'
         type:
           $ref: '#/components/schemas/SurveyTaxonomy'
+        period:
+          type: number
+          example: 2
+        year:
+          type: string
+          example: "2024"
         isMandatory:
           type: boolean
           example: true
@@ -5582,7 +5588,7 @@ components:
           example: '2022-08-31T14:00:00Z'
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
-      required: [ id, title, subtitle, category, type, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
+      required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
       
     LinkToWebmail:
       type: object
