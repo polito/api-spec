@@ -2286,6 +2286,27 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
+  /v2/place-categories:
+    get:
+      tags:
+        - Places
+      summary: List place categories v2 | Elenca categorie luoghi v2
+      operationId: getPlaceCategoriesV2
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RootPlaceCategoryV2'
+                required: [ data ]
+        500:
+          $ref: '#/components/responses/ErrorResponse'
   /sites:
     get:
       tags:
@@ -2413,6 +2434,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/PlaceOverview'
+                required: [ data ]
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /v2/places:
+    get:
+      tags:
+        - Places
+      summary: Search places v2 | Cerca luoghi v2
+      operationId: getPlacesV2
+      parameters:
+        - name: search
+          in: query
+          description: Filter places containing 'search' in their name
+          schema:
+            type: string
+        - $ref: '#/components/parameters/queryPlaceCategoryId'
+        - $ref: '#/components/parameters/queryPlaceSubCategoryId'
+        - $ref: '#/components/parameters/querySiteId'
+        - $ref: '#/components/parameters/queryBuildingId'
+        - $ref: '#/components/parameters/queryFloorId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlaceOverviewV2'
                 required: [ data ]
         404:
           description: Site|Building|Floor not found
@@ -2581,7 +2641,7 @@ paths:
     put:
       tags:
         - Student
-      summary: Mark a notification as read | Segna uns notifica come letta
+      summary: Mark a notification as read | Segna una notifica come letta
       operationId: markNotificationAsRead
       parameters:
         - $ref: '#/components/parameters/notificationIdParam'
@@ -4535,18 +4595,26 @@ components:
         name:
           type: string
           example: Aula
-        icon:
+      required: [ id, name ]
+    PlaceCategoryV2:
+      type: object
+      properties:
+        id:
           type: string
-          example: water
-          default: pin
+          example: AULA
+        name:
+          type: string
+          example: Aula
+        showInMenu:
+          type: boolean
+          default: false
         color:
           type: string
           example: lightBlue
           default: gray
-        shade:
-          type: number
-          example: 600
-          default: 500
+        markerUrl:
+          type: string
+          format: url
         priority:
           description: A MapBox style priority number. 0 means most important, larger numbers are less important
           type: number
@@ -4558,6 +4626,7 @@ components:
           example: true
           default: false
       required: [ id, name ]
+
     RootPlaceCategory:
       allOf:
         - $ref: '#/components/schemas/PlaceCategory'
@@ -4568,6 +4637,15 @@ components:
               items:
                 $ref: '#/components/schemas/PlaceCategory'
           required: [ subCategories ]
+    RootPlaceCategoryV2:
+      allOf:
+        - $ref: '#/components/schemas/PlaceCategoryV2'
+        - type: object
+          properties:
+            subCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlaceCategoryV2'
 
     PlaceCategoryOverview:
       allOf:
@@ -4577,6 +4655,13 @@ components:
             subCategory:
               $ref: '#/components/schemas/PlaceCategory'
           required: [ subCategory ]
+    PlaceCategoryOverviewV2:
+      allOf:
+        - $ref: '#/components/schemas/PlaceCategory'
+        - type: object
+          properties:
+            subCategory:
+              $ref: '#/components/schemas/PlaceCategory'
     PlaceOverview:
       allOf:
         - type: object
@@ -4594,7 +4679,26 @@ components:
               $ref: '#/components/schemas/BuildingOverview'
             floor:
               $ref: '#/components/schemas/Floor'
-          required: [ id, room, name, category, site, building, floor ]
+          required: [ id, room, category, site, building, floor ]
+        - $ref: '#/components/schemas/GeoLocation'
+    PlaceOverviewV2:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              example: 'TO_CIT09_XPTE_088'
+            room:
+              $ref: '#/components/schemas/RoomOverview'
+            category:
+              $ref: '#/components/schemas/PlaceCategoryOverviewV2'
+            site:
+              $ref: '#/components/schemas/SiteOverview'
+            building:
+              $ref: '#/components/schemas/BuildingOverview'
+            floor:
+              $ref: '#/components/schemas/Floor'
+          required: [ id, room, category, site, building, floor ]
         - $ref: '#/components/schemas/GeoLocation'
     FreeRoom:
       allOf:
