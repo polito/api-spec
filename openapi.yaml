@@ -4963,7 +4963,7 @@ components:
             id:
               type: string
               example: '5a54f626-4b7e-488e-a0e3-300f54051510'
-          required: [ name, id ]
+          required: [ name ]
         - $ref: '#/components/schemas/ClientVersionRequest'
 
     PhoneNumber:
@@ -5753,6 +5753,7 @@ components:
         course:
           $ref: '#/components/schemas/SurveyCourseRef'
       required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
+
     LinkToWebmail:
       type: object
       properties:
