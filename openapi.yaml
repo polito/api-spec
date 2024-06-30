@@ -2292,6 +2292,8 @@ paths:
         - Places
       summary: List place categories v2 | Elenca categorie luoghi v2
       operationId: getPlaceCategoriesV2
+      parameters:
+        - $ref: '#/components/parameters/querySiteId'
       responses:
         200:
           description: Success
