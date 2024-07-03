@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 1.0.0-ALPHA.65
+  version: 2.0.0
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -2265,12 +2265,14 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /place-categories:
+  /v2/place-categories:
     get:
       tags:
         - Places
       summary: List place categories | Elenca categorie luoghi
       operationId: getPlaceCategories
+      parameters:
+        - $ref: '#/components/parameters/querySiteId'
       responses:
         200:
           description: Success
@@ -2286,30 +2288,7 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
-  /v2/place-categories:
-    get:
-      tags:
-        - Places
-      summary: List place categories v2 | Elenca categorie luoghi v2
-      operationId: getPlaceCategoriesV2
-      parameters:
-        - $ref: '#/components/parameters/querySiteId'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/RootPlaceCategoryV2'
-                required: [ data ]
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-  /sites:
+  /v2/sites:
     get:
       tags:
         - Places
@@ -2330,7 +2309,7 @@ paths:
                 required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
-  /sites/{siteId}/free-rooms:
+  /v2/sites/{siteId}/free-rooms:
     get:
       tags:
         - Places
@@ -2377,7 +2356,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
-  /sites/{siteId}/buildings:
+  /v2/sites/{siteId}/buildings:
     get:
       tags:
         - Places
@@ -2407,7 +2386,7 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /places:
+  /v2/places:
     get:
       tags:
         - Places
@@ -2446,46 +2425,7 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /v2/places:
-    get:
-      tags:
-        - Places
-      summary: Search places v2 | Cerca luoghi v2
-      operationId: getPlacesV2
-      parameters:
-        - name: search
-          in: query
-          description: Filter places containing 'search' in their name
-          schema:
-            type: string
-        - $ref: '#/components/parameters/queryPlaceCategoryId'
-        - $ref: '#/components/parameters/queryPlaceSubCategoryId'
-        - $ref: '#/components/parameters/querySiteId'
-        - $ref: '#/components/parameters/queryBuildingId'
-        - $ref: '#/components/parameters/queryFloorId'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/PlaceOverviewV2'
-                required: [ data ]
-        404:
-          description: Site|Building|Floor not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-
-  /places/{placeId}:
+  /v2/places/{placeId}:
     get:
       tags:
         - Places
@@ -4597,16 +4537,6 @@ components:
         name:
           type: string
           example: Aula
-      required: [ id, name ]
-    PlaceCategoryV2:
-      type: object
-      properties:
-        id:
-          type: string
-          example: AULA
-        name:
-          type: string
-          example: Aula
         showInMenu:
           type: boolean
           default: false
@@ -4638,26 +4568,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PlaceCategory'
-          required: [ subCategories ]
-    RootPlaceCategoryV2:
-      allOf:
-        - $ref: '#/components/schemas/PlaceCategoryV2'
-        - type: object
-          properties:
-            subCategories:
-              type: array
-              items:
-                $ref: '#/components/schemas/PlaceCategoryV2'
 
     PlaceCategoryOverview:
-      allOf:
-        - $ref: '#/components/schemas/PlaceCategory'
-        - type: object
-          properties:
-            subCategory:
-              $ref: '#/components/schemas/PlaceCategory'
-          required: [ subCategory ]
-    PlaceCategoryOverviewV2:
       allOf:
         - $ref: '#/components/schemas/PlaceCategory'
         - type: object
@@ -4675,25 +4587,6 @@ components:
               $ref: '#/components/schemas/RoomOverview'
             category:
               $ref: '#/components/schemas/PlaceCategoryOverview'
-            site:
-              $ref: '#/components/schemas/SiteOverview'
-            building:
-              $ref: '#/components/schemas/BuildingOverview'
-            floor:
-              $ref: '#/components/schemas/Floor'
-          required: [ id, room, category, site, building, floor ]
-        - $ref: '#/components/schemas/GeoLocation'
-    PlaceOverviewV2:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              example: 'TO_CIT09_XPTE_088'
-            room:
-              $ref: '#/components/schemas/RoomOverview'
-            category:
-              $ref: '#/components/schemas/PlaceCategoryOverviewV2'
             site:
               $ref: '#/components/schemas/SiteOverview'
             building:
