@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.0.0
+  version: 2.0.1
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -2364,6 +2364,13 @@ paths:
       operationId: getBuildings
       parameters:
         - $ref: '#/components/parameters/pathSiteId'
+        - name: search
+          in: query
+          description: Filter buildings containing 'search' in their name
+          schema:
+            type: string
+        - $ref: '#/components/parameters/queryPlaceCategoryId'
+        - $ref: '#/components/parameters/queryPlaceSubCategoryId'
       responses:
         200:
           description: Success
