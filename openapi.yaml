@@ -271,16 +271,8 @@ paths:
       summary: request European Student Card | Richiedi la European Student Card
       operationId: requestESC
       responses:
-        200:
+        201:
           description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/EuropeanStudentCard'
-                required: [ data ]
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -3416,15 +3408,8 @@ components:
         smartCardPicture:
           type: string
           example: https://
-        ESCBackground:
-          type: string
-          example: https://
         europeanStudentCard:
           $ref: '#/components/schemas/EuropeanStudentCard'
-        canRequestESC:
-          type: boolean
-          example: true
-          nullable: true
       required:
         - username
         - firstName
@@ -3574,17 +3559,32 @@ components:
     EuropeanStudentCard:
       type: object
       properties:
-        cardNumber:
+        picture:
           type: string
-          example: 'f74047b0-2108-103d-8ae-001999977754'
-        expiresAt:
-          type: string
-          example: '2024-12-31T22:59:59.000+0000'
-        qrCode:
-          type: string
-          example: 'iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQAAAAA2RLUcAAAAr0lEQVR4XmP4DwYHGKhGH0hVZATR96OW14Loi87vXcF04k4IHSkLpu/7dILlD4SGgtX/P8kN1n/a6LowiH7/zSUXRN9MK1oMog/OMFcGq4tTzwTR36Y7fQfLSz/bCKI/Hen0BtHHypVeg+hXTU/A5t/hD9EE0X/f6u0E0ZejroiDzbkfexFsf1hsNIi+n/cRzL9YlCILpv3c+MF08aGzYPkg1dtg9dEOYPXo/qYODQD15Rx9h0NUJAAAAABJRU5ErkJggg=='
-      nullable: true
-      required: [ cardNumber, expiresAt, qrCode ]
+          example: https://
+        canBeRequested:
+          type: boolean
+          example: false
+        details:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - valid
+                - expired
+            cardNumber:
+              type: string
+              example: 'f74047b0-2108-103d-8ae-001999977754'
+            expiresAt:
+              type: string
+              example: '2024-12-31T22:59:59.000+0000'
+            qrCode:
+              type: string
+              example: 'iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQAAAAA2RLUcAAAAr0lEQVR4XmP4DwYHGKhGH0hVZATR96OW14Loi87vXcF04k4IHSkLpu/7dILlD4SGgtX/P8kN1n/a6LowiH7/zSUXRN9MK1oMog/OMFcGq4tTzwTR36Y7fQfLSz/bCKI/Hen0BtHHypVeg+hXTU/A5t/hD9EE0X/f6u0E0ZejroiDzbkfexFsf1hsNIi+n/cRzL9YlCILpv3c+MF08aGzYPkg1dtg9dEOYPXo/qYODQD15Rx9h0NUJAAAAABJRU5ErkJggg=='
+          nullable: true
+          required: [ status, cardNumber, expiresAt, qrCode ]
+      required: [ picture, canBeRequested, details ]
 
     BookingTopicLeaf:
       type: object
