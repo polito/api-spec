@@ -263,6 +263,18 @@ paths:
           description: Provisional grade not found
         500:
           $ref: '#/components/responses/ErrorResponse'
+          
+  /requestESC:
+    post:
+      tags:
+        - Student
+      summary: request European Student Card | Richiedi la European Student Card
+      operationId: requestESC
+      responses:
+        201:
+          description: Success
+        500:
+          $ref: '#/components/responses/ErrorResponse'
 
   /booking-topics:
     get:
@@ -3396,6 +3408,8 @@ components:
         smartCardPicture:
           type: string
           example: https://
+        europeanStudentCard:
+          $ref: '#/components/schemas/EuropeanStudentCard'
       required:
         - username
         - firstName
@@ -3422,6 +3436,7 @@ components:
         - enrollmentAttendedCredits
         - enrollmentAcquiredCredits
         - smartCardPicture
+        - europeanStudentCard
 
     Deadline:
       type: object
@@ -3540,6 +3555,36 @@ components:
           type: string
           example: La valutazione e consolidata. Il docente non ha piu la possibilita di modificarla. Dal momento del consolidamento lo studente ha 48h per esercitare il rifiuto del voto
       required: [ id, name, description ]
+
+    EuropeanStudentCard:
+      type: object
+      properties:
+        picture:
+          type: string
+          example: https://
+        canBeRequested:
+          type: boolean
+          example: false
+        details:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - valid
+                - expired
+            cardNumber:
+              type: string
+              example: 'f74047b0-2108-103d-8ae-001999977754'
+            expiresAt:
+              type: string
+              example: '2024-12-31T22:59:59.000+0000'
+            qrCode:
+              type: string
+              example: 'iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQAAAAA2RLUcAAAAr0lEQVR4XmP4DwYHGKhGH0hVZATR96OW14Loi87vXcF04k4IHSkLpu/7dILlD4SGgtX/P8kN1n/a6LowiH7/zSUXRN9MK1oMog/OMFcGq4tTzwTR36Y7fQfLSz/bCKI/Hen0BtHHypVeg+hXTU/A5t/hD9EE0X/f6u0E0ZejroiDzbkfexFsf1hsNIi+n/cRzL9YlCILpv3c+MF08aGzYPkg1dtg9dEOYPXo/qYODQD15Rx9h0NUJAAAAABJRU5ErkJggg=='
+          nullable: true
+          required: [ status, cardNumber, expiresAt, qrCode ]
+      required: [ picture, canBeRequested, details ]
 
     BookingTopicLeaf:
       type: object
