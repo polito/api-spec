@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.0.1
+  version: 2.0.2
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -91,7 +91,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientVersionRequest'
+              allOf:
+                - $ref: '#/components/schemas/ClientVersionRequest'
+                - $ref: '#/components/schemas/FcmRegistrationRequest'
       responses:
         200:
           description: Success
@@ -1048,9 +1050,9 @@ paths:
                     content: '- Programming skills\f\n- Knowledge on web and related technologies/languages (e.g., HTML, JS, client-server architectures, …)\f\n- Attitude towards working in teams\f\n'
                   - title: Programma
                     content: 'Course topics will cover three areas: \f\n\f\n
-                    - Introduction to Human-Computer Interaction: history, the human, the computer, vision of the future.\f\n\f\n
-                    - Building interactive applications with a human-centered process. The main tasks and methods to design, develop, and evaluate an interactive application: needfindings strategies, low- and high-fidelity prototypes, mental models and visual design, heuristic evaluation, and basic concepts and methods for controlled experiments (3 credits of lectures and exercises).\f\nThis part will focus, in general, on the design process. Such concepts will be applied to a specific application domain in the development of a group project, which will be carried on during the lab hours (2 credits). \f\n\f\n
-                    - "Beyond WIMP" paradigms: e.g., interaction with AI-powered systems, tangible interaction, voice user interfaces, wearables, gestures, and eye tracking. Selected paradigms will be discussed from different perspectives, ranging from rationale and vision, to contemporary examples and development tools (1 credit). Thematic seminars on emerging topics might also be included, as well as the illustration of specific "case studies".\f\n\f\nMost of the topics will have a theoretical (in-class) foundation plus hands-on (in-lab) experiences by using web technologies. Students projects will follow the proposed human-centered design process and will submit intermediate deliverables. Projects will consist of interactive prototypes as modern web applications, in which a "beyond WIMP" paradigm might be exploited for user interaction.\f\n\f\nDuring the course, communication within teams and with teachers as well as project development will adopt contemporary solutions and tools (e.g., Git and GitHub, Slack/Discord, …).'
+                      - Introduction to Human-Computer Interaction: history, the human, the computer, vision of the future.\f\n\f\n
+                      - Building interactive applications with a human-centered process. The main tasks and methods to design, develop, and evaluate an interactive application: needfindings strategies, low- and high-fidelity prototypes, mental models and visual design, heuristic evaluation, and basic concepts and methods for controlled experiments (3 credits of lectures and exercises).\f\nThis part will focus, in general, on the design process. Such concepts will be applied to a specific application domain in the development of a group project, which will be carried on during the lab hours (2 credits). \f\n\f\n
+                      - "Beyond WIMP" paradigms: e.g., interaction with AI-powered systems, tangible interaction, voice user interfaces, wearables, gestures, and eye tracking. Selected paradigms will be discussed from different perspectives, ranging from rationale and vision, to contemporary examples and development tools (1 credit). Thematic seminars on emerging topics might also be included, as well as the illustration of specific "case studies".\f\n\f\nMost of the topics will have a theoretical (in-class) foundation plus hands-on (in-lab) experiences by using web technologies. Students projects will follow the proposed human-centered design process and will submit intermediate deliverables. Projects will consist of interactive prototypes as modern web applications, in which a "beyond WIMP" paradigm might be exploited for user interaction.\f\n\f\nDuring the course, communication within teams and with teachers as well as project development will adopt contemporary solutions and tools (e.g., Git and GitHub, Slack/Discord, …).'
                   - title: Note
                     content: ''
                   - title: Organizzazione dell'insegnamento
@@ -5222,17 +5224,20 @@ components:
           nullable: true
       required: [ url, description, type, sizeInKiloBytes ]
 
-    UpdatePreferencesRequest:
+    FcmRegistrationRequest:
       type: object
       properties:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
-        language:
-          type: string
-          enum: [ it, en ]
-          example: it
-
+    UpdatePreferencesRequest:
+      allOf:
+      - type: object
+        properties:
+          language:
+            type: string
+            enum: [ it, en ]
+            example: it
     NotificationPreferences:
       type: object
       properties:
