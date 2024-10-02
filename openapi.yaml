@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.0.1
+  version: 2.0.2
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -91,7 +91,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientVersionRequest'
+              allOf:
+                - $ref: '#/components/schemas/ClientVersionRequest'
+                - $ref: '#/components/schemas/FcmRegistrationRequest'
       responses:
         200:
           description: Success
@@ -5222,17 +5224,21 @@ components:
           nullable: true
       required: [ url, description, type, sizeInKiloBytes ]
 
-    UpdatePreferencesRequest:
+    FcmRegistrationRequest:
       type: object
       properties:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
-        language:
-          type: string
-          enum: [ it, en ]
-          example: it
-
+    UpdatePreferencesRequest:
+      allOf:
+      - $ref: '#/components/schemas/FcmRegistrationRequest'
+      - type: object
+        properties:
+          language:
+            type: string
+            enum: [ it, en ]
+            example: it
     NotificationPreferences:
       type: object
       properties:
