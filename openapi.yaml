@@ -3385,10 +3385,15 @@ components:
           nullable: true
           example: 16
         totalOnTimeExamPoints:
-          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value 4)
+          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value maxOnTimeExamPoin)
           type: number
           nullable: true
           example: 0
+        maxOnTimeExamPoints:
+          description: Maximum points for "on-time" exams
+          type: number
+          nullable: false
+          example: 4
         totalCredits:
           type: integer
           example: 126
@@ -3431,6 +3436,7 @@ components:
         - mastersAdmissionAverageGrade
         - excludedCreditsNumber
         - totalOnTimeExamPoints
+        - maxOnTimeExamPoints
         - totalCredits
         - totalAttendedCredits
         - totalAcquiredCredits
