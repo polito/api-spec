@@ -3486,7 +3486,7 @@ components:
           example: '2022-05-15'
         teacherId:
           type: integer
-          nullable: false
+          nullable: true
           example: 2893
         onTimeExamPoints:
           type: number
