@@ -3492,7 +3492,10 @@ components:
           type: number
           nullable: true
           example: 0.5
-      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints ]
+        creditsCountTowardsDegree:
+          type: boolean
+          example: true
+      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree ]
 
     ProvisionalGrade:
       type: object
