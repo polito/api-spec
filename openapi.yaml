@@ -3474,8 +3474,8 @@ components:
         courseName:
           type: string
           example: Human Computer Interaction
-        credits:
-          type: integer
+        cfu:
+          type: number
           example: 6
         grade:
           type: string
@@ -3954,7 +3954,7 @@ components:
           type: string
           example: 01NYHOV
         cfu:
-          type: integer
+          type: number
           example: 10
         teachingPeriod:
           type: string
