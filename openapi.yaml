@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.0.3
+  version: 2.0.2
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3489,13 +3489,11 @@ components:
           nullable: true
           example: 2893
         onTimeExamPoints:
+          description: Only for students eligible to receive points for on-time exams. If null, the exam does not offer on-time points. If 0, it does offer them, but the student has not earned any
           type: number
           nullable: true
           example: 0.5
-        creditsCountTowardsDegree:
-          type: boolean
-          example: true
-      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree ]
+      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints ]
 
     ProvisionalGrade:
       type: object
@@ -3578,6 +3576,9 @@ components:
     EuropeanStudentCard:
       type: object
       properties:
+        picture:
+          type: string
+          example: https://
         canBeRequested:
           type: boolean
           example: false
@@ -3587,14 +3588,8 @@ components:
             status:
               type: string
               enum:
-                - active
-                - inactive
-              example: active
-            inactiveStatusReason:
-              description: Reason why the card is inactive (null if the card is active)
-              type: string
-              nullable: true
-              example: 'null'
+                - valid
+                - expired
             cardNumber:
               type: string
               example: 'f74047b0-2108-103d-8ae-001999977754'
@@ -3605,8 +3600,8 @@ components:
               type: string
               example: 'iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQAAAAA2RLUcAAAAr0lEQVR4XmP4DwYHGKhGH0hVZATR96OW14Loi87vXcF04k4IHSkLpu/7dILlD4SGgtX/P8kN1n/a6LowiH7/zSUXRN9MK1oMog/OMFcGq4tTzwTR36Y7fQfLSz/bCKI/Hen0BtHHypVeg+hXTU/A5t/hD9EE0X/f6u0E0ZejroiDzbkfexFsf1hsNIi+n/cRzL9YlCILpv3c+MF08aGzYPkg1dtg9dEOYPXo/qYODQD15Rx9h0NUJAAAAABJRU5ErkJggg=='
           nullable: true
-          required: [ status, inactiveStatusReason, cardNumber, expiresAt, qrCode ]
-      required: [ canBeRequested, details ]
+          required: [ status, cardNumber, expiresAt, qrCode ]
+      required: [ picture, canBeRequested, details ]
 
     BookingTopicLeaf:
       type: object
