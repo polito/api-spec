@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.0.2
+  version: 2.0.3
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -3361,24 +3361,19 @@ components:
         isCurrentlyEnrolled:
           type: boolean
           example: false
-        averageGrade:
-          type: number
-          nullable: true
-          example: 18.42
-        estimatedFinalGrade:
+        averageFinalGrade:
           type: number
           nullable: true
           example: 99.99
-        averageGradePurged:
-          description: Purged grade is only available for bachelor degree students
+        purgedAverageFinalGrade:
           type: number
           nullable: true
           example: null
-        estimatedFinalGradePurged:
-          description: Purged grade is only available for bachelor degree students
-          type: number
-          nullable: true
-          example: null
+        usePurgedAverageFinalGrade:
+          description: Specify whether to use purgedAverageFinalGrade or averageFinalGrade as the graduation grade shown
+          type: boolean
+          nullable: false
+          example: true
         mastersAdmissionAverageGrade:
           description: Master's admission grade is only available for bachelor degree students
           type: number
@@ -3389,6 +3384,16 @@ components:
           type: number
           nullable: true
           example: 16
+        totalOnTimeExamPoints:
+          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value maxOnTimeExamPoin)
+          type: number
+          nullable: true
+          example: 0
+        maxOnTimeExamPoints:
+          description: Maximum points for "on-time" exams
+          type: number
+          nullable: false
+          example: 4
         totalCredits:
           type: integer
           example: 126
@@ -3425,12 +3430,13 @@ components:
         - firstEnrollmentYear
         - lastEnrollmentYear
         - isCurrentlyEnrolled
-        - averageGrade
-        - estimatedFinalGrade
-        - averageGradePurged
-        - estimatedFinalGradePurged
+        - averageFinalGrade
+        - purgedAverageFinalGrade
+        - usePurgedAverageFinalGrade
         - mastersAdmissionAverageGrade
         - excludedCreditsNumber
+        - totalOnTimeExamPoints
+        - maxOnTimeExamPoints
         - totalCredits
         - totalAttendedCredits
         - totalAcquiredCredits
@@ -3468,8 +3474,8 @@ components:
         courseName:
           type: string
           example: Human Computer Interaction
-        credits:
-          type: integer
+        cfu:
+          type: number
           example: 6
         grade:
           type: string
@@ -3478,7 +3484,18 @@ components:
           type: string
           format: date
           example: '2022-05-15'
-      required: [ courseName, credits, grade, date ]
+        teacherId:
+          type: integer
+          nullable: true
+          example: 2893
+        onTimeExamPoints:
+          type: number
+          nullable: true
+          example: 0.5
+        creditsCountTowardsDegree:
+          type: boolean
+          example: true
+      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree ]
 
     ProvisionalGrade:
       type: object
@@ -3940,7 +3957,7 @@ components:
           type: string
           example: 01NYHOV
         cfu:
-          type: integer
+          type: number
           example: 10
         teachingPeriod:
           type: string
