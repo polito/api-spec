@@ -276,18 +276,7 @@ paths:
         201:
           description: Success
         409:
-        description: Student already exists
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                code:
-                  type: integer
-                  example: 409
-                message:
-                  type: string
-                  example: Student already exists
+          description: Student already exists
         500:
           $ref: '#/components/responses/ErrorResponse'
 
