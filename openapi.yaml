@@ -275,6 +275,8 @@ paths:
       responses:
         201:
           description: Success
+        409:
+          description: Student already exists
         500:
           $ref: '#/components/responses/ErrorResponse'
 
