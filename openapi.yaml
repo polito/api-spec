@@ -1548,10 +1548,10 @@ paths:
                   type: string
                   description: The reason for the exam booking request
                   example: "Nei giorni dell'appello ho i Campionati Italiani di nuoto"
-              proposedDates: 
-                type: string
-                description: The proposed dates for the exam
-                example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
+                proposedDates: 
+                  type: string
+                  description: The proposed dates for the exam
+                  example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
               required: [ courseShortcode, requestReason, proposedDates ]
         required: true
       responses:
