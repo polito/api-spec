@@ -1522,6 +1522,52 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
+  /exams/{examId}/askToReschedule:
+    post:
+      tags:
+        - Exams
+      summary: Ask to reschedule an exam | Chiedi di spostare un esame
+      operationId: rescheduleExam
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courseShortcode:
+                  type: string
+                  description: The course shortcode
+                  example: 01UDROV
+                requestReason:
+                  type: string
+                  description: The reason for the exam booking request
+                  example: "Nei giorni dell'appello ho i Campionati Italiani di nuoto"
+              proposedDates: 
+                type: string
+                description: The proposed dates for the exam
+                example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
+              required: [ courseShortcode, requestReason, proposedDates ]
+        required: true
+      responses:
+        200:
+          description: Success
+        400:
+          description: Missing parameter
+        404:
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
   /lectures:
     get:
       tags:
@@ -3363,6 +3409,18 @@ components:
         isCurrentlyEnrolled:
           type: boolean
           example: false
+        projects:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 19
+              name:
+                type: string
+                example: Dual Career
+            required: [ id, name ]
         averageGrade:
           type: number
           nullable: true
@@ -3427,6 +3485,7 @@ components:
         - firstEnrollmentYear
         - lastEnrollmentYear
         - isCurrentlyEnrolled
+        - projects
         - averageGrade
         - estimatedFinalGrade
         - averageGradePurged
@@ -4392,6 +4451,10 @@ components:
           type: string
           nullable: true
           example: null
+        isReschedulable:
+          description: If true, the student can ask the professor to reschedule the exam
+          type: boolean
+          example: false
         notes:
           type: string
           nullable: true
