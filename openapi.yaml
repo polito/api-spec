@@ -1490,7 +1490,7 @@ paths:
         200:
           description: Success
         400:
-          description: Missing parameter questionOption
+          description: bad request
         404:
           description: Exam not found
           content:
@@ -1522,7 +1522,7 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-  /exams/{examId}/askToReschedule:
+  /exams/{examId}/rescheduleRequest:
     post:
       tags:
         - Exams
@@ -1548,7 +1548,7 @@ paths:
                   type: string
                   description: The reason for the exam booking request
                   example: "Nei giorni dell'appello ho i Campionati Italiani di nuoto"
-                proposedDates: 
+                requestDetails: 
                   type: string
                   description: The proposed dates for the exam
                   example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
@@ -1558,7 +1558,7 @@ paths:
         200:
           description: Success
         400:
-          description: Missing parameter
+          description: bad request
         404:
           description: Exam not found
           content:
