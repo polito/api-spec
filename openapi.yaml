@@ -3381,11 +3381,26 @@ components:
           type: number
           nullable: true
           example: null
+        usePurgedAverageFinalGrade:
+          description: Specify whether to use purgedAverageFinalGrade or averageFinalGrade as the graduation grade shown
+          type: boolean
+          nullable: false
+          example: true
         mastersAdmissionAverageGrade:
           description: Master's admission grade is only available for bachelor degree students
           type: number
           nullable: true
           example: null
+        totalOnTimeExamPoints:
+          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value =ß maxOnTimeExamPoints)
+          type: number
+          nullable: true
+          example: 0
+        maxOnTimeExamPoints:
+          description: Maximum points for "on-time" exams
+          type: number
+          nullable: false
+          example: 4
         excludedCreditsNumber:
           description: Credits excluded from calculating the purged grade
           type: number
@@ -3431,7 +3446,10 @@ components:
         - estimatedFinalGrade
         - averageGradePurged
         - estimatedFinalGradePurged
+        - usePurgedAverageFinalGrade
         - mastersAdmissionAverageGrade
+        - totalOnTimeExamPoints
+        - maxOnTimeExamPoints
         - excludedCreditsNumber
         - totalCredits
         - totalAttendedCredits
@@ -3471,7 +3489,7 @@ components:
           type: string
           example: Human Computer Interaction
         credits:
-          type: integer
+          type: number
           example: 6
         grade:
           type: string
@@ -3480,7 +3498,20 @@ components:
           type: string
           format: date
           example: '2022-05-15'
-      required: [ courseName, credits, grade, date ]
+        teacherId:
+          type: integer
+          nullable: true
+          example: 2893
+        onTimeExamPoints:
+          description: Points for "on-time" exams - null the student is not eligible for on-time exams or the exam does not grant on-time points
+          type: number
+          nullable: true
+          example: 0.5
+        creditsCountTowardsDegree:
+          description: Defines whether the credits from the exam count toward the total required for graduation
+          type: boolean
+          example: true
+      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree ]
 
     ProvisionalGrade:
       type: object
@@ -3501,7 +3532,7 @@ components:
           type: integer
           example: 2154
         credits:
-          type: integer
+          type: number
           example: 6
         grade:
           type: string
