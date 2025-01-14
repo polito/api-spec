@@ -1490,7 +1490,7 @@ paths:
         200:
           description: Success
         400:
-          description: Missing parameter questionOption
+          description: bad request
         404:
           description: Exam not found
           content:
@@ -1515,6 +1515,52 @@ paths:
           description: Success
         404:
           description: Exam or booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+
+  /exams/{examId}/rescheduleRequest:
+    post:
+      tags:
+        - Exams
+      summary: Ask to reschedule an exam | Chiedi di spostare un esame
+      operationId: rescheduleExam
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courseShortcode:
+                  type: string
+                  description: The course shortcode
+                  example: 01UDROV
+                requestReason:
+                  type: string
+                  description: The reason for the exam booking request
+                  example: "Nei giorni dell'appello ho i Campionati Italiani di nuoto"
+                requestDetails: 
+                  type: string
+                  description: The proposed dates for the exam
+                  example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
+              required: [ courseShortcode, requestReason, requestDetails ]
+        required: true
+      responses:
+        200:
+          description: Success
+        400:
+          description: bad request
+        404:
+          description: Exam not found
           content:
             application/json:
               schema:
@@ -3427,6 +3473,7 @@ components:
         smartCardPicture:
           type: string
           example: https://
+          nullable: true
         europeanStudentCard:
           $ref: '#/components/schemas/EuropeanStudentCard'
       required:
@@ -4423,6 +4470,10 @@ components:
           type: string
           nullable: true
           example: null
+        isReschedulable:
+          description: If true, the student can ask the professor to reschedule the exam
+          type: boolean
+          example: false
         notes:
           type: string
           nullable: true
@@ -4449,6 +4500,7 @@ components:
         - question
         - feedback
         - notes
+        - isReschedulable
         - moduleNumber
     Error:
       type: object
