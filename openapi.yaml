@@ -3409,18 +3409,6 @@ components:
         isCurrentlyEnrolled:
           type: boolean
           example: false
-        projects:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                example: 19
-              name:
-                type: string
-                example: Dual Career
-            required: [ id, name ]
         averageGrade:
           type: number
           nullable: true
@@ -3486,7 +3474,6 @@ components:
         - firstEnrollmentYear
         - lastEnrollmentYear
         - isCurrentlyEnrolled
-        - projects
         - averageGrade
         - estimatedFinalGrade
         - averageGradePurged
