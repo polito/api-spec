@@ -3470,6 +3470,7 @@ components:
         smartCardPicture:
           type: string
           example: https://
+          nullable: true
         europeanStudentCard:
           $ref: '#/components/schemas/EuropeanStudentCard'
       required:
