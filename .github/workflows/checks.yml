@@ -21,4 +21,4 @@ jobs:
     - name: Run check
       uses: fluximus-prime/redocly-cli-github-action@v1
       with:
-        args: lint openapi.yaml
+        args: lint openapi.yaml --format=github-actions
