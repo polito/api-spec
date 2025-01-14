@@ -1552,7 +1552,7 @@ paths:
                   type: string
                   description: The proposed dates for the exam
                   example: "Io potrei sostenerlo prima del 15 febbraio oppure dopo il 21"  
-              required: [ courseShortcode, requestReason, proposedDates ]
+              required: [ courseShortcode, requestReason, requestDetails ]
         required: true
       responses:
         200:
