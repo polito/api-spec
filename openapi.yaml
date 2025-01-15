@@ -3652,6 +3652,7 @@ components:
               enum:
                 - active
                 - inactive
+                - expired
               example: active
             inactiveStatusReason:
               description: Reason why the card is inactive (null if the card is active)
