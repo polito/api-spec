@@ -5004,7 +5004,7 @@ components:
             fcmRegistrationToken:
               type: string
               example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
-          required: [ name ]
+          required: [ name, fcmRegistrationToken ]
         - $ref: '#/components/schemas/ClientVersionRequest'
 
     PhoneNumber:
