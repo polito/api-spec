@@ -5003,6 +5003,7 @@ components:
               example: '5a54f626-4b7e-488e-a0e3-300f54051510'
           required: [ name ]
         - $ref: '#/components/schemas/ClientVersionRequest'
+        - $ref: '#/components/schemas/FcmRegistrationRequest'
 
     PhoneNumber:
       type: object
