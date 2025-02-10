@@ -2,6 +2,9 @@ openapi: 3.0.3
 info:
   title: Polito Students API
   version: 2.1.1
+  license:
+    name: CC BY-NC 4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0/
 servers:
   - url: https://app.didattica.polito.it/api
     description: Production server (uses live data)
@@ -33,6 +36,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/Identity'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /auth/switch-career:
@@ -66,6 +71,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/Identity'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /auth/logout:
@@ -78,6 +85,8 @@ paths:
       responses:
         200:
           description: Success
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -105,6 +114,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/UpdateInfo'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -125,6 +136,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/Student'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -184,6 +197,8 @@ paths:
                     type: Iscrizioni e pagamento tasse
                     date: "2022-11-25"
                     url: null
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /grades:
@@ -205,6 +220,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/ExamGrade'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -231,6 +248,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/ProvisionalGradeState'
                 required: [ data, states ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -266,19 +285,19 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
           
-  /requestESC:
-    post:
-      tags:
-        - Student
-      summary: request European Student Card | Richiedi la European Student Card
-      operationId: requestESC
-      responses:
-        201:
-          description: Success
-        409:
-          description: Student already exists
-        500:
-          $ref: '#/components/responses/ErrorResponse'
+  # /requestESC:
+  #   post:
+  #     tags:
+  #       - Student
+  #     summary: request European Student Card | Richiedi la European Student Card
+  #     operationId: requestESC
+  #     responses:
+  #       201:
+  #         description: Success
+  #       409:
+  #         description: Card already exists
+  #       500:
+  #         $ref: '#/components/responses/ErrorResponse'
 
   /booking-topics:
     get:
@@ -299,6 +318,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/BookingTopic'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /booking-topics/{bookingTopicId}/slots:
@@ -403,6 +424,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Booking'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
     post:
@@ -426,6 +449,8 @@ paths:
       responses:
         200:
           description: Success
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /bookings/{bookingId}:
@@ -511,81 +536,101 @@ paths:
                     cfu: 10
                     teachingPeriod: 2-2
                     teacherId: 2893
+                    previousEditions: [{id: 251007, year: '2024'}]
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252121
                     name: Web Applications II
                     shortcode: 01TXSOV
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 2235
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252126
                     name: Security verification and testing
                     shortcode: 01TYAOV
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1943
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252138
                     name: Information systems security
                     shortcode: 01TYMOV
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1847
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252258
                     name: Cybersecurity
                     shortcode: 01UDROV
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 1847
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252788
                     name: Architetture dei sistemi di elaborazione
                     shortcode: 02GOLOV
                     cfu: 10
                     teachingPeriod: 1-1
                     teacherId: 12684
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 252842
                     name: Human Computer Interaction
                     shortcode: 02JSKOV
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 25734
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: 253378
                     name: Cryptography
                     shortcode: 03LPYOV
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 13461
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
                   - id: null
                     name: Tesi
                     shortcode: 29EBHOV
                     cfu: 30
-                    teachingPeriod: null
+                    teachingPeriod: 1-1
                     teacherId: null
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     isModule: false
+                    year: '2025'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /courses/{courseId}:
@@ -643,179 +688,149 @@ paths:
               example:
                 data:
                   - id: "33248655"
-                    type: "directory"
                     name: "videolectures"
                     files:
                       - id: "33248890"
-                        type: "file"
                         name: "HCI2021-L01 2021-09-28 13-06-26.m4v"
                         sizeInKiloBytes: 123428
                         mimeType: "video/x-m4v"
                         createdAt: "2021-09-28T16:31:43Z"
                       - id: "33251708"
-                        type: "file"
                         name: "HCI2021-L02 2021-09-30 08-34-32.mp4"
                         sizeInKiloBytes: 248172
                         mimeType: "video/mp4"
                         createdAt: "2021-09-30T10:20:50Z"
                       - id: "33256476"
-                        type: "file"
                         name: "HCI2021-L03 2021-10-05 13-06-47.mp4"
                         sizeInKiloBytes: 243792
                         mimeType: "video/mp4"
                         createdAt: "2021-10-05T15:00:15Z"
                       - id: "33257988"
-                        type: "file"
                         name: "HCI2021-L04 2021-10-07 08-35-46.mp4"
                         sizeInKiloBytes: 244993
                         mimeType: "video/mp4"
                         createdAt: "2021-10-07T11:12:25Z"
                       - id: "33262287"
-                        type: "file"
                         name: "HCI2021-L05 2021-10-12 13-05-46.mp4"
                         sizeInKiloBytes: 298172
                         mimeType: "video/mp4"
                         createdAt: "2021-10-12T16:11:46Z"
                       - id: "33265387"
-                        type: "file"
                         name: "HCI2021-L06 2021-10-14 08-35-12.mp4"
                         sizeInKiloBytes: 285926
                         mimeType: "video/mp4"
                         createdAt: "2021-10-14T11:25:20Z"
                       - id: "33269079"
-                        type: "file"
                         name: "HCI2021-L07 2021-10-19 13-10-40.mp4"
                         sizeInKiloBytes: 234466
                         mimeType: "video/mp4"
                         createdAt: "2021-10-19T15:02:22Z"
                       - id: "33270699"
-                        type: "file"
                         name: "HCI2021-L08 2021-10-21 08-35-17.mp4"
                         sizeInKiloBytes: 240828
                         mimeType: "video/mp4"
                         createdAt: "2021-10-21T10:44:22Z"
                       - id: "33273765"
-                        type: "file"
                         name: "HCI2021-L09 2021-10-26 13-08-27.mp4"
                         sizeInKiloBytes: 321979
                         mimeType: "video/mp4"
                         createdAt: "2021-10-26T16:06:46Z"
                       - id: "33275522"
-                        type: "file"
                         name: "HCI2021-L10 2021-10-28 08-35-26.mp4"
                         sizeInKiloBytes: 281542
                         mimeType: "video/mp4"
                         createdAt: "2021-10-28T10:59:56Z"
                       - id: "33278303"
-                        type: "file"
                         name: "HCI2021-L11 2021-11-02 13-07-13.mp4"
                         sizeInKiloBytes: 259925
                         mimeType: "video/mp4"
                         createdAt: "2021-11-02T17:34:17Z"
                       - id: "33280035"
-                        type: "file"
                         name: "HCI2021-L12 2021-11-04 08-35-42.mp4"
                         sizeInKiloBytes: 269000
                         mimeType: "video/mp4"
                         createdAt: "2021-11-04T15:18:00Z"
                       - id: "33283202"
-                        type: "file"
                         name: "HCI2021-L13 2021-11-09 13-05-21.mp4"
                         sizeInKiloBytes: 124877
                         mimeType: "video/mp4"
                         createdAt: "2021-11-09T17:55:12Z"
                       - id: "33285203"
-                        type: "file"
                         name: "HCI2021-L14 2021-11-11 08-34-16.mp4"
                         sizeInKiloBytes: 164749
                         mimeType: "video/mp4"
                         createdAt: "2021-11-11T18:54:08Z"
                       - id: "33288841"
-                        type: "file"
                         name: "HCI2021-L15 2021-11-16 13-08-31.mp4"
                         sizeInKiloBytes: 413016
                         mimeType: "video/mp4"
                         createdAt: "2021-11-16T17:39:12Z"
                       - id: "33290368"
-                        type: "file"
                         name: "HCI2021-L16 2021-11-18 08-35-25.mp4"
                         sizeInKiloBytes: 175214
                         mimeType: "video/mp4"
                         createdAt: "2021-11-18T16:32:30Z"
                       - id: "33293068"
-                        type: "file"
                         name: "HCI2021-L17 2021-11-23 13-07-21.mp4"
                         sizeInKiloBytes: 167637
                         mimeType: "video/mp4"
                         createdAt: "2021-11-23T15:14:30Z"
                       - id: "33294893"
-                        type: "file"
                         name: "HCI2021-L18 2021-11-25 08-38-18.mp4"
                         sizeInKiloBytes: 177894
                         mimeType: "video/mp4"
                         createdAt: "2021-11-25T19:07:01Z"
                       - id: "33297785"
-                        type: "file"
                         name: "HCI2021-L19 2021-11-30 13-05-06.mp4"
                         sizeInKiloBytes: 204728
                         mimeType: "video/mp4"
                         createdAt: "2021-11-30T18:40:05Z"
                       - id: "33298944"
-                        type: "file"
                         name: "HCI2021-L20 2021-12-02 08-33-29.mp4"
                         sizeInKiloBytes: 181211
                         mimeType: "video/mp4"
                         createdAt: "2021-12-02T14:28:22Z"
                       - id: "33301586"
-                        type: "file"
                         name: "HCI2021-L21 2021-12-07 13-10-43.mp4"
                         sizeInKiloBytes: 161114
                         mimeType: "video/mp4"
                         createdAt: "2021-12-07T14:51:40Z"
                       - id: "33302797"
-                        type: "file"
                         name: "HCI2021-L22 2021-12-09 08-36-04.mp4"
                         sizeInKiloBytes: 171358
                         mimeType: "video/mp4"
                         createdAt: "2021-12-09T18:13:39Z"
                       - id: "33305668"
-                        type: "file"
                         name: "HCI2021-L23 2021-12-14 13-04-34.mp4"
                         sizeInKiloBytes: 236985
                         mimeType: "video/mp4"
                         createdAt: "2021-12-14T17:25:16Z"
                       - id: "33307385"
-                        type: "file"
                         name: "HCI2021-L24 2021-12-16 08-34-14.mp4"
                         sizeInKiloBytes: 178860
                         mimeType: "video/mp4"
                         createdAt: "2021-12-16T19:18:25Z"
                       - id: "33309925"
-                        type: "file"
                         name: "HCI2021-L25 2021-12-21 13-04-41.mp4"
                         sizeInKiloBytes: 166945
                         mimeType: "video/mp4"
                         createdAt: "2021-12-21T15:00:46Z"
                       - id: "33314553"
-                        type: "file"
                         name: "HCI2021-L26 2022-01-11 13-00-00.mp4"
                         sizeInKiloBytes: 182258
                         mimeType: "video/mp4"
                         createdAt: "2022-01-11T14:49:59Z"
                   - id: "33325555"
-                    type: "file"
                     name: "2022-02-04-results-written-test.pdf"
                     sizeInKiloBytes: 412
                     mimeType: "application/pdf"
                     createdAt: "2022-02-18T01:20:21Z"
                   - id: "33357023"
-                    type: "file"
                     name: "2022-02-23-results-written-test.pdf"
                     sizeInKiloBytes: 404
                     mimeType: "application/pdf"
                     createdAt: "2022-03-18T22:29:45Z"
                   - id: "33405431"
-                    type: "file"
                     name: "2022-06-29-results-written-test.pdf"
                     sizeInKiloBytes: 127
                     mimeType: "application/pdf"
@@ -847,6 +862,8 @@ paths:
           schema:
             type: string
       responses:
+        200:
+          description: Success
         302:
           description: Redirect to file download
         404:
@@ -1158,7 +1175,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/BE7C779FC37D50996EE1FF32B6BC7FAE/6305E087/vc2021/252258/64cdcfc29ac1cd827d20ff1fa62c512eade6b3c0-1632832182985.mp4"
                     createdAt: "2021-09-28T14:29:00Z"
                     duration: "02h 56m"
-                    isLive: false
+                    type: "recording"
                   - id: 150397
                     title: "CYB / lecture 01.10.2021 (TLS, slides 41-55)"
                     teacherId: 1847
@@ -1166,7 +1183,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/0BC53A27F4776D8A6809D28EB4CB3C9F/6305E087/vc2021/252258/e5e7a53da68cebd5cff1a585659092fcfeca651a-1633074845891.mp4"
                     createdAt: "2021-10-01T09:54:00Z"
                     duration: "01h 31m"
-                    isLive: false
+                    type: "recording"
                   - id: 151650
                     title: "CYB / lecture 5.10.2021 (TLS, slides 56-end, + SSH all slides)"
                     teacherId: 1847
@@ -1174,7 +1191,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/56DA5556ECD96ED30EC6F8CBAB704285/6305E087/vc2021/252258/c30092cca256f522f64774e19538d43909ce558b-1633437688385.mp4"
                     createdAt: "2021-10-05T14:41:00Z"
                     duration: "02h 43m"
-                    isLive: false
+                    type: "recording"
                   - id: 152904
                     title: "CYB / exercises 8.10.2021 (TLS, SSH, and laboratory introduction)"
                     teacherId: 12066
@@ -1182,7 +1199,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/B738FA2018D0CEDAD999B09E88A0A5BC/6305E087/vc2021/252258/6d7e5ddb4c6accf0ee0ac2f5694ff57b03452a33-1633680044979.mp4"
                     createdAt: "2021-10-08T10:00:00Z"
                     duration: "01h 29m"
-                    isLive: false
+                    type: "recording"
                   - id: 154120
                     title: "CYB / lecture 12.10.2021 (X.509-PKI slides 1-37)"
                     teacherId: 1847
@@ -1190,7 +1207,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/59B0F46ACE7A752394D15CFA7ABE1D04/6305E087/vc2021/252258/7ed626fec39372a49de2789c02a30d42e4ed9550-1634041964568.mp4"
                     createdAt: "2021-10-12T14:32:00Z"
                     duration: "02h 49m"
-                    isLive: false
+                    type: "recording"
                   - id: 155289
                     title: "CYB / lecture 15.10.2021 (X.509-PKI slides 38-50)"
                     teacherId: 1847
@@ -1198,7 +1215,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/26673F1C1E978DD6EF3A936453977414/6305E087/vc2021/252258/80a41d52d94c236e8d076c959bdd6594df4c640d-1634287717877.mp4"
                     createdAt: "2021-10-15T10:48:00Z"
                     duration: "00h 29m"
-                    isLive: false
+                    type: "recording"
                   - id: 156556
                     title: "CYB / lecture 18.10.2021 (X.509-PKI slides 51-87)"
                     teacherId: 1847
@@ -1206,7 +1223,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/683EC58FC3F66A232F871CE9AF6EC41F/6305E087/vc2021/252258/26a670587a538805ca101505347c1f6b95945c7a-1634646791043.mp4"
                     createdAt: "2021-10-19T14:33:00Z"
                     duration: "02h 46m"
-                    isLive: false
+                    type: "recording"
                   - id: 157810
                     title: "CYB / lecture 22.10.2021 (X.509-PKI slides 88-113)"
                     teacherId: 1847
@@ -1214,7 +1231,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/E46149A506697BABF2D1F1F7D3BD93C4/6305E087/vc2021/252258/54879788014d7f876efa3e37eb0ab41b28ed5ec7-1634889548847.mp4"
                     createdAt: "2021-10-22T09:59:00Z"
                     duration: "01h 14m"
-                    isLive: false
+                    type: "recording"
                   - id: 159051
                     title: "CYB / lecture 26.10.2021 (PKCS#7 and XML dsig/enc, all slides)"
                     teacherId: 1847
@@ -1222,7 +1239,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/C8BC340269DC981A175B5532224C191A/6305E087/vc2021/252258/a3ca5092848ddcfc8e40856f4a7e0d5e806b6612-1635251947471.mp4"
                     createdAt: "2021-10-26T14:39:00Z"
                     duration: "02h 23m"
-                    isLive: false
+                    type: "recording"
                   - id: 161152
                     title: "CYB / lecture 2.11.2021 (Raccoon attack + WiFi slides 1-33)"
                     teacherId: 1847
@@ -1230,7 +1247,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/706BF0B4AEA847058A6D1C40FEA13C33/6305E087/vc2021/252258/a450be755938e9117692c396f27df27dfd17d1fc-1635859798379.mp4"
                     createdAt: "2021-11-02T14:29:00Z"
                     duration: "02h 58m"
-                    isLive: false
+                    type: "recording"
                   - id: 162379
                     title: "CYB / lecture 05.11.2021 (keypair attack + WiFi slides 34-end + e-identity slides 1-10)"
                     teacherId: 1847
@@ -1238,7 +1255,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/1AB78C6B65D67B72C5CCE0F933225A32/6305E087/vc2021/252258/9e0127b8b6723430d3f984697abc288be39f9422-1636102419696.mp4"
                     createdAt: "2021-11-05T09:53:00Z"
                     duration: "01h 20m"
-                    isLive: false
+                    type: "recording"
                   - id: 163693
                     title: "CYB / lecture 09.11.2021 (e-identity slides 11-91)"
                     teacherId: 1847
@@ -1246,7 +1263,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/521B033D824BC6FC0B4D2950CB431960/6305E087/vc2021/252258/548e5779bc1cfd66767c43aa610574c3c3a12dd9-1636464923945.mp4"
                     createdAt: "2021-11-09T14:35:00Z"
                     duration: "02h 48m"
-                    isLive: false
+                    type: "recording"
                   - id: 166121
                     title: "CYB / lecture 16.11.2021 (trusted computing - all slides)"
                     teacherId: 1847
@@ -1254,7 +1271,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/360E906166192D9BE6F6155D72E15F1E/6305E087/vc2021/252258/f3018da0ada1e0404dd3b35f5dd4b104bcfee8d3-1637069410236.mp4"
                     createdAt: "2021-11-16T14:30:00Z"
                     duration: "02h 46m"
-                    isLive: false
+                    type: "recording"
                   - id: 168367
                     title: "CYB / lecture 23.11.2021 (Intel SGX - all slides)"
                     teacherId: 37572
@@ -1262,7 +1279,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/4FF040DFCF3A479A980291C8C3CCE6CC/6305E087/vc2021/252258/180a6a764703deffc12b2dcee1a424949e325f9d-1637674185628.mp4"
                     createdAt: "2021-11-23T14:29:00Z"
                     duration: "02h 58m"
-                    isLive: false
+                    type: "recording"
                   - id: 170812
                     title: "CYB / lecture 30.11.2021 (forensics, slides 1-40)"
                     teacherId: 12066
@@ -1270,7 +1287,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/71B3E9CBDDB642AAA77908985245A885/6305E087/vc2021/252258/87968954515.mp4"
                     createdAt: "2021-11-30T14:32:00Z"
                     duration: "02h 45m"
-                    isLive: false
+                    type: "recording"
                   - id: 172948
                     title: "CYB / lecture 7.12.2021 (forensics slides 41-end)"
                     teacherId: 12066
@@ -1278,7 +1295,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/739FC4C2625A96DA19EFB05A3FE043CD/6305E087/vc2021/252258/81581203450.mp4"
                     createdAt: "2021-12-07T14:34:00Z"
                     duration: "01h 18m"
-                    isLive: false
+                    type: "recording"
                   - id: 173056
                     title: "CYB / lecture 7.12.2021 (ATT&CK + CRING + privacy slides 1-9)"
                     teacherId: 1847
@@ -1286,7 +1303,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/D039EE5B83A12581050ED2B6B0416F70/6305E087/vc2021/252258/099bf783f435456027c06065201a0eb2d38bd41a-1638889616600.mp4"
                     createdAt: "2021-12-07T16:06:00Z"
                     duration: "01h 19m"
-                    isLive: false
+                    type: "recording"
                   - id: 174893
                     title: "CYB / lecture 14.12.2021 (Detract + TPM_Win11 + privacy slides 10-end)"
                     teacherId: 1847
@@ -1294,7 +1311,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/436BD1306E68AFE95AF46B2D0BC1C8DB/6305E087/vc2021/252258/be095df91592bf86178f6bfbf1c9f5bb0d0d0c26-1639488630242.mp4"
                     createdAt: "2021-12-14T14:30:00Z"
                     duration: "02h 31m"
-                    isLive: false
+                    type: "recording"
                   - id: 175951
                     title: "CYB / lecture 17.12.2021 (thesis topics and exam example)"
                     teacherId: 1847
@@ -1302,7 +1319,7 @@ paths:
                     videoUrl: "https://video.polito.it/dl/1EAD6B130FC26060ABF998EF8CF805BA/6305E087/vc2021/252258/73e45093b2c0bc9c88d542d62c3fbe2639a7bd2b-1639731367509.mp4"
                     createdAt: "2021-12-17T09:56:00Z"
                     duration: "00h 50m"
-                    isLive: false
+                    type: "recording"
         404:
           description: Course not found
           content:
@@ -1397,57 +1414,83 @@ paths:
               example:
                 data:
                   - id: 888137
+                    courseId: 262147
                     courseShortcode: 01UDROV
                     courseName: Cybersecurity (AA-ZZ)
                     teacherId: 1847
                     type: Scritto
-                    classrooms: Aula 4P
                     status: booked
                     bookingStartsAt: null
                     bookingEndsAt: '2022-08-23T14:00:00Z'
                     examStartsAt: '2022-08-29T08:00:00Z'
+                    examEndsAt: '2022-08-29T10:00:00Z'
                     bookedCount: 12
+                    availableCount: 8
+                    moduleNumber: 1
+                    notes: null
+                    places: []
+                    isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
                   - id: 887981
+                    courseId: 262789
                     courseShortcode: 01NYHOV
                     courseName: System and device programming (AA-ZZ)
                     teacherId: 2893
                     type: Esami scritti a risposta aperta o chiusa tramite PC
-                    classrooms: Aula R1
                     status: available
                     bookingStartsAt: null
                     bookingEndsAt: '2022-09-02T14:00:00Z'
                     examStartsAt: '2022-09-08T14:00:00Z'
+                    examEndsAt: '2022-09-08T18:00:00Z'
                     bookedCount: 42
+                    availableCount: 108
+                    moduleNumber: 1
+                    notes: null
+                    places: []
+                    isReschedulable: false
                     question: null
                     feedback: null
                   - id: 888212
+                    courseId: 217742
                     courseShortcode: 03LPYOV
                     courseName: Cryptography (AA-ZZ)
                     teacherId: 13461
                     type: Esami scritti a risposta aperta o chiusa tramite PC
-                    classrooms: Aula R1
                     status: booked
                     bookingStartsAt: null
                     bookingEndsAt: '2022-09-12T14:00:00Z'
                     examStartsAt: '2022-09-16T11:00:00Z'
+                    examEndsAt: '2022-09-16T13:00:00Z'
                     bookedCount: 67
+                    availableCount: 8
+                    moduleNumber: 1
+                    notes: null
+                    places: []
+                    isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
                   - id: 888118
+                    courseId: 217742
                     courseShortcode: 01TYAOV
                     courseName: Security verification and testing (AA-ZZ)
                     teacherId: 1943
                     type: Esami scritti a risposta aperta o chiusa tramite PC
-                    classrooms: Aula 1P
                     status: booked
                     bookingStartsAt: null
                     bookingEndsAt: '2022-09-09T14:00:00Z'
                     examStartsAt: '2022-09-15T14:00:00Z'
+                    examEndsAt: '2022-09-15T16:00:00Z'
                     bookedCount: 26
+                    availableCount: 108
+                    moduleNumber: 1
+                    notes: null
+                    places: []
+                    isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /exams/{examId}/booking:
@@ -1490,7 +1533,7 @@ paths:
         200:
           description: Success
         400:
-          description: bad request
+          $ref: '#/components/responses/BadRequestResponse'
         404:
           description: Exam not found
           content:
@@ -1558,7 +1601,7 @@ paths:
         200:
           description: Success
         400:
-          description: bad request
+          $ref: '#/components/responses/BadRequestResponse'
         404:
           description: Exam not found
           content:
@@ -1619,7 +1662,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -1639,7 +1682,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -1659,7 +1702,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -1674,7 +1717,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione aula
                     description: Demos about TLS and SSH. Introduction to the laboratory.
@@ -1689,7 +1732,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1704,7 +1747,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1719,7 +1762,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1734,7 +1777,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1749,7 +1792,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1764,7 +1807,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1779,7 +1822,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1794,7 +1837,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1809,7 +1852,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1824,7 +1867,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1839,7 +1882,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -1854,7 +1897,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1869,7 +1912,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1884,7 +1927,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1899,7 +1942,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -1914,7 +1957,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio con titolo esageratamente lungo che poi boh
                     description: "squadra 1"
@@ -1929,7 +1972,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description: "squadra 1"
@@ -1944,7 +1987,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -1959,7 +2002,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -1974,7 +2017,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -1989,7 +2032,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -2004,7 +2047,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -2019,7 +2062,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -2034,7 +2077,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione
                     description:
@@ -2049,7 +2092,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -2064,7 +2107,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione Laboratorio
                     description:
@@ -2079,7 +2122,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Esercitazione aula
                     description:
@@ -2094,7 +2137,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2109,7 +2152,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2124,7 +2167,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2139,7 +2182,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2154,7 +2197,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2169,7 +2212,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2184,7 +2227,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2199,7 +2242,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2214,7 +2257,7 @@ paths:
                       buildingId: TO_CIT22
                       floorId: XPTE
                       name: Aula 1P
-                      roomId: 036
+                      roomId: '036'
                       siteId: TO_CIT
                     type: Lezione / Esercitazione
                     description:
@@ -2222,6 +2265,58 @@ paths:
                     courseName: Human Computer Interaction
                     teacherId: 1847
                     virtualClassrooms: [ ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+
+  /esc:
+    get:
+      tags:
+        - Esc
+      summary: retreive european student card | recupera la european student card
+      operationId: getEsc
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                      $ref: '#/components/schemas/EuropeanStudentCard'
+                required: [ data ]
+        201:
+          description: Success
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+        - Esc
+      summary: Delete all Student data on the ESC-Router (and all student's cards) | Cancella tutti i dati dello studente sul Router ESC (e tutte le carte dello studente)
+      operationId: deleteEsc
+      responses:
+        204:
+          description: Success
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/ErrorEscResponse'  
+
+  /esc/create:
+    post:
+      tags:
+        - Esc
+      summary: request european student card | richiedi la european student card
+      operationId: requestEsc
+      responses:
+        201:
+          description: Success
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        500:
+         $ref: '#/components/responses/ErrorResponse'   
 
   /news:
     get:
@@ -2242,7 +2337,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/NewsItemOverview'
                 required: [ data ]
-
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
+          
   /news/{newsItemId}:
     get:
       tags:
@@ -2266,6 +2363,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/NewsItem'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
 
   /people:
     get:
@@ -2293,6 +2392,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/PersonOverview'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /people/{personId}:
@@ -2318,6 +2419,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/Person'
                 required: [ data ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
         404:
           description: Person not found
           content:
@@ -2348,6 +2451,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/RootPlaceCategory'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /v2/sites:
@@ -2369,6 +2474,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Site'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /v2/sites/{siteId}/free-rooms:
@@ -2513,6 +2620,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/Place'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
   /messages:
     get:
       tags:
@@ -2532,13 +2641,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Message'
                 required: [ data ]
-              example:
-                data:
-                  - id: 63775600
-                    title: "Nuovo messaggio dalla Segreteria Studenti"
-                    message: "Puoi venire a ritirare la tua smartcard"
-                    type: "secretariat"
-                    isRead: false
+              
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /messages/{messageId}:
@@ -2591,13 +2696,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Notification'
                 required: [ data ]
-              example:
-                data:
-                  - id: 63775600
-                    title: "Nuovo materiale nel corso di Fisica"
-                    message: "Nuovo file presentazione.pdf aggiunto al materiale del corso di Fisica"
-                    scope: [ "teaching", "courses", "FIS000", "files" ]
-                    isRead: false
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -2614,6 +2714,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotificationPreferences'
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
     patch:
@@ -2629,6 +2731,8 @@ paths:
       responses:
         200:
           description: Success
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -2678,6 +2782,8 @@ paths:
       responses:
         200:
           description: Success
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /ticket-faqs:
@@ -2707,6 +2813,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/TicketFAQ'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /ticket-topics:
@@ -2728,6 +2836,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/TicketTopic'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /tickets:
@@ -2749,6 +2859,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/TicketOverview'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
     post:
       tags:
         - Tickets
@@ -2771,6 +2883,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/TicketOverview'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
   /tickets/{ticketId}:
@@ -2938,6 +3052,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/JobOfferOverview'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
+
   /job-offers/{jobOfferId}:
     get:
       tags:
@@ -2992,6 +3109,9 @@ paths:
                         items:
                           $ref: '#/components/schemas/OfferingClass'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
+
   /offering/degrees/{degreeId}:
     get:
       tags:
@@ -3098,6 +3218,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Guide'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
 
   /surveys:
     get:
@@ -3118,6 +3240,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Survey'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
 
   /linkToWebmail:
     get:
@@ -3136,6 +3260,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/LinkToWebmail'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -3156,6 +3282,8 @@ paths:
                   data:
                     $ref: '#/components/schemas/EmailBadge'
                 required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
 
@@ -3332,6 +3460,7 @@ components:
       schema:
         type: string
         example: 1843
+
   responses:
     ErrorResponse:
       description: Server error
@@ -3339,6 +3468,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    ErrorEscResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Error'
+            - type: object
+              properties:
+                errors:
+                  type: array
+                  description: Additional error details
+                  items:
+                    $ref: '#/components/schemas/EscError'
+                  example:
+                    - code: 500
+                      message: "An error occurred"
+                      careerId: "123456"
+                      
+    BadRequestResponse:
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+  
   securitySchemes:
     bearerAuth:
       type: http
@@ -4322,7 +4477,7 @@ components:
       properties:
         grade:
           type: string
-          enum: [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 30L ]
+          enum: [ '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '30L' ]
         count:
           type: integer
       required: [ grade, count ]
@@ -4512,6 +4667,15 @@ components:
         message:
           type: string
           example: Error message
+     
+    EscError:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            careerId:
+              type: number
+              example: "290683"
 
     PersonOverview:
       type: object
