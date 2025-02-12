@@ -689,152 +689,51 @@ paths:
                 data:
                   - id: "33248655"
                     name: "videolectures"
+                    type: "directory"
                     files:
                       - id: "33248890"
                         name: "HCI2021-L01 2021-09-28 13-06-26.m4v"
                         sizeInKiloBytes: 123428
                         mimeType: "video/x-m4v"
                         createdAt: "2021-09-28T16:31:43Z"
+                        type: "file"
                       - id: "33251708"
                         name: "HCI2021-L02 2021-09-30 08-34-32.mp4"
                         sizeInKiloBytes: 248172
                         mimeType: "video/mp4"
                         createdAt: "2021-09-30T10:20:50Z"
+                        type: "file"
                       - id: "33256476"
                         name: "HCI2021-L03 2021-10-05 13-06-47.mp4"
                         sizeInKiloBytes: 243792
                         mimeType: "video/mp4"
                         createdAt: "2021-10-05T15:00:15Z"
+                        type: "file"
                       - id: "33257988"
                         name: "HCI2021-L04 2021-10-07 08-35-46.mp4"
                         sizeInKiloBytes: 244993
                         mimeType: "video/mp4"
                         createdAt: "2021-10-07T11:12:25Z"
+                        type: "file"
                       - id: "33262287"
                         name: "HCI2021-L05 2021-10-12 13-05-46.mp4"
                         sizeInKiloBytes: 298172
                         mimeType: "video/mp4"
                         createdAt: "2021-10-12T16:11:46Z"
+                        type: "file"
                       - id: "33265387"
                         name: "HCI2021-L06 2021-10-14 08-35-12.mp4"
                         sizeInKiloBytes: 285926
                         mimeType: "video/mp4"
                         createdAt: "2021-10-14T11:25:20Z"
+                        type: "file"
                       - id: "33269079"
                         name: "HCI2021-L07 2021-10-19 13-10-40.mp4"
                         sizeInKiloBytes: 234466
                         mimeType: "video/mp4"
                         createdAt: "2021-10-19T15:02:22Z"
-                      - id: "33270699"
-                        name: "HCI2021-L08 2021-10-21 08-35-17.mp4"
-                        sizeInKiloBytes: 240828
-                        mimeType: "video/mp4"
-                        createdAt: "2021-10-21T10:44:22Z"
-                      - id: "33273765"
-                        name: "HCI2021-L09 2021-10-26 13-08-27.mp4"
-                        sizeInKiloBytes: 321979
-                        mimeType: "video/mp4"
-                        createdAt: "2021-10-26T16:06:46Z"
-                      - id: "33275522"
-                        name: "HCI2021-L10 2021-10-28 08-35-26.mp4"
-                        sizeInKiloBytes: 281542
-                        mimeType: "video/mp4"
-                        createdAt: "2021-10-28T10:59:56Z"
-                      - id: "33278303"
-                        name: "HCI2021-L11 2021-11-02 13-07-13.mp4"
-                        sizeInKiloBytes: 259925
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-02T17:34:17Z"
-                      - id: "33280035"
-                        name: "HCI2021-L12 2021-11-04 08-35-42.mp4"
-                        sizeInKiloBytes: 269000
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-04T15:18:00Z"
-                      - id: "33283202"
-                        name: "HCI2021-L13 2021-11-09 13-05-21.mp4"
-                        sizeInKiloBytes: 124877
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-09T17:55:12Z"
-                      - id: "33285203"
-                        name: "HCI2021-L14 2021-11-11 08-34-16.mp4"
-                        sizeInKiloBytes: 164749
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-11T18:54:08Z"
-                      - id: "33288841"
-                        name: "HCI2021-L15 2021-11-16 13-08-31.mp4"
-                        sizeInKiloBytes: 413016
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-16T17:39:12Z"
-                      - id: "33290368"
-                        name: "HCI2021-L16 2021-11-18 08-35-25.mp4"
-                        sizeInKiloBytes: 175214
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-18T16:32:30Z"
-                      - id: "33293068"
-                        name: "HCI2021-L17 2021-11-23 13-07-21.mp4"
-                        sizeInKiloBytes: 167637
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-23T15:14:30Z"
-                      - id: "33294893"
-                        name: "HCI2021-L18 2021-11-25 08-38-18.mp4"
-                        sizeInKiloBytes: 177894
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-25T19:07:01Z"
-                      - id: "33297785"
-                        name: "HCI2021-L19 2021-11-30 13-05-06.mp4"
-                        sizeInKiloBytes: 204728
-                        mimeType: "video/mp4"
-                        createdAt: "2021-11-30T18:40:05Z"
-                      - id: "33298944"
-                        name: "HCI2021-L20 2021-12-02 08-33-29.mp4"
-                        sizeInKiloBytes: 181211
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-02T14:28:22Z"
-                      - id: "33301586"
-                        name: "HCI2021-L21 2021-12-07 13-10-43.mp4"
-                        sizeInKiloBytes: 161114
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-07T14:51:40Z"
-                      - id: "33302797"
-                        name: "HCI2021-L22 2021-12-09 08-36-04.mp4"
-                        sizeInKiloBytes: 171358
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-09T18:13:39Z"
-                      - id: "33305668"
-                        name: "HCI2021-L23 2021-12-14 13-04-34.mp4"
-                        sizeInKiloBytes: 236985
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-14T17:25:16Z"
-                      - id: "33307385"
-                        name: "HCI2021-L24 2021-12-16 08-34-14.mp4"
-                        sizeInKiloBytes: 178860
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-16T19:18:25Z"
-                      - id: "33309925"
-                        name: "HCI2021-L25 2021-12-21 13-04-41.mp4"
-                        sizeInKiloBytes: 166945
-                        mimeType: "video/mp4"
-                        createdAt: "2021-12-21T15:00:46Z"
-                      - id: "33314553"
-                        name: "HCI2021-L26 2022-01-11 13-00-00.mp4"
-                        sizeInKiloBytes: 182258
-                        mimeType: "video/mp4"
-                        createdAt: "2022-01-11T14:49:59Z"
-                  - id: "33325555"
-                    name: "2022-02-04-results-written-test.pdf"
-                    sizeInKiloBytes: 412
-                    mimeType: "application/pdf"
-                    createdAt: "2022-02-18T01:20:21Z"
-                  - id: "33357023"
-                    name: "2022-02-23-results-written-test.pdf"
-                    sizeInKiloBytes: 404
-                    mimeType: "application/pdf"
-                    createdAt: "2022-03-18T22:29:45Z"
-                  - id: "33405431"
-                    name: "2022-06-29-results-written-test.pdf"
-                    sizeInKiloBytes: 127
-                    mimeType: "application/pdf"
-                    createdAt: "2022-07-20T19:34:00Z"
+                        type: "file"
+
 
         404:
           description: Course not found
@@ -2273,7 +2172,7 @@ paths:
       tags:
         - Esc
       summary: retreive european student card | recupera la european student card
-      operationId: getEsc
+      operationId: escGet
       responses:
         200:
           description: Success
@@ -2285,17 +2184,17 @@ paths:
                   data:
                       $ref: '#/components/schemas/EuropeanStudentCard'
                 required: [ data ]
-        201:
-          description: Success
         400:
           $ref: '#/components/responses/BadRequestResponse'
+        404:
+          description: Card not found
         500:
           $ref: '#/components/responses/ErrorResponse'
     delete:
       tags:
         - Esc
       summary: Delete all Student data on the ESC-Router (and all student's cards) | Cancella tutti i dati dello studente sul Router ESC (e tutte le carte dello studente)
-      operationId: deleteEsc
+      operationId: escDelete
       responses:
         204:
           description: Success
@@ -2309,7 +2208,7 @@ paths:
       tags:
         - Esc
       summary: request european student card | richiedi la european student card
-      operationId: requestEsc
+      operationId: escRequest
       responses:
         201:
           description: Success
@@ -3290,44 +3189,14 @@ paths:
 
 components:
   parameters:
-    bookingIdParam:
-      name: bookingId
-      in: path
-      required: true
-      schema:
-        type: integer
-    bookingTopicIdParam:
-      name: bookingTopicId
-      in: path
-      required: true
-      schema:
-        type: integer
     courseIdParam:
       name: courseId
       in: path
       required: true
       schema:
         type: integer
-    examIdParam:
-      name: examId
-      in: path
-      required: true
-      schema:
-        type: integer
     assignmentIdParam:
       name: assignmentId
-      in: path
-      required: true
-      schema:
-        type: integer
-    fileIdParam:
-      name: fileId
-      in: path
-      required: true
-      schema:
-        type: string
-    lectureIdParam:
-      name: lectureId
       in: path
       required: true
       schema:
@@ -3344,12 +3213,6 @@ components:
       required: true
       schema:
         type: integer
-    personIdParam:
-      name: personId
-      in: path
-      required: true
-      schema:
-        type: string
     pathSiteId:
       name: siteId
       in: path
@@ -4421,21 +4284,30 @@ components:
     CourseDirectory:
       type: object
       properties:
-        id:
-          type: string
-          example: '33352562'
-        name:
-          type: string
-          example: Laboratori
         files:
           $ref: '#/components/schemas/CourseDirectoryContent'
-      required: [ id, type, name, files ]
+      required: [ files ]
     CourseDirectoryContent:
       type: array
       items:
-        oneOf:
-          - $ref: '#/components/schemas/CourseDirectory'
-          - $ref: '#/components/schemas/CourseFileOverview'
+        allOf:
+          - type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - directory
+                  - file
+              id:
+                type: string
+                example: '33352562'
+              name:
+                type: string
+                example: Laboratori
+                required: [ id, type, name ]
+          - oneOf:
+            - $ref: '#/components/schemas/CourseDirectory'
+            - $ref: '#/components/schemas/CourseFileOverview'
         discriminator:
           propertyName: type
           mapping:
@@ -4444,12 +4316,6 @@ components:
     CourseFileOverview:
       type: object
       properties:
-        id:
-          type: string
-          example: '33352562'
-        name:
-          type: string
-          example: sebc-lab2.pdf
         sizeInKiloBytes:
           type: integer
           example: 305
@@ -4460,7 +4326,7 @@ components:
           type: string
           format: date-time
           example: 2022-08-31T14:00:00Z
-      required: [ id, type, name, sizeInKiloBytes, mimeType, createdAt ]
+      required: [ sizeInKiloBytes, mimeType, createdAt ]
 
     Teacher:
       type: object
@@ -4645,7 +4511,6 @@ components:
         - courseName
         - teacherId
         - type
-        - classrooms
         - status
         - bookingStartsAt
         - bookingEndsAt
@@ -4816,7 +4681,7 @@ components:
         category:
           $ref: '#/components/schemas/PlaceCategoryOverview'
         geoJson:
-          $ref: 'https://gist.githubusercontent.com/zit0un/3ac0575eb0f3aabdc645c3faad47ab4a/raw/8db5e3ab89418def3a15474979e494c92b69592e/GeoJSON-OAS3.yaml#/components/schemas/Feature'
+          $ref: 'https://raw.githubusercontent.com/zit0un/GeoJSON-OAS3/1db6676d3a810b86ec0b9b99a95614f2dbd54b5e/GeoJSON-OAS3.yaml#/components/schemas/Feature'
       required: [ id, name, siteId, category ]
     Building:
       allOf:
