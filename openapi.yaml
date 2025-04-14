@@ -1373,6 +1373,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/videolectures:
     get:
       tags:
@@ -1406,6 +1407,54 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
+  /courses/{courseId}/nextLecture:
+    get:
+      tags:
+        - Courses
+      summary: Get next lecture | Ottieni prossima lezione
+      operationId: getNextLecture
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Lecture'
+                required: [ data ]
+              example:
+                data:
+                  id: 12131312
+                  startsAt: "2021-09-28T14:30:00Z"
+                  endsAt: "2021-09-28T17:30:00Z"
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description:
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: [
+                    {
+                      id: 149336,
+                      title: "CYB / lecture 28.09.2021 (TLS, slides 1-40)"
+                    }
+                  ]
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
 
   /courses/{courseId}/preferences:
     patch:
