@@ -2886,6 +2886,65 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+          
+  /local/{id}/report:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique local id
+        schema:
+          type: string
+    get:
+      tags:
+        - Report
+      summary: List of reports for a venue | Lista segnalazioni per un locale
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+    post:
+      tags:
+        - Report
+      summary: Create new report | Crea una nuova segnalazione
+      requestBody:
+        description: Report description
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewReport'
+      responses:
+        '201':
+          description: success
+
+  /local/{id}/report/{reportId}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Unique local id
+        schema:
+          type: string
+      - name: reportId
+        in: path
+        required: true
+        description: Report id
+        schema:
+          type: string
+    delete:
+      tags:
+        - Report
+      summary: Delete report | Elimina una segnalazione
+      responses:
+        '204':
+          description: success     
+
   /ticket-faqs:
     get:
       tags:
@@ -5314,7 +5373,30 @@ components:
           type: boolean
           example: true
       required: [ id, title, message, type, senderId, sentAt, isRead ]
-
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        state:
+          type: string
+        createdAtDate:
+          type: string
+          format: date-time
+          example: 2022-08-31T14:00:00Z
+        type:
+          type: string
+    NewReport:
+      type: object
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
     TicketSubtopic:
       type: object
       properties:
