@@ -1532,6 +1532,8 @@ paths:
                     isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
+                    requestReason: null
+                    requestDetails: null
                   - id: 887981
                     courseId: 262789
                     courseShortcode: 01NYHOV
@@ -1551,6 +1553,8 @@ paths:
                     isReschedulable: false
                     question: null
                     feedback: null
+                    requestReason: null
+                    requestDetails: null
                   - id: 888212
                     courseId: 217742
                     courseShortcode: 03LPYOV
@@ -1570,6 +1574,8 @@ paths:
                     isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
+                    requestReason: null
+                    requestDetails: null
                   - id: 888118
                     courseId: 217742
                     courseShortcode: 01TYAOV
@@ -1589,6 +1595,8 @@ paths:
                     isReschedulable: false
                     question: null
                     feedback: Esiste già una prenotazione per l'esame in questione
+                    requestReason: null
+                    requestDetails: null
         400:
           $ref: '#/components/responses/BadRequestResponse'
         500:
@@ -4709,6 +4717,14 @@ components:
           type: integer
           description: The module number, if this is a module
           example: 1
+        requestReason:
+          type: string
+          nullable: true
+          example: null
+        requestDetails:
+          type: string
+          nullable: true
+          example: null
       required:
         - id
         - courseId
@@ -4728,6 +4744,8 @@ components:
         - notes
         - isReschedulable
         - moduleNumber
+        - requestReason
+        - requestDetails
     Error:
       type: object
       properties:
