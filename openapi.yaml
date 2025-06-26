@@ -265,6 +265,109 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  
+  /auth/mfa/status:
+    get:
+      tags:
+        - Auth
+      summary: Get MFA status for the current user
+      operationId: getMfaStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MfaStatusResponse'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/moodle/{course}:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for Moodle course
+      operationId: getMoodleLink
+      parameters:
+        - name: course
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Moodle course identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/liveClass/{meetingID}:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for LiveClass meeting
+      operationId: getLiveClassLink
+      parameters:
+        - name: meetingID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: LiveClass meeting identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/mail:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for Mail
+      operationId: getMailLink
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  
   /me:
     get:
       tags:
@@ -5232,6 +5335,30 @@ components:
           type: boolean
           example: true
       required: [ suggestUpdate ]
+    
+    MfaStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [active, locked, available, unavailable, needsReauth]
+          description: Current MFA status for the user.
+        details:
+          type: object
+          nullable: true
+          description: >
+            Additional information about the MFA session. Present only if status is `active` or `locked`.
+          properties:
+            lastAuth:
+              type: string
+              format: date-time
+              example: '2021-09-30T00:00:00Z'
+              description: Date and time of the last successful MFA authentication.
+            authCount:
+              type: integer
+              description: Number of successful MFA authentications.
+          required: [ lastAuth, authCount ]
+      required: [ status ,
 
     ClientVersionRequest:
       type: object
@@ -6080,6 +6207,14 @@ components:
           $ref: '#/components/schemas/SurveyCourseRef'
       required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
 
+    LinkToService:
+      type: object
+      properties:
+        url:
+          type: string
+          example: 'https://...'
+      required: [ url ]
+
     LinkToWebmail:
       type: object
       properties:
@@ -6087,6 +6222,7 @@ components:
           type: string
           example: 'https://...'
       required: [ url ]
+
     EmailBadge:
       type: object
       properties:
