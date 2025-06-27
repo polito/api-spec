@@ -5337,28 +5337,32 @@ components:
       required: [ suggestUpdate ]
     
     MfaStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum: [active, locked, available, unavailable, needsReauth]
-          description: Current MFA status for the user.
-        details:
-          type: object
-          nullable: true
-          description: >
-            Additional information about the MFA session. Present only if status is `active` or `locked`.
-          properties:
-            lastAuth:
-              type: string
-              format: date-time
-              example: '2021-09-30T00:00:00Z'
-              description: Date and time of the last successful MFA authentication.
-            authCount:
-              type: integer
-              description: Number of successful MFA authentications.
-          required: [ lastAuth, authCount ]
-      required: [ status ,
+     type: object
+     properties:
+       status:
+         type: string
+         enum: [ active, locked, available, unavailable, needsReauth ]
+         description: Current MFA status for the user
+       details:
+        type: object
+        nullable: true
+        description:  Additional information about the MFA session. Present only if status is `active` or `locked`
+        properties:
+          lastAuth:
+            type: string
+            format: date-time
+            example: '2021-09-30T00:00:00Z'
+            description: Date and time of the last successful MFA authentication
+          authCount:
+            type: integer
+          serial:
+            type: string
+            description: Identifier of the MFA method in use
+          description:
+            type: string
+            description: Custom name or label set by the user to identify the MFA method
+        required: [ lastAuth, authCount ]
+     required: [ status, details ]
 
     ClientVersionRequest:
       type: object
