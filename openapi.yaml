@@ -534,19 +534,27 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
           
-  # /requestESC:
-  #   post:
-  #     tags:
-  #       - Student
-  #     summary: request European Student Card | Richiedi la European Student Card
-  #     operationId: requestESC
-  #     responses:
-  #       201:
-  #         description: Success
-  #       409:
-  #         description: Card already exists
-  #       500:
-  #         $ref: '#/components/responses/ErrorResponse'
+  /unreadEmails:
+    get:
+      tags:
+        - Student
+      summary: Retrieve student's unread emails number | Recupera il numero di email non lette dello studente
+      operationId: getUnreadEmailslNumber
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmailBadge'
+                required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
 
   /booking-topics:
     get:
@@ -3454,51 +3462,6 @@ paths:
         400:
             $ref: '#/components/responses/BadRequestResponse'
 
-  /linkToWebmail:
-    get:
-      tags:
-        - Webmail
-      summary: Retrieve student's webmail link | Recupera il link alla webmail dello studente
-      operationId: getWebmailLink
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/LinkToWebmail'
-                required: [ data ]
-        400:
-            $ref: '#/components/responses/BadRequestResponse'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-
-  /unreadEmails:
-    get:
-      tags:
-        - Webmail
-      summary: Retrieve student's unread emails number | Recupera il numero di email non lette dello studente
-      operationId: getUnreadEmailslNumber
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/EmailBadge'
-                required: [ data ]
-        400:
-            $ref: '#/components/responses/BadRequestResponse'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-
-
 components:
   parameters:
     courseIdParam:
@@ -5355,12 +5318,15 @@ components:
             description: Date and time of the last successful MFA authentication
           authCount:
             type: integer
+            example: 1
           serial:
             type: string
             description: Identifier of the MFA method in use
+            example: EDUP0000123456
           description:
             type: string
             description: Custom name or label set by the user to identify the MFA method
+            example: My phone
         required: [ lastAuth, authCount ]
      required: [ status, details ]
 
@@ -6212,14 +6178,6 @@ components:
       required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
 
     LinkToService:
-      type: object
-      properties:
-        url:
-          type: string
-          example: 'https://...'
-      required: [ url ]
-
-    LinkToWebmail:
       type: object
       properties:
         url:
