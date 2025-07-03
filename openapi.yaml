@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Polito Students API
-  version: 2.2.2
+  version: 2.2.3
   license:
     name: CC BY-NC 4.0
     url: https://creativecommons.org/licenses/by-nc/4.0/
@@ -265,6 +265,109 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+  
+  /auth/mfa/status:
+    get:
+      tags:
+        - Auth
+      summary: Get MFA status for the current user
+      operationId: getMfaStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MfaStatusResponse'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/moodle/{course}:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for Moodle course
+      operationId: getMoodleLink
+      parameters:
+        - name: course
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Moodle course identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/liveClass/{meetingID}:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for LiveClass meeting
+      operationId: getLiveClassLink
+      parameters:
+        - name: meetingID
+          in: path
+          required: true
+          schema:
+            type: string
+          description: LiveClass meeting identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/serviceLink/mail:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for Mail
+      operationId: getMailLink
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  
   /me:
     get:
       tags:
@@ -431,19 +534,27 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
           
-  # /requestESC:
-  #   post:
-  #     tags:
-  #       - Student
-  #     summary: request European Student Card | Richiedi la European Student Card
-  #     operationId: requestESC
-  #     responses:
-  #       201:
-  #         description: Success
-  #       409:
-  #         description: Card already exists
-  #       500:
-  #         $ref: '#/components/responses/ErrorResponse'
+  /unreadEmails:
+    get:
+      tags:
+        - Student
+      summary: Retrieve student's unread emails number | Recupera il numero di email non lette dello studente
+      operationId: getUnreadEmailslNumber
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmailBadge'
+                required: [ data ]
+        400:
+            $ref: '#/components/responses/BadRequestResponse'
+        500:
+          $ref: '#/components/responses/ErrorResponse'
 
   /booking-topics:
     get:
@@ -3351,51 +3462,6 @@ paths:
         400:
             $ref: '#/components/responses/BadRequestResponse'
 
-  /linkToWebmail:
-    get:
-      tags:
-        - Webmail
-      summary: Retrieve student's webmail link | Recupera il link alla webmail dello studente
-      operationId: getWebmailLink
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/LinkToWebmail'
-                required: [ data ]
-        400:
-            $ref: '#/components/responses/BadRequestResponse'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-
-  /unreadEmails:
-    get:
-      tags:
-        - Webmail
-      summary: Retrieve student's unread emails number | Recupera il numero di email non lette dello studente
-      operationId: getUnreadEmailslNumber
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/EmailBadge'
-                required: [ data ]
-        400:
-            $ref: '#/components/responses/BadRequestResponse'
-        500:
-          $ref: '#/components/responses/ErrorResponse'
-
-
 components:
   parameters:
     courseIdParam:
@@ -5232,6 +5298,37 @@ components:
           type: boolean
           example: true
       required: [ suggestUpdate ]
+    
+    MfaStatusResponse:
+     type: object
+     properties:
+       status:
+         type: string
+         enum: [ active, locked, available, unavailable, needsReauth ]
+         description: Current MFA status for the user
+       details:
+        type: object
+        nullable: true
+        description:  Additional information about the MFA session. Present only if status is `active` or `locked`
+        properties:
+          lastAuth:
+            type: string
+            format: date-time
+            example: '2021-09-30T00:00:00Z'
+            description: Date and time of the last successful MFA authentication
+          authCount:
+            type: integer
+            example: 1
+          serial:
+            type: string
+            description: Identifier of the MFA method in use
+            example: EDUP0000123456
+          description:
+            type: string
+            description: Custom name or label set by the user to identify the MFA method
+            example: My phone
+        required: [ lastAuth, authCount ]
+     required: [ status, details ]
 
     ClientVersionRequest:
       type: object
@@ -6080,13 +6177,14 @@ components:
           $ref: '#/components/schemas/SurveyCourseRef'
       required: [ id, title, subtitle, category, type, period, year, isMandatory, isCompiled, compileDate, url, startsAt, endsAt ]
 
-    LinkToWebmail:
+    LinkToService:
       type: object
       properties:
         url:
           type: string
           example: 'https://...'
       required: [ url ]
+
     EmailBadge:
       type: object
       properties:
