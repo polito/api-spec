@@ -4370,6 +4370,7 @@ components:
                 type: integer
                 example: 244577
             required: [ year, id ]
+
         vcOtherCourses:
           description: Other editions/courses to be included in virtual classrooms
           type: array
@@ -4411,6 +4412,7 @@ components:
                 example: 244577
             required: [ role, id ]
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
+
     CourseAssignment:
       type: object
       properties:
@@ -4441,6 +4443,7 @@ components:
           type: integer
           example: 305
       required: [ id, description, mimeType, filename, uploadedAt, deletedAt, url, sizeInKiloBytes ]
+
     CourseAssignmentUpload:
       type: object
       properties:
@@ -4451,6 +4454,7 @@ components:
           type: string
           format: binary
       required: [ description, file ]
+
     UpdateAssignmentRequest:
       type: object
       properties:
@@ -4460,6 +4464,7 @@ components:
           nullable: true
           example: 2022-07-03T14:00:00Z
       required: [ deletedAt ]
+
     CourseNotices:
       type: object
       properties:
@@ -4490,6 +4495,7 @@ components:
           example: The course will cover the design and implementation of server-side
             architectures...
       required: [ title, content ]
+
     CourseDirectory:
       allOf:
         - $ref: '#/components/schemas/CourseDirectoryEntry'
@@ -4498,6 +4504,7 @@ components:
             files:
               $ref: '#/components/schemas/CourseDirectoryContent'
           required: [ files ]
+
     CourseFileOverview:
       allOf:
         - $ref: '#/components/schemas/CourseDirectoryEntry'
@@ -4514,6 +4521,7 @@ components:
               format: date-time
               example: 2022-08-31T14:00:00Z
           required: [ sizeInKiloBytes, mimeType, createdAt ]
+
     CourseDirectoryEntry:
       type: object
       properties:
@@ -4551,6 +4559,7 @@ components:
         lastName:
           type: string
       required: [ id, firstName, lastName ]
+
     GradeCount:
       type: object
       properties:
@@ -4560,6 +4569,7 @@ components:
         count:
           type: integer
       required: [ grade, count ]
+
     YearStatistics:
       type: object
       properties:
@@ -4579,6 +4589,7 @@ components:
 
     PreviousYearsToCompare:
       type: object
+      description: previous two years to compare with the current course (if existing)
       properties:
         year:
           type: integer
@@ -4595,6 +4606,18 @@ components:
           type: string
         year:
           type: integer
+        courseNumber:
+          type: integer
+          nullable: false
+          example: 3
+        alphaStart:
+          type: string
+          nullable: true
+          example: 'DID'
+        alphaEnd:
+          type: string
+          nullable: true
+          example: 'OZZ'
         teacher:
           $ref: '#/components/schemas/Teacher'
         totalEnrolled:
@@ -4621,7 +4644,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Teacher'
-      required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, previousYearsToCompare, years, teachers ]
+      required: [ shortcode, year, courseNumber, alphaStart, alphaEnd, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, previousYearsToCompare, years, teachers ]
 
 
     Exam:
