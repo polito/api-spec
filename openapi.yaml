@@ -4608,7 +4608,7 @@ components:
           type: integer
         courseNumber:
           type: integer
-          nullable: false
+          nullable: true
           example: 3
         alphaStart:
           type: string
