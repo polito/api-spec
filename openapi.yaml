@@ -4671,8 +4671,6 @@ components:
           type: integer
         firstYear:
           $ref: '#/components/schemas/YearStatistics'
-        secondYear:
-          $ref: '#/components/schemas/YearStatistics'
         otherYears:
           $ref: '#/components/schemas/YearStatistics'
         previousYearsToCompare:
@@ -4687,7 +4685,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Teacher'
-      required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, secondYear, otherYears, previousYearsToCompare, years, teachers ]
+      required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, otherYears, previousYearsToCompare, years, teachers ]
 
 
     Exam:
