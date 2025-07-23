@@ -5371,6 +5371,8 @@ components:
         - personal
         - teacher
         - secretariat
+        - exams
+        - mfa
       example: secretariat
     Message:
       type: object
