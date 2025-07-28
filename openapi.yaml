@@ -2841,6 +2841,35 @@ paths:
                 required: [ data ]
         400:
             $ref: '#/components/responses/BadRequestResponse'
+
+  /path/{startPlaceId}/to/{destPlaceId}:
+    get:
+      tags:
+        - Places
+      summary: Get path between two places| Ottieni il percorso tra due locali
+      operationId: getPath        #sarà il nome della funzione che mi troverò lato typescript sull'app
+      parameters:
+        - $ref: '#/components/parameters/pathPlaceId'
+        - $ref: '#/components/parameters/pathPlaceId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NavigationResponse'     #dentro navigationresponse avrà una serie di campi (geojson route, distance, duration, etc)
+                required: [ data ]                                      #geojsonroute sarà la mia feature collection
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        404:
+          description: Destination|Start place not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /messages:
     get:
       tags:
@@ -2865,6 +2894,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+          
   /messages/{messageId}:
     delete:
       tags:
@@ -3799,6 +3829,122 @@ components:
         - enrollmentAcquiredCredits
         - smartCardPicture
         - europeanStudentCard
+
+    NavigationResponse:
+      type: object
+      properties:
+        geojsonRoute:
+          $ref: '#/components/schemas/NavigationResponseFeatureCollection'
+        tot_distance:
+          type: number
+          description: Total distance of the route in meters.
+          example: 150.5
+        duration:
+          type: number
+          description: Estimated duration of the route in seconds.
+          example: 300
+        floors_crossed:
+          type: number
+          description: Number of floors crossed in the route.
+          example: 2
+
+    NavigationResponseFeatureCollection:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - FeatureCollection
+          description: Tipo GeoJSON per una collezione di feature.
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationResponseFeature'
+          description: Un array di singole feature edilizie.
+      required:
+        - type
+        - features
+      example:
+        type: FeatureCollection
+        features:
+          - type: Feature
+            geometry:
+              type: LineString
+              coordinates:
+                - [102.0, 0.0]
+                - [103.0, 1.0]
+            properties:
+              type: elevator
+              length: 120
+              floor_id: "ground_floor"
+              building_id: "building_A"
+          - type: Feature
+            geometry:
+              type: LineString
+              coordinates:
+                - [103.0, 1.0]
+                - [104.0, 2.0]
+            properties:
+              type: stairs
+              length: 50
+              floor_id: "first_floor"
+              building_id: "building_B"
+
+    NavigationResponseFeature:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Feature
+          description: Type of the feature, indicating the kind of path or structure.
+        geometry:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - LineString
+              description: Type of GeoJSON geometry.
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+                minItems: 2
+                maxItems: 2
+          required:
+            - type
+            - coordinates
+        properties:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Type of the feature, indicating the kind of path or structure.
+              enum:
+                - elevator
+                - stairs
+                - gate
+            length:
+              type: number
+              description: Length of the feature in meters.
+              nullable: true
+            floor_id:
+              type: string
+              description: Identificator of the floor where the feature is located.
+              nullable: true
+            building_id:
+              type: string
+              description: Identificator of the building where the feature is located.
+              nullable: true
+          required:
+            - type
+      required:
+        - type
+        - geometry
+        - properties
 
     Deadline:
       type: object
