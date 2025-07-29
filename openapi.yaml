@@ -4355,7 +4355,19 @@ components:
         year:
           type: string
           example: '2022'
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year ]
+        moodleInfo:
+          type: array
+          items:
+            type: object
+            properties:
+              courseName:
+                type: string
+                example: Analisi Matematica I
+              moodleCourseCode:
+                type: string
+                example: 645376
+          nullable: true
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodle ]
 
     CoursePreferencesRequest:
       type: object
