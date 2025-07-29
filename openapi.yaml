@@ -4365,7 +4365,7 @@ components:
                 example: Analisi Matematica I
               id:
                 type: string
-                example: 645376
+                example: '645376'
           nullable: true
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodleCourses ]
 
