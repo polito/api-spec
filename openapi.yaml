@@ -4355,15 +4355,15 @@ components:
         year:
           type: string
           example: '2022'
-        moodleInfo:
+        moodleCourses:
           type: array
           items:
             type: object
             properties:
-              courseName:
+              name:
                 type: string
                 example: Analisi Matematica I
-              moodleCourseCode:
+              id:
                 type: string
                 example: 645376
           nullable: true
