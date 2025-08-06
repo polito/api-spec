@@ -5017,7 +5017,7 @@ components:
           example: 'DAUIN'
         name:
           type: string
-          example: Dipartimento di Automatica e Informatica
+          example: 'Dipartimento di Automatica e Informatica'
           nullable: true
         type:
           type: string
