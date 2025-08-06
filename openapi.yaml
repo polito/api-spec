@@ -2802,6 +2802,7 @@ paths:
         - $ref: '#/components/parameters/querySiteId'
         - $ref: '#/components/parameters/queryBuildingId'
         - $ref: '#/components/parameters/queryFloorId'
+        - $ref: "#/components/parameters/queryDepartmentId
       responses:
         200:
           description: Success
@@ -3536,7 +3537,12 @@ components:
       required: false
       schema:
         type: string
-
+    queryDepartmentId:
+      name: departmentId
+      in: query
+      required: false
+      schema:
+        type: string
 
     pathPlaceId:
       name: placeId
@@ -5003,6 +5009,20 @@ components:
           type: integer
           example: 0
       required: [ id, name, level ]
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'DAUIN'
+        name:
+          type: string
+          example: Dipartimento di Automatica e Informatica
+          nullable: true
+        type:
+          type: string
+          example: 'DIP.'
+      required: [ id, name, type ]
     PlaceCategory:
       type: object
       properties:
@@ -5068,7 +5088,9 @@ components:
               $ref: '#/components/schemas/BuildingOverview'
             floor:
               $ref: '#/components/schemas/Floor'
-          required: [ id, room, category, site, building, floor ]
+            department:
+              $ref: '#/components/schemas/Department'
+          required: [ id, room, category, site, building, floor, department ]
         - $ref: '#/components/schemas/GeoLocation'
     FreeRoom:
       allOf:
