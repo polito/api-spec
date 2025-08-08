@@ -3741,7 +3741,7 @@ components:
           nullable: true
           example: null
         totalOnTimeExamPoints:
-          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value =ß maxOnTimeExamPoints)
+          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value = maxOnTimeExamPoints)
           type: number
           nullable: true
           example: 0
