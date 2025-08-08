@@ -2802,7 +2802,7 @@ paths:
         - $ref: '#/components/parameters/querySiteId'
         - $ref: '#/components/parameters/queryBuildingId'
         - $ref: '#/components/parameters/queryFloorId'
-        - $ref: "#/components/parameters/queryDepartmentId
+        - $ref: '#/components/parameters/queryDepartmentId'
       responses:
         200:
           description: Success
