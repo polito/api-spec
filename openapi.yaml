@@ -3833,9 +3833,9 @@ components:
     NavigationResponse:
       type: object
       properties:
-        geojsonRoute:
+        geoJsonRoute:
           $ref: '#/components/schemas/NavigationResponseFeatureCollection'
-        tot_distance:
+        totalLength:
           type: number
           description: Total distance of the route in meters.
           example: 150.5
@@ -3843,7 +3843,7 @@ components:
           type: number
           description: Estimated duration of the route in seconds.
           example: 300
-        floors_crossed:
+        traversedFloors:
           type: number
           description: Number of floors crossed in the route.
           example: 2
@@ -3927,15 +3927,16 @@ components:
                 - elevator
                 - stairs
                 - gate
+                - ramp
             length:
               type: number
               description: Length of the feature in meters.
               nullable: true
-            floor_id:
+            floorId:
               type: string
               description: Identificator of the floor where the feature is located.
               nullable: true
-            building_id:
+            buildingId:
               type: string
               description: Identificator of the building where the feature is located.
               nullable: true
