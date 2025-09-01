@@ -4374,6 +4374,7 @@ components:
           example: System and device programming
         parentCourseName:
           description: The name of the parent course, if this is a module
+          nullable: true
           type: string
           example: Computer Science
         shortcode:
@@ -4433,7 +4434,7 @@ components:
                 type: string
                 example: '645376'
           nullable: true
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodleCourses ]
+      required: [ id, name, parentCourseName, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodleCourses ]
 
     CoursePreferencesRequest:
       type: object
