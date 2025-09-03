@@ -791,19 +791,48 @@ paths:
                 required: [ data ]
               example:
                 data:
-                  - id: 251007
-                    name: System and device programming
+                  - id: null
+                    name: 'System and device programming'
                     shortcode: 01NYHOV
                     cfu: 10
                     teachingPeriod: 2-2
                     teacherId: 2893
-                    previousEditions: [{id: 251007, year: '2024'}]
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'System and Device Programming'
+                        id: '645376'
+                    modules:
+                      - id: 251008
+                        name: 'Programming Module A'
+                        shortcode: 01NYHOV
+                        cfu: 5
+                        teachingPeriod: 2-2
+                        teacherId: 3001
+                        previousEditions: [{ id: 251005, year: '2024' }]
+                        isOverBooking: false
+                        isInPersonalStudyPlan: true
+                        year: '2025'
+                        moodleCourses:
+                          - name: 'Programming Module A'
+                            id: '645377'
+                        modules: null
+                      - id: 251009
+                        name: 'Programming Module B'
+                        shortcode: 01NYHOV
+                        cfu: 5
+                        teachingPeriod: 2-2
+                        teacherId: 3002
+                        previousEditions: [{ id: 251006, year: '2024' }]
+                        isOverBooking: false
+                        isInPersonalStudyPlan: true
+                        year: '2025'
+                        moodleCourses: null
+                        modules: null
                   - id: 252121
-                    name: Web Applications II
+                    name: 'Web Applications II'
                     shortcode: 01TXSOV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -811,10 +840,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252126
-                    name: Security verification and testing
+                    name: 'Security verification and testing'
                     shortcode: 01TYAOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -822,10 +852,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252138
-                    name: Information systems security
+                    name: 'Information systems security'
                     shortcode: 01TYMOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -833,10 +864,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252258
-                    name: Cybersecurity
+                    name: 'Cybersecurity'
                     shortcode: 01UDROV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -844,10 +876,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252788
-                    name: Architetture dei sistemi di elaborazione
+                    name: 'Architetture dei sistemi di elaborazione'
                     shortcode: 02GOLOV
                     cfu: 10
                     teachingPeriod: 1-1
@@ -855,10 +888,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252842
-                    name: Human Computer Interaction
+                    name: 'Human Computer Interaction'
                     shortcode: 02JSKOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -866,10 +900,13 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'Human-Computer Interaction'
+                        id: '645890'
+                    modules: null
                   - id: 253378
-                    name: Cryptography
+                    name: 'Cryptography'
                     shortcode: 03LPYOV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -877,10 +914,13 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'Cryptography'
+                        id: '645991'
+                    modules: null
                   - id: null
-                    name: Tesi
+                    name: 'Tesi'
                     shortcode: 29EBHOV
                     cfu: 30
                     teachingPeriod: 1-1
@@ -888,12 +928,14 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
         400:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}:
     get:
       tags:
@@ -4361,6 +4403,7 @@ components:
 
       required: [ id, description, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
+
     CourseOverview:
       type: object
       properties:
@@ -4372,11 +4415,6 @@ components:
         name:
           type: string
           example: System and device programming
-        parentCourseName:
-          description: The name of the parent course, if this is a module
-          nullable: true
-          type: string
-          example: Computer Science
         shortcode:
           type: string
           example: 01NYHOV
@@ -4411,14 +4449,6 @@ components:
           type: boolean
           description: Included in the PSP | Incluso nel carico didattico
           example: true
-        isModule:
-          type: boolean
-          description: If true, this course is actually a module
-          example: true
-        moduleNumber:
-          type: integer
-          description: The module number, if this is a module
-          example: 1
         year:
           type: string
           example: '2022'
@@ -4434,7 +4464,13 @@ components:
                 type: string
                 example: '645376'
           nullable: true
-      required: [ id, name, parentCourseName, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodleCourses ]
+        modules:
+          type: array
+          nullable: true
+          description: Modules belonging to this course, if any
+          items:
+            $ref: '#/components/schemas/CourseOverview'
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year, moodleCourses, modules ]
 
     CoursePreferencesRequest:
       type: object
