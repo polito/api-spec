@@ -4019,7 +4019,7 @@ components:
           type: string
           format: date-time
           nullable: false
-      required: [ id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt ]
+      required: [ id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, confirmedAt, rejectedAt, rejectingExpiresAt ]
 
     ProvisionalGradeState:
       type: object
@@ -4591,7 +4591,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
@@ -5341,7 +5341,7 @@ components:
           type: string
           enum:
             - live
-      required: [ id, title, teacherId, meetingUrl, createdAt, isLive ]
+      required: [ id, title, teacherId, createdAt ]
     Lecture:
       type: object
       properties:
@@ -5559,7 +5559,7 @@ components:
         isRead:
           type: boolean
           example: true
-      required: [ id, title, message, type, senderId, sentAt, isRead ]
+      required: [ id, title, message, sentAt, isRead ]
 
     TicketSubtopic:
       type: object
@@ -5606,6 +5606,7 @@ components:
         - new
         - pending
         - closed
+
     TicketOverview:
       type: object
       properties:
@@ -5656,7 +5657,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/TicketAttachment'
-          required: [ id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt, replies, attachments ]
+          required: [ replies, attachments ]
     TicketReply:
       type: object
       properties:
@@ -5685,7 +5686,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
-      required: [ id, message, senderId, isFromAgent, agentId, isRead, createdAt, attachments ]
+      required: [ id, message, isFromAgent, agentId, isRead, createdAt, attachments ]
     TicketAttachment:
       type: object
       properties:
@@ -5771,7 +5772,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/NewsItemExtra'
-          required: [ id, title, isEvent, shortDescription, eventStartTime, eventEndTime, createdAt, location, htmlContent, extras ]
+          required: [ location, htmlContent, extras ]
     NewsItemExtra:
       type: object
       properties:
@@ -5931,6 +5932,7 @@ components:
           format: date
           example: 2022-08-31
       required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate ]
+
     JobOffer:
       allOf:
         - $ref: '#/components/schemas/JobOfferOverview'
@@ -5969,7 +5971,7 @@ components:
             freePositions:
               type: number
               example: 2
-          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
+          required: [ companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
 
     DegreeOverview:
       type: object
