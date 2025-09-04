@@ -40,6 +40,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /auth/switch-career:
     post:
       tags:
@@ -75,6 +76,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /auth/logout:
     delete:
       tags:
@@ -454,6 +456,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /grades:
     get:
       tags:
@@ -583,6 +586,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics/{bookingTopicId}/slots:
     get:
       tags:
@@ -630,6 +634,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats:
     get:
       tags:
@@ -666,6 +671,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /bookings:
     get:
       tags:
@@ -714,6 +720,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /bookings/{bookingId}:
     patch:
       tags:
@@ -965,6 +972,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
   /courses/{courseId}/files:
     get:
       tags:
@@ -1046,6 +1054,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/files/{fileId}:
     get:
       tags:
@@ -1076,6 +1085,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/assignments:
     get:
       tags:
@@ -1211,6 +1221,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/assignments/{assignmentId}:
     patch:
       tags:
@@ -1236,6 +1247,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/guide:
     get:
       tags:
@@ -1292,6 +1304,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/notices:
     get:
       tags:
@@ -1331,6 +1344,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/virtual-classrooms:
     get:
       tags:
@@ -1758,6 +1772,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /exams/{examId}/booking:
     post:
       tags:
@@ -2661,6 +2676,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /people/{personId}:
     get:
       tags:
@@ -2720,6 +2736,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites:
     get:
       tags:
@@ -2743,6 +2760,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites/{siteId}/free-rooms:
     get:
       tags:
@@ -2790,6 +2808,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites/{siteId}/buildings:
     get:
       tags:
@@ -2889,6 +2908,7 @@ paths:
         400:
             $ref: '#/components/responses/BadRequestResponse'
 
+
   /departments:
     get:
       tags:
@@ -2946,12 +2966,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Message'
-                required: [ data ]
-              
+                required: [ data ] 
         400:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /messages/{messageId}:
     delete:
       tags:
@@ -2967,6 +2987,7 @@ paths:
           description: Message not found
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /messages/{messageId}/read:
     put:
       tags:
@@ -3042,7 +3063,6 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-
   /notifications/{notificationId}:
     delete:
       tags:
@@ -3058,6 +3078,7 @@ paths:
           description: Notification not found
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /notifications/{notificationId}/read:
     put:
       tags:
@@ -3092,6 +3113,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /ticket-faqs:
     get:
       tags:
@@ -3123,6 +3145,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /ticket-topics:
     get:
       tags:
@@ -3146,6 +3169,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets:
     get:
       tags:
@@ -3193,6 +3217,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}:
     get:
       tags:
@@ -3220,6 +3245,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/read:
     put:
       tags:
@@ -3239,6 +3265,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/close:
     put:
       tags:
@@ -3258,6 +3285,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/attachments/{attachmentId}:
     get:
       tags:
@@ -3285,6 +3313,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/replies:
     post:
       tags:
@@ -3310,6 +3339,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
     get:
       tags:
@@ -3446,6 +3476,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+          
   /offering/courses/{courseShortcode}:
     get:
       tags:
