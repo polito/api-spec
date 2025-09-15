@@ -3855,8 +3855,8 @@ components:
           type: string
           example: '02JSKOV'
         academicYear:
-          type: string
-          example: '2021/2022'
+          type: integer
+          example: 2022
         creditsCountTowardsDegree:
           description: Defines whether the credits from the exam count toward the total required for graduation
           type: boolean
