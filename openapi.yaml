@@ -2846,6 +2846,51 @@ paths:
                 required: [ data ]
         400:
             $ref: '#/components/responses/BadRequestResponse'
+  /v2/places/departments:
+    get:
+      tags:
+        - Places
+      summary: List departments | Elenca dipartimenti
+      operationId: getDepartments
+      parameters:
+        - $ref: '#/components/parameters/querySiteId'
+        - $ref: '#/components/parameters/queryDepartmentType'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Department'
+                required: [ data ]
+              example:
+                data:
+                  - id: DAUIN
+                    name: Dipartimento di Automatica e Informatica
+                    type: DIP.
+                  - id: DIMEAS
+                    name: Dipartimento di Ingegneria Meccanica e Aerospaziale
+                    type: DIP.
+                  - id: ATU01
+                    name: Area Tecnico-Urbanistica
+                    type: ATU.
+                  - id: DIR01
+                    name: Direzione Generale
+                    type: DIR.
+        404:
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'                
+            
   /messages:
     get:
       tags:
@@ -3539,6 +3584,12 @@ components:
         type: string
     queryDepartmentId:
       name: departmentId
+      in: query
+      required: false
+      schema:
+        type: string
+    queryDepartmentType:
+      name: departmentType
       in: query
       required: false
       schema:
