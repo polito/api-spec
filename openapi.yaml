@@ -2802,6 +2802,7 @@ paths:
         - $ref: '#/components/parameters/querySiteId'
         - $ref: '#/components/parameters/queryBuildingId'
         - $ref: '#/components/parameters/queryFloorId'
+        - $ref: '#/components/parameters/queryDepartmentId'
       responses:
         200:
           description: Success
@@ -2845,6 +2846,46 @@ paths:
                 required: [ data ]
         400:
             $ref: '#/components/responses/BadRequestResponse'
+
+  /departments:
+    get:
+      tags:
+        - Places
+      summary: List departments | Elenca dipartimenti
+      operationId: getDepartments
+      parameters:
+        - $ref: '#/components/parameters/querySiteId'
+        - $ref: '#/components/parameters/queryDepartmentType'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Department'
+                required: [ data ]
+              example:
+                data:
+                  - id: DAUIN
+                    name: Dipartimento di Automatica e Informatica
+                    type: DIP.
+                  - id: DIMEAS
+                    name: Dipartimento di Ingegneria Meccanica e Aerospaziale
+                    type: DIP.
+        404:
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          $ref: '#/components/responses/ErrorResponse'                
+            
   /messages:
     get:
       tags:
@@ -3536,7 +3577,18 @@ components:
       required: false
       schema:
         type: string
-
+    queryDepartmentId:
+      name: departmentId
+      in: query
+      required: false
+      schema:
+        type: string
+    queryDepartmentType:
+      name: departmentType
+      in: query
+      required: false
+      schema:
+        type: string
 
     pathPlaceId:
       name: placeId
@@ -3735,7 +3787,7 @@ components:
           nullable: true
           example: null
         totalOnTimeExamPoints:
-          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value =ß maxOnTimeExamPoints)
+          description: Total points for "on-time" exams - null if "on-time" exams are not applicable for the student's position (max value = maxOnTimeExamPoints)
           type: number
           nullable: true
           example: 0
@@ -5009,6 +5061,20 @@ components:
           type: integer
           example: 0
       required: [ id, name, level ]
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'DAUIN'
+        name:
+          type: string
+          example: 'Dipartimento di Automatica e Informatica'
+          nullable: true
+        type:
+          type: string
+          example: 'DIP.'
+      required: [ id, name, type ]
     PlaceCategory:
       type: object
       properties:
@@ -5074,7 +5140,9 @@ components:
               $ref: '#/components/schemas/BuildingOverview'
             floor:
               $ref: '#/components/schemas/Floor'
-          required: [ id, room, category, site, building, floor ]
+            department:
+              $ref: '#/components/schemas/Department'
+          required: [ id, room, category, site, building, floor, department ]
         - $ref: '#/components/schemas/GeoLocation'
     FreeRoom:
       allOf:
