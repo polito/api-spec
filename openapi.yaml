@@ -40,6 +40,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /auth/switch-career:
     post:
       tags:
@@ -75,6 +76,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /auth/logout:
     delete:
       tags:
@@ -454,6 +456,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /grades:
     get:
       tags:
@@ -583,6 +586,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics/{bookingTopicId}/slots:
     get:
       tags:
@@ -630,6 +634,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats:
     get:
       tags:
@@ -666,6 +671,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /bookings:
     get:
       tags:
@@ -714,6 +720,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /bookings/{bookingId}:
     patch:
       tags:
@@ -791,19 +798,48 @@ paths:
                 required: [ data ]
               example:
                 data:
-                  - id: 251007
-                    name: System and device programming
+                  - id: null
+                    name: 'System and device programming'
                     shortcode: 01NYHOV
                     cfu: 10
                     teachingPeriod: 2-2
                     teacherId: 2893
-                    previousEditions: [{id: 251007, year: '2024'}]
+                    previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'System and Device Programming'
+                        id: '645376'
+                    modules:
+                      - id: 251008
+                        name: 'Programming Module A'
+                        shortcode: 01NYHOV
+                        cfu: 5
+                        teachingPeriod: 2-2
+                        teacherId: 3001
+                        previousEditions: [{ id: 251005, year: '2024' }]
+                        isOverBooking: false
+                        isInPersonalStudyPlan: true
+                        year: '2025'
+                        moodleCourses:
+                          - name: 'Programming Module A'
+                            id: '645377'
+                        modules: null
+                      - id: 251009
+                        name: 'Programming Module B'
+                        shortcode: 01NYHOV
+                        cfu: 5
+                        teachingPeriod: 2-2
+                        teacherId: 3002
+                        previousEditions: [{ id: 251006, year: '2024' }]
+                        isOverBooking: false
+                        isInPersonalStudyPlan: true
+                        year: '2025'
+                        moodleCourses: null
+                        modules: null
                   - id: 252121
-                    name: Web Applications II
+                    name: 'Web Applications II'
                     shortcode: 01TXSOV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -811,10 +847,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252126
-                    name: Security verification and testing
+                    name: 'Security verification and testing'
                     shortcode: 01TYAOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -822,10 +859,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252138
-                    name: Information systems security
+                    name: 'Information systems security'
                     shortcode: 01TYMOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -833,10 +871,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252258
-                    name: Cybersecurity
+                    name: 'Cybersecurity'
                     shortcode: 01UDROV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -844,10 +883,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252788
-                    name: Architetture dei sistemi di elaborazione
+                    name: 'Architetture dei sistemi di elaborazione'
                     shortcode: 02GOLOV
                     cfu: 10
                     teachingPeriod: 1-1
@@ -855,10 +895,11 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
                   - id: 252842
-                    name: Human Computer Interaction
+                    name: 'Human Computer Interaction'
                     shortcode: 02JSKOV
                     cfu: 6
                     teachingPeriod: 1-1
@@ -866,10 +907,13 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'Human-Computer Interaction'
+                        id: '645890'
+                    modules: null
                   - id: 253378
-                    name: Cryptography
+                    name: 'Cryptography'
                     shortcode: 03LPYOV
                     cfu: 6
                     teachingPeriod: 2-2
@@ -877,10 +921,13 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses:
+                      - name: 'Cryptography'
+                        id: '645991'
+                    modules: null
                   - id: null
-                    name: Tesi
+                    name: 'Tesi'
                     shortcode: 29EBHOV
                     cfu: 30
                     teachingPeriod: 1-1
@@ -888,12 +935,14 @@ paths:
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
-                    isModule: false
                     year: '2025'
+                    moodleCourses: null
+                    modules: null
         400:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}:
     get:
       tags:
@@ -923,6 +972,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
   /courses/{courseId}/files:
     get:
       tags:
@@ -1004,6 +1054,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/files/{fileId}:
     get:
       tags:
@@ -1034,6 +1085,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/assignments:
     get:
       tags:
@@ -1169,6 +1221,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/assignments/{assignmentId}:
     patch:
       tags:
@@ -1194,6 +1247,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/guide:
     get:
       tags:
@@ -1250,6 +1304,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/notices:
     get:
       tags:
@@ -1289,6 +1344,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /courses/{courseId}/virtual-classrooms:
     get:
       tags:
@@ -1716,6 +1772,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /exams/{examId}/booking:
     post:
       tags:
@@ -2619,6 +2676,7 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /people/{personId}:
     get:
       tags:
@@ -2678,6 +2736,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites:
     get:
       tags:
@@ -2701,6 +2760,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites/{siteId}/free-rooms:
     get:
       tags:
@@ -2748,6 +2808,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /v2/sites/{siteId}/buildings:
     get:
       tags:
@@ -2847,6 +2908,7 @@ paths:
         400:
             $ref: '#/components/responses/BadRequestResponse'
 
+
   /departments:
     get:
       tags:
@@ -2904,12 +2966,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Message'
-                required: [ data ]
-              
+                required: [ data ] 
         400:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /messages/{messageId}:
     delete:
       tags:
@@ -2925,6 +2987,7 @@ paths:
           description: Message not found
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /messages/{messageId}/read:
     put:
       tags:
@@ -3000,7 +3063,6 @@ paths:
         500:
           $ref: '#/components/responses/ErrorResponse'
 
-
   /notifications/{notificationId}:
     delete:
       tags:
@@ -3016,6 +3078,7 @@ paths:
           description: Notification not found
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /notifications/{notificationId}/read:
     put:
       tags:
@@ -3050,6 +3113,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /ticket-faqs:
     get:
       tags:
@@ -3081,6 +3145,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /ticket-topics:
     get:
       tags:
@@ -3104,6 +3169,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets:
     get:
       tags:
@@ -3151,6 +3217,7 @@ paths:
             $ref: '#/components/responses/BadRequestResponse'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}:
     get:
       tags:
@@ -3178,6 +3245,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/read:
     put:
       tags:
@@ -3197,6 +3265,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/close:
     put:
       tags:
@@ -3216,6 +3285,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/attachments/{attachmentId}:
     get:
       tags:
@@ -3243,6 +3313,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/replies:
     post:
       tags:
@@ -3268,6 +3339,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+
   /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
     get:
       tags:
@@ -3404,6 +3476,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         500:
           $ref: '#/components/responses/ErrorResponse'
+          
   /offering/courses/{courseShortcode}:
     get:
       tags:
@@ -3977,7 +4050,7 @@ components:
           type: string
           format: date-time
           nullable: false
-      required: [ id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, acceptUrl, rejectUrl, confirmedAt, rejectedAt, rejectingExpiresAt ]
+      required: [ id, examId, courseShortcode, courseName, teacherId, credits, grade, date, state, stateDescription, teacherMessage, isWithdrawn, isFailure, canBeAccepted, canBeRejected, confirmedAt, rejectedAt, rejectingExpiresAt ]
 
     ProvisionalGradeState:
       type: object
@@ -4361,6 +4434,7 @@ components:
 
       required: [ id, description, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
+
     CourseOverview:
       type: object
       properties:
@@ -4406,14 +4480,6 @@ components:
           type: boolean
           description: Included in the PSP | Incluso nel carico didattico
           example: true
-        isModule:
-          type: boolean
-          description: If true, this course is actually a module
-          example: true
-        moduleNumber:
-          type: integer
-          description: The module number, if this is a module
-          example: 1
         year:
           type: string
           example: '2022'
@@ -4429,7 +4495,13 @@ components:
                 type: string
                 example: '645376'
           nullable: true
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, isModule, year, moodleCourses ]
+        modules:
+          type: array
+          nullable: true
+          description: Modules belonging to this course, if any
+          items:
+            $ref: '#/components/schemas/CourseOverview'
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year, moodleCourses, modules ]
 
     CoursePreferencesRequest:
       type: object
@@ -4550,7 +4622,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, moduleNumber, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
@@ -5300,7 +5372,7 @@ components:
           type: string
           enum:
             - live
-      required: [ id, title, teacherId, meetingUrl, createdAt, isLive ]
+      required: [ id, title, teacherId, createdAt ]
     Lecture:
       type: object
       properties:
@@ -5518,7 +5590,7 @@ components:
         isRead:
           type: boolean
           example: true
-      required: [ id, title, message, type, senderId, sentAt, isRead ]
+      required: [ id, title, message, sentAt, isRead ]
 
     TicketSubtopic:
       type: object
@@ -5565,6 +5637,7 @@ components:
         - new
         - pending
         - closed
+
     TicketOverview:
       type: object
       properties:
@@ -5615,7 +5688,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/TicketAttachment'
-          required: [ id, subject, message, status, hasAttachments, isFromAgent, unreadCount, createdAt, updatedAt, replies, attachments ]
+          required: [ replies, attachments ]
     TicketReply:
       type: object
       properties:
@@ -5644,7 +5717,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
-      required: [ id, message, senderId, isFromAgent, agentId, isRead, createdAt, attachments ]
+      required: [ id, message, isFromAgent, agentId, isRead, createdAt, attachments ]
     TicketAttachment:
       type: object
       properties:
@@ -5730,7 +5803,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/NewsItemExtra'
-          required: [ id, title, isEvent, shortDescription, eventStartTime, eventEndTime, createdAt, location, htmlContent, extras ]
+          required: [ location, htmlContent, extras ]
     NewsItemExtra:
       type: object
       properties:
@@ -5890,6 +5963,7 @@ components:
           format: date
           example: 2022-08-31
       required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate ]
+
     JobOffer:
       allOf:
         - $ref: '#/components/schemas/JobOfferOverview'
@@ -5928,7 +6002,7 @@ components:
             freePositions:
               type: number
               example: 2
-          required: [ id, title, location, companyId, companyName, createdAtDate, endsAtDate, companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
+          required: [ companyLocation, companyMission, description, requirements, contractType, salary, contactInformation, url, email, freePositions ]
 
     DegreeOverview:
       type: object
