@@ -3851,11 +3851,17 @@ components:
           type: number
           nullable: true
           example: 0.5
+        shortcode:
+          type: string
+          example: '02JSKOV'
+        academicYear:
+          type: integer
+          example: 2022
         creditsCountTowardsDegree:
           description: Defines whether the credits from the exam count toward the total required for graduation
           type: boolean
           example: true
-      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree ]
+      required: [ courseName, credits, grade, date, teacherId, onTimeExamPoints, creditsCountTowardsDegree, shortcode, academicYear ]
 
     ProvisionalGrade:
       type: object
