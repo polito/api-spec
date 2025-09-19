@@ -2876,12 +2876,6 @@ paths:
                   - id: DIMEAS
                     name: Dipartimento di Ingegneria Meccanica e Aerospaziale
                     type: DIP.
-                  - id: ATU01
-                    name: Area Tecnico-Urbanistica
-                    type: ATU.
-                  - id: DIR01
-                    name: Direzione Generale
-                    type: DIR.
         404:
           description: Site not found
           content:
