@@ -2846,7 +2846,8 @@ paths:
                 required: [ data ]
         400:
             $ref: '#/components/responses/BadRequestResponse'
-  /v2/places/departments:
+
+  /departments:
     get:
       tags:
         - Places
