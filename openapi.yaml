@@ -4483,25 +4483,13 @@ components:
         year:
           type: string
           example: '2022'
-        moodleCourses:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Analisi Matematica I
-              id:
-                type: string
-                example: '645376'
-          nullable: true
         modules:
           type: array
           nullable: true
           description: Modules belonging to this course, if any
           items:
             $ref: '#/components/schemas/CourseOverview'
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year, moodleCourses, modules ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year, modules ]
 
     CoursePreferencesRequest:
       type: object
@@ -4551,10 +4539,6 @@ components:
           type: boolean
           description: Included in the PSP | Incluso nel carico didattico
           example: true
-        isModule:
-          type: boolean
-          description: If true, this course is actually a module
-          example: true
         year:
           type: string
           example: '2022'
@@ -4570,6 +4554,18 @@ components:
                 type: string
                 example: 'Calendario settimanale dei contenuti del corso'
             required: [ url ]
+        moodleCourses:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Analisi Matematica I
+              id:
+                type: string
+                example: '645376'
+          nullable: true            
         vcPreviousYears:
           type: array
           items:
@@ -4622,7 +4618,7 @@ components:
                 type: number
                 example: 244577
             required: [ role, id ]
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, isModule, year, links, vcPreviousYears, vcOtherCourses, notifications, staff ]
+      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, year, links, moodleCourses, vcPreviousYears, vcOtherCourses, notifications, staff ]
     CourseAssignment:
       type: object
       properties:
