@@ -808,13 +808,9 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses:
-                      - name: 'System and Device Programming'
-                        id: '645376'
                     modules:
                       - id: 251008
                         name: 'Programming Module A'
-                        shortcode: 01NYHOV
                         cfu: 5
                         teachingPeriod: 2-2
                         teacherId: 3001
@@ -822,13 +818,8 @@ paths:
                         isOverBooking: false
                         isInPersonalStudyPlan: true
                         year: '2025'
-                        moodleCourses:
-                          - name: 'Programming Module A'
-                            id: '645377'
-                        modules: null
                       - id: 251009
                         name: 'Programming Module B'
-                        shortcode: 01NYHOV
                         cfu: 5
                         teachingPeriod: 2-2
                         teacherId: 3002
@@ -836,8 +827,6 @@ paths:
                         isOverBooking: false
                         isInPersonalStudyPlan: true
                         year: '2025'
-                        moodleCourses: null
-                        modules: null
                   - id: 252121
                     name: 'Web Applications II'
                     shortcode: 01TXSOV
@@ -848,7 +837,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
                   - id: 252126
                     name: 'Security verification and testing'
@@ -860,7 +848,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
                   - id: 252138
                     name: 'Information systems security'
@@ -872,7 +859,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
                   - id: 252258
                     name: 'Cybersecurity'
@@ -884,7 +870,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
                   - id: 252788
                     name: 'Architetture dei sistemi di elaborazione'
@@ -896,7 +881,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
                   - id: 252842
                     name: 'Human Computer Interaction'
@@ -908,9 +892,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses:
-                      - name: 'Human-Computer Interaction'
-                        id: '645890'
                     modules: null
                   - id: 253378
                     name: 'Cryptography'
@@ -922,9 +903,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses:
-                      - name: 'Cryptography'
-                        id: '645991'
                     modules: null
                   - id: null
                     name: 'Tesi'
@@ -936,7 +914,6 @@ paths:
                     isOverBooking: false
                     isInPersonalStudyPlan: true
                     year: '2025'
-                    moodleCourses: null
                     modules: null
         400:
           $ref: '#/components/responses/BadRequestResponse'
@@ -3783,6 +3760,7 @@ components:
           type: string
           example: c679fa38ff665df6a676acd833194385
       required: [ username, type, clientId, token ]
+
     Student:
       type: object
       properties:
@@ -4141,6 +4119,7 @@ components:
           example: false
           description: Specifies if the topic requires the agenda display
       required: [ disclaimer, showCalendar, slotLength, slotsPerHour, startDate, startHour, endHour, maxBookingsPerDay, canBeCancelled, daysPerWeek, agendaView ]
+
     BookingTopic:
       allOf:
         - $ref: '#/components/schemas/BookingTopicLeaf'
@@ -4163,6 +4142,7 @@ components:
               items:
                 $ref: '#/components/schemas/BookingSubtopic'
           required: [ id, title, description, isEnabled, subtopics ]
+
     BookingSubtopic:
       allOf:
         - $ref: '#/components/schemas/BookingTopicLeaf'
@@ -4192,6 +4172,7 @@ components:
                     type: string
                     example: https://didattica.polito.it/pdf/informativa_covid.pdf
           required: [ id, title, description, isEnabled, requirements ]
+
     BookingSlot:
       type: object
       properties:
@@ -4254,6 +4235,7 @@ components:
           format: date-time
           example: '2021-10-04T16:00:00Z'
       required: [ id, description, isBooked, canBeBooked, hasSeats, hasSeatSelection, places, bookedPlaces, feedback, location, startsAt, endsAt, bookingStartsAt, bookingEndsAt ]
+
     BookingSeats:
       type: object
       properties:
@@ -4268,6 +4250,7 @@ components:
           items:
             $ref: '#/components/schemas/BookingSeatsRow'
       required: [ totalCount, availableCount, rows ]
+
     BookingSeatsRow:
       type: object
       properties:
@@ -4282,6 +4265,7 @@ components:
           items:
             $ref: '#/components/schemas/BookingSeatCell'
       required: [ label, seats ]
+
     BookingSeatCell:
       type: object
       properties:
@@ -4381,6 +4365,7 @@ components:
       nullable: true
       example: null
       required: [ id, title, description ]
+
     Booking:
       type: object
       properties:
@@ -4434,8 +4419,23 @@ components:
 
       required: [ id, description, topic, subtopic, startsAt, endsAt, seat, cancelableUntil, location ]
 
-
     CourseOverview:
+      type: object
+      allOf:
+          - $ref: '#/components/schemas/CourseModule'
+          - type: object
+            properties:
+              shortcode:
+                type: string
+                example: 01NYHOV
+              modules:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseModule'
+                nullable: true
+            required: [ shortcode, modules ]
+              
+    CourseModule:
       type: object
       properties:
         id:
@@ -4446,9 +4446,6 @@ components:
         name:
           type: string
           example: System and device programming
-        shortcode:
-          type: string
-          example: 01NYHOV
         cfu:
           type: integer
           example: 10
@@ -4483,13 +4480,7 @@ components:
         year:
           type: string
           example: '2022'
-        modules:
-          type: array
-          nullable: true
-          description: Modules belonging to this course, if any
-          items:
-            $ref: '#/components/schemas/CourseOverview'
-      required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year, modules ]
+      required: [ id, name, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year ]
 
     CoursePreferencesRequest:
       type: object
@@ -4565,7 +4556,7 @@ components:
               id:
                 type: string
                 example: '645376'
-          nullable: true            
+          nullable: true
         vcPreviousYears:
           type: array
           items:
@@ -4577,7 +4568,7 @@ components:
               id:
                 type: integer
                 example: 244577
-            required: [ year, id ]
+            required: [ year, id ] 
         vcOtherCourses:
           description: Other editions/courses to be included in virtual classrooms
           type: array
@@ -4619,6 +4610,7 @@ components:
                 example: 244577
             required: [ role, id ]
       required: [ id, name, shortcode, cfu, teachingPeriod, teacherId, isOverBooking, isInPersonalStudyPlan, year, links, moodleCourses, vcPreviousYears, vcOtherCourses, notifications, staff ]
+
     CourseAssignment:
       type: object
       properties:
@@ -4649,6 +4641,7 @@ components:
           type: integer
           example: 305
       required: [ id, description, mimeType, filename, uploadedAt, deletedAt, url, sizeInKiloBytes ]
+
     CourseAssignmentUpload:
       type: object
       properties:
@@ -4659,6 +4652,7 @@ components:
           type: string
           format: binary
       required: [ description, file ]
+
     UpdateAssignmentRequest:
       type: object
       properties:
@@ -4668,6 +4662,7 @@ components:
           nullable: true
           example: 2022-07-03T14:00:00Z
       required: [ deletedAt ]
+
     CourseNotices:
       type: object
       properties:
@@ -4687,6 +4682,7 @@ components:
           type: string
           example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
       required: [ id, publishedAt, expiresAt, content ]
+
     CourseGuideSection:
       type: object
       properties:
@@ -4698,6 +4694,7 @@ components:
           example: The course will cover the design and implementation of server-side
             architectures...
       required: [ title, content ]
+
     CourseDirectory:
       allOf:
         - $ref: '#/components/schemas/CourseDirectoryEntry'
@@ -4706,6 +4703,7 @@ components:
             files:
               $ref: '#/components/schemas/CourseDirectoryContent'
           required: [ files ]
+
     CourseFileOverview:
       allOf:
         - $ref: '#/components/schemas/CourseDirectoryEntry'
@@ -4722,6 +4720,7 @@ components:
               format: date-time
               example: 2022-08-31T14:00:00Z
           required: [ sizeInKiloBytes, mimeType, createdAt ]
+
     CourseDirectoryEntry:
       type: object
       properties:
@@ -4737,6 +4736,7 @@ components:
           type: string
           example: Laboratori
       required: [ id, type, name ]
+
     CourseDirectoryContent:
       type: array
       items:
@@ -4759,6 +4759,7 @@ components:
         lastName:
           type: string
       required: [ id, firstName, lastName ]
+
     GradeCount:
       type: object
       properties:
@@ -4768,6 +4769,7 @@ components:
         count:
           type: integer
       required: [ grade, count ]
+
     YearStatistics:
       type: object
       properties:
@@ -4828,7 +4830,6 @@ components:
           items:
             $ref: '#/components/schemas/Teacher'
       required: [ shortcode, year, teacher, totalEnrolled, totalSucceeded, totalFailed, firstYear, otherYears, previousYearsToCompare, years, teachers ]
-
 
     Exam:
       type: object
@@ -4952,6 +4953,7 @@ components:
         - moduleNumber
         - requestReason
         - requestDetails
+
     Error:
       type: object
       properties:
@@ -4991,6 +4993,7 @@ components:
           type: string
           example: Docente
       required: [ id, firstName, lastName, picture, role ]
+
     Person:
       allOf:
         - $ref: '#/components/schemas/PersonOverview'
@@ -5016,6 +5019,7 @@ components:
               items:
                 $ref: "#/components/schemas/PersonCourse"
           required: [ email, phoneNumbers, facilityShortName, profileUrl, courses ]
+
     PersonCourse:
       type: object
       properties:
@@ -5040,6 +5044,7 @@ components:
           description: The year this course was given in
           example: 2021
       required: [ id, year, role, name ]
+
     GeoLocation:
       type: object
       properties:
@@ -5050,6 +5055,7 @@ components:
           type: number
           example: 7.657823
       required: [ latitude, longitude ]
+
     RoomOverview:
       type: object
       properties:
@@ -5060,6 +5066,7 @@ components:
           type: string
           example: Aula 1D
       required: [ id, name ]
+
     SiteOverview:
       type: object
       properties:
@@ -5070,6 +5077,7 @@ components:
           type: string
           example: Sede Centrale - Cittadella Politecnica
       required: [ id, name ]
+
     Site:
       allOf:
         - $ref: '#/components/schemas/SiteOverview'
@@ -5095,6 +5103,7 @@ components:
               description: A delta in degrees that applied to the centroid coordinates of the site determines its extent
           required: [ floors, extent, city ]
         - $ref: '#/components/schemas/GeoLocation'
+
     BuildingOverview:
       type: object
       properties:
@@ -5112,10 +5121,12 @@ components:
         geoJson:
           $ref: 'https://raw.githubusercontent.com/zit0un/GeoJSON-OAS3/1db6676d3a810b86ec0b9b99a95614f2dbd54b5e/GeoJSON-OAS3.yaml#/components/schemas/Feature'
       required: [ id, name, siteId, category ]
+
     Building:
       allOf:
         - $ref: '#/components/schemas/BuildingOverview'
         - $ref: '#/components/schemas/GeoLocation'
+
     Floor:
       type: object
       properties:
@@ -5129,6 +5140,7 @@ components:
           type: integer
           example: 0
       required: [ id, name, level ]
+
     Department:
       type: object
       properties:
@@ -5143,6 +5155,7 @@ components:
           type: string
           example: 'DIP.'
       required: [ id, name, type ]
+
     PlaceCategory:
       type: object
       properties:
@@ -5191,6 +5204,7 @@ components:
           properties:
             subCategory:
               $ref: '#/components/schemas/PlaceCategory'
+
     PlaceOverview:
       allOf:
         - type: object
@@ -5212,6 +5226,7 @@ components:
               $ref: '#/components/schemas/Department'
           required: [ id, room, category, site, building, floor, department ]
         - $ref: '#/components/schemas/GeoLocation'
+
     FreeRoom:
       allOf:
         - $ref: '#/components/schemas/PlaceRef'
@@ -5226,6 +5241,7 @@ components:
               type: string
               format: date-time
           required: [ freeFrom, freeTo ]
+
     Place:
       allOf:
         - $ref: '#/components/schemas/PlaceOverview'
@@ -5304,6 +5320,7 @@ components:
           type: string
           example: 00h 46m
       required: [ id, title, teacherId, abstract, coverUrl, videoUrl, audioUrl, createdAt, duration ]
+
     RelatedVirtualClassroom:
       type: object
       properties:
@@ -5314,6 +5331,7 @@ components:
           type: string
           example: Lecture 1
       required: [ id, title ]
+      
     VirtualClassroom:
       type: object
       properties:
@@ -5345,6 +5363,7 @@ components:
           enum:
             - recording
       required: [ id, title, teacherId, coverUrl, videoUrl, createdAt, duration, type ]
+
     VirtualClassroomLive:
       type: object
       properties:
@@ -5369,6 +5388,7 @@ components:
           enum:
             - live
       required: [ id, title, teacherId, createdAt ]
+
     Lecture:
       type: object
       properties:
@@ -5406,6 +5426,7 @@ components:
         place:
           $ref: '#/components/schemas/PlaceRef'
       required: [ id, startsAt, endsAt, type, virtualClassrooms, description, courseId, courseName, teacherId, place ]
+
     PlaceRef:
       type: object
       nullable: true
@@ -5496,6 +5517,7 @@ components:
           type: string
           example: '1.6.2'
       required: [ buildNumber, appVersion ]
+
     Client:
       allOf:
         - type: object
@@ -5532,6 +5554,7 @@ components:
         - exams
         - mfa
       example: secretariat
+
     Message:
       type: object
       properties:
@@ -5598,6 +5621,7 @@ components:
           type: string
           example: Accesso studenti esterni
       required: [ id, name ]
+
     TicketTopic:
       allOf:
         - $ref: '#/components/schemas/TicketSubtopic'
@@ -5614,6 +5638,7 @@ components:
               - id: 103
                 name: Accesso studenti esterni
           required: [ subtopics ]
+
     TicketFAQ:
       type: object
       properties:
@@ -5627,6 +5652,7 @@ components:
           type: string
           example: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href=\"https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT\">Log-in</a>&nbsp;e segui le istruzioni.
       required: [ id, question, answer ]
+
     TicketStatus:
       type: string
       enum:
@@ -5671,6 +5697,7 @@ components:
           format: date-time
           example: 2022-08-31T14:00:00Z
       required: [ id, subject, message, status, hasAttachments, isFromAgent, agentId, unreadCount, createdAt, updatedAt ]
+
     Ticket:
       allOf:
         - $ref: '#/components/schemas/TicketOverview'
@@ -5685,6 +5712,7 @@ components:
               items:
                 $ref: '#/components/schemas/TicketAttachment'
           required: [ replies, attachments ]
+
     TicketReply:
       type: object
       properties:
@@ -5714,6 +5742,7 @@ components:
           items:
             $ref: '#/components/schemas/TicketAttachment'
       required: [ id, message, isFromAgent, agentId, isRead, createdAt, attachments ]
+
     TicketAttachment:
       type: object
       properties:
@@ -5730,6 +5759,7 @@ components:
           type: integer
           example: 305
       required: [ id, filename, mimeType, sizeInKiloBytes ]
+
     ReplyTicketRequest:
       type: object
       properties:
@@ -5740,6 +5770,7 @@ components:
           type: string
           format: binary
       required: [ message ]
+
     CreateTicketRequest:
       type: object
       properties:
@@ -5756,6 +5787,7 @@ components:
           type: string
           format: binary
       required: [ subject, message, subtopicId ]
+
     NewsItemOverview:
       type: object
       properties:
@@ -5784,6 +5816,7 @@ components:
           format: date-time
           example: 2022-08-31T14:00:00Z
       required: [ id, title, isEvent, shortDescription, eventStartTime, eventEndTime, createdAt ]
+
     NewsItem:
       allOf:
         - $ref: '#/components/schemas/NewsItemOverview'
@@ -5800,6 +5833,7 @@ components:
               items:
                 $ref: '#/components/schemas/NewsItemExtra'
           required: [ location, htmlContent, extras ]
+
     NewsItemExtra:
       type: object
       properties:
@@ -5828,12 +5862,14 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+
     UpdatePreferencesRequest:
       properties:
         language:
           type: string
           enum: [ it, en ]
           example: it
+
     NotificationPreferences:
       type: object
       properties:
@@ -5908,6 +5944,7 @@ components:
               example: moreSecret
           additionalProperties: false
           required: [username, password]
+
     LoginCredentialsSSO:
       allOf:
         - $ref: '#/components/schemas/LoginRequestBase'
@@ -6010,6 +6047,7 @@ components:
           type: string
           example: 'Design e comunicazione'
       required: [ id, name ]
+
     OfferingClass:
       type: object
       properties:
@@ -6024,6 +6062,7 @@ components:
           items:
             $ref: '#/components/schemas/DegreeOverview'
       required: [ name, code, degrees ]
+
     Degree:
       allOf:
         - $ref: '#/components/schemas/DegreeOverview'
@@ -6104,6 +6143,7 @@ components:
                 $ref: '#/components/schemas/Track'
 
           required: [ level, department, faculty, location, duration, class, year, editions, notes, objectives, jobOpportunities, tracks ]
+
     Track:
       type: object
       properties:
@@ -6118,6 +6158,7 @@ components:
           items:
             $ref: '#/components/schemas/OfferingCourseOverview'
       required: [ id, name, courses ]
+
     OfferingCourseOverview:
       type: object
       properties:
@@ -6142,6 +6183,7 @@ components:
           example: Insegnamento a scelta 1
           nullable: true
       required: [ name, shortcode, cfu, teachingYear, language, group ]
+
     CourseHours:
       type: object
       properties:
@@ -6261,7 +6303,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GuideSection'
-
       required: [ id, listTitle, title, intro, fields, sections ]
 
     SurveyCourseRef:
@@ -6278,6 +6319,7 @@ components:
           example: '01NYHOV'
       nullable: true
       required: [ id, name, shortcode ]
+
     SurveyTaxonomy:
       type: object
       properties:
@@ -6288,6 +6330,7 @@ components:
           type: string
           example: 'CPD'
       required: [ id, name ]
+
     Survey:
       type: object
       properties:
