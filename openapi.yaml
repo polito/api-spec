@@ -4283,7 +4283,11 @@ paths:
               - courseIds
       responses:
         '202':
-          "$ref": "#/components/schemas/AcceptedResponse"
+          description: Accettato (elaborazione in corso)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AcceptedResponse"
         '400':
           "$ref": "#/components/responses/BadRequestResponse"
         '401':
