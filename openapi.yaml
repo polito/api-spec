@@ -13,12 +13,40 @@ servers:
 security:
 - bearerAuth: []
 tags:
+- name: Students - Auth
+  description: Autenticazione e servizi collegati.
+- name: Students - Student
+  description: Operazioni sul profilo studente.
+- name: Students - Bookings
+  description: Prenotazioni aule/laboratori.
+- name: Students - Courses
+  description: Consultazione corsi, materiali e preferenze didattiche.
+- name: Students - Exams
+  description: Gestione prenotazioni e informazioni sugli appelli d'esame.
+- name: Students - Lectures
+  description: Calendario lezioni, esercitazioni e aule virtuali.
+- name: Students - Esc
+  description: Gestione della European Student Card.
+- name: Students - People
+  description: Ricerca e dettaglio contatti della comunità di ateneo.
+- name: Students - Tickets
+  description: Apertura e monitoraggio ticket di supporto.
+- name: Students - Job offers
+  description: Consultazione offerte di lavoro e opportunità di carriera.
+- name: Students - Offering
+  description: Navigazione dell'offerta formativa e dei corsi di laurea.
+- name: Students - Surveys
+  description: Questionari e rilevazioni rivolte agli studenti.
+- name: Faculty - Auth
+  description: Autenticazione e servizi collegati.
 - name: Faculty - Profile
   description: Operazioni sul profilo del docente.
 - name: Faculty - Exams
   description: Gestione appelli e iscritti lato docente.
 - name: Faculty - Courses
   description: Gestione incarichi didattici del docente.
+- name: Faculty - Lectures
+  description: Pianificazione e gestione lezioni lato docente.
 - name: Faculty - Collaborators
   description: Gestione collaboratori su incarichi/corsi.
 - name: Faculty - Materials
@@ -27,52 +55,63 @@ tags:
   description: Avvisi del corso lato docente.
 - name: Faculty - Messaging
   description: Messaggistica/broadcast verso iscritti.
-- name: Faculty - Room Booking
-  description: Prenotazione aule/laboratori.
-- name: Faculty - Event Booking
-  description: Prenotazione spazi per eventi.
+- name: Faculty - Bookings
+  description: Prenotazione aule/laboratori e strutture di Ateneo.
 - name: Faculty - Digital Signature
   description: Elenco e firma digitale documenti.
 - name: Faculty - Calendar
   description: Sottoscrizione e gestione calendario didattico.
-- name: Faculty - People Search
+- name: Faculty - People
   description: Ricerca di contatti interni (docenti/studenti).
 - name: Faculty - Emergencies
   description: Riferimenti/Procedure di emergenza.
 - name: Faculty - Faults
   description: Segnalazione guasti e tracciamento stato.
-- name: Common - News & Events
-  description: News ed eventi d'Ateneo.
-- name: Common - Campus Map
+- name: Common - News
+  description: News dell'Ateneo.
+- name: Common - Places
   description: Mappa e POI di ateneo.
 x-tagGroups:
 - name: Faculty
   tags:
+  - Faculty - Auth
   - Faculty - Profile
   - Faculty - Exams
   - Faculty - Courses
+  - Faculty - Lectures
   - Faculty - Collaborators
   - Faculty - Materials
   - Faculty - Notices
   - Faculty - Messaging
-  - Faculty - Room Booking
-  - Faculty - Event Booking
+  - Faculty - Bookings
   - Faculty - Digital Signature
   - Faculty - Calendar
-  - Faculty - People Search
+  - Faculty - People
   - Faculty - Emergencies
   - Faculty - Faults
 - name: Common
   tags:
-  - Common - News & Events
-  - Common - Campus Map
-- name: Students (esistenti)
-  tags: []
+  - Common - News
+  - Common - Places
+- name: Students
+  tags:
+  - Students - Auth
+  - Students - Student
+  - Students - Bookings
+  - Students - Courses
+  - Students - Exams
+  - Students - Lectures
+  - Students - Esc
+  - Students - People
+  - Students - Tickets
+  - Students - Job offers
+  - Students - Offering
+  - Students - Surveys
 paths:
   "/auth/login":
     post:
       tags:
-      - Auth
+      - Students - Auth
       security: []
       summary: Login
       operationId: login
@@ -100,7 +139,7 @@ paths:
   "/auth/switch-career":
     post:
       tags:
-      - Auth
+      - Students - Auth
       summary: Switch career | Cambia carriera
       operationId: switchCareer
       requestBody:
@@ -137,7 +176,7 @@ paths:
   "/auth/logout":
     delete:
       tags:
-      - Auth
+      - Students - Auth
       summary: Logout
       description: Invalidates the provided token
       operationId: logout
@@ -151,7 +190,7 @@ paths:
   "/auth/client":
     patch:
       tags:
-      - Auth
+      - Students - Auth
       summary: Update client version fields | Aggiorna i campi di versione del client
       operationId: appInfo
       requestBody:
@@ -180,7 +219,7 @@ paths:
   "/auth/mfa/enrol":
     post:
       tags:
-      - Auth
+      - Students - Auth
       summary: Enroll a new PUSH token
       operationId: enrolMfa
       requestBody:
@@ -227,7 +266,7 @@ paths:
   "/auth/mfa/validate":
     post:
       tags:
-      - Auth
+      - Students - Auth
       summary: Validate a challenge
       operationId: validateMfa
       requestBody:
@@ -282,7 +321,7 @@ paths:
   "/auth/mfa/challenge":
     get:
       tags:
-      - Auth
+      - Students - Auth
       summary: Fetch pending challenge
       operationId: fetchChallenge
       responses:
@@ -329,7 +368,7 @@ paths:
   "/auth/mfa/status":
     get:
       tags:
-      - Auth
+      - Students - Auth
       summary: Get MFA status for the current user
       operationId: getMfaStatus
       responses:
@@ -351,7 +390,7 @@ paths:
   "/auth/serviceLink/moodle/{course}":
     get:
       tags:
-      - Auth
+      - Students - Auth
       summary: Get authorised service link for Moodle course
       operationId: getMoodleLink
       parameters:
@@ -380,7 +419,7 @@ paths:
   "/auth/serviceLink/liveClass/{meetingID}":
     get:
       tags:
-      - Auth
+      - Students - Auth
       summary: Get authorised service link for LiveClass meeting
       operationId: getLiveClassLink
       parameters:
@@ -409,7 +448,7 @@ paths:
   "/auth/serviceLink/mail":
     get:
       tags:
-      - Auth
+      - Students - Auth
       summary: Get authorised service link for Mail
       operationId: getMailLink
       responses:
@@ -431,7 +470,7 @@ paths:
   "/me":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Retrieve student profile | Recupera il profilo studente
       operationId: getStudent
       responses:
@@ -453,7 +492,7 @@ paths:
   "/deadlines":
     get:
       tags:
-      - Student
+      - Students - Student
       parameters:
       - name: fromDate
         in: query
@@ -515,7 +554,7 @@ paths:
   "/grades":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Retrieve student grades | Recupera i voti dello studente
       operationId: getStudentGrades
       responses:
@@ -539,7 +578,7 @@ paths:
   "/provisional-grades":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Retrieve student provisional grades | Recupera le valutazioni provvisorie
         dello studente
       operationId: getStudentProvisionalGrades
@@ -569,7 +608,7 @@ paths:
   "/provisional-grades/{provisionalGradeId}/accept":
     post:
       tags:
-      - Student
+      - Students - Student
       summary: Accept provisional grade | Accetta valutazione provvisoria
       operationId: acceptProvisionalGrade
       parameters:
@@ -584,7 +623,7 @@ paths:
   "/provisional-grades/{provisionalGradeId}/reject":
     post:
       tags:
-      - Student
+      - Students - Student
       summary: Reject provisional grade | Rifiuta valutazione provvisoria
       operationId: rejectProvisionalGrade
       parameters:
@@ -599,7 +638,7 @@ paths:
   "/unreadEmails":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Retrieve student's unread emails number | Recupera il numero di email
         non lette dello studente
       operationId: getUnreadEmailslNumber
@@ -622,7 +661,7 @@ paths:
   "/booking-topics":
     get:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: List booking topics | Elenca ambiti di prenotazione
       operationId: getBookingTopics
       responses:
@@ -646,7 +685,7 @@ paths:
   "/booking-topics/{bookingTopicId}/slots":
     get:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: Show booking slots | Mostra turni prenotabili
       operationId: getBookingSlots
       parameters:
@@ -694,7 +733,7 @@ paths:
   "/booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats":
     get:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: Show seats for a booking slots | Mostra posti prenotabili
       operationId: getBookingSeats
       parameters:
@@ -731,7 +770,7 @@ paths:
   "/bookings":
     get:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: List bookings | Elenca prenotazioni
       operationId: getBookings
       responses:
@@ -754,7 +793,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: Create booking | Crea prenotazione
       operationId: createBooking
       requestBody:
@@ -781,7 +820,7 @@ paths:
   "/bookings/{bookingId}":
     patch:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: Update booking | Aggiorna prenotazione
       operationId: updateBooking
       parameters:
@@ -814,7 +853,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Bookings
+      - Students - Bookings
       summary: Delete booking | Cancella prenotazione
       operationId: deleteBooking
       parameters:
@@ -837,7 +876,7 @@ paths:
   "/courses":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List courses | Elenca corsi
       operationId: getCourses
       responses:
@@ -865,8 +904,6 @@ paths:
                   previousEditions:
                   - id: 251007
                     year: '2024'
-                  isOverBooking: false
-                  isInPersonalStudyPlan: true
                   isModule: false
                   year: '2025'
                 - id: 252121
@@ -876,8 +913,6 @@ paths:
                   teachingPeriod: 2-2
                   teacherId: 2235
                   previousEditions: []
-                  isOverBooking: false
-                  isInPersonalStudyPlan: true
                   isModule: false
                   year: '2025'
                 - id: 252126
@@ -887,8 +922,6 @@ paths:
                   teachingPeriod: 1-1
                   teacherId: 1943
                   previousEditions: []
-                  isOverBooking: false
-                  isInPersonalStudyPlan: true
                   isModule: false
                   year: '2025'
                 - id: 252138
@@ -964,7 +997,7 @@ paths:
   "/courses/{courseId}":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: Show course | Mostra corso
       operationId: getCourse
       parameters:
@@ -994,7 +1027,7 @@ paths:
   "/courses/{courseId}/files":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List files | Elenca file
       operationId: getCourseFiles
       parameters:
@@ -1074,7 +1107,7 @@ paths:
   "/courses/{courseId}/files/{fileId}":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: Download file | Scarica file
       operationId: getCourseFile
       parameters:
@@ -1104,7 +1137,7 @@ paths:
   "/courses/{courseId}/assignments":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List assignments | Elenca elaborati
       operationId: getCourseAssignments
       parameters:
@@ -1211,7 +1244,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Courses
+      - Students - Courses
       summary: Upload assignment | Carica elaborato
       operationId: uploadCourseAssignment
       parameters:
@@ -1240,7 +1273,7 @@ paths:
   "/courses/{courseId}/assignments/{assignmentId}":
     patch:
       tags:
-      - Courses
+      - Students - Courses
       summary: Update assignment | Aggiorna elaborato
       operationId: updateAssignment
       parameters:
@@ -1265,7 +1298,7 @@ paths:
   "/courses/{courseId}/guide":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: Show guide | Mostra guida
       operationId: getCourseGuide
       parameters:
@@ -1396,7 +1429,7 @@ paths:
   "/courses/{courseId}/notices":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List notices | Elenca avvisi
       operationId: getCourseNotices
       parameters:
@@ -1458,7 +1491,7 @@ paths:
   "/courses/{courseId}/virtual-classrooms":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List virtual classrooms | Elenca virtual classroom
       operationId: getCourseVirtualClassrooms
       parameters:
@@ -1661,7 +1694,7 @@ paths:
   "/courses/{courseId}/videolectures":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: List videolectures | Elenca videolezioni
       operationId: getCourseVideolectures
       parameters:
@@ -1695,7 +1728,7 @@ paths:
   "/courses/{courseId}/nextLecture":
     get:
       tags:
-      - Courses
+      - Students - Courses
       summary: Get next lecture | Ottieni prossima lezione
       operationId: getNextLecture
       parameters:
@@ -1746,7 +1779,7 @@ paths:
   "/courses/{courseId}/preferences":
     patch:
       tags:
-      - Courses
+      - Students - Courses
       summary: Update course preferences | Aggiorna preferenze del corso
       operationId: updateCoursePreferences
       parameters:
@@ -1775,7 +1808,7 @@ paths:
   "/exams":
     get:
       tags:
-      - Exams
+      - Students - Exams
       summary: List exams | Elenca esami
       operationId: getExams
       responses:
@@ -1885,7 +1918,7 @@ paths:
   "/exams/{examId}/booking":
     post:
       tags:
-      - Exams
+      - Students - Exams
       summary: Book exam | Prenota esame
       operationId: bookExam
       parameters:
@@ -1934,7 +1967,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Exams
+      - Students - Exams
       summary: Delete exam booking | Annulla prenotazione esame
       operationId: deleteExamBookingById
       parameters:
@@ -1957,7 +1990,7 @@ paths:
   "/exams/{examId}/rescheduleRequest":
     post:
       tags:
-      - Exams
+      - Students - Exams
       summary: Ask to reschedule an exam | Chiedi di spostare un esame
       operationId: rescheduleExam
       parameters:
@@ -2006,7 +2039,7 @@ paths:
   "/lectures":
     get:
       tags:
-      - Lectures
+      - Students - Lectures
       parameters:
       - name: fromDate
         in: query
@@ -2658,7 +2691,7 @@ paths:
   "/esc":
     get:
       tags:
-      - Esc
+      - Students - Esc
       summary: retreive european student card | recupera la european student card
       operationId: escGet
       responses:
@@ -2681,7 +2714,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Esc
+      - Students - Esc
       summary: Delete all Student data on the ESC-Router (and all student's cards)
         | Cancella tutti i dati dello studente sul Router ESC (e tutte le carte dello
         studente)
@@ -2696,7 +2729,7 @@ paths:
   "/esc/create":
     post:
       tags:
-      - Esc
+      - Students - Esc
       summary: request european student card | richiedi la european student card
       operationId: escRequest
       responses:
@@ -2709,7 +2742,7 @@ paths:
   "/news":
     get:
       tags:
-      - News
+      - Common - News
       summary: List news | Lista news
       operationId: getNews
       responses:
@@ -2731,7 +2764,7 @@ paths:
   "/news/{newsItemId}":
     get:
       tags:
-      - News
+      - Common - News
       summary: Show news | Mostra news
       operationId: getNewsItem
       parameters:
@@ -2757,7 +2790,7 @@ paths:
   "/people":
     get:
       tags:
-      - People
+      - Students - People
       summary: Search people | Cerca persone
       operationId: getPeople
       parameters:
@@ -2788,7 +2821,7 @@ paths:
   "/people/{personId}":
     get:
       tags:
-      - People
+      - Students - People
       summary: Show person | Mostra persona
       operationId: getPerson
       parameters:
@@ -2822,7 +2855,7 @@ paths:
   "/v2/place-categories":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: List place categories | Elenca categorie luoghi
       operationId: getPlaceCategories
       parameters:
@@ -2848,7 +2881,7 @@ paths:
   "/v2/sites":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: List sites | Elenca sedi
       operationId: getSites
       responses:
@@ -2872,7 +2905,7 @@ paths:
   "/v2/sites/{siteId}/free-rooms":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: List free rooms | Elenca aule libere
       operationId: getFreeRooms
       parameters:
@@ -2920,7 +2953,7 @@ paths:
   "/v2/sites/{siteId}/buildings":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: List buildings | Elenca edifici
       operationId: getBuildings
       parameters:
@@ -2957,7 +2990,7 @@ paths:
   "/v2/places":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: Search places | Cerca luoghi
       operationId: getPlaces
       parameters:
@@ -2996,7 +3029,7 @@ paths:
   "/v2/places/{placeId}":
     get:
       tags:
-      - Places
+      - Common - Places
       summary: Show place | Mostra luogo
       operationId: getPlace
       parameters:
@@ -3018,7 +3051,7 @@ paths:
   "/messages":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: List messages | Elenca messaggi
       operationId: getMessages
       responses:
@@ -3042,7 +3075,7 @@ paths:
   "/messages/{messageId}":
     delete:
       tags:
-      - Student
+      - Students - Student
       summary: Delete a message | Cancella un messaggio
       operationId: deleteMessage
       parameters:
@@ -3057,7 +3090,7 @@ paths:
   "/messages/{messageId}/read":
     put:
       tags:
-      - Student
+      - Students - Student
       summary: Mark a message as read | Segna un messaggio come letto
       operationId: markMessageAsRead
       parameters:
@@ -3072,7 +3105,7 @@ paths:
   "/notifications":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: List notifications | Elenca notifiche
       operationId: getNotifications
       responses:
@@ -3096,7 +3129,7 @@ paths:
   "/notifications/preferences":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Get notification preferences | Ottieni preferenze notifiche
       operationId: getNotificationPreferences
       responses:
@@ -3112,7 +3145,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     patch:
       tags:
-      - Student
+      - Students - Student
       summary: Update notification preferences | Aggiorna preferenze notifiche
       operationId: updateNotificationPreferences
       requestBody:
@@ -3130,7 +3163,7 @@ paths:
   "/notifications/{notificationId}":
     delete:
       tags:
-      - Student
+      - Students - Student
       summary: Delete a notification | Cancella una notifica
       operationId: deleteNotification
       parameters:
@@ -3145,7 +3178,7 @@ paths:
   "/notifications/{notificationId}/read":
     put:
       tags:
-      - Student
+      - Students - Student
       summary: Mark a notification as read | Segna una notifica come letta
       operationId: markNotificationAsRead
       parameters:
@@ -3160,7 +3193,7 @@ paths:
   "/preferences":
     patch:
       tags:
-      - Student
+      - Students - Student
       summary: Update device preferences | Aggiorna preferenze del dispositivo
       operationId: updateDevicePreferences
       requestBody:
@@ -3178,7 +3211,7 @@ paths:
   "/ticket-faqs":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Search ticket FAQs | Ricerca FAQ ticket
       operationId: searchTicketFAQs
       parameters:
@@ -3210,7 +3243,7 @@ paths:
   "/ticket-topics":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: List ticket topics | Elenca ambiti ticket
       operationId: getTicketTopics
       responses:
@@ -3234,7 +3267,7 @@ paths:
   "/tickets":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: List tickets | Elenca ticket
       operationId: getTickets
       responses:
@@ -3255,7 +3288,7 @@ paths:
           "$ref": "#/components/responses/BadRequestResponse"
     post:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Create ticket | Crea ticket
       operationId: createTicket
       requestBody:
@@ -3283,7 +3316,7 @@ paths:
   "/tickets/{ticketId}":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Show a ticket | Mostra un ticket
       operationId: getTicket
       parameters:
@@ -3311,7 +3344,7 @@ paths:
   "/tickets/{ticketId}/read":
     put:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Mark a ticket as read | Segna un ticket come letto
       operationId: markTicketAsRead
       parameters:
@@ -3330,7 +3363,7 @@ paths:
   "/tickets/{ticketId}/close":
     put:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Mark a ticket as closed | Segna un ticket come chiuso
       operationId: markTicketAsClosed
       parameters:
@@ -3349,7 +3382,7 @@ paths:
   "/tickets/{ticketId}/attachments/{attachmentId}":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Download ticket attachment | Scarica allegato del ticket
       operationId: getTicketAttachment
       parameters:
@@ -3376,7 +3409,7 @@ paths:
   "/tickets/{ticketId}/replies":
     post:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Reply to a ticket | Rispondi ad un ticket
       operationId: replyToTicket
       parameters:
@@ -3401,7 +3434,7 @@ paths:
   "/tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}":
     get:
       tags:
-      - Tickets
+      - Students - Tickets
       summary: Download ticket reply attachment | Scarica allegato di una risposta
         al ticket
       operationId: getTicketReplyAttachment
@@ -3430,7 +3463,7 @@ paths:
   "/job-offers":
     get:
       tags:
-      - Job offers
+      - Students - Job offers
       summary: List job offers | Elenca offerte di lavoro
       operationId: getJobOffers
       responses:
@@ -3452,7 +3485,7 @@ paths:
   "/job-offers/{jobOfferId}":
     get:
       tags:
-      - Job offers
+      - Students - Job offers
       parameters:
       - "$ref": "#/components/parameters/jobOfferIdParam"
       summary: Show a job offer | Mostra un'offerta di lavoro
@@ -3480,7 +3513,7 @@ paths:
   "/offering":
     get:
       tags:
-      - Offering
+      - Students - Offering
       summary: Get offering | Mostra offerta formativa
       operationId: getOffering
       responses:
@@ -3509,7 +3542,7 @@ paths:
   "/offering/degrees/{degreeId}":
     get:
       tags:
-      - Offering
+      - Students - Offering
       parameters:
       - "$ref": "#/components/parameters/degreeIdParam"
       - "$ref": "#/components/parameters/yearQueryParam"
@@ -3538,7 +3571,7 @@ paths:
   "/offering/courses/{courseShortcode}":
     get:
       tags:
-      - Offering
+      - Students - Offering
       parameters:
       - "$ref": "#/components/parameters/courseShortcodeParam"
       - "$ref": "#/components/parameters/yearQueryParam"
@@ -3567,7 +3600,7 @@ paths:
   "/offering/courses/{courseShortcode}/statistics":
     get:
       tags:
-      - Offering
+      - Students - Offering
       parameters:
       - "$ref": "#/components/parameters/courseShortcodeParam"
       - "$ref": "#/components/parameters/yearQueryParam"
@@ -3597,7 +3630,7 @@ paths:
   "/guides":
     get:
       tags:
-      - Student
+      - Students - Student
       summary: Get guides | Mostra guide
       operationId: getGuides
       responses:
@@ -3619,7 +3652,7 @@ paths:
   "/surveys":
     get:
       tags:
-      - Surveys
+      - Students - Surveys
       summary: Get surveys | Mostra survey
       operationId: getSurveys
       responses:
@@ -3638,13 +3671,334 @@ paths:
                 - data
         400:
           "$ref": "#/components/responses/BadRequestResponse"
-  "/faculty/profile":
+  "/faculty/authentication/login":
+    post:
+      tags:
+      - Faculty - Auth
+      security: []
+      summary: Login
+      operationId: facultyLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginRequest"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Identity"
+                required:
+                - data
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/logout":
+    delete:
+      tags:
+      - Faculty - Auth
+      summary: Logout
+      description: Invalidates the provided token
+      operationId: facultyLogout
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/client":
+    patch:
+      tags:
+      - Faculty - Auth
+      summary: Update client version fields | Aggiorna i campi di versione del client
+      operationId: facultyAppInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - "$ref": "#/components/schemas/ClientVersionRequest"
+              - "$ref": "#/components/schemas/FcmRegistrationRequest"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/UpdateInfo"
+                required:
+                - data
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/mfa/enrol":
+    post:
+      tags:
+      - Faculty - Auth
+      summary: Enroll a new PUSH token
+      operationId: facultyEnrolMfa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: some identifier you chose
+                  description: User-defined description for the token, pre-populated with the device model
+                pubkey:
+                  type: string
+                  description: Public key generated by the app
+                  example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGlzIHdhcz8hIPCfp5AK
+              required:
+              - description
+              - pubkey
+      responses:
+        201:
+          description: Token successfully enrolled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      serial:
+                        type: string
+                        description: Unique identifier for the enrolled token
+                        example: EDUP000123456
+                    required:
+                    - serial
+                required:
+                - data
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/mfa/validate":
+    post:
+      tags:
+      - Faculty - Auth
+      summary: Validate a challenge
+      operationId: facultyValidateMfa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                serial:
+                  type: string
+                  description: Token serial number
+                  example: EDUP000123456
+                nonce:
+                  type: string
+                  description: Nonce sent by the IdP
+                  example: 65ba9e0e5aac421a9150991638a9d697
+                signature:
+                  type: string
+                  description: Signature generated by signing the nonce in the App
+                  example: 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
+                decline:
+                  type: boolean
+                  description: if set to true, decline the authentication request
+                  example: false
+              required:
+              - serial
+              - nonce
+              - signature
+      responses:
+        200:
+          description: Challenge validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                        description: Indicates whether the validation succeeded
+                        example: true
+                    required:
+                    - success
+                required:
+                - data
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/mfa/challenge":
+    get:
+      tags:
+      - Faculty - Auth
+      summary: Fetch pending challenge
+      operationId: facultyFetchChallenge
+      responses:
+        200:
+          description: The most recent of pending challenges
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      serial:
+                        type: string
+                        description: Token serial number
+                        example: EDUP000123456
+                      challenge:
+                        type: string
+                        description: Challenge data to be signed by the App
+                        example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGlzIHdhcz8hIPCfp5AK
+                      requestTs:
+                        type: string
+                        format: date-time
+                        description: Challenge request
+                        example: '2025-01-01T00:00:00Z'
+                      expirationTs:
+                        type: string
+                        format: date-time
+                        description: Challenge expiration
+                        example: '2025-01-01T01:00:00Z'
+                    required:
+                    - serial
+                    - challenge
+                    - requestTs
+                    - expirationTs
+                    nullable: true
+                required:
+                - data
+        400:
+          "$ref": "#/components/responses/BadRequestResponse"
+        500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/mfa/status":
+    get:
+      tags:
+      - Faculty - Auth
+      summary: Get MFA status for the current user
+      operationId: facultyGetMfaStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/MfaStatusResponse"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/serviceLink/moodle/{course}":
+    get:
+      tags:
+      - Faculty - Auth
+      summary: Get authorised service link for Moodle course
+      operationId: facultyGetMoodleLink
+      parameters:
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Moodle course identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/LinkToService"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/serviceLink/liveClass/{meetingID}":
+    get:
+      tags:
+      - Faculty - Auth
+      summary: Get authorised service link for LiveClass meeting
+      operationId: facultyGetLiveClassLink
+      parameters:
+      - name: meetingID
+        in: path
+        required: true
+        schema:
+          type: string
+        description: LiveClass meeting identifier
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/LinkToService"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/authentication/serviceLink/mail":
+    get:
+      tags:
+      - Faculty - Auth
+      summary: Get authorised service link for Mail
+      operationId: facultyGetMailLink
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/LinkToService"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/me":
     get:
       tags:
       - Faculty - Profile
       summary: Profilo docente
       description: Restituisce i dati anagrafici e informativi del docente autenticato
-        (cedolini, contratti, corsi assegnati – se disponibili).
+        (pubblicazioni, corsi assegnati – se disponibili).
       operationId: getFacultyProfile
       security:
       - bearerAuth: []
@@ -3664,6 +4018,280 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+      - Faculty - Profile
+      summary: Aggiorna dati anagrafici del docente
+      operationId: updateFacultyProfile
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FacultyProfileUpdateRequest"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyProfile"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/deadlines":
+    get:
+      tags:
+      - Faculty - Profile
+      parameters:
+      - name: fromDate
+        in: query
+        description: Primo giorno – default 7 giorni prima di oggi.
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: Ultimo giorno – default 7 giorni dopo oggi.
+        required: false
+        schema:
+          type: string
+          format: date
+      summary: Elenca scadenze del docente
+      operationId: getFacultyDeadlines
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Deadline"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/unreadEmails":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Recupera il numero di email non lette del docente
+      operationId: getFacultyUnreadEmailsNumber
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/EmailBadge"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/messages":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Elenca i messaggi del docente
+      operationId: getFacultyMessages
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Message"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/messages/{messageId}":
+    delete:
+      tags:
+      - Faculty - Profile
+      summary: Cancella un messaggio del docente
+      operationId: deleteFacultyMessage
+      parameters:
+      - "$ref": "#/components/parameters/messageIdParam"
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Message not found
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/messages/{messageId}/read":
+    put:
+      tags:
+      - Faculty - Profile
+      summary: Segna un messaggio come letto
+      operationId: markFacultyMessageAsRead
+      parameters:
+      - "$ref": "#/components/parameters/messageIdParam"
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Message not found
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/notifications":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Elenca le notifiche del docente
+      operationId: getFacultyNotifications
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Notification"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/notifications/preferences":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Recupera le preferenze di notifica del docente
+      operationId: getFacultyNotificationPreferences
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationPreferences"
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+      - Faculty - Profile
+      summary: Aggiorna le preferenze di notifica del docente
+      operationId: updateFacultyNotificationPreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateNotificationPreferencesRequest"
+      responses:
+        '200':
+          description: Success
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/notifications/{notificationId}":
+    delete:
+      tags:
+      - Faculty - Profile
+      summary: Cancella una notifica del docente
+      operationId: deleteFacultyNotification
+      parameters:
+      - "$ref": "#/components/parameters/notificationIdParam"
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Notification not found
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/notifications/{notificationId}/read":
+    put:
+      tags:
+      - Faculty - Profile
+      summary: Segna una notifica come letta
+      operationId: markFacultyNotificationAsRead
+      parameters:
+      - "$ref": "#/components/parameters/notificationIdParam"
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Notification not found
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/preferences":
+    patch:
+      tags:
+      - Faculty - Profile
+      summary: Aggiorna le preferenze del dispositivo docente
+      operationId: updateFacultyPreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdatePreferencesRequest"
+      responses:
+        '200':
+          description: Success
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/guides":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Mostra le guide per il docente
+      operationId: getFacultyGuides
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Guide"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
   "/faculty/exams":
     get:
       tags:
@@ -3800,20 +4428,110 @@ paths:
           "$ref": "#/components/responses/ConflictResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments":
+  "/faculty/courses":
     get:
       tags:
       - Faculty - Courses
-      summary: Elenco incarichi didattici del docente
-      operationId: listFacultyAssignments
+      summary: List courses | Elenca corsi docenti
+      operationId: getFacultyCourses
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/FacultyCourseOverview"
+                required:
+                - data
+              example:
+                data:
+                - id: 251007
+                  name: System and device programming
+                  shortcode: 01NYHOV
+                  cfu: 10
+                  teachingPeriod: 2-2
+                  teacherId: 2893
+                  previousEditions:
+                  - id: 251007
+                    year: '2024'
+                  isModule: false
+                  year: '2025'
+                - id: 252121
+                  name: Web Applications II
+                  shortcode: 01TXSOV
+                  cfu: 6
+                  teachingPeriod: 2-2
+                  teacherId: 2235
+                  previousEditions: []
+                  isModule: false
+                  year: '2025'
+                - id: 252126
+                  name: Security verification and testing
+                  shortcode: 01TYAOV
+                  cfu: 6
+                  teachingPeriod: 1-1
+                  teacherId: 1943
+                  previousEditions: []
+                  isModule: false
+                  year: '2025'
+                - id: 252138
+                  name: Information systems security
+                  shortcode: 01TYMOV
+                  cfu: 6
+                  teachingPeriod: 1-1
+                  teacherId: 1847
+                  previousEditions: []
+                  isModule: false
+                  year: '2025'
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}":
+    get:
+      tags:
+      - Faculty - Courses
+      summary: Dettaglio incarico didattico
+      operationId: getFacultyCourse
       security:
       - bearerAuth: []
       parameters:
-      - in: query
-        name: period
-        schema:
-          type: string
-        description: Periodo didattico (es. 2024/2025-1)
+      - "$ref": "#/components/parameters/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyAssignment"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/students":
+    get:
+      tags:
+      - Faculty - Courses
+      summary: Elenca studenti iscritti al corso
+      operationId: listFacultyCourseStudents
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
       responses:
         '200':
           description: OK
@@ -3825,14 +4543,235 @@ paths:
                   data:
                     type: array
                     items:
-                      "$ref": "#/components/schemas/FacultyAssignment"
+                      "$ref": "#/components/schemas/FacultyCourseStudent"
                 required:
                 - data
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments/{assignmentId}/collaborators":
+  "/faculty/courses/{courseId}/lectures":
+    get:
+      tags:
+      - Faculty - Lectures
+      summary: Elenca lezioni del corso
+      operationId: listFacultyLectures
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/PageParam"
+      - "$ref": "#/components/parameters/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedFacultyLectureList"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    post:
+      tags:
+      - Faculty - Lectures
+      summary: Crea una lezione
+      operationId: createFacultyLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FacultyLectureCreateRequest"
+      responses:
+        '201':
+          description: Creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyLecture"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/lectures/{lectureId}":
+    get:
+      tags:
+      - Faculty - Lectures
+      summary: Dettaglio lezione
+      operationId: getFacultyLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyLecture"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+      - Faculty - Lectures
+      summary: Aggiorna una lezione
+      operationId: updateFacultyLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FacultyLectureUpdateRequest"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyLecture"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+      - Faculty - Lectures
+      summary: Elimina una lezione
+      operationId: deleteFacultyLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/assignments":
+    get:
+      tags:
+      - Faculty - Courses
+      summary: Elenca assignment caricati dagli studenti
+      operationId: listFacultyCourseAssignments
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/FacultyAssignmentSubmission"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/assignments/{assignmentId}":
+    delete:
+      tags:
+      - Faculty - Courses
+      summary: Rimuovi assignment studente dal corso
+      operationId: deleteFacultyCourseAssignment
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/AssignmentId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/collaborators":
+    get:
+      tags:
+      - Faculty - Collaborators
+      summary: Elenca collaboratori assegnati al corso
+      operationId: listAssignmentCollaborators
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Collaborator"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
       - Faculty - Collaborators
@@ -3841,7 +4780,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       requestBody:
         required: true
         content:
@@ -3868,6 +4807,41 @@ paths:
           "$ref": "#/components/responses/ConflictResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+      - Faculty - Collaborators
+      summary: Aggiorna permessi del collaboratore
+      operationId: updateAssignmentCollaboratorPermissions
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CollaboratorPermissionsRequest"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Collaborator"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
       - Faculty - Collaborators
@@ -3876,7 +4850,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       - in: query
         name: personId
         required: true
@@ -3891,7 +4865,34 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments/{assignmentId}/materials":
+  "/faculty/courses/{courseId}/materials":
+    get:
+      tags:
+      - Faculty - Materials
+      summary: Elenca il materiale didattico del corso
+      operationId: listFacultyCourseMaterials
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/TeachingMaterial"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
       - Faculty - Materials
@@ -3900,7 +4901,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       requestBody:
         required: true
         content:
@@ -3947,7 +4948,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       - in: query
         name: fileId
         required: true
@@ -3962,7 +4963,34 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments/{assignmentId}/notices":
+  "/faculty/courses/{courseId}/notices":
+    get:
+      tags:
+      - Faculty - Notices
+      summary: Elenca gli avvisi del corso
+      operationId: listFacultyCourseNotices
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/CourseNotice"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
       - Faculty - Notices
@@ -3971,7 +4999,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       requestBody:
         required: true
         content:
@@ -3996,7 +5024,43 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments/{assignmentId}/notices/{noticeId}":
+    patch:
+      tags:
+      - Faculty - Notices
+      summary: Aggiorna un avviso del corso
+      operationId: updateCourseNotice
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/NoticeId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CourseNoticeUpdateRequest"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseNotice"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/notices/{noticeId}":
     delete:
       tags:
       - Faculty - Notices
@@ -4005,7 +5069,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       - "$ref": "#/components/parameters/NoticeId"
       responses:
         '204':
@@ -4016,7 +5080,7 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/assignments/{assignmentId}/message":
+  "/faculty/courses/{courseId}/message":
     post:
       tags:
       - Faculty - Messaging
@@ -4025,7 +5089,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - "$ref": "#/components/parameters/AssignmentId"
+      - "$ref": "#/components/parameters/CourseId"
       requestBody:
         required: true
         content:
@@ -4045,10 +5109,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/rooms/bookings":
+  "/faculty/bookings":
     post:
       tags:
-      - Faculty - Room Booking
+      - Faculty - Bookings
       summary: Prenota aula/laboratorio
       operationId: createRoomBooking
       security:
@@ -4072,7 +5136,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     get:
       tags:
-      - Faculty - Room Booking
+      - Faculty - Bookings
       summary: Ricerca disponibilità aule
       operationId: searchRoomAvailability
       security:
@@ -4126,31 +5190,6 @@ paths:
                 - data
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/events/bookings":
-    post:
-      tags:
-      - Faculty - Event Booking
-      summary: Prenota spazio per evento
-      operationId: createEventSpaceBooking
-      security:
-      - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/EventBookingRequest"
-      responses:
-        '201':
-          "$ref": "#/components/responses/CreatedAckResponse"
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '409':
-          "$ref": "#/components/responses/ConflictResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
   "/faculty/signing/documents":
@@ -4228,7 +5267,7 @@ paths:
           "$ref": "#/components/responses/ConflictResponse"
         '502':
           description: Errore dal provider esterno
-  "/faculty/calendar/subscription":
+  "/faculty/calendar":
     get:
       tags:
       - Faculty - Calendar
@@ -4237,26 +5276,626 @@ paths:
       security:
       - bearerAuth: []
       responses:
-        '200':
-          description: OK
+        200:
+          description: Success
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    type: object
-                    properties:
-                      outlookSubscriptionUrl:
-                        type: string
-                      courseCalendarUrls:
-                        type: array
-                        items:
-                          type: string
-                    required:
-                    - outlookSubscriptionUrl
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Lecture"
                 required:
                 - data
+              example:
+                data:
+                - id: 12131312
+                  startsAt: '2021-09-28T14:30:00Z'
+                  endsAt: '2021-09-28T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms:
+                  - id: 149336
+                    title: CYB / lecture 28.09.2021 (TLS, slides 1-40)
+                - id: 12131313
+                  startsAt: '2021-10-01T10:00:00Z'
+                  endsAt: '2021-10-01T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms:
+                  - id: 150397
+                    title: CYB / lecture 01.10.2021 (TLS, slides 41-55)
+                - id: 12131314
+                  startsAt: '2021-10-05T14:30:00Z'
+                  endsAt: '2021-10-05T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131315
+                  startsAt: '2021-10-08T10:00:00Z'
+                  endsAt: '2021-10-08T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione aula
+                  description: Demos about TLS and SSH. Introduction to the laboratory.
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131316
+                  startsAt: '2021-10-12T08:30:00Z'
+                  endsAt: '2021-10-12T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131317
+                  startsAt: '2021-10-12T10:00:00Z'
+                  endsAt: '2021-10-12T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131318
+                  startsAt: '2021-10-12T14:30:00Z'
+                  endsAt: '2021-10-12T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131319
+                  startsAt: '2021-10-15T10:00:00Z'
+                  endsAt: '2021-10-15T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131320
+                  startsAt: '2021-10-19T08:30:00Z'
+                  endsAt: '2021-10-19T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131321
+                  startsAt: '2021-10-19T10:00:00Z'
+                  endsAt: '2021-10-19T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131322
+                  startsAt: '2021-10-19T14:30:00Z'
+                  endsAt: '2021-10-19T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131323
+                  startsAt: '2021-10-22T10:00:00Z'
+                  endsAt: '2021-10-22T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131324
+                  startsAt: '2021-10-26T08:30:00Z'
+                  endsAt: '2021-10-26T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131325
+                  startsAt: '2021-10-26T10:00:00Z'
+                  endsAt: '2021-10-26T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131326
+                  startsAt: '2021-10-26T14:30:00Z'
+                  endsAt: '2021-10-26T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131327
+                  startsAt: '2021-11-02T08:30:00Z'
+                  endsAt: '2021-11-02T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131328
+                  startsAt: '2021-11-02T10:00:00Z'
+                  endsAt: '2021-11-02T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131329
+                  startsAt: '2021-11-02T14:30:00Z'
+                  endsAt: '2021-11-02T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131330
+                  startsAt: '2021-11-05T10:00:00Z'
+                  endsAt: '2021-11-05T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131331
+                  startsAt: '2021-11-09T08:30:00Z'
+                  endsAt: '2021-11-09T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio con titolo esageratamente lungo
+                    che poi boh
+                  description: squadra 1
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131332
+                  startsAt: '2021-11-09T10:00:00Z'
+                  endsAt: '2021-11-09T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: squadra 1
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131333
+                  startsAt: '2021-11-09T14:30:00Z'
+                  endsAt: '2021-11-09T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131334
+                  startsAt: '2021-11-16T08:30:00Z'
+                  endsAt: '2021-11-16T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131335
+                  startsAt: '2021-11-16T10:00:00Z'
+                  endsAt: '2021-11-16T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131336
+                  startsAt: '2021-11-16T14:30:00Z'
+                  endsAt: '2021-11-16T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131337
+                  startsAt: '2021-11-23T08:30:00Z'
+                  endsAt: '2021-11-23T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131338
+                  startsAt: '2021-11-23T10:00:00Z'
+                  endsAt: '2021-11-23T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131339
+                  startsAt: '2021-11-23T14:30:00Z'
+                  endsAt: '2021-11-23T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131340
+                  startsAt: '2021-11-30T08:30:00Z'
+                  endsAt: '2021-11-30T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131341
+                  startsAt: '2021-11-30T10:00:00Z'
+                  endsAt: '2021-11-30T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione Laboratorio
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131342
+                  startsAt: '2021-11-30T14:30:00Z'
+                  endsAt: '2021-11-30T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Esercitazione aula
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131343
+                  startsAt: '2021-12-03T10:00:00Z'
+                  endsAt: '2021-12-03T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131344
+                  startsAt: '2021-12-07T08:30:00Z'
+                  endsAt: '2021-12-07T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131345
+                  startsAt: '2021-12-07T10:00:00Z'
+                  endsAt: '2021-12-07T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131346
+                  startsAt: '2021-12-07T14:30:00Z'
+                  endsAt: '2021-12-07T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131347
+                  startsAt: '2021-12-10T10:00:00Z'
+                  endsAt: '2021-12-10T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131348
+                  startsAt: '2021-12-14T08:30:00Z'
+                  endsAt: '2021-12-14T10:00:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131349
+                  startsAt: '2021-12-14T10:00:00Z'
+                  endsAt: '2021-12-14T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131350
+                  startsAt: '2021-12-14T14:30:00Z'
+                  endsAt: '2021-12-14T17:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
+                - id: 12131351
+                  startsAt: '2021-12-17T10:00:00Z'
+                  endsAt: '2021-12-17T11:30:00Z'
+                  place:
+                    buildingId: TO_CIT22
+                    floorId: XPTE
+                    name: Aula 1P
+                    roomId: '036'
+                    siteId: TO_CIT
+                  type: Lezione / Esercitazione
+                  description: 
+                  courseId: 252258
+                  courseName: Human Computer Interaction
+                  teacherId: 1847
+                  virtualClassrooms: []
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
@@ -4294,10 +5933,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/contacts/search":
+  "/faculty/people":
     get:
       tags:
-      - Faculty - People Search
+      - Faculty - People
       summary: Ricerca persone (docenti/studenti)
       operationId: searchPeople
       security:
@@ -4334,6 +5973,38 @@ paths:
                 - data
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/people/{personId}":
+    get:
+      tags:
+      - Faculty - People
+      summary: Mostra il dettaglio di una persona
+      operationId: getFacultyPerson
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: personId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Person"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          description: Person not found
         '500':
           "$ref": "#/components/responses/ErrorResponse"
   "/faculty/emergencies/contacts":
@@ -4593,6 +6264,18 @@ components:
       schema:
         type: string
         example: 1843
+    CourseId:
+      name: courseId
+      in: path
+      required: true
+      schema:
+        type: string
+    LectureId:
+      name: lectureId
+      in: path
+      required: true
+      schema:
+        type: string
     PageParam:
       name: page
       in: query
@@ -5481,7 +7164,7 @@ components:
       - seat
       - cancelableUntil
       - location
-    CourseOverview:
+    CourseOverviewBase:
       type: object
       properties:
         id:
@@ -5508,8 +7191,7 @@ components:
           nullable: true
           example: 2893
         previousEditions:
-          description: Previous editions of this course that were part of the student's
-            PSP
+          description: Previous editions of this course associated with the current user.
           type: array
           items:
             type: object
@@ -5523,13 +7205,6 @@ components:
             required:
             - year
             - id
-        isOverBooking:
-          type: boolean
-          example: false
-        isInPersonalStudyPlan:
-          type: boolean
-          description: Included in the PSP | Incluso nel carico didattico
-          example: true
         isModule:
           type: boolean
           description: If true, this course is actually a module
@@ -5558,14 +7233,21 @@ components:
       - name
       - shortcode
       - cfu
-      - teachingPeriod
-      - teacherId
-      - previousEditions
-      - isOverBooking
-      - isInPersonalStudyPlan
-      - isModule
-      - year
-      - moodleCourses
+    CourseOverview:
+      allOf:
+      - "$ref": "#/components/schemas/CourseOverviewBase"
+      - type: object
+        properties:
+          isOverBooking:
+            type: boolean
+            example: false
+          isInPersonalStudyPlan:
+            type: boolean
+            description: Included in the PSP | Incluso nel carico didattico
+            example: true
+    FacultyCourseOverview:
+      allOf:
+      - "$ref": "#/components/schemas/CourseOverviewBase"
     CoursePreferencesRequest:
       type: object
       properties:
@@ -7818,35 +9500,31 @@ components:
         email:
           type: string
           format: email
+        phone:
+          type: string
+        residence:
+          type: string
+        fiscalResidence:
+          type: string
+        iban:
+          type: string
+          example: 'XK238804602955671016'
         department:
           type:
           - string
           - 'null'
-        photoUrl:
-          type:
-          - string
-          - 'null'
-        contracts:
+        publications:
           type: array
           items:
             type: object
             properties:
               id:
                 type: string
-              type:
+              name:
                 type: string
-              startDate:
-                type: string
-                format: date
-              endDate:
-                type:
-                - string
-                - 'null'
-                format: date
             required:
             - id
-            - type
-            - startDate
+            - name
         assignedCourses:
           type: array
           items:
@@ -7868,6 +9546,23 @@ components:
       - id
       - name
       - email
+    FacultyProfileUpdateRequest:
+      type: object
+      properties:
+        residence:
+          type: string
+          description: Residenza del docente.
+        fiscalResidence:
+          type: string
+          description: Domicilio fiscale del docente.
+        phone:
+          type: string
+          description: Numero di telefono di contatto.
+        email:
+          type: string
+          format: email
+          description: Indirizzo email primario del docente.
+      additionalProperties: false
     PaginatedFacultyExamList:
       type: object
       properties:
@@ -7990,6 +9685,204 @@ components:
       - courseId
       - courseName
       - period
+    FacultyCourseStudent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identificativo univoco dello studente
+        firstName:
+          type: string
+          description: Nome dello studente
+        lastName:
+          type: string
+          description: Cognome dello studente
+        username:
+          type: string
+          description: Username istituzionale dello studente
+        picture:
+          type: object
+          properties:
+            url:
+              type: string
+              format: uri
+              description: URL della foto profilo
+          required:
+          - url
+      required:
+      - id
+      - firstName
+      - lastName
+      - username
+    FacultyAssignmentSubmission:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+          description: Data e ora di pubblicazione dell'assignment.
+        submittedBy:
+          type: string
+          description: Username dello studente che ha pubblicato l'assignment.
+      required:
+      - id
+      - title
+      - publishedAt
+      - submittedBy
+    FacultyLecture:
+      type: object
+      properties:
+        id:
+          type: string
+        courseId:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          description: Tipologia dell'evento (es. LECTURE, LAB).
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        topic:
+          type:
+          - string
+          - 'null'
+        language:
+          type:
+          - string
+          - 'null'
+        room:
+          "$ref": "#/components/schemas/PlaceRef"
+        staff:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FacultyLectureStaffMember"
+      required:
+      - id
+      - courseId
+      - title
+      - type
+      - startsAt
+      - endsAt
+      - staff
+    FacultyLectureStaffMember:
+      type: object
+      properties:
+        personId:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum:
+          - OWNER
+          - COLLABORATOR
+      required:
+      - personId
+      - name
+      - role
+    FacultyLectureStaffMemberRequest:
+      type: object
+      properties:
+        personId:
+          type: string
+        role:
+          type: string
+          enum:
+          - OWNER
+          - COLLABORATOR
+      required:
+      - personId
+      - role
+    FacultyLectureCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          description: Tipologia dell'evento (es. LECTURE, LAB).
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        topic:
+          type:
+          - string
+          - 'null'
+        language:
+          type:
+          - string
+          - 'null'
+        room:
+          "$ref": "#/components/schemas/PlaceRef"
+        staff:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FacultyLectureStaffMemberRequest"
+      required:
+      - title
+      - type
+      - startsAt
+      - endsAt
+      - staff
+      additionalProperties: false
+    FacultyLectureUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        topic:
+          type:
+          - string
+          - 'null'
+        language:
+          type:
+          - string
+          - 'null'
+        room:
+          "$ref": "#/components/schemas/PlaceRef"
+        staff:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FacultyLectureStaffMemberRequest"
+      additionalProperties: false
+    PaginatedFacultyLectureList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FacultyLecture"
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+      required:
+      - data
+      - page
+      - pageSize
+      - total
     Collaborator:
       type: object
       properties:
@@ -8004,10 +9897,20 @@ components:
           type: array
           items:
             type: string
+        permissions:
+          type: array
+          items:
+            type: string
+            enum:
+            - CAN_READ
+            - CAN_EDIT
+            - CAN_DELETE
+          description: Permessi associati al collaboratore sul corso.
       required:
       - personId
       - name
       - role
+      - permissions
     CollaboratorUpsertRequest:
       type: object
       properties:
@@ -8019,9 +9922,37 @@ components:
           type: array
           items:
             type: string
+        permissions:
+          type: array
+          items:
+            type: string
+            enum:
+            - CAN_READ
+            - CAN_EDIT
+            - CAN_DELETE
+          description: Permessi da assegnare al collaboratore.
       required:
       - personId
       - role
+      - permissions
+    CollaboratorPermissionsRequest:
+      type: object
+      properties:
+        personId:
+          type: string
+          description: Identificativo del collaboratore da aggiornare.
+        permissions:
+          type: array
+          items:
+            type: string
+            enum:
+            - CAN_READ
+            - CAN_EDIT
+            - CAN_DELETE
+          description: Nuovo insieme di permessi da applicare.
+      required:
+      - personId
+      - permissions
     TeachingMaterial:
       type: object
       properties:
@@ -8062,6 +9993,10 @@ components:
           - string
           - 'null'
           format: date-time
+        isVisible:
+          type: boolean
+          description: Indica se l'avviso è visibile agli studenti.
+          default: true
       required:
       - title
       - body
@@ -8087,11 +10022,38 @@ components:
         createdAt:
           type: string
           format: date-time
+        isVisible:
+          type: boolean
+          description: Stato di visibilità corrente dell'avviso.
       required:
       - id
       - title
       - body
       - createdAt
+      - isVisible
+    CourseNoticeUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+        body:
+          type: string
+          minLength: 1
+        visibleFrom:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        visibleTo:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        isVisible:
+          type: boolean
+          description: Imposta la visibilità dell'avviso.
+      additionalProperties: false
     CourseMessageRequest:
       type: object
       properties:
@@ -8193,27 +10155,6 @@ components:
       - siteId
       - capacity
       - slots
-    EventBookingRequest:
-      type: object
-      properties:
-        startDateTime:
-          type: string
-          format: date-time
-        endDateTime:
-          type: string
-          format: date-time
-        expectedParticipants:
-          type: integer
-        location:
-          type: string
-        reason:
-          type: string
-      required:
-      - startDateTime
-      - endDateTime
-      - expectedParticipants
-      - location
-      - reason
     SignableDocument:
       type: object
       properties:
