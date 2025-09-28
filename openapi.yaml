@@ -32,9 +32,9 @@ tags:
 - name: Faculty - Event Booking
   description: Prenotazione spazi per eventi.
 - name: Faculty - Digital Signature
-  description: Elenco e firma digitale documenti (integrazione provider esterno).
+  description: Elenco e firma digitale documenti.
 - name: Faculty - Calendar
-  description: Sottoscrizione e gestione calendario didattico (integrazioni Outlook).
+  description: Sottoscrizione e gestione calendario didattico.
 - name: Faculty - People Search
   description: Ricerca di contatti interni (docenti/studenti).
 - name: Faculty - Emergencies
