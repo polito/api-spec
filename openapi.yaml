@@ -804,6 +804,7 @@ paths:
                     cfu: 10
                     teachingPeriod: 2-2
                     teacherId: 2893
+                    teacherName: 'Stefano Quer'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -811,18 +812,18 @@ paths:
                     modules:
                       - id: 251008
                         name: 'Programming Module A'
-                        cfu: 5
                         teachingPeriod: 2-2
                         teacherId: 3001
+                        teacherName: 'Mario Rossi'
                         previousEditions: [{ id: 251005, year: '2024' }]
                         isOverBooking: false
                         isInPersonalStudyPlan: true
                         year: '2025'
                       - id: 251009
                         name: 'Programming Module B'
-                        cfu: 5
                         teachingPeriod: 2-2
                         teacherId: 3002
+                        teacherName: 'Giovanni Verdi'
                         previousEditions: [{ id: 251006, year: '2024' }]
                         isOverBooking: false
                         isInPersonalStudyPlan: true
@@ -833,6 +834,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 2235
+                    teacherName: 'Giovanni Malnati'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -844,6 +846,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1943
+                    teacherName: 'Riccardo Sisto'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -855,6 +858,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1847
+                    teacherName: 'Antonio Lioy'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -866,6 +870,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 1847
+                    teacherName: 'Antonio Lioy'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -877,6 +882,7 @@ paths:
                     cfu: 10
                     teachingPeriod: 1-1
                     teacherId: 12684
+                    teacherName: 'Edgar Ernesto Sanchez Sanchez'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -888,6 +894,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 25734
+                    teacherName: 'Luigi De Russis'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -899,6 +906,7 @@ paths:
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 13461
+                    teacherName: 'Antonio Josè Di Scala'
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -910,6 +918,7 @@ paths:
                     cfu: 30
                     teachingPeriod: 1-1
                     teacherId: null
+                    teacherName: null
                     previousEditions: []
                     isOverBooking: false
                     isInPersonalStudyPlan: true
@@ -4425,6 +4434,9 @@ components:
           - $ref: '#/components/schemas/CourseModule'
           - type: object
             properties:
+              cfu:
+                type: integer
+                example: 10
               shortcode:
                 type: string
                 example: 01NYHOV
@@ -4433,7 +4445,7 @@ components:
                 items:
                   $ref: '#/components/schemas/CourseModule'
                 nullable: true
-            required: [ shortcode, modules ]
+            required: [ shortcode, modules, cfu ]
               
     CourseModule:
       type: object
@@ -4446,9 +4458,6 @@ components:
         name:
           type: string
           example: System and device programming
-        cfu:
-          type: integer
-          example: 10
         teachingPeriod:
           type: string
           description: The semester(s) this course belongs to
@@ -4457,6 +4466,10 @@ components:
           type: integer
           nullable: true
           example: 2893
+        teacherName:
+          type: string
+          nullable: true
+          example: Mario Rossi
         previousEditions:
           description: Previous editions of this course that were part of the student's PSP
           type: array
@@ -4480,7 +4493,7 @@ components:
         year:
           type: string
           example: '2022'
-      required: [ id, name, cfu, teachingPeriod, teacherId, previousEditions, isOverBooking, isInPersonalStudyPlan, year ]
+      required: [ id, name,teachingPeriod, teacherId, teacherName, previousEditions, isOverBooking, isInPersonalStudyPlan, year ]
 
     CoursePreferencesRequest:
       type: object
