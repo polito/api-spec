@@ -3807,27 +3807,22 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/exams/{examId}/enrollments":
-    post:
+  "/faculty/exams/{examId}/students/{studentId}":
+    put:
       tags:
       - Faculty - Exams
       summary: Aggiungi studente all'esame
       description: Inserisce manualmente uno studente tra gli iscritti a un appello
-        (casi eccezionali).
+        (casi eccezionali). Operazione idempotente.
       operationId: addStudentToExam
       security:
       - bearerAuth: []
       parameters:
       - "$ref": "#/components/parameters/ExamId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/AddExamEnrollmentRequest"
+      - "$ref": "#/components/parameters/StudentId"
       responses:
-        '201':
-          description: Creato
+        '200':
+          description: Studente già iscritto (idempotente)
           content:
             application/json:
               schema:
@@ -3837,12 +3832,21 @@ paths:
                     "$ref": "#/components/schemas/ExamEnrollment"
                 required:
                 - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
+        '201':
+          description: Studente iscritto con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/ExamEnrollment"
+                required:
+                - data
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
-        '409':
-          "$ref": "#/components/responses/ConflictResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
   "/faculty/courses":
@@ -4189,24 +4193,28 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-    post:
+  "/faculty/courses/{courseId}/collaborators/{collaboratorId}":
+    put:
       tags:
       - Faculty - Courses
-      summary: Aggiungi collaboratore a un incarico
-      operationId: addAssignmentCollaborator
+      summary: Aggiungi o aggiorna collaboratore
+      description: Operazione idempotente per creare o aggiornare un collaboratore
+        sul corso. Se il collaboratore esiste già, i suoi attributi vengono aggiornati.
+      operationId: upsertAssignmentCollaborator
       security:
       - bearerAuth: []
       parameters:
       - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/CollaboratorId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CollaboratorUpsertRequest"
+              "$ref": "#/components/schemas/CollaboratorRequest"
       responses:
-        '201':
-          description: Creato
+        '200':
+          description: Collaboratore aggiornato
           content:
             application/json:
               schema:
@@ -4216,32 +4224,8 @@ paths:
                     "$ref": "#/components/schemas/Collaborator"
                 required:
                 - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '409':
-          "$ref": "#/components/responses/ConflictResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    patch:
-      tags:
-      - Faculty - Courses
-      summary: Aggiorna permessi del collaboratore
-      operationId: updateAssignmentCollaboratorPermissions
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CollaboratorPermissionsRequest"
-      responses:
-        '200':
-          description: Success
+        '201':
+          description: Collaboratore creato
           content:
             application/json:
               schema:
@@ -4268,11 +4252,7 @@ paths:
       - bearerAuth: []
       parameters:
       - "$ref": "#/components/parameters/CourseId"
-      - in: query
-        name: personId
-        required: true
-        schema:
-          type: string
+      - "$ref": "#/components/parameters/CollaboratorId"
       responses:
         '204':
           description: Rimosso
@@ -4357,6 +4337,7 @@ paths:
           description: File troppo grande
         '500':
           "$ref": "#/components/responses/ErrorResponse"
+  "/faculty/courses/{courseId}/materials/{materialId}":
     delete:
       tags:
       - Faculty - Courses
@@ -4366,11 +4347,7 @@ paths:
       - bearerAuth: []
       parameters:
       - "$ref": "#/components/parameters/CourseId"
-      - in: query
-        name: fileId
-        required: true
-        schema:
-          type: string
+      - "$ref": "#/components/parameters/MaterialId"
       responses:
         '204':
           description: Eliminato
@@ -5640,6 +5617,25 @@ components:
       required: true
       schema:
         type: string
+    StudentId:
+      name: studentId
+      in: path
+      required: true
+      schema:
+        type: string
+    MaterialId:
+      name: materialId
+      in: path
+      required: true
+      schema:
+        type: string
+    CollaboratorId:
+      name: collaboratorId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID del collaboratore (personId)
     AssignmentId:
       name: assignmentId
       in: path
@@ -8999,17 +8995,6 @@ components:
       required:
       - subject
       - message
-    AddExamEnrollmentRequest:
-      type: object
-      properties:
-        personId:
-          type: string
-        note:
-          type:
-          - string
-          - 'null'
-      required:
-      - personId
     FacultyAssignment:
       type: object
       properties:
@@ -9254,17 +9239,18 @@ components:
       - name
       - role
       - permissions
-    CollaboratorUpsertRequest:
+    CollaboratorRequest:
       type: object
+      description: Schema unificato per creare o aggiornare un collaboratore.
       properties:
-        personId:
-          type: string
         role:
           type: string
+          description: Ruolo del collaboratore nel corso.
         sections:
           type: array
           items:
             type: string
+          description: Sezioni del corso a cui il collaboratore ha accesso.
         permissions:
           type: array
           items:
@@ -9273,28 +9259,9 @@ components:
             - CAN_READ
             - CAN_EDIT
             - CAN_DELETE
-          description: Permessi da assegnare al collaboratore.
+          description: Permessi del collaboratore sul corso.
       required:
-      - personId
       - role
-      - permissions
-    CollaboratorPermissionsRequest:
-      type: object
-      properties:
-        personId:
-          type: string
-          description: Identificativo del collaboratore da aggiornare.
-        permissions:
-          type: array
-          items:
-            type: string
-            enum:
-            - CAN_READ
-            - CAN_EDIT
-            - CAN_DELETE
-          description: Nuovo insieme di permessi da applicare.
-      required:
-      - personId
       - permissions
     TeachingMaterial:
       type: object
