@@ -13,8 +13,22 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: Students - Auth
+- name: Common - Auth
   description: Autenticazione e servizi collegati.
+- name: Common - Profile
+  description: Profilo utente, messaggi, notifiche e preferenze.
+- name: Common - News
+  description: News dell'Ateneo.
+- name: Common - Places
+  description: Mappa e POI di ateneo.
+- name: Common - Emergencies
+  description: Numeri e riferimenti di emergenza.
+- name: Common - Faults
+  description: Segnalazione guasti e tracciamento stato.
+- name: Common - People
+  description: Ricerca e dettaglio contatti della comunità di ateneo.
+- name: Students - Auth
+  description: Funzionalità di autenticazione specifiche per studenti.
 - name: Students - Student
   description: Operazioni sul profilo studente.
 - name: Students - Bookings
@@ -27,8 +41,6 @@ tags:
   description: Calendario lezioni, esercitazioni e aule virtuali.
 - name: Students - Esc
   description: Gestione della European Student Card.
-- name: Students - People
-  description: Ricerca e dettaglio contatti della comunità di ateneo.
 - name: Students - Tickets
   description: Apertura e monitoraggio ticket di supporto.
 - name: Students - Job offers
@@ -37,10 +49,8 @@ tags:
   description: Navigazione dell'offerta formativa e dei corsi di laurea.
 - name: Students - Surveys
   description: Questionari e rilevazioni rivolte agli studenti.
-- name: Faculty - Auth
-  description: Autenticazione e servizi collegati.
 - name: Faculty - Profile
-  description: Operazioni sul profilo del docente.
+  description: Operazioni specifiche sul profilo del docente.
 - name: Faculty - Exams
   description: Gestione appelli e iscritti lato docente.
 - name: Faculty - Courses
@@ -61,20 +71,31 @@ tags:
   description: Elenco e firma digitale documenti.
 - name: Faculty - Calendar
   description: Sottoscrizione e gestione calendario didattico.
-- name: Faculty - People
-  description: Ricerca di contatti interni (docenti/studenti).
-- name: Faculty - Emergencies
-  description: Riferimenti/Procedure di emergenza.
-- name: Faculty - Faults
-  description: Segnalazione guasti e tracciamento stato.
-- name: Common - News
-  description: News dell'Ateneo.
-- name: Common - Places
-  description: Mappa e POI di ateneo.
 x-tagGroups:
+- name: Common
+  tags:
+  - Common - Auth
+  - Common - Profile
+  - Common - News
+  - Common - Places
+  - Common - Emergencies
+  - Common - Faults
+  - Common - People
+- name: Students
+  tags:
+  - Students - Auth
+  - Students - Student
+  - Students - Bookings
+  - Students - Courses
+  - Students - Exams
+  - Students - Lectures
+  - Students - Esc
+  - Students - Tickets
+  - Students - Job offers
+  - Students - Offering
+  - Students - Surveys
 - name: Faculty
   tags:
-  - Faculty - Auth
   - Faculty - Profile
   - Faculty - Exams
   - Faculty - Courses
@@ -86,32 +107,11 @@ x-tagGroups:
   - Faculty - Bookings
   - Faculty - Digital Signature
   - Faculty - Calendar
-  - Faculty - People
-  - Faculty - Emergencies
-  - Faculty - Faults
-- name: Common
-  tags:
-  - Common - News
-  - Common - Places
-- name: Students
-  tags:
-  - Students - Auth
-  - Students - Student
-  - Students - Bookings
-  - Students - Courses
-  - Students - Exams
-  - Students - Lectures
-  - Students - Esc
-  - Students - People
-  - Students - Tickets
-  - Students - Job offers
-  - Students - Offering
-  - Students - Surveys
 paths:
   "/auth/login":
     post:
       tags:
-      - Students - Auth
+      - Common - Auth
       security: []
       summary: Login
       operationId: login
@@ -176,7 +176,7 @@ paths:
   "/auth/logout":
     delete:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Logout
       description: Invalidates the provided token
       operationId: logout
@@ -190,7 +190,7 @@ paths:
   "/auth/client":
     patch:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Update client version fields | Aggiorna i campi di versione del client
       operationId: appInfo
       requestBody:
@@ -219,7 +219,7 @@ paths:
   "/auth/mfa/enrol":
     post:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Enroll a new PUSH token
       operationId: enrolMfa
       requestBody:
@@ -266,7 +266,7 @@ paths:
   "/auth/mfa/validate":
     post:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Validate a challenge
       operationId: validateMfa
       requestBody:
@@ -321,7 +321,7 @@ paths:
   "/auth/mfa/challenge":
     get:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Fetch pending challenge
       operationId: fetchChallenge
       responses:
@@ -368,7 +368,7 @@ paths:
   "/auth/mfa/status":
     get:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Get MFA status for the current user
       operationId: getMfaStatus
       responses:
@@ -390,7 +390,7 @@ paths:
   "/auth/serviceLink/moodle/{course}":
     get:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Get authorised service link for Moodle course
       operationId: getMoodleLink
       parameters:
@@ -419,7 +419,7 @@ paths:
   "/auth/serviceLink/liveClass/{meetingID}":
     get:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Get authorised service link for LiveClass meeting
       operationId: getLiveClassLink
       parameters:
@@ -448,7 +448,7 @@ paths:
   "/auth/serviceLink/mail":
     get:
       tags:
-      - Students - Auth
+      - Common - Auth
       summary: Get authorised service link for Mail
       operationId: getMailLink
       responses:
@@ -492,7 +492,7 @@ paths:
   "/deadlines":
     get:
       tags:
-      - Students - Student
+      - Common - Profile
       parameters:
       - name: fromDate
         in: query
@@ -638,9 +638,8 @@ paths:
   "/unreadEmails":
     get:
       tags:
-      - Students - Student
-      summary: Retrieve student's unread emails number | Recupera il numero di email
-        non lette dello studente
+      - Common - Profile
+      summary: Retrieve unread emails number | Recupera il numero di email non lette
       operationId: getUnreadEmailslNumber
       responses:
         200:
@@ -2790,7 +2789,7 @@ paths:
   "/people":
     get:
       tags:
-      - Students - People
+      - Common - People
       summary: Search people | Cerca persone
       operationId: getPeople
       parameters:
@@ -2821,7 +2820,7 @@ paths:
   "/people/{personId}":
     get:
       tags:
-      - Students - People
+      - Common - People
       summary: Show person | Mostra persona
       operationId: getPerson
       parameters:
@@ -3051,7 +3050,7 @@ paths:
   "/messages":
     get:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: List messages | Elenca messaggi
       operationId: getMessages
       responses:
@@ -3075,7 +3074,7 @@ paths:
   "/messages/{messageId}":
     delete:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Delete a message | Cancella un messaggio
       operationId: deleteMessage
       parameters:
@@ -3090,7 +3089,7 @@ paths:
   "/messages/{messageId}/read":
     put:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Mark a message as read | Segna un messaggio come letto
       operationId: markMessageAsRead
       parameters:
@@ -3105,7 +3104,7 @@ paths:
   "/notifications":
     get:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: List notifications | Elenca notifiche
       operationId: getNotifications
       responses:
@@ -3129,7 +3128,7 @@ paths:
   "/notifications/preferences":
     get:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Get notification preferences | Ottieni preferenze notifiche
       operationId: getNotificationPreferences
       responses:
@@ -3145,7 +3144,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     patch:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Update notification preferences | Aggiorna preferenze notifiche
       operationId: updateNotificationPreferences
       requestBody:
@@ -3163,7 +3162,7 @@ paths:
   "/notifications/{notificationId}":
     delete:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Delete a notification | Cancella una notifica
       operationId: deleteNotification
       parameters:
@@ -3178,7 +3177,7 @@ paths:
   "/notifications/{notificationId}/read":
     put:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Mark a notification as read | Segna una notifica come letta
       operationId: markNotificationAsRead
       parameters:
@@ -3193,7 +3192,7 @@ paths:
   "/preferences":
     patch:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Update device preferences | Aggiorna preferenze del dispositivo
       operationId: updateDevicePreferences
       requestBody:
@@ -3630,7 +3629,7 @@ paths:
   "/guides":
     get:
       tags:
-      - Students - Student
+      - Common - Profile
       summary: Get guides | Mostra guide
       operationId: getGuides
       responses:
@@ -3671,327 +3670,6 @@ paths:
                 - data
         400:
           "$ref": "#/components/responses/BadRequestResponse"
-  "/faculty/authentication/login":
-    post:
-      tags:
-      - Faculty - Auth
-      security: []
-      summary: Login
-      operationId: facultyLogin
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/LoginRequest"
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/Identity"
-                required:
-                - data
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/logout":
-    delete:
-      tags:
-      - Faculty - Auth
-      summary: Logout
-      description: Invalidates the provided token
-      operationId: facultyLogout
-      responses:
-        200:
-          description: Success
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/client":
-    patch:
-      tags:
-      - Faculty - Auth
-      summary: Update client version fields | Aggiorna i campi di versione del client
-      operationId: facultyAppInfo
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - "$ref": "#/components/schemas/ClientVersionRequest"
-              - "$ref": "#/components/schemas/FcmRegistrationRequest"
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/UpdateInfo"
-                required:
-                - data
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/mfa/enrol":
-    post:
-      tags:
-      - Faculty - Auth
-      summary: Enroll a new PUSH token
-      operationId: facultyEnrolMfa
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                description:
-                  type: string
-                  example: some identifier you chose
-                  description: User-defined description for the token, pre-populated with the device model
-                pubkey:
-                  type: string
-                  description: Public key generated by the app
-                  example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGlzIHdhcz8hIPCfp5AK
-              required:
-              - description
-              - pubkey
-      responses:
-        201:
-          description: Token successfully enrolled
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      serial:
-                        type: string
-                        description: Unique identifier for the enrolled token
-                        example: EDUP000123456
-                    required:
-                    - serial
-                required:
-                - data
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/mfa/validate":
-    post:
-      tags:
-      - Faculty - Auth
-      summary: Validate a challenge
-      operationId: facultyValidateMfa
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                serial:
-                  type: string
-                  description: Token serial number
-                  example: EDUP000123456
-                nonce:
-                  type: string
-                  description: Nonce sent by the IdP
-                  example: 65ba9e0e5aac421a9150991638a9d697
-                signature:
-                  type: string
-                  description: Signature generated by signing the nonce in the App
-                  example: 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
-                decline:
-                  type: boolean
-                  description: if set to true, decline the authentication request
-                  example: false
-              required:
-              - serial
-              - nonce
-              - signature
-      responses:
-        200:
-          description: Challenge validation result
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      success:
-                        type: boolean
-                        description: Indicates whether the validation succeeded
-                        example: true
-                    required:
-                    - success
-                required:
-                - data
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/mfa/challenge":
-    get:
-      tags:
-      - Faculty - Auth
-      summary: Fetch pending challenge
-      operationId: facultyFetchChallenge
-      responses:
-        200:
-          description: The most recent of pending challenges
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      serial:
-                        type: string
-                        description: Token serial number
-                        example: EDUP000123456
-                      challenge:
-                        type: string
-                        description: Challenge data to be signed by the App
-                        example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGlzIHdhcz8hIPCfp5AK
-                      requestTs:
-                        type: string
-                        format: date-time
-                        description: Challenge request
-                        example: '2025-01-01T00:00:00Z'
-                      expirationTs:
-                        type: string
-                        format: date-time
-                        description: Challenge expiration
-                        example: '2025-01-01T01:00:00Z'
-                    required:
-                    - serial
-                    - challenge
-                    - requestTs
-                    - expirationTs
-                    nullable: true
-                required:
-                - data
-        400:
-          "$ref": "#/components/responses/BadRequestResponse"
-        500:
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/mfa/status":
-    get:
-      tags:
-      - Faculty - Auth
-      summary: Get MFA status for the current user
-      operationId: facultyGetMfaStatus
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/MfaStatusResponse"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/serviceLink/moodle/{course}":
-    get:
-      tags:
-      - Faculty - Auth
-      summary: Get authorised service link for Moodle course
-      operationId: facultyGetMoodleLink
-      parameters:
-      - name: course
-        in: path
-        required: true
-        schema:
-          type: integer
-        description: Moodle course identifier
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/LinkToService"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/serviceLink/liveClass/{meetingID}":
-    get:
-      tags:
-      - Faculty - Auth
-      summary: Get authorised service link for LiveClass meeting
-      operationId: facultyGetLiveClassLink
-      parameters:
-      - name: meetingID
-        in: path
-        required: true
-        schema:
-          type: string
-        description: LiveClass meeting identifier
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/LinkToService"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/authentication/serviceLink/mail":
-    get:
-      tags:
-      - Faculty - Auth
-      summary: Get authorised service link for Mail
-      operationId: facultyGetMailLink
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/LinkToService"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
   "/faculty/me":
     get:
       tags:
@@ -4049,249 +3727,6 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/deadlines":
-    get:
-      tags:
-      - Faculty - Profile
-      parameters:
-      - name: fromDate
-        in: query
-        description: Primo giorno – default 7 giorni prima di oggi.
-        required: false
-        schema:
-          type: string
-          format: date
-      - name: toDate
-        in: query
-        description: Ultimo giorno – default 7 giorni dopo oggi.
-        required: false
-        schema:
-          type: string
-          format: date
-      summary: Elenca scadenze del docente
-      operationId: getFacultyDeadlines
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/Deadline"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/unreadEmails":
-    get:
-      tags:
-      - Faculty - Profile
-      summary: Recupera il numero di email non lette del docente
-      operationId: getFacultyUnreadEmailsNumber
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/EmailBadge"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/messages":
-    get:
-      tags:
-      - Faculty - Profile
-      summary: Elenca i messaggi del docente
-      operationId: getFacultyMessages
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/Message"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/messages/{messageId}":
-    delete:
-      tags:
-      - Faculty - Profile
-      summary: Cancella un messaggio del docente
-      operationId: deleteFacultyMessage
-      parameters:
-      - "$ref": "#/components/parameters/messageIdParam"
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: Message not found
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/messages/{messageId}/read":
-    put:
-      tags:
-      - Faculty - Profile
-      summary: Segna un messaggio come letto
-      operationId: markFacultyMessageAsRead
-      parameters:
-      - "$ref": "#/components/parameters/messageIdParam"
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: Message not found
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/notifications":
-    get:
-      tags:
-      - Faculty - Profile
-      summary: Elenca le notifiche del docente
-      operationId: getFacultyNotifications
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/Notification"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/notifications/preferences":
-    get:
-      tags:
-      - Faculty - Profile
-      summary: Recupera le preferenze di notifica del docente
-      operationId: getFacultyNotificationPreferences
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/NotificationPreferences"
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    patch:
-      tags:
-      - Faculty - Profile
-      summary: Aggiorna le preferenze di notifica del docente
-      operationId: updateFacultyNotificationPreferences
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdateNotificationPreferencesRequest"
-      responses:
-        '200':
-          description: Success
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/notifications/{notificationId}":
-    delete:
-      tags:
-      - Faculty - Profile
-      summary: Cancella una notifica del docente
-      operationId: deleteFacultyNotification
-      parameters:
-      - "$ref": "#/components/parameters/notificationIdParam"
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: Notification not found
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/notifications/{notificationId}/read":
-    put:
-      tags:
-      - Faculty - Profile
-      summary: Segna una notifica come letta
-      operationId: markFacultyNotificationAsRead
-      parameters:
-      - "$ref": "#/components/parameters/notificationIdParam"
-      responses:
-        '200':
-          description: Success
-        '404':
-          description: Notification not found
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/preferences":
-    patch:
-      tags:
-      - Faculty - Profile
-      summary: Aggiorna le preferenze del dispositivo docente
-      operationId: updateFacultyPreferences
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdatePreferencesRequest"
-      responses:
-        '200':
-          description: Success
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/guides":
-    get:
-      tags:
-      - Faculty - Profile
-      summary: Mostra le guide per il docente
-      operationId: getFacultyGuides
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/Guide"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
   "/faculty/exams":
     get:
       tags:
@@ -5933,84 +5368,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/people":
+  "/emergencies/contacts":
     get:
       tags:
-      - Faculty - People
-      summary: Ricerca persone (docenti/studenti)
-      operationId: searchPeople
-      security:
-      - bearerAuth: []
-      parameters:
-      - in: query
-        name: q
-        required: true
-        schema:
-          type: string
-          minLength: 2
-      - in: query
-        name: type
-        schema:
-          type: string
-          enum:
-          - any
-          - student
-          - faculty
-          default: any
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/PersonSearchResult"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/people/{personId}":
-    get:
-      tags:
-      - Faculty - People
-      summary: Mostra il dettaglio di una persona
-      operationId: getFacultyPerson
-      security:
-      - bearerAuth: []
-      parameters:
-      - name: personId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/Person"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          description: Person not found
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/emergencies/contacts":
-    get:
-      tags:
-      - Faculty - Emergencies
+      - Common - Emergencies
       summary: Numeri e riferimenti di emergenza
       operationId: listEmergencyContacts
       security:
@@ -6033,10 +5394,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/faults":
+  "/faults":
     post:
       tags:
-      - Faculty - Faults
+      - Common - Faults
       summary: Invia segnalazione guasto
       operationId: createFault
       security:
@@ -6067,7 +5428,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     get:
       tags:
-      - Faculty - Faults
+      - Common - Faults
       summary: Elenco segnalazioni inviate
       operationId: listFaults
       security:
@@ -6100,10 +5461,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/faults/{faultId}":
+  "/faults/{faultId}":
     get:
       tags:
-      - Faculty - Faults
+      - Common - Faults
       summary: Dettaglio e stato segnalazione
       operationId: getFault
       security:
