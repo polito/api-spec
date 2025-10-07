@@ -27,12 +27,12 @@ tags:
   description: Segnalazione guasti e tracciamento stato.
 - name: Common - People
   description: Ricerca e dettaglio contatti della comunità di ateneo.
+- name: Common - Bookings
+  description: Prenotazioni aule/laboratori e slot disponibili.
 - name: Students - Auth
   description: Funzionalità di autenticazione specifiche per studenti.
 - name: Students - Student
   description: Operazioni sul profilo studente.
-- name: Students - Bookings
-  description: Prenotazioni aule/laboratori.
 - name: Students - Courses
   description: Consultazione corsi, materiali e preferenze didattiche.
 - name: Students - Exams
@@ -54,19 +54,7 @@ tags:
 - name: Faculty - Exams
   description: Gestione appelli e iscritti lato docente.
 - name: Faculty - Courses
-  description: Gestione incarichi didattici del docente.
-- name: Faculty - Lectures
-  description: Pianificazione e gestione lezioni lato docente.
-- name: Faculty - Collaborators
-  description: Gestione collaboratori su incarichi/corsi.
-- name: Faculty - Materials
-  description: Gestione materiale didattico lato docente.
-- name: Faculty - Notices
-  description: Avvisi del corso lato docente.
-- name: Faculty - Messaging
-  description: Messaggistica/broadcast verso iscritti.
-- name: Faculty - Bookings
-  description: Prenotazione aule/laboratori e strutture di Ateneo.
+  description: Gestione incarichi didattici del docente, lezioni, materiali, avvisi e collaboratori.
 - name: Faculty - Digital Signature
   description: Elenco e firma digitale documenti.
 - name: Faculty - Calendar
@@ -81,11 +69,11 @@ x-tagGroups:
   - Common - Emergencies
   - Common - Faults
   - Common - People
+  - Common - Bookings
 - name: Students
   tags:
   - Students - Auth
   - Students - Student
-  - Students - Bookings
   - Students - Courses
   - Students - Exams
   - Students - Lectures
@@ -99,12 +87,6 @@ x-tagGroups:
   - Faculty - Profile
   - Faculty - Exams
   - Faculty - Courses
-  - Faculty - Lectures
-  - Faculty - Collaborators
-  - Faculty - Materials
-  - Faculty - Notices
-  - Faculty - Messaging
-  - Faculty - Bookings
   - Faculty - Digital Signature
   - Faculty - Calendar
 paths:
@@ -660,7 +642,7 @@ paths:
   "/booking-topics":
     get:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: List booking topics | Elenca ambiti di prenotazione
       operationId: getBookingTopics
       responses:
@@ -684,7 +666,7 @@ paths:
   "/booking-topics/{bookingTopicId}/slots":
     get:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: Show booking slots | Mostra turni prenotabili
       operationId: getBookingSlots
       parameters:
@@ -732,7 +714,7 @@ paths:
   "/booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats":
     get:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: Show seats for a booking slots | Mostra posti prenotabili
       operationId: getBookingSeats
       parameters:
@@ -769,7 +751,7 @@ paths:
   "/bookings":
     get:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: List bookings | Elenca prenotazioni
       operationId: getBookings
       responses:
@@ -792,7 +774,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: Create booking | Crea prenotazione
       operationId: createBooking
       requestBody:
@@ -819,7 +801,7 @@ paths:
   "/bookings/{bookingId}":
     patch:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: Update booking | Aggiorna prenotazione
       operationId: updateBooking
       parameters:
@@ -852,7 +834,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Students - Bookings
+      - Common - Bookings
       summary: Delete booking | Cancella prenotazione
       operationId: deleteBooking
       parameters:
@@ -3798,7 +3780,7 @@ paths:
   "/faculty/exams/{examId}/notify":
     post:
       tags:
-      - Faculty - Messaging
+      - Faculty - Exams
       summary: Invia comunicazione agli iscritti all'esame
       description: Invia un messaggio/avviso agli studenti iscritti a un appello specifico.
       operationId: notifyExamSubscribers
@@ -3990,7 +3972,7 @@ paths:
   "/faculty/courses/{courseId}/lectures":
     get:
       tags:
-      - Faculty - Lectures
+      - Faculty - Courses
       summary: Elenca lezioni del corso
       operationId: listFacultyLectures
       security:
@@ -4012,7 +3994,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Faculty - Lectures
+      - Faculty - Courses
       summary: Crea una lezione
       operationId: createFacultyLecture
       security:
@@ -4046,7 +4028,7 @@ paths:
   "/faculty/courses/{courseId}/lectures/{lectureId}":
     get:
       tags:
-      - Faculty - Lectures
+      - Faculty - Courses
       summary: Dettaglio lezione
       operationId: getFacultyLecture
       security:
@@ -4074,7 +4056,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     patch:
       tags:
-      - Faculty - Lectures
+      - Faculty - Courses
       summary: Aggiorna una lezione
       operationId: updateFacultyLecture
       security:
@@ -4110,7 +4092,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Faculty - Lectures
+      - Faculty - Courses
       summary: Elimina una lezione
       operationId: deleteFacultyLecture
       security:
@@ -4180,7 +4162,7 @@ paths:
   "/faculty/courses/{courseId}/collaborators":
     get:
       tags:
-      - Faculty - Collaborators
+      - Faculty - Courses
       summary: Elenca collaboratori assegnati al corso
       operationId: listAssignmentCollaborators
       security:
@@ -4209,7 +4191,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Faculty - Collaborators
+      - Faculty - Courses
       summary: Aggiungi collaboratore a un incarico
       operationId: addAssignmentCollaborator
       security:
@@ -4244,7 +4226,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     patch:
       tags:
-      - Faculty - Collaborators
+      - Faculty - Courses
       summary: Aggiorna permessi del collaboratore
       operationId: updateAssignmentCollaboratorPermissions
       security:
@@ -4279,7 +4261,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Faculty - Collaborators
+      - Faculty - Courses
       summary: Rimuovi collaboratore da un incarico
       operationId: removeAssignmentCollaborator
       security:
@@ -4303,7 +4285,7 @@ paths:
   "/faculty/courses/{courseId}/materials":
     get:
       tags:
-      - Faculty - Materials
+      - Faculty - Courses
       summary: Elenca il materiale didattico del corso
       operationId: listFacultyCourseMaterials
       security:
@@ -4330,7 +4312,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Faculty - Materials
+      - Faculty - Courses
       summary: Carica materiale didattico
       operationId: uploadTeachingMaterial
       security:
@@ -4377,7 +4359,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     delete:
       tags:
-      - Faculty - Materials
+      - Faculty - Courses
       summary: Elimina un file di materiale didattico
       operationId: deleteTeachingMaterial
       security:
@@ -4401,7 +4383,7 @@ paths:
   "/faculty/courses/{courseId}/notices":
     get:
       tags:
-      - Faculty - Notices
+      - Faculty - Courses
       summary: Elenca gli avvisi del corso
       operationId: listFacultyCourseNotices
       security:
@@ -4428,7 +4410,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Faculty - Notices
+      - Faculty - Courses
       summary: Crea avviso del corso
       operationId: createCourseNotice
       security:
@@ -4461,7 +4443,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     patch:
       tags:
-      - Faculty - Notices
+      - Faculty - Courses
       summary: Aggiorna un avviso del corso
       operationId: updateCourseNotice
       security:
@@ -4498,7 +4480,7 @@ paths:
   "/faculty/courses/{courseId}/notices/{noticeId}":
     delete:
       tags:
-      - Faculty - Notices
+      - Faculty - Courses
       summary: Elimina avviso del corso
       operationId: deleteCourseNotice
       security:
@@ -4518,7 +4500,7 @@ paths:
   "/faculty/courses/{courseId}/message":
     post:
       tags:
-      - Faculty - Messaging
+      - Faculty - Courses
       summary: Invia comunicazione agli iscritti al corso
       operationId: messageCourseSubscribers
       security:
@@ -4544,10 +4526,10 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/bookings":
+  "/v2/places/bookings":
     post:
       tags:
-      - Faculty - Bookings
+      - Common - Places
       summary: Prenota aula/laboratorio
       operationId: createRoomBooking
       security:
@@ -4571,7 +4553,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     get:
       tags:
-      - Faculty - Bookings
+      - Common - Places
       summary: Ricerca disponibilità aule
       operationId: searchRoomAvailability
       security:
@@ -9568,35 +9550,6 @@ components:
           - requestId
       required:
       - data
-    PersonSearchResult:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - student
-          - faculty
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-        phone:
-          type:
-          - string
-          - 'null'
-        office:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - type
-      - name
     EmergencyContact:
       type: object
       properties:
