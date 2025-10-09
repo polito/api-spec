@@ -4363,21 +4363,23 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-    post:
+  "/faculty/courses/{courseId}/notices/{noticeId}":
+    put:
       tags:
       - Faculty - Courses
-      summary: Crea avviso del corso
-      operationId: createCourseNotice
+      summary: Crea o aggiorna un avviso del corso
+      operationId: upsertCourseNotice
       security:
       - bearerAuth: []
       parameters:
       - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/NoticeId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CourseNoticeCreateRequest"
+              "$ref": "#/components/schemas/CourseNoticeUpsertRequest"
       responses:
         '201':
           description: Creato
@@ -4392,27 +4394,6 @@ paths:
                 - data
         '400':
           "$ref": "#/components/responses/BadRequestResponse"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    patch:
-      tags:
-      - Faculty - Courses
-      summary: Aggiorna un avviso del corso
-      operationId: updateCourseNotice
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/NoticeId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CourseNoticeUpdateRequest"
-      responses:
         '200':
           description: Success
           content:
@@ -4424,15 +4405,12 @@ paths:
                     "$ref": "#/components/schemas/CourseNotice"
                 required:
                 - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
         '404':
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/notices/{noticeId}":
     delete:
       tags:
       - Faculty - Courses
@@ -9242,7 +9220,7 @@ components:
       - title
       - url
       - uploadedAt
-    CourseNoticeCreateRequest:
+    CourseNoticeUpsertRequest:
       type: object
       properties:
         title:
@@ -9299,29 +9277,6 @@ components:
       - body
       - createdAt
       - isVisible
-    CourseNoticeUpdateRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          minLength: 3
-        body:
-          type: string
-          minLength: 1
-        visibleFrom:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        visibleTo:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        isVisible:
-          type: boolean
-          description: Imposta la visibilità dell'avviso.
-      additionalProperties: false
     CourseMessageRequest:
       type: object
       properties:
