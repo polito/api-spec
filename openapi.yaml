@@ -3996,39 +3996,6 @@ paths:
           "$ref": "#/components/responses/UnauthorizedResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-    post:
-      tags:
-      - Faculty - Courses
-      summary: Crea una lezione
-      operationId: createFacultyLecture
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FacultyLectureCreateRequest"
-      responses:
-        '201':
-          description: Creato
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/FacultyLecture"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
   "/faculty/courses/{courseId}/lectures/{lectureId}":
     get:
       tags:
@@ -4058,11 +4025,11 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-    patch:
+    put:
       tags:
       - Faculty - Courses
-      summary: Aggiorna una lezione
-      operationId: updateFacultyLecture
+      summary: Crea o aggiorna una lezione
+      operationId: upsertFacultyLecture
       security:
       - bearerAuth: []
       parameters:
@@ -4073,10 +4040,10 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/FacultyLectureUpdateRequest"
+              "$ref": "#/components/schemas/FacultyLectureUpsertRequest"
       responses:
-        '200':
-          description: Success
+        '201':
+          description: Creato
           content:
             application/json:
               schema:
@@ -4088,6 +4055,17 @@ paths:
                 - data
         '400':
           "$ref": "#/components/responses/BadRequestResponse"
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/FacultyLecture"
+                required:
+                - data
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
         '404':
@@ -8836,7 +8814,10 @@ components:
           type: string
         name:
           type: string
-        email:
+        personal_email:
+          type: string
+          format: email
+        academic_email:
           type: string
           format: email
         phone:
@@ -8884,7 +8865,8 @@ components:
       required:
       - id
       - name
-      - email
+      - personal_email
+      - academic_email
     FacultyProfileUpdateRequest:
       type: object
       properties:
@@ -8897,10 +8879,14 @@ components:
         phone:
           type: string
           description: Numero di telefono di contatto.
-        email:
+        personal_email:
           type: string
           format: email
-          description: Indirizzo email primario del docente.
+          description: Indirizzo email personale del docente.
+        academic_email:
+          type: string
+          format: email
+          description: Indirizzo email accademico del docente.
       additionalProperties: false
     PaginatedFacultyExamList:
       type: object
@@ -9130,7 +9116,7 @@ components:
       required:
       - personId
       - role
-    FacultyLectureCreateRequest:
+    FacultyLectureUpsertRequest:
       type: object
       properties:
         title:
@@ -9164,34 +9150,6 @@ components:
       - startsAt
       - endsAt
       - staff
-      additionalProperties: false
-    FacultyLectureUpdateRequest:
-      type: object
-      properties:
-        title:
-          type: string
-        type:
-          type: string
-        startsAt:
-          type: string
-          format: date-time
-        endsAt:
-          type: string
-          format: date-time
-        topic:
-          type:
-          - string
-          - 'null'
-        language:
-          type:
-          - string
-          - 'null'
-        room:
-          "$ref": "#/components/schemas/PlaceRef"
-        staff:
-          type: array
-          items:
-            "$ref": "#/components/schemas/FacultyLectureStaffMemberRequest"
       additionalProperties: false
     PaginatedFacultyLectureList:
       type: object
