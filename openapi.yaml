@@ -4189,7 +4189,7 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CollaboratorRequest"
+              "$ref": "#/components/schemas/CollaboratorUpsertRequest"
       responses:
         '200':
           description: Collaboratore aggiornato
@@ -9175,7 +9175,7 @@ components:
       - name
       - role
       - permissions
-    CollaboratorRequest:
+    CollaboratorUpsertRequest:
       type: object
       description: Schema unificato per creare o aggiornare un collaboratore.
       properties:
