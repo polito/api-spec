@@ -3782,7 +3782,7 @@ paths:
       tags:
       - Faculty - Exams
       summary: Invia comunicazione agli iscritti all'esame
-      description: Invia un messaggio/avviso agli studenti iscritti a un appello specifico.
+      description: Invia un messaggio/avviso agli studenti iscritti a un appello specifico, permettendo l'invio sia all'intera lista sia a un sottoinsieme selezionato.
       operationId: notifyExamSubscribers
       security:
       - bearerAuth: []
@@ -8436,6 +8436,12 @@ components:
             - email
           default:
           - push
+        recipientPersonIds:
+          type: array
+          description: Lista opzionale di studenti destinatari. Se vuota o assente, il messaggio viene inviato a tutti gli iscritti.
+          items:
+            type: string
+          minItems: 1
       required:
       - subject
       - message
