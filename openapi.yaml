@@ -29,12 +29,12 @@ tags:
   description: Ricerca e dettaglio contatti della comunità di ateneo.
 - name: Common - Bookings
   description: Prenotazioni aule/laboratori e slot disponibili.
+- name: Common - Courses
+  description: Consultazione condivisa delle informazioni sui corsi.
 - name: Students - Auth
   description: Funzionalità di autenticazione specifiche per studenti.
 - name: Students - Student
   description: Operazioni sul profilo studente.
-- name: Students - Courses
-  description: Consultazione corsi, materiali e preferenze didattiche.
 - name: Students - Exams
   description: Gestione prenotazioni e informazioni sugli appelli d'esame.
 - name: Students - Lectures
@@ -70,11 +70,11 @@ x-tagGroups:
   - Common - Faults
   - Common - People
   - Common - Bookings
+  - Common - Courses
 - name: Students
   tags:
   - Students - Auth
   - Students - Student
-  - Students - Courses
   - Students - Exams
   - Students - Lectures
   - Students - Esc
@@ -857,7 +857,7 @@ paths:
   "/courses":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List courses | Elenca corsi
       operationId: getCourses
       responses:
@@ -978,7 +978,7 @@ paths:
   "/courses/{courseId}":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Show course | Mostra corso
       operationId: getCourse
       parameters:
@@ -1008,7 +1008,7 @@ paths:
   "/courses/{courseId}/files":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List files | Elenca file
       operationId: getCourseFiles
       parameters:
@@ -1085,10 +1085,49 @@ paths:
                 "$ref": "#/components/schemas/Error"
         500:
           "$ref": "#/components/responses/ErrorResponse"
+    post:
+      tags:
+      - Common - Courses
+      summary: Upload file | Carica materiale didattico
+      operationId: uploadCourseFile
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "#/components/schemas/CourseFileUploadRequest"
+      responses:
+        '201':
+          description: Caricato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseFileOverview"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '413':
+          description: File troppo grande
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
   "/courses/{courseId}/files/{fileId}":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Download file | Scarica file
       operationId: getCourseFile
       parameters:
@@ -1115,10 +1154,35 @@ paths:
                 "$ref": "#/components/schemas/Error"
         500:
           "$ref": "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+      - Common - Courses
+      summary: Delete file | Elimina file corso
+      operationId: deleteCourseFile
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: fileId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
   "/courses/{courseId}/assignments":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List assignments | Elenca elaborati
       operationId: getCourseAssignments
       parameters:
@@ -1225,7 +1289,7 @@ paths:
           "$ref": "#/components/responses/ErrorResponse"
     post:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Upload assignment | Carica elaborato
       operationId: uploadCourseAssignment
       parameters:
@@ -1254,7 +1318,7 @@ paths:
   "/courses/{courseId}/assignments/{assignmentId}":
     patch:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Update assignment | Aggiorna elaborato
       operationId: updateAssignment
       parameters:
@@ -1279,7 +1343,7 @@ paths:
   "/courses/{courseId}/guide":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Show guide | Mostra guida
       operationId: getCourseGuide
       parameters:
@@ -1410,7 +1474,7 @@ paths:
   "/courses/{courseId}/notices":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List notices | Elenca avvisi
       operationId: getCourseNotices
       parameters:
@@ -1472,7 +1536,7 @@ paths:
   "/courses/{courseId}/virtual-classrooms":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List virtual classrooms | Elenca virtual classroom
       operationId: getCourseVirtualClassrooms
       parameters:
@@ -1675,7 +1739,7 @@ paths:
   "/courses/{courseId}/videolectures":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: List videolectures | Elenca videolezioni
       operationId: getCourseVideolectures
       parameters:
@@ -1706,10 +1770,128 @@ paths:
                 "$ref": "#/components/schemas/Error"
         500:
           "$ref": "#/components/responses/ErrorResponse"
+  "/courses/{courseId}/lectures":
+    get:
+      tags:
+      - Common - Courses
+      summary: Elenca lezioni del corso
+      operationId: listCourseLectures
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/PageParam"
+      - "$ref": "#/components/parameters/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedCourseLectureList"
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+  "/courses/{courseId}/lectures/{lectureId}":
+    get:
+      tags:
+      - Common - Courses
+      summary: Dettaglio lezione
+      operationId: getCourseLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseLecture"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    put:
+      tags:
+      - Common - Courses
+      summary: Crea o aggiorna una lezione
+      operationId: upsertCourseLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CourseLectureUpsertRequest"
+      responses:
+        '201':
+          description: Creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseLecture"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseLecture"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+      - Common - Courses
+      summary: Elimina una lezione
+      operationId: deleteCourseLecture
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/LectureId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
   "/courses/{courseId}/nextLecture":
     get:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Get next lecture | Ottieni prossima lezione
       operationId: getNextLecture
       parameters:
@@ -1760,7 +1942,7 @@ paths:
   "/courses/{courseId}/preferences":
     patch:
       tags:
-      - Students - Courses
+      - Common - Courses
       summary: Update course preferences | Aggiorna preferenze del corso
       operationId: updateCoursePreferences
       parameters:
@@ -1785,6 +1967,73 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Error"
         500:
+          "$ref": "#/components/responses/ErrorResponse"
+  "/courses/{courseId}/notices/{noticeId}":
+    put:
+      tags:
+      - Common - Courses
+      summary: Crea o aggiorna un avviso del corso
+      operationId: upsertCourseNoticeV2
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/NoticeId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CourseNoticeUpsertRequest"
+      responses:
+        '201':
+          description: Creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseNotice"
+                required:
+                - data
+        '400':
+          "$ref": "#/components/responses/BadRequestResponse"
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/CourseNotice"
+                required:
+                - data
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
+          "$ref": "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+      - Common - Courses
+      summary: Elimina avviso del corso
+      operationId: deleteCourseNoticeV2
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "#/components/parameters/CourseId"
+      - "$ref": "#/components/parameters/NoticeId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "#/components/responses/UnauthorizedResponse"
+        '404':
+          "$ref": "#/components/responses/NotFoundResponse"
+        '500':
           "$ref": "#/components/responses/ErrorResponse"
   "/exams":
     get:
@@ -3849,100 +4098,6 @@ paths:
           "$ref": "#/components/responses/NotFoundResponse"
         '500':
           "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: List courses | Elenca corsi docenti
-      operationId: getFacultyCourses
-      security:
-      - bearerAuth: []
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/FacultyCourseOverview"
-                required:
-                - data
-              example:
-                data:
-                - id: 251007
-                  name: System and device programming
-                  shortcode: 01NYHOV
-                  cfu: 10
-                  teachingPeriod: 2-2
-                  teacherId: 2893
-                  previousEditions:
-                  - id: 251007
-                    year: '2024'
-                  isModule: false
-                  year: '2025'
-                - id: 252121
-                  name: Web Applications II
-                  shortcode: 01TXSOV
-                  cfu: 6
-                  teachingPeriod: 2-2
-                  teacherId: 2235
-                  previousEditions: []
-                  isModule: false
-                  year: '2025'
-                - id: 252126
-                  name: Security verification and testing
-                  shortcode: 01TYAOV
-                  cfu: 6
-                  teachingPeriod: 1-1
-                  teacherId: 1943
-                  previousEditions: []
-                  isModule: false
-                  year: '2025'
-                - id: 252138
-                  name: Information systems security
-                  shortcode: 01TYMOV
-                  cfu: 6
-                  teachingPeriod: 1-1
-                  teacherId: 1847
-                  previousEditions: []
-                  isModule: false
-                  year: '2025'
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Dettaglio incarico didattico
-      operationId: getFacultyCourse
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/FacultyAssignment"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
   "/faculty/courses/{courseId}/students":
     get:
       tags:
@@ -3967,174 +4122,6 @@ paths:
                       "$ref": "#/components/schemas/FacultyCourseStudent"
                 required:
                 - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/lectures":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Elenca lezioni del corso
-      operationId: listFacultyLectures
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/PageParam"
-      - "$ref": "#/components/parameters/PageSizeParam"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/PaginatedFacultyLectureList"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/lectures/{lectureId}":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Dettaglio lezione
-      operationId: getFacultyLecture
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/LectureId"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/FacultyLecture"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    put:
-      tags:
-      - Faculty - Courses
-      summary: Crea o aggiorna una lezione
-      operationId: upsertFacultyLecture
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/LectureId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FacultyLectureUpsertRequest"
-      responses:
-        '201':
-          description: Creato
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/FacultyLecture"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/FacultyLecture"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    delete:
-      tags:
-      - Faculty - Courses
-      summary: Elimina una lezione
-      operationId: deleteFacultyLecture
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/LectureId"
-      responses:
-        '204':
-          description: Eliminato
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/assignments":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Elenca assignment caricati dagli studenti
-      operationId: listFacultyCourseAssignments
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/FacultyAssignmentSubmission"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/assignments/{assignmentId}":
-    delete:
-      tags:
-      - Faculty - Courses
-      summary: Rimuovi assignment studente dal corso
-      operationId: deleteFacultyCourseAssignment
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/AssignmentId"
-      responses:
-        '204':
-          description: Eliminato
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
         '404':
@@ -4234,196 +4221,6 @@ paths:
       responses:
         '204':
           description: Rimosso
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/materials":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Elenca il materiale didattico del corso
-      operationId: listFacultyCourseMaterials
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/TeachingMaterial"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    post:
-      tags:
-      - Faculty - Courses
-      summary: Carica materiale didattico
-      operationId: uploadTeachingMaterial
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                title:
-                  type: string
-                description:
-                  type: string
-                  default: ''
-              required:
-              - file
-              - title
-      responses:
-        '201':
-          description: Caricato
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/TeachingMaterial"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '413':
-          description: File troppo grande
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/materials/{materialId}":
-    delete:
-      tags:
-      - Faculty - Courses
-      summary: Elimina un file di materiale didattico
-      operationId: deleteTeachingMaterial
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/MaterialId"
-      responses:
-        '204':
-          description: Eliminato
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/notices":
-    get:
-      tags:
-      - Faculty - Courses
-      summary: Elenca gli avvisi del corso
-      operationId: listFacultyCourseNotices
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/CourseNotice"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-  "/faculty/courses/{courseId}/notices/{noticeId}":
-    put:
-      tags:
-      - Faculty - Courses
-      summary: Crea o aggiorna un avviso del corso
-      operationId: upsertCourseNotice
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/NoticeId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CourseNoticeUpsertRequest"
-      responses:
-        '201':
-          description: Creato
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/CourseNotice"
-                required:
-                - data
-        '400':
-          "$ref": "#/components/responses/BadRequestResponse"
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "#/components/schemas/CourseNotice"
-                required:
-                - data
-        '401':
-          "$ref": "#/components/responses/UnauthorizedResponse"
-        '404':
-          "$ref": "#/components/responses/NotFoundResponse"
-        '500':
-          "$ref": "#/components/responses/ErrorResponse"
-    delete:
-      tags:
-      - Faculty - Courses
-      summary: Elimina avviso del corso
-      operationId: deleteCourseNotice
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "#/components/parameters/CourseId"
-      - "$ref": "#/components/parameters/NoticeId"
-      responses:
-        '204':
-          description: Eliminato
         '401':
           "$ref": "#/components/responses/UnauthorizedResponse"
         '404':
@@ -6020,9 +5817,11 @@ components:
             type: boolean
             description: Included in the PSP | Incluso nel carico didattico
             example: true
-    FacultyCourseOverview:
-      allOf:
-      - "$ref": "#/components/schemas/CourseOverviewBase"
+          enrolledCount:
+            type:
+            - integer
+            - 'null'
+            description: Numero di studenti attualmente iscritti al corso.
     CoursePreferencesRequest:
       type: object
       properties:
@@ -6064,6 +5863,18 @@ components:
           type: integer
           nullable: true
           example: 2893
+        assignmentId:
+          type:
+          - string
+          - 'null'
+          description: Identificativo univoco dell'incarico docente associato al corso.
+          example: DOC-2025-01NYHOV
+        enrolledCount:
+          type:
+          - integer
+          - 'null'
+          description: Numero di studenti attualmente iscritti al corso.
+          example: 120
         isOverBooking:
           type: boolean
           example: false
@@ -6240,6 +6051,12 @@ components:
           type: string
           format: date-time
           example: 2022-07-03 14:00:00.000000000 Z
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Data di creazione dell'avviso lato docente.
         expiresAt:
           type: string
           format: date-time
@@ -6248,6 +6065,31 @@ components:
         content:
           type: string
           example: "<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>"
+        body:
+          type:
+          - string
+          - 'null'
+          description: Testo completo dell'avviso in formato HTML.
+        title:
+          type:
+          - string
+          - 'null'
+          description: Titolo assegnato all'avviso.
+        visibleFrom:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        visibleTo:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        isVisible:
+          type:
+          - boolean
+          - 'null'
+          description: Stato di visibilità corrente per gli studenti.
       required:
       - id
       - publishedAt
@@ -6323,6 +6165,24 @@ components:
           mapping:
             directory: "#/components/schemas/CourseDirectory"
             file: "#/components/schemas/CourseFileOverview"
+    CourseFileUploadRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+          description: File da caricare.
+        title:
+          type: string
+          description: Titolo mostrato agli studenti.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Nota opzionale sul contenuto del file.
+      required:
+      - file
+      - title
     Teacher:
       type: object
       properties:
@@ -8445,24 +8305,6 @@ components:
       required:
       - subject
       - message
-    FacultyAssignment:
-      type: object
-      properties:
-        id:
-          type: string
-        courseId:
-          type: string
-        courseName:
-          type: string
-        period:
-          type: string
-        enrolledCount:
-          type: integer
-      required:
-      - id
-      - courseId
-      - courseName
-      - period
     FacultyCourseStudent:
       type: object
       properties:
@@ -8492,26 +8334,7 @@ components:
       - firstName
       - lastName
       - username
-    FacultyAssignmentSubmission:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        publishedAt:
-          type: string
-          format: date-time
-          description: Data e ora di pubblicazione dell'assignment.
-        submittedBy:
-          type: string
-          description: Username dello studente che ha pubblicato l'assignment.
-      required:
-      - id
-      - title
-      - publishedAt
-      - submittedBy
-    FacultyLecture:
+    CourseLecture:
       type: object
       properties:
         id:
@@ -8542,7 +8365,7 @@ components:
         staff:
           type: array
           items:
-            "$ref": "#/components/schemas/FacultyLectureStaffMember"
+            "$ref": "#/components/schemas/CourseLectureStaffMember"
       required:
       - id
       - courseId
@@ -8551,7 +8374,7 @@ components:
       - startsAt
       - endsAt
       - staff
-    FacultyLectureStaffMember:
+    CourseLectureStaffMember:
       type: object
       properties:
         personId:
@@ -8567,7 +8390,7 @@ components:
       - personId
       - name
       - role
-    FacultyLectureStaffMemberRequest:
+    CourseLectureStaffMemberRequest:
       type: object
       properties:
         personId:
@@ -8580,7 +8403,7 @@ components:
       required:
       - personId
       - role
-    FacultyLectureUpsertRequest:
+    CourseLectureUpsertRequest:
       type: object
       properties:
         title:
@@ -8607,7 +8430,7 @@ components:
         staff:
           type: array
           items:
-            "$ref": "#/components/schemas/FacultyLectureStaffMemberRequest"
+            "$ref": "#/components/schemas/CourseLectureStaffMemberRequest"
       required:
       - title
       - type
@@ -8814,13 +8637,13 @@ components:
       - page
       - pageSize
       - total
-    PaginatedFacultyLectureList:
+    PaginatedCourseLectureList:
       type: object
       properties:
         data:
           type: array
           items:
-            "$ref": "#/components/schemas/FacultyLecture"
+            "$ref": "#/components/schemas/CourseLecture"
         page:
           type: integer
         pageSize:
@@ -8884,27 +8707,6 @@ components:
       required:
       - role
       - permissions
-    TeachingMaterial:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        url:
-          type: string
-        uploadedAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - title
-      - url
-      - uploadedAt
     CourseNoticeUpsertRequest:
       type: object
       properties:
