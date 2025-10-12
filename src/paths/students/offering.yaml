@@ -1,0 +1,117 @@
+  "/offering":
+    get:
+      tags:
+      - Students - Offering
+      summary: Get offering | Mostra offerta formativa
+      operationId: getOffering
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      bachelor:
+                        type: array
+                        items:
+                          "$ref": "../../components/schemas/students.yaml#/OfferingClass"
+                      master:
+                        type: array
+                        items:
+                          "$ref": "../../components/schemas/students.yaml#/OfferingClass"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+  "/offering/degrees/{degreeId}":
+    get:
+      tags:
+      - Students - Offering
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/degreeIdParam"
+      - "$ref": "../../components/parameters.yaml#/yearQueryParam"
+      summary: Show a degree | Mostra un corso di laurea
+      operationId: getOfferingDegree
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/Degree"
+                required:
+                - data
+        404:
+          description: Degree not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/offering/courses/{courseShortcode}":
+    get:
+      tags:
+      - Students - Offering
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/courseShortcodeParam"
+      - "$ref": "../../components/parameters.yaml#/yearQueryParam"
+      summary: Show offering course | Mostra corso dell'offerta formativa
+      operationId: getOfferingCourse
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/OfferingCourse"
+                required:
+                - data
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/offering/courses/{courseShortcode}/statistics":
+    get:
+      tags:
+      - Students - Offering
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/courseShortcodeParam"
+      - "$ref": "../../components/parameters.yaml#/yearQueryParam"
+      - "$ref": "../../components/parameters.yaml#/teacherIdQueryParam"
+      summary: Retrieve course statistics | Recupera le statistiche dell'insegnamento
+      operationId: getCourseStatistics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/CourseStatistics"
+                required:
+                - data
+        404:
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

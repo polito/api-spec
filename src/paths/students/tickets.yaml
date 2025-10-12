@@ -1,0 +1,252 @@
+  "/ticket-faqs":
+    get:
+      tags:
+      - Students - Tickets
+      summary: Search ticket FAQs | Ricerca FAQ ticket
+      operationId: searchTicketFAQs
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/acceptLanguageHeader"
+      - name: search
+        in: query
+        description: Find FAQs containing 'search' in the question
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/TicketFAQ"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/ticket-topics":
+    get:
+      tags:
+      - Students - Tickets
+      summary: List ticket topics | Elenca ambiti ticket
+      operationId: getTicketTopics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/TicketTopic"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets":
+    get:
+      tags:
+      - Students - Tickets
+      summary: List tickets | Elenca ticket
+      operationId: getTickets
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/TicketOverview"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+    post:
+      tags:
+      - Students - Tickets
+      summary: Create ticket | Crea ticket
+      operationId: createTicket
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "../../components/schemas/students.yaml#/CreateTicketRequest"
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/TicketOverview"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}":
+    get:
+      tags:
+      - Students - Tickets
+      summary: Show a ticket | Mostra un ticket
+      operationId: getTicket
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/Ticket"
+                required:
+                - data
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}/read":
+    put:
+      tags:
+      - Students - Tickets
+      summary: Mark a ticket as read | Segna un ticket come letto
+      operationId: markTicketAsRead
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}/close":
+    put:
+      tags:
+      - Students - Tickets
+      summary: Mark a ticket as closed | Segna un ticket come chiuso
+      operationId: markTicketAsClosed
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}/attachments/{attachmentId}":
+    get:
+      tags:
+      - Students - Tickets
+      summary: Download ticket attachment | Scarica allegato del ticket
+      operationId: getTicketAttachment
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      - "$ref": "../../components/parameters.yaml#/ticketAttachmentIdParam"
+      responses:
+        200:
+          description: Attachment
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        302:
+          description: Redirect to attachment download
+        404:
+          description: Ticket or attachment not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}/replies":
+    post:
+      tags:
+      - Students - Tickets
+      summary: Reply to a ticket | Rispondi ad un ticket
+      operationId: replyToTicket
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              "$ref": "../../components/schemas/students.yaml#/ReplyTicketRequest"
+        required: true
+      responses:
+        200:
+          description: Success
+        404:
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}":
+    get:
+      tags:
+      - Students - Tickets
+      summary: Download ticket reply attachment | Scarica allegato di una risposta
+        al ticket
+      operationId: getTicketReplyAttachment
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ticketIdParam"
+      - "$ref": "../../components/parameters.yaml#/ticketReplyIdParam"
+      - "$ref": "../../components/parameters.yaml#/ticketAttachmentIdParam"
+      responses:
+        200:
+          description: Attachment
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        302:
+          description: Redirect to attachment download
+        404:
+          description: Ticket or attachment not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

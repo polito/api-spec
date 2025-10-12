@@ -1,6 +1,69 @@
 # PoliTO API Spec
 The OpenAPI specification for the REST API of Politecnico di Torino.
 
+## Project Structure
+
+This specification is organized as a multi-file structure for better maintainability:
+
+- **`openapi.yaml`** - Bundled specification (auto-generated from `src/`)
+- **`src/`** - Source files organized by domain:
+  - `src/index.yaml` - Main specification file with references
+  - `src/paths/` - API endpoints split by domain (common, students, faculty)
+  - `src/components/` - Reusable schemas, parameters, responses
+
+**Note:** The `openapi.yaml` file is automatically generated via GitHub Actions. Always edit files in the `src/` directory.
+
+## Development Workflow
+
+### Making Changes to the API Specification
+
+1. **Edit source files** in the `src/` directory:
+   ```bash
+   # Example: Add a new faculty endpoint
+   vim src/paths/faculty/exams.yaml
+   ```
+
+2. **Commit and push your changes**:
+   ```bash
+   git add src/
+   git commit -m "feat: add batch exam enrollment endpoint"
+   git push
+   ```
+
+3. **Automatic bundling** (via GitHub Actions):
+   - When you push changes to `src/`, a GitHub Action automatically bundles the specification
+   - The bundled `openapi.yaml` is committed back to your branch
+   - You'll see a commit from `github-actions[bot]` with message `chore: auto-bundle OpenAPI spec [skip ci]`
+
+4. **Create a Pull Request**:
+   - When you create a PR to `master`, validation workflows run automatically
+   - The validation checks that:
+     - The spec can be bundled without errors
+     - Both `swagger-cli` and `openapi-generator` can validate it
+     - The `openapi.yaml` is in sync with `src/`
+   - PRs cannot be merged if validation fails
+
+### Manual Bundling (Optional)
+
+If you prefer to bundle locally before pushing:
+
+```bash
+# Install swagger-cli (one-time setup)
+npm install -g swagger-cli
+
+# Bundle the specification
+swagger-cli bundle src/index.yaml -o openapi.yaml -t yaml
+
+# Validate the bundled file
+swagger-cli validate openapi.yaml
+
+# Commit both source and bundled files
+git add src/ openapi.yaml
+git commit -m "feat: add new endpoint"
+```
+
+**Note:** Manual bundling is optional. The GitHub Action will bundle automatically when you push to `src/`.
+
 ## How to obtain a human-readable interface
 If you are accustomed to using Postman, you can just import the .yaml file containing the specification.
 

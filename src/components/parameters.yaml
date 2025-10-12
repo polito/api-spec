@@ -1,0 +1,222 @@
+  courseIdParam:
+    name: courseId
+    in: path
+    required: true
+    schema:
+      type: integer
+  assignmentIdParam:
+    name: assignmentId
+    in: path
+    required: true
+    schema:
+      type: integer
+  messageIdParam:
+    name: messageId
+    in: path
+    required: true
+    schema:
+      type: integer
+  notificationIdParam:
+    name: notificationId
+    in: path
+    required: true
+    schema:
+      type: integer
+  pathSiteId:
+    name: siteId
+    in: path
+    required: true
+    schema:
+      type: string
+  provisionalGradeIdParam:
+    name: provisionalGradeId
+    in: path
+    required: true
+    schema:
+      type: integer
+  queryPlaceCategoryId:
+    name: placeCategoryId
+    in: query
+    required: false
+    schema:
+      type: string
+  queryPlaceSubCategoryId:
+    name: placeSubCategoryId[]
+    in: query
+    required: false
+    schema:
+      type: array
+      items:
+        type: string
+  querySiteId:
+    name: siteId
+    in: query
+    required: false
+    schema:
+      type: string
+  queryBuildingId:
+    name: buildingId
+    in: query
+    required: false
+    schema:
+      type: string
+  queryFloorId:
+    name: floorId
+    in: query
+    required: false
+    schema:
+      type: string
+  pathPlaceId:
+    name: placeId
+    in: path
+    required: true
+    schema:
+      type: string
+  ticketIdParam:
+    name: ticketId
+    in: path
+    required: true
+    schema:
+      type: integer
+  ticketReplyIdParam:
+    name: replyId
+    in: path
+    required: true
+    schema:
+      type: integer
+  ticketAttachmentIdParam:
+    name: attachmentId
+    in: path
+    required: true
+    schema:
+      type: integer
+  acceptLanguageHeader:
+    name: Accept-Language
+    in: header
+    schema:
+      type: string
+      enum:
+      - it
+      - en
+      default: it
+  jobOfferIdParam:
+    name: jobOfferId
+    in: path
+    required: true
+    schema:
+      type: integer
+  degreeIdParam:
+    name: degreeId
+    in: path
+    required: true
+    schema:
+      type: string
+    example: 81-6
+  courseShortcodeParam:
+    name: courseShortcode
+    in: path
+    required: true
+    schema:
+      type: string
+  yearQueryParam:
+    name: year
+    in: query
+    required: false
+    schema:
+      type: string
+      example: 2022
+  teacherIdQueryParam:
+    name: teacherId
+    in: query
+    required: false
+    schema:
+      type: string
+      example: 1843
+  CourseId:
+    name: courseId
+    in: path
+    required: true
+    schema:
+      type: string
+  LectureId:
+    name: lectureId
+    in: path
+    required: true
+    schema:
+      type: string
+  CalendarId:
+    name: calendarId
+    in: path
+    required: true
+    schema:
+      type: string
+  CalendarEventId:
+    name: eventId
+    in: path
+    required: true
+    schema:
+      type: string
+  PageParam:
+    name: page
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      default: 1
+  PageSizeParam:
+    name: pageSize
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 20
+  ExamId:
+    name: examId
+    in: path
+    required: true
+    schema:
+      type: string
+  StudentId:
+    name: studentId
+    in: path
+    required: true
+    schema:
+      type: string
+  MaterialId:
+    name: materialId
+    in: path
+    required: true
+    schema:
+      type: string
+  CollaboratorId:
+    name: collaboratorId
+    in: path
+    required: true
+    schema:
+      type: string
+    description: ID del collaboratore (personId)
+  AssignmentId:
+    name: assignmentId
+    in: path
+    required: true
+    schema:
+      type: string
+  NoticeId:
+    name: noticeId
+    in: path
+    required: true
+    schema:
+      type: string
+  DocumentId:
+    name: documentId
+    in: path
+    required: true
+    schema:
+      type: string
+  FaultId:
+    name: faultId
+    in: path
+    required: true
+    schema:
+      type: string

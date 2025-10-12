@@ -1,0 +1,95 @@
+  "/faults":
+    post:
+      tags:
+      - Common - Faults
+      summary: Invia segnalazione guasto
+      operationId: createFault
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/common.yaml#/FaultCreateRequest"
+      responses:
+        '201':
+          description: Creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Fault"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    get:
+      tags:
+      - Common - Faults
+      summary: Elenco segnalazioni inviate
+      operationId: listFaults
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - new
+          - in_progress
+          - resolved
+          - rejected
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Fault"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faults/{faultId}":
+    get:
+      tags:
+      - Common - Faults
+      summary: Dettaglio e stato segnalazione
+      operationId: getFault
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/FaultId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Fault"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

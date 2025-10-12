@@ -1,0 +1,51 @@
+  "/esc":
+    get:
+      tags:
+      - Students - Esc
+      summary: retreive european student card | recupera la european student card
+      operationId: escGet
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/EuropeanStudentCard"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        404:
+          description: Card not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Students - Esc
+      summary: Delete all Student data on the ESC-Router (and all student's cards)
+        | Cancella tutti i dati dello studente sul Router ESC (e tutte le carte dello
+        studente)
+      operationId: escDelete
+      responses:
+        204:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorEscResponse"
+  "/esc/create":
+    post:
+      tags:
+      - Students - Esc
+      summary: request european student card | richiedi la european student card
+      operationId: escRequest
+      responses:
+        201:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

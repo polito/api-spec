@@ -1,0 +1,1353 @@
+  CourseHours:
+    type: object
+    properties:
+      lecture:
+        type: integer
+        example: 48
+      tutoring:
+        type: integer
+        example: 12
+      classroomExercise:
+        type: integer
+        example: 24
+      labExercise:
+        type: integer
+        example: 24
+  CourseStatistics:
+    type: object
+    properties:
+      shortcode:
+        type: string
+      year:
+        type: integer
+      teacher:
+        "$ref": "./common.yaml#/Teacher"
+      totalEnrolled:
+        type: integer
+      totalSucceeded:
+        type: integer
+      totalFailed:
+        type: integer
+      firstYear:
+        "$ref": "#/YearStatistics"
+      otherYears:
+        "$ref": "#/YearStatistics"
+      previousYearsToCompare:
+        type: array
+        items:
+          "$ref": "#/PreviousYearsToCompare"
+      years:
+        type: array
+        items:
+          type: integer
+      teachers:
+        type: array
+        items:
+          "$ref": "./common.yaml#/Teacher"
+    required:
+    - shortcode
+    - year
+    - teacher
+    - totalEnrolled
+    - totalSucceeded
+    - totalFailed
+    - firstYear
+    - otherYears
+    - previousYearsToCompare
+    - years
+    - teachers
+  CreateTicketRequest:
+    type: object
+    properties:
+      subject:
+        type: string
+        example: Sostituzione esame in piano carriera
+      message:
+        type: string
+        example: Buongiorno, vi contatto per sostituire A con B
+      subtopicId:
+        type: number
+        example: 103
+      attachment:
+        type: string
+        format: binary
+    required:
+    - subject
+    - message
+    - subtopicId
+  Deadline:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 42
+      name:
+        type: string
+        example: Chiusura del periodo per cambio di ordinamento e/o corso di studi
+      type:
+        type: string
+        example: Trasferimenti e valutazioni carriere precedenti
+      url:
+        type: string
+        nullable: true
+        example: https://didattica.polito.it/guida/2021/it/passaggi_interni_su_corsi_di_laurea_magistrale?cds=28&sdu=32
+      date:
+        type: string
+        format: date
+        example: '2022-08-31'
+    required:
+    - name
+    - type
+    - url
+    - date
+  Degree:
+    allOf:
+    - "$ref": "#/DegreeOverview"
+    - type: object
+      properties:
+        level:
+          type: string
+          example: Corso di laurea di 1°livello
+        department:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Dipartimento di Architettura e Design
+          required:
+          - name
+        faculty:
+          type: object
+          properties:
+            id:
+              type: string
+              example: CL002
+            name:
+              type: string
+              example: Design e comunicazione
+        location:
+          type: string
+          example: Torino
+        duration:
+          type: string
+          example: 3 anni
+        class:
+          type: object
+          properties:
+            code:
+              type: string
+              example: L-4
+            name:
+              type: string
+              example: Disegno industriale
+          required:
+          - code
+          - name
+        year:
+          type: number
+          example: 2022
+        editions:
+          description: All the available editions of this degree
+          type: array
+          items:
+            type: string
+            example: '2021'
+        notes:
+          type: array
+          items:
+            type: string
+            example: Corso tenuto in italiano
+        objectives:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Objettivi formativi
+            content:
+              type: string
+              example: Il Corso di Laurea in Design e Comunicazione forma un \"designer
+                laureato di primo livello\" ...
+          required:
+          - title
+          - content
+        jobOpportunities:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Sbocchi occupazionali e professionali
+            content:
+              type: string
+              example: Il Corso di Laurea in Design e Comunicazione forma un \"designer
+                laureato di primo livello\" ...
+          required:
+          - title
+          - content
+        tracks:
+          type: array
+          items:
+            "$ref": "#/Track"
+      required:
+      - level
+      - department
+      - faculty
+      - location
+      - duration
+      - class
+      - year
+      - editions
+      - notes
+      - objectives
+      - jobOpportunities
+      - tracks
+  DegreeOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: 81-6
+      name:
+        type: string
+        example: Design e comunicazione
+    required:
+    - id
+    - name
+  EuropeanStudentCard:
+    type: object
+    properties:
+      canBeRequested:
+        type: boolean
+        example: false
+      details:
+        type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - active
+            - inactive
+            - expired
+            example: active
+          inactiveStatusReason:
+            description: Reason why the card is inactive (null if the card is active)
+            type: string
+            nullable: true
+            example: 'null'
+          cardNumber:
+            type: string
+            example: f74047b0-2108-103d-8ae-001999977754
+          expiresAt:
+            type: string
+            example: '2024-12-31T22:59:59.000+0000'
+          qrCode:
+            type: string
+            example: iVBORw0KGgoAAAANSUhEUgAAADIAAAAyAQAAAAA2RLUcAAAAr0lEQVR4XmP4DwYHGKhGH0hVZATR96OW14Loi87vXcF04k4IHSkLpu/7dILlD4SGgtX/P8kN1n/a6LowiH7/zSUXRN9MK1oMog/OMFcGq4tTzwTR36Y7fQfLSz/bCKI/Hen0BtHHypVeg+hXTU/A5t/hD9EE0X/f6u0E0ZejroiDzbkfexFsf1hsNIi+n/cRzL9YlCILpv3c+MF08aGzYPkg1dtg9dEOYPXo/qYODQD15Rx9h0NUJAAAAABJRU5ErkJggg==
+        nullable: true
+        required:
+        - status
+        - inactiveStatusReason
+        - cardNumber
+        - expiresAt
+        - qrCode
+    required:
+    - canBeRequested
+    - details
+  ExamGrade:
+    type: object
+    properties:
+      courseName:
+        type: string
+        example: Human Computer Interaction
+      credits:
+        type: number
+        example: 6
+      grade:
+        type: string
+        example: '27'
+      date:
+        type: string
+        format: date
+        example: '2022-05-15'
+      teacherId:
+        type: integer
+        nullable: true
+        example: 2893
+      onTimeExamPoints:
+        description: Points for "on-time" exams - null the student is not eligible
+          for on-time exams or the exam does not grant on-time points
+        type: number
+        nullable: true
+        example: 0.5
+      creditsCountTowardsDegree:
+        description: Defines whether the credits from the exam count toward the
+          total required for graduation
+        type: boolean
+        example: true
+    required:
+    - courseName
+    - credits
+    - grade
+    - date
+    - teacherId
+    - onTimeExamPoints
+    - creditsCountTowardsDegree
+  GradeCount:
+    type: object
+    properties:
+      grade:
+        type: string
+        enum:
+        - '18'
+        - '19'
+        - '20'
+        - '21'
+        - '22'
+        - '23'
+        - '24'
+        - '25'
+        - '26'
+        - '27'
+        - '28'
+        - '29'
+        - '30'
+        - 30L
+      count:
+        type: integer
+    required:
+    - grade
+    - count
+  Guide:
+    type: object
+    properties:
+      id:
+        type: string
+        example: dropbox
+      listTitle:
+        type: string
+        example: List title
+      title:
+        type: string
+        example: Title
+      intro:
+        type: string
+        example: Intro
+      fields:
+        type: array
+        items:
+          "$ref": "#/GuideField"
+      sections:
+        type: array
+        items:
+          "$ref": "#/GuideSection"
+    required:
+    - id
+    - listTitle
+    - title
+    - intro
+    - fields
+    - sections
+  GuideField:
+    type: object
+    properties:
+      label:
+        type: string
+        example: Label
+      value:
+        type: string
+        example: Value
+      isCopyEnabled:
+        type: boolean
+        example: true
+    required:
+    - label
+    - value
+  GuideSection:
+    type: object
+    properties:
+      title:
+        type: string
+        example: Title
+      content:
+        type: string
+        example: HTML content
+    required:
+    - title
+    - content
+  JobOffer:
+    allOf:
+    - "$ref": "#/JobOfferOverview"
+    - type: object
+      properties:
+        companyLocation:
+          type: string
+          example: Torino 10152 TORINO (TO)
+        companyMission:
+          type: string
+          example: Synergie Agenzia per il lavoro ricerca per importante azienda
+            metalmeccanica produttrice di articoli elettronici
+        description:
+          type: string
+          example: Il candidato, in affiancamento al tutor, parteciperà alla progettazione
+            e allo sviluppo di sistemi meccatronici avanzati utilizzando LabVIEW,
+            svolgere attività di test e debug dei sistemi meccatronici progettati.
+        requirements:
+          type: string
+          example: Preferibile conoscenza di LabVIEW, Matlab, Python e dei motori
+            elettrici in particolare motori step.
+        contractType:
+          type: string
+          example: |-
+            Contratto a tempo determinato di 6 mesi
+            Orario di lavoro: dal Lunedì al Venerdì dalle 8 alle 17
+            Sede di lavoro: Ivrea
+        salary:
+          type: string
+          example: '1200'
+        contactInformation:
+          type: string
+          example: Pinco Pallo - 0111111111
+          nullable: true
+        url:
+          type: string
+          example: https://...
+          nullable: true
+        email:
+          type: string
+          example: anyone@example.com
+          nullable: true
+        freePositions:
+          type: number
+          example: 2
+      required:
+      - id
+      - title
+      - location
+      - companyId
+      - companyName
+      - createdAtDate
+      - endsAtDate
+      - companyLocation
+      - companyMission
+      - description
+      - requirements
+      - contractType
+      - salary
+      - contactInformation
+      - url
+      - email
+      - freePositions
+  JobOfferOverview:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 43834
+      title:
+        type: string
+        example: Progettista
+      location:
+        type: string
+        example: BOLLENGO (TO),IVREA (TO)
+      companyId:
+        type: number
+        example: 3243
+      companyName:
+        type: string
+        example: Synergie Italia spa
+      createdAtDate:
+        type: string
+        format: date
+        example: 2022-08-31
+      endsAtDate:
+        type: string
+        format: date
+        example: 2022-08-31
+    required:
+    - id
+    - title
+    - location
+    - companyId
+    - companyName
+    - createdAtDate
+    - endsAtDate
+  Lecture:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 150157
+      startsAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+      endsAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+      type:
+        type: string
+        example: Lezione / Esercitazione
+      virtualClassrooms:
+        type: array
+        items:
+          "$ref": "#/RelatedVirtualClassroom"
+      description:
+        type: string
+        nullable: true
+        example: Lezione / Esercitazione
+      courseId:
+        type: integer
+        example: 150157
+      courseName:
+        type: string
+        example: Human Computer Interaction
+      teacherId:
+        type: integer
+        example: 150157
+      place:
+        "$ref": "./common.yaml#/PlaceRef"
+    required:
+    - id
+    - startsAt
+    - endsAt
+    - type
+    - virtualClassrooms
+    - description
+    - courseId
+    - courseName
+    - teacherId
+    - place
+  OfferingClass:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Disegno industriale
+      code:
+        type: string
+        example: L-4
+      degrees:
+        type: array
+        items:
+          "$ref": "#/DegreeOverview"
+    required:
+    - name
+    - code
+    - degrees
+  OfferingCourse:
+    type: object
+    properties:
+      name:
+        type: string
+        example: System and device programming
+      shortcode:
+        type: string
+        example: 01NYHOV
+      cfu:
+        type: integer
+        example: 10
+      teachingPeriod:
+        type: string
+        description: The semester(s) this course belongs to
+        example: 2-2
+      languages:
+        type: array
+        items:
+          type: string
+          enum:
+          - it
+          - en
+      year:
+        type: string
+        example: '2022'
+      hours:
+        "$ref": "#/CourseHours"
+      editions:
+        description: All the available editions of this course
+        type: array
+        items:
+          type: string
+          example: '2021'
+      staff:
+        type: array
+        items:
+          "$ref": "#/OfferingCourseStaff"
+      guide:
+        type: array
+        items:
+          "$ref": "./common.yaml#/CourseGuideSection"
+    required:
+    - name
+    - shortcode
+    - cfu
+    - teachingPeriod
+    - languages
+    - year
+    - hours
+    - editions
+    - staff
+    - guide
+  OfferingCourseOverview:
+    type: object
+    properties:
+      name:
+        type: string
+        example: System and device programming
+      shortcode:
+        type: string
+        example: 01NYHOV
+      cfu:
+        type: integer
+        example: 10
+      teachingYear:
+        type: integer
+        description: The year this course belongs to in this degree
+        example: 1
+      language:
+        type: string
+        enum:
+        - it
+        - en
+      group:
+        type: string
+        example: Insegnamento a scelta 1
+        nullable: true
+    required:
+    - name
+    - shortcode
+    - cfu
+    - teachingYear
+    - language
+    - group
+  OfferingCourseStaff:
+    type: object
+    properties:
+      role:
+        type: string
+      id:
+        type: number
+        example: 244577
+      courseId:
+        type: number
+        example: 262147
+    required:
+    - role
+    - id
+    - courseId
+  PreviousYearsToCompare:
+    type: object
+    properties:
+      year:
+        type: integer
+      succeeded:
+        type: integer
+      failed:
+        type: integer
+    required:
+    - year
+    - succeeded
+    - failed
+  ProvisionalGrade:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 5817523
+      examId:
+        type: number
+        example: 903380
+      courseShortcode:
+        type: string
+        example: 02JSKOV
+      courseName:
+        type: string
+        example: Human Computer Interaction
+      teacherId:
+        type: integer
+        example: 2154
+      credits:
+        type: number
+        example: 6
+      grade:
+        type: string
+        example: '27'
+      date:
+        type: string
+        format: date
+        example: '2022-05-15'
+      state:
+        type: string
+        enum:
+        - published
+        - confirmed
+        - rejected
+      stateDescription:
+        type: string
+        example: Pubblicato
+      teacherMessage:
+        type: string
+        nullable: true
+        example: sono disponibili aggiornamenti dei risultati relativi all'appello
+          del 26/06/2023 per l'insegnamento Il processo logistico (02TGJRY). Alstom
+          mi ha appena trasmesso la valutazione della parte di formazione svolta
+          in azienda (Flusso fisico e contabile di materiale) e, alla luce dell'ottimo
+          giudizio che avete ricevuto, ho ritenuto opportuno confermare i voti conseguiti
+          durante lo svolgimento del case study in aula e già comunicati al termine
+          del mio corso. La registrazione di questi voti verrà consolidata la prossima
+          settimana.
+      isWithdrawn:
+        type: boolean
+        example: false
+      isFailure:
+        type: boolean
+        example: false
+      canBeAccepted:
+        type: boolean
+        example: true
+      canBeRejected:
+        type: boolean
+        example: true
+      confirmedAt:
+        type: string
+        format: date
+        nullable: true
+      rejectedAt:
+        type: string
+        format: date-time
+        nullable: true
+      rejectingExpiresAt:
+        type: string
+        format: date-time
+        nullable: false
+    required:
+    - id
+    - examId
+    - courseShortcode
+    - courseName
+    - teacherId
+    - credits
+    - grade
+    - date
+    - state
+    - stateDescription
+    - teacherMessage
+    - isWithdrawn
+    - isFailure
+    - canBeAccepted
+    - canBeRejected
+    - acceptUrl
+    - rejectUrl
+    - confirmedAt
+    - rejectedAt
+    - rejectingExpiresAt
+  ProvisionalGradeState:
+    type: object
+    properties:
+      id:
+        type: string
+        example: published
+      name:
+        type: string
+        example: Provvisorio
+      description:
+        type: string
+        example: La valutazione e consolidata. Il docente non ha piu la possibilita
+          di modificarla. Dal momento del consolidamento lo studente ha 48h per
+          esercitare il rifiuto del voto
+    required:
+    - id
+    - name
+    - description
+  RelatedVirtualClassroom:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 150157
+      title:
+        type: string
+        example: Lecture 1
+    required:
+    - id
+    - title
+  ReplyTicketRequest:
+    type: object
+    properties:
+      message:
+        type: string
+        example: Ok scusa
+      attachment:
+        type: string
+        format: binary
+    required:
+    - message
+  Student:
+    type: object
+    properties:
+      username:
+        type: string
+        example: s290683
+      firstName:
+        type: string
+        example: Luca
+      lastName:
+        type: string
+        example: Pezzolla
+      status:
+        type: string
+        enum:
+        - active
+        - closed
+        - cancelled
+        - graduated
+        - career_closed
+      allCareerIds:
+        description: All the ids related to this student
+        type: array
+        items:
+          type: string
+          example: '213956'
+        example:
+        - '290683'
+        - '213956'
+      degreeId:
+        type: string
+        example: 81-6
+      degreeCode:
+        type: string
+        example: LM-32
+      degreeLevel:
+        type: string
+        example: Corso di Laurea Magistrale in
+      degreeName:
+        type: string
+        example: INGEGNERIA INFORMATICA (COMPUTER ENGINEERING)
+      firstEnrollmentYear:
+        type: integer
+        example: 2021
+      lastEnrollmentYear:
+        type: integer
+        example: 2022
+      isCurrentlyEnrolled:
+        type: boolean
+        example: false
+      averageGrade:
+        type: number
+        nullable: true
+        example: 18.42
+      estimatedFinalGrade:
+        type: number
+        nullable: true
+        example: 99.99
+      averageGradePurged:
+        description: Purged grade is only available for bachelor degree students
+        type: number
+        nullable: true
+        example: 
+      estimatedFinalGradePurged:
+        description: Purged grade is only available for bachelor degree students
+        type: number
+        nullable: true
+        example: 
+      usePurgedAverageFinalGrade:
+        description: Specify whether to use purgedAverageFinalGrade or averageFinalGrade
+          as the graduation grade shown
+        type: boolean
+        nullable: false
+        example: true
+      mastersAdmissionAverageGrade:
+        description: Master's admission grade is only available for bachelor degree
+          students
+        type: number
+        nullable: true
+        example: 
+      totalOnTimeExamPoints:
+        description: Total points for "on-time" exams - null if "on-time" exams
+          are not applicable for the student's position (max value =ß maxOnTimeExamPoints)
+        type: number
+        nullable: true
+        example: 0
+      maxOnTimeExamPoints:
+        description: Maximum points for "on-time" exams
+        type: number
+        nullable: false
+        example: 4
+      excludedCreditsNumber:
+        description: Credits excluded from calculating the purged grade
+        type: number
+        nullable: true
+        example: 16
+      totalCredits:
+        type: integer
+        example: 126
+      totalAttendedCredits:
+        type: integer
+        example: 126
+      totalAcquiredCredits:
+        type: integer
+        example: 68
+      enrollmentCredits:
+        type: integer
+        example: 86
+      enrollmentAttendedCredits:
+        type: integer
+        example: 86
+      enrollmentAcquiredCredits:
+        type: integer
+        example: 28
+      smartCardPicture:
+        type: string
+        example: https://
+        nullable: true
+      europeanStudentCard:
+        "$ref": "#/EuropeanStudentCard"
+    required:
+    - username
+    - firstName
+    - lastName
+    - status
+    - allCareerIds
+    - degreeId
+    - degreeCode
+    - degreeLevel
+    - degreeName
+    - firstEnrollmentYear
+    - lastEnrollmentYear
+    - isCurrentlyEnrolled
+    - averageGrade
+    - estimatedFinalGrade
+    - averageGradePurged
+    - estimatedFinalGradePurged
+    - usePurgedAverageFinalGrade
+    - mastersAdmissionAverageGrade
+    - totalOnTimeExamPoints
+    - maxOnTimeExamPoints
+    - excludedCreditsNumber
+    - totalCredits
+    - totalAttendedCredits
+    - totalAcquiredCredits
+    - enrollmentCredits
+    - enrollmentAttendedCredits
+    - enrollmentAcquiredCredits
+    - smartCardPicture
+    - europeanStudentCard
+  Survey:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 1
+      title:
+        type: string
+        example: Survey title
+      subtitle:
+        type: string
+        example: Survey subtitle
+        nullable: true
+      category:
+        "$ref": "#/SurveyTaxonomy"
+      type:
+        "$ref": "#/SurveyTaxonomy"
+      period:
+        type: number
+        example: 2
+      year:
+        type: string
+        example: '2024'
+      isMandatory:
+        type: boolean
+        example: true
+      isCompiled:
+        type: boolean
+        example: false
+      compileDate:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+        nullable: true
+      url:
+        type: string
+        example: https://
+      startsAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      course:
+        "$ref": "#/SurveyCourseRef"
+    required:
+    - id
+    - title
+    - subtitle
+    - category
+    - type
+    - period
+    - year
+    - isMandatory
+    - isCompiled
+    - compileDate
+    - url
+    - startsAt
+    - endsAt
+  SurveyCourseRef:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 1
+      name:
+        type: string
+        example: Course name
+      shortcode:
+        type: string
+        example: 01NYHOV
+    nullable: true
+    required:
+    - id
+    - name
+    - shortcode
+  SurveyTaxonomy:
+    type: object
+    properties:
+      id:
+        type: string
+        example: CPD
+      name:
+        type: string
+        example: CPD
+    required:
+    - id
+    - name
+  Ticket:
+    allOf:
+    - "$ref": "#/TicketOverview"
+    - type: object
+      properties:
+        replies:
+          type: array
+          items:
+            "$ref": "#/TicketReply"
+        attachments:
+          type: array
+          items:
+            "$ref": "#/TicketAttachment"
+      required:
+      - id
+      - subject
+      - message
+      - status
+      - hasAttachments
+      - isFromAgent
+      - unreadCount
+      - createdAt
+      - updatedAt
+      - replies
+      - attachments
+  TicketAttachment:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 0
+      filename:
+        type: string
+        example: screenshot.png
+      mimeType:
+        type: string
+        example: image/png
+      sizeInKiloBytes:
+        type: integer
+        example: 305
+    required:
+    - id
+    - filename
+    - mimeType
+    - sizeInKiloBytes
+  TicketFAQ:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 3623
+      question:
+        type: string
+        example: Ho dimenticato il mio nome utente e/o la password e non riesco
+          più ad accedere ad Apply@Polito. Come posso fare?
+      answer:
+        type: string
+        example: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot;
+          presente sulla pagina di <a href=\"https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT\">Log-in</a>&nbsp;e
+          segui le istruzioni.
+    required:
+    - id
+    - question
+    - answer
+  TicketOverview:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 1145890
+      subject:
+        type: string
+        example: Sostituzione esame in piano carriera
+      message:
+        type: string
+        example: Buongiorno, vi contatto per sostituire A con B
+      status:
+        "$ref": "#/TicketStatus"
+      hasAttachments:
+        type: boolean
+        example: true
+      isFromAgent:
+        type: boolean
+        description: If true, this ticket was opened by an agent (not by the student)
+        example: false
+      agentId:
+        type: number
+        example: 
+        nullable: true
+      unreadCount:
+        type: number
+        example: 2
+      createdAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+      updatedAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+    required:
+    - id
+    - subject
+    - message
+    - status
+    - hasAttachments
+    - isFromAgent
+    - agentId
+    - unreadCount
+    - createdAt
+    - updatedAt
+  TicketReply:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 1145890
+      message:
+        type: string
+        example: Non si può fare.
+      isFromAgent:
+        type: boolean
+        description: If true, this reply was sent by an agent (not by the student)
+        example: true
+      agentId:
+        type: number
+        example: 351
+        nullable: true
+      isRead:
+        type: boolean
+        example: true
+      createdAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+      attachments:
+        type: array
+        items:
+          "$ref": "#/TicketAttachment"
+    required:
+    - id
+    - message
+    - senderId
+    - isFromAgent
+    - agentId
+    - isRead
+    - createdAt
+    - attachments
+  TicketStatus:
+    type: string
+    enum:
+    - new
+    - pending
+    - closed
+  TicketSubtopic:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 103
+      name:
+        type: string
+        example: Accesso studenti esterni
+    required:
+    - id
+    - name
+  TicketTopic:
+    allOf:
+    - "$ref": "#/TicketSubtopic"
+    - type: object
+      properties:
+        subtopics:
+          type: array
+          items:
+            "$ref": "#/TicketSubtopic"
+      example:
+        id: 61
+        name: ACCESSO LAUREE MAGISTRALI
+        subtopics:
+        - id: 103
+          name: Accesso studenti esterni
+      required:
+      - subtopics
+  Track:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 2060
+      name:
+        type: string
+        example: Design per la comunicazione
+      courses:
+        type: array
+        items:
+          "$ref": "#/OfferingCourseOverview"
+    required:
+    - id
+    - name
+    - courses
+  VideoLecture:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 888122
+      title:
+        type: string
+        example: Lecture 1
+      teacherId:
+        type: integer
+        example: 888122
+      abstract:
+        type: string
+        example: Lecture 1
+      coverUrl:
+        type: string
+        example: https://
+      videoUrl:
+        type: string
+        example: https://
+      audioUrl:
+        type: string
+        example: https://
+      createdAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      duration:
+        type: string
+        example: 00h 46m
+    required:
+    - id
+    - title
+    - teacherId
+    - abstract
+    - coverUrl
+    - videoUrl
+    - audioUrl
+    - createdAt
+    - duration
+  VirtualClassroom:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 150157
+      title:
+        type: string
+        example: Lecture 1
+      teacherId:
+        type: integer
+        example: 888122
+      coverUrl:
+        type: string
+        nullable: true
+        example: https://
+      videoUrl:
+        type: string
+        example: https://
+      createdAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      duration:
+        type: string
+        example: 00h 46m
+      type:
+        type: string
+        enum:
+        - recording
+    required:
+    - id
+    - title
+    - teacherId
+    - coverUrl
+    - videoUrl
+    - createdAt
+    - duration
+    - type
+  VirtualClassroomLive:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 150157
+      title:
+        type: string
+        example: Lecture 1
+      teacherId:
+        type: integer
+        example: 888122
+      meetingId:
+        type: string
+        example: ''
+      createdAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      type:
+        type: string
+        enum:
+        - live
+    required:
+    - id
+    - title
+    - teacherId
+    - meetingUrl
+    - createdAt
+    - isLive
+  YearStatistics:
+    type: object
+    properties:
+      succeeded:
+        type: integer
+      failed:
+        type: integer
+      grades:
+        type: array
+        items:
+          "$ref": "#/GradeCount"
+      averageGrade:
+        type: number
+        nullable: true
+        example: 18.01
+    required:
+    - succeeded
+    - failed
+    - grades
+    - averageGrade

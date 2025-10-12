@@ -1,0 +1,57 @@
+  "/faculty/me":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Profilo docente
+      description: Restituisce i dati anagrafici e informativi del docente autenticato
+        (pubblicazioni, corsi assegnati – se disponibili).
+      operationId: getFacultyProfile
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyProfile"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    patch:
+      tags:
+      - Faculty - Profile
+      summary: Aggiorna dati anagrafici del docente
+      operationId: updateFacultyProfile
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/FacultyProfileUpdateRequest"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyProfile"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

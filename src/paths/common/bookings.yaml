@@ -1,0 +1,215 @@
+  "/booking-topics":
+    get:
+      tags:
+      - Common - Bookings
+      summary: List booking topics | Elenca ambiti di prenotazione
+      operationId: getBookingTopics
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/BookingTopic"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/booking-topics/{bookingTopicId}/slots":
+    get:
+      tags:
+      - Common - Bookings
+      summary: Show booking slots | Mostra turni prenotabili
+      operationId: getBookingSlots
+      parameters:
+      - name: bookingTopicId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fromDate
+        in: query
+        description: First day - defaults to monday of current week
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: Last day - defaults to sunday of current week
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/BookingSlot"
+                required:
+                - data
+        404:
+          description: Booking topic not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats":
+    get:
+      tags:
+      - Common - Bookings
+      summary: Show seats for a booking slots | Mostra posti prenotabili
+      operationId: getBookingSeats
+      parameters:
+      - name: bookingTopicId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: bookingSlotId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/BookingSeats"
+                required:
+                - data
+        404:
+          description: Booking topic|slot not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/bookings":
+    get:
+      tags:
+      - Common - Bookings
+      summary: List bookings | Elenca prenotazioni
+      operationId: getBookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Booking"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    post:
+      tags:
+      - Common - Bookings
+      summary: Create booking | Crea prenotazione
+      operationId: createBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slotId:
+                  type: integer
+                  example: 226439
+                seatId:
+                  type: integer
+                  example: 20018
+              required:
+              - slotId
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/bookings/{bookingId}":
+    patch:
+      tags:
+      - Common - Bookings
+      summary: Update booking | Aggiorna prenotazione
+      operationId: updateBooking
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isLocationChecked:
+                  type: boolean
+                  example: true
+              required:
+              - isLocationChecked
+      responses:
+        200:
+          description: Success
+        404:
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Common - Bookings
+      summary: Delete booking | Cancella prenotazione
+      operationId: deleteBooking
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Success
+        404:
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

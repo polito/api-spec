@@ -1,0 +1,1891 @@
+  AcceptedResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          status:
+            type: string
+            example: accepted
+          trackingId:
+            type: string
+        required:
+        - status
+    required:
+    - data
+  Booking:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 258674
+      description:
+        type: string
+        example: ''
+      topic:
+        "$ref": "#/BookingTopicOverview"
+      subtopic:
+        "$ref": "#/BookingSubtopicOverview"
+      startsAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:00:00Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:15:00Z'
+      seat:
+        type: object
+        nullable: true
+        properties:
+          id:
+            type: integer
+            example: 20018
+          row:
+            type: string
+            example: A
+          column:
+            type: string
+            example: 5
+        example: 
+      cancelableUntil:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:00:00Z'
+      location:
+        oneOf:
+        - "$ref": "#/BookingPlaceRef"
+        - "$ref": "#/BookingVirtualPlaceRef"
+        discriminator:
+          propertyName: type
+      locationCheck:
+        "$ref": "#/BookingLocationCheck"
+    required:
+    - id
+    - description
+    - topic
+    - subtopic
+    - startsAt
+    - endsAt
+    - seat
+    - cancelableUntil
+    - location
+  BookingLocationCheck:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        example: true
+      checked:
+        type: boolean
+        example: false
+      latitude:
+        type: string
+        example: '45.0626340000000000'
+        nullable: true
+      longitude:
+        type: string
+        example: '7.6605410000000000'
+        nullable: true
+      radiusInKm:
+        type: number
+        example: 0.1
+        nullable: true
+    required:
+    - enabled
+    - checked
+    - latitude
+    - longitude
+    - radiusInKm
+  BookingPlaceRef:
+    allOf:
+    - "$ref": "#/PlaceRef"
+    - type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - place
+        description:
+          type: string
+          nullable: true
+          example: Description
+      required:
+      - type
+      - description
+  BookingSeatCell:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 42
+      status:
+        type: string
+        enum:
+        - available
+        - booked
+        - unavailable
+      label:
+        type: string
+        example: B12
+    required:
+    - id
+    - status
+    - label
+  BookingSeats:
+    type: object
+    properties:
+      totalCount:
+        type: integer
+        example: 140
+      availableCount:
+        type: integer
+        example: 42
+      rows:
+        type: array
+        items:
+          "$ref": "#/BookingSeatsRow"
+    required:
+    - totalCount
+    - availableCount
+    - rows
+  BookingSeatsRow:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 2
+      label:
+        type: string
+        example: B
+      seats:
+        type: array
+        items:
+          "$ref": "#/BookingSeatCell"
+    required:
+    - label
+    - seats
+  BookingSlot:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 103051
+      description:
+        type: string
+        example: ''
+      isBooked:
+        type: boolean
+        example: false
+      canBeBooked:
+        type: boolean
+        example: false
+      hasSeats:
+        type: boolean
+        example: false
+      hasSeatSelection:
+        type: boolean
+        example: false
+      places:
+        type: integer
+        example: 2
+      bookedPlaces:
+        type: integer
+        example: 2
+      feedback:
+        type: string
+        example: Il turno è pieno
+      location:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Virtual Classroom della Segreteria Generale Studenti
+          description:
+            type: string
+            example: ''
+          type:
+            type: string
+            example: VC
+          address:
+            type: string
+            example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+      startsAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:00:00Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:15:00Z'
+      bookingStartsAt:
+        type: string
+        format: date-time
+        example: '2021-09-30T00:00:00Z'
+      bookingEndsAt:
+        type: string
+        format: date-time
+        example: '2021-10-04T16:00:00Z'
+    required:
+    - id
+    - description
+    - isBooked
+    - canBeBooked
+    - hasSeats
+    - hasSeatSelection
+    - places
+    - bookedPlaces
+    - feedback
+    - location
+    - startsAt
+    - endsAt
+    - bookingStartsAt
+    - bookingEndsAt
+  BookingSubtopic:
+    allOf:
+    - "$ref": "#/BookingTopicLeaf"
+    - type: object
+      properties:
+        id:
+          type: string
+          example: DID_ING_VC_EN
+        title:
+          type: string
+          example: Aspetti didattici di carriera - Sportello virtuale in inglese
+        description:
+          type: string
+          example: ''
+        isEnabled:
+          type: boolean
+          example: true
+        requirements:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Informativa Emergenza COVID-19
+              url:
+                type: string
+                example: https://didattica.polito.it/pdf/informativa_covid.pdf
+      required:
+      - id
+      - title
+      - description
+      - isEnabled
+      - requirements
+  BookingSubtopicOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: DID_ING_VC_EN
+      title:
+        type: string
+        example: Aspetti didattici di carriera - Sportello virtuale in inglese
+      description:
+        type: string
+        example: ''
+    nullable: true
+    example: 
+    required:
+    - id
+    - title
+    - description
+  BookingTopic:
+    allOf:
+    - "$ref": "#/BookingTopicLeaf"
+    - type: object
+      properties:
+        id:
+          type: string
+          example: DIDATTICA_ING
+        title:
+          type: string
+          example: Segreteria Didattica Ingegneria
+        description:
+          type: string
+          example: Servizi della Segreteria Didattica Ingegneria
+        isEnabled:
+          type: boolean
+          example: true
+        subtopics:
+          type: array
+          items:
+            "$ref": "#/BookingSubtopic"
+      required:
+      - id
+      - title
+      - description
+      - isEnabled
+      - subtopics
+  BookingTopicLeaf:
+    type: object
+    properties:
+      disclaimer:
+        type: string
+        example: ''
+      showCalendar:
+        type: boolean
+      slotLength:
+        type: integer
+        example: 15
+      slotsPerHour:
+        type: integer
+        example: 4
+      startDate:
+        type: string
+        format: date
+        example: 2022-05-15
+        nullable: true
+        description: Start date of the booking period
+      startHour:
+        type: integer
+        example: 9
+      endHour:
+        type: integer
+        example: 18
+      maxBookingsPerDay:
+        type: integer
+        example: 1
+      canBeCancelled:
+        type: boolean
+        example: true
+      daysPerWeek:
+        type: integer
+        example: 1
+        description: Number of days per week the booking is available, starting
+          from startDate weekday, or monday if missing
+      agendaView:
+        type: boolean
+        example: false
+        description: Specifies if the topic requires the agenda display
+    required:
+    - disclaimer
+    - showCalendar
+    - slotLength
+    - slotsPerHour
+    - startDate
+    - startHour
+    - endHour
+    - maxBookingsPerDay
+    - canBeCancelled
+    - daysPerWeek
+    - agendaView
+  BookingTopicOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: DIDATTICA_ING
+      title:
+        type: string
+        example: Segreteria Didattica Ingegneria
+      description:
+        type: string
+        example: Servizi della Segreteria Didattica Ingegneria
+    required:
+    - id
+    - title
+    - description
+  BookingVirtualPlaceRef:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Virtual Classroom della Segreteria Generale Studenti
+      type:
+        type: string
+        enum:
+        - virtualPlace
+      url:
+        type: string
+        example: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+    required:
+    - name
+    - type
+    - url
+  Building:
+    allOf:
+    - "$ref": "#/BuildingOverview"
+    - "$ref": "#/GeoLocation"
+  BuildingOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: TO_CIT09
+      name:
+        type: string
+        example: Aule T
+      siteId:
+        type: string
+        example: TO_CIT
+      category:
+        "$ref": "#/PlaceCategoryOverview"
+      geoJson:
+        "$ref": https://raw.githubusercontent.com/zit0un/GeoJSON-OAS3/1db6676d3a810b86ec0b9b99a95614f2dbd54b5e/GeoJSON-OAS3.yaml#/components/schemas/Feature
+    required:
+    - id
+    - name
+    - siteId
+    - category
+  Client:
+    allOf:
+    - type: object
+      properties:
+        name:
+          type: string
+          example: Students app
+        id:
+          type: string
+          example: 5a54f626-4b7e-488e-a0e3-300f54051510
+      required:
+      - name
+    - "$ref": "#/ClientVersionRequest"
+    - "$ref": "#/FcmRegistrationRequest"
+  ClientVersionRequest:
+    type: object
+    properties:
+      buildNumber:
+        type: string
+        example: '1060200'
+      appVersion:
+        type: string
+        example: 1.6.2
+    required:
+    - buildNumber
+    - appVersion
+  Course:
+    type: object
+    properties:
+      id:
+        type: integer
+        nullable: true
+        description: The identifier for the current instance of this course. If
+          null this is not a teaching (such as thesis), it won't have a course page
+        example: 258674
+      name:
+        type: string
+        example: System and device programming
+      shortcode:
+        type: string
+        example: 01NYHOV
+      cfu:
+        type: integer
+        example: 10
+      teachingPeriod:
+        type: string
+        description: The semester(s) this course belongs to
+        example: 2-2
+      teacherId:
+        type: integer
+        nullable: true
+        example: 2893
+      assignmentId:
+        type:
+        - string
+        - 'null'
+        description: Identificativo univoco dell'incarico docente associato al corso.
+        example: DOC-2025-01NYHOV
+      enrolledCount:
+        type:
+        - integer
+        - 'null'
+        description: Numero di studenti attualmente iscritti al corso.
+        example: 120
+      isOverBooking:
+        type: boolean
+        example: false
+      isInPersonalStudyPlan:
+        type: boolean
+        description: Included in the PSP | Incluso nel carico didattico
+        example: true
+      isModule:
+        type: boolean
+        description: If true, this course is actually a module
+        example: true
+      year:
+        type: string
+        example: '2022'
+      links:
+        type: array
+        items:
+          type: object
+          properties:
+            url:
+              type: string
+              example: https://docs.google.com/document/d/13hpWEDQxziSkhSU0PuqxMXntqZYp3ffDKZ2-umQ7Ywo/edit?usp=sharing
+            description:
+              type: string
+              example: Calendario settimanale dei contenuti del corso
+          required:
+          - url
+      vcPreviousYears:
+        type: array
+        items:
+          type: object
+          properties:
+            year:
+              type: string
+              example: '2021'
+            id:
+              type: integer
+              example: 244577
+          required:
+          - year
+          - id
+      vcOtherCourses:
+        description: Other editions/courses to be included in virtual classrooms
+        type: array
+        items:
+          type: object
+          properties:
+            year:
+              type: string
+              example: '2021'
+            name:
+              type: string
+              example: Fisica II
+            id:
+              type: integer
+              example: 247431
+          required:
+          - year
+          - name
+          - id
+      notifications:
+        type: object
+        properties:
+          notices:
+            type: boolean
+            example: true
+          files:
+            type: boolean
+            example: true
+          lectures:
+            type: boolean
+            example: true
+        required:
+        - notices
+        - files
+        - lectures
+      staff:
+        type: array
+        items:
+          type: object
+          properties:
+            role:
+              type: string
+            id:
+              type: number
+              example: 244577
+          required:
+          - role
+          - id
+    required:
+    - id
+    - name
+    - shortcode
+    - cfu
+    - teachingPeriod
+    - teacherId
+    - isOverBooking
+    - isInPersonalStudyPlan
+    - isModule
+    - moduleNumber
+    - year
+    - links
+    - vcPreviousYears
+    - vcOtherCourses
+    - notifications
+    - staff
+  CourseAssignment:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 947503
+      description:
+        type: string
+        example: laboratorio 3
+      mimeType:
+        type: string
+        example: application/x-zip-compressed
+      filename:
+        type: string
+        example: lab_03.zip
+      uploadedAt:
+        type: string
+        format: date-time
+        example: 2022-09-02 14:00:00.000000000 Z
+      deletedAt:
+        type: string
+        format: date-time
+        nullable: true
+      url:
+        type: string
+        example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
+      sizeInKiloBytes:
+        type: integer
+        example: 305
+    required:
+    - id
+    - description
+    - mimeType
+    - filename
+    - uploadedAt
+    - deletedAt
+    - url
+    - sizeInKiloBytes
+  CourseAssignmentUpload:
+    type: object
+    properties:
+      description:
+        type: string
+        example: laboratorio 3
+      file:
+        type: string
+        format: binary
+    required:
+    - description
+    - file
+  CourseDirectory:
+    allOf:
+    - "$ref": "#/CourseDirectoryEntry"
+    - type: object
+      properties:
+        files:
+          "$ref": "#/CourseDirectoryContent"
+      required:
+      - files
+  CourseDirectoryContent:
+    type: array
+    items:
+      oneOf:
+      - "$ref": "#/CourseDirectory"
+      - "$ref": "#/CourseFileOverview"
+      discriminator:
+        propertyName: type
+  CourseDirectoryEntry:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+        - directory
+        - file
+      id:
+        type: string
+        example: '33352562'
+      name:
+        type: string
+        example: Laboratori
+    required:
+    - id
+    - type
+    - name
+  CourseFileOverview:
+    allOf:
+    - "$ref": "#/CourseDirectoryEntry"
+    - type: object
+      properties:
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+        mimeType:
+          type: string
+          example: application/x-zip-compressed
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-08-31 14:00:00.000000000 Z
+      required:
+      - sizeInKiloBytes
+      - mimeType
+      - createdAt
+  CourseFileUploadRequest:
+    type: object
+    properties:
+      file:
+        type: string
+        format: binary
+        description: File da caricare.
+      title:
+        type: string
+        description: Titolo mostrato agli studenti.
+      description:
+        type:
+        - string
+        - 'null'
+        description: Nota opzionale sul contenuto del file.
+    required:
+    - file
+    - title
+  CourseGuideSection:
+    type: object
+    properties:
+      title:
+        type: string
+        example: Presentazione
+      content:
+        type: string
+        example: The course will cover the design and implementation of server-side
+          architectures...
+    required:
+    - title
+    - content
+  CourseNotices:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 360724
+      publishedAt:
+        type: string
+        format: date-time
+        example: 2022-07-03 14:00:00.000000000 Z
+      createdAt:
+        type:
+        - string
+        - 'null'
+        format: date-time
+        description: Data di creazione dell'avviso lato docente.
+      expiresAt:
+        type: string
+        format: date-time
+        nullable: true
+        example: 2022-08-31 14:00:00.000000000 Z
+      content:
+        type: string
+        example: "<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>"
+      body:
+        type:
+        - string
+        - 'null'
+        description: Testo completo dell'avviso in formato HTML.
+      title:
+        type:
+        - string
+        - 'null'
+        description: Titolo assegnato all'avviso.
+      visibleFrom:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      visibleTo:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      isVisible:
+        type:
+        - boolean
+        - 'null'
+        description: Stato di visibilità corrente per gli studenti.
+    required:
+    - id
+    - publishedAt
+    - expiresAt
+    - content
+  CourseOverview:
+    allOf:
+    - "$ref": "#/CourseOverviewBase"
+    - type: object
+      properties:
+        isOverBooking:
+          type: boolean
+          example: false
+        isInPersonalStudyPlan:
+          type: boolean
+          description: Included in the PSP | Incluso nel carico didattico
+          example: true
+        enrolledCount:
+          type:
+          - integer
+          - 'null'
+          description: Numero di studenti attualmente iscritti al corso.
+  CourseOverviewBase:
+    type: object
+    properties:
+      id:
+        type: integer
+        nullable: true
+        description: The identifier for the current instance of this course. If
+          null this is not a teaching (such as thesis), it won't have a course page
+        example: 258674
+      name:
+        type: string
+        example: System and device programming
+      shortcode:
+        type: string
+        example: 01NYHOV
+      cfu:
+        type: integer
+        example: 10
+      teachingPeriod:
+        type: string
+        description: The semester(s) this course belongs to
+        example: 2-2
+      teacherId:
+        type: integer
+        nullable: true
+        example: 2893
+      previousEditions:
+        description: Previous editions of this course associated with the current user.
+        type: array
+        items:
+          type: object
+          properties:
+            year:
+              type: string
+              example: '2021'
+            id:
+              type: integer
+              example: 244577
+          required:
+          - year
+          - id
+      isModule:
+        type: boolean
+        description: If true, this course is actually a module
+        example: true
+      moduleNumber:
+        type: integer
+        description: The module number, if this is a module
+        example: 1
+      year:
+        type: string
+        example: '2022'
+      moodleCourses:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Analisi Matematica I
+            id:
+              type: string
+              example: '645376'
+        nullable: true
+    required:
+    - id
+    - name
+    - shortcode
+    - cfu
+  CoursePreferencesRequest:
+    type: object
+    properties:
+      notifications:
+        type: object
+        properties:
+          notices:
+            type: boolean
+            example: true
+          files:
+            type: boolean
+            example: true
+          lectures:
+            type: boolean
+            example: true
+  Device:
+    type: object
+    properties:
+      name:
+        type: string
+        example: S10+ di Luca
+      platform:
+        type: string
+        example: Android
+      version:
+        type: string
+        example: 12
+      model:
+        type: string
+        example: S10
+      manufacturer:
+        type: string
+        example: Samsung
+    required:
+    - platform
+  EmailBadge:
+    type: object
+    properties:
+      unreadEmails:
+        type: string
+        example: 99+
+    required:
+    - unreadEmails
+  EmergencyContact:
+    type: object
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+      notes:
+        type:
+        - string
+        - 'null'
+    required:
+    - name
+    - phone
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        example: 2
+      message:
+        type: string
+        example: Error message
+  EscError:
+    allOf:
+    - "$ref": "#/Error"
+    - type: object
+      properties:
+        careerId:
+          type: number
+          example: '290683'
+  Exam:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 888122
+      courseId:
+        type: number
+        example: 262147
+      courseShortcode:
+        type: string
+        example: 02JSKOV
+      courseName:
+        type: string
+        example: Human Computer Interaction
+      teacherId:
+        type: integer
+        example: 2154
+      type:
+        type: string
+        example: Esami scritti a risposta aperta o chiusa tramite PC
+      places:
+        type: array
+        items:
+          "$ref": "#/PlaceRef"
+      status:
+        type: string
+        example: available
+        enum:
+        - available
+        - booked
+        - requestable
+        - requested
+        - requestAccepted
+        - requestRejected
+        - unavailable
+      bookingStartsAt:
+        type: string
+        format: date-time
+        nullable: true
+      bookingEndsAt:
+        type: string
+        format: date-time
+        example: '2022-08-31T14:00:00Z'
+      examStartsAt:
+        type: string
+        format: date-time
+        nullable: true
+        example: '2022-09-02T14:00:00Z'
+      examEndsAt:
+        type: string
+        format: date-time
+        nullable: true
+        example: '2022-09-02T17:00:00Z'
+      bookedCount:
+        type: integer
+        example: 42
+      availableCount:
+        type: integer
+        example: 8
+      question:
+        type: object
+        nullable: true
+        properties:
+          id:
+            type: integer
+            example: 1
+          statement:
+            type: string
+            example: Do you have a laptop to bring at the exam?
+          options:
+            type: array
+            items:
+              type: string
+            example:
+            - true
+            - false
+        required:
+        - id
+        - statement
+        - options
+        example: 
+      feedback:
+        type: string
+        nullable: true
+        example: 
+      isReschedulable:
+        description: If true, the student can ask the professor to reschedule the
+          exam
+        type: boolean
+        example: false
+      notes:
+        type: string
+        nullable: true
+        example: 
+      moduleNumber:
+        type: integer
+        description: The module number, if this is a module
+        example: 1
+      requestReason:
+        type: string
+        nullable: true
+        example: 
+      requestDetails:
+        type: string
+        nullable: true
+        example: 
+    required:
+    - id
+    - courseId
+    - courseShortcode
+    - courseName
+    - teacherId
+    - type
+    - status
+    - bookingStartsAt
+    - bookingEndsAt
+    - examStartsAt
+    - examEndsAt
+    - bookedCount
+    - availableCount
+    - question
+    - feedback
+    - notes
+    - isReschedulable
+    - moduleNumber
+    - requestReason
+    - requestDetails
+  Fault:
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+        enum:
+        - new
+        - in_progress
+        - resolved
+        - rejected
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      location:
+        type: string
+      room:
+        type:
+        - string
+        - 'null'
+      description:
+        type: string
+      attachments:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: string
+          required:
+          - id
+          - url
+    required:
+    - id
+    - status
+    - createdAt
+    - updatedAt
+    - location
+    - description
+  FaultCreateRequest:
+    type: object
+    properties:
+      date:
+        type:
+        - string
+        - 'null'
+        format: date
+      room:
+        type:
+        - string
+        - 'null'
+      location:
+        type: string
+      description:
+        type: string
+      attachments:
+        type: array
+        items:
+          type: string
+          format: base64
+    required:
+    - location
+    - description
+  FcmRegistrationRequest:
+    type: object
+    properties:
+      fcmRegistrationToken:
+        type: string
+        example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+  Floor:
+    type: object
+    properties:
+      id:
+        type: string
+        example: XPTE
+      name:
+        type: string
+        example: Piano Terra
+      level:
+        type: integer
+        example: 0
+    required:
+    - id
+    - name
+    - level
+  FreeRoom:
+    allOf:
+    - "$ref": "#/PlaceRef"
+    - type: object
+      properties:
+        id:
+          type: string
+        freeFrom:
+          type: string
+          format: date-time
+        freeTo:
+          type: string
+          format: date-time
+      required:
+      - freeFrom
+      - freeTo
+  GeoLocation:
+    type: object
+    properties:
+      latitude:
+        type: number
+        example: 45.064254
+      longitude:
+        type: number
+        example: 7.657823
+    required:
+    - latitude
+    - longitude
+  Identity:
+    type: object
+    properties:
+      username:
+        type: string
+        example: s290683
+      type:
+        type: string
+        example: student
+      clientId:
+        type: string
+        example: 5a54f626-4b7e-488e-a0e3-300f54051510
+      token:
+        type: string
+        example: c679fa38ff665df6a676acd833194385
+    required:
+    - username
+    - type
+    - clientId
+    - token
+  LinkToService:
+    type: object
+    properties:
+      url:
+        type: string
+        example: https://...
+    required:
+    - url
+  LoginCredentialsBasic:
+    allOf:
+    - "$ref": "#/LoginRequestBase"
+    - type: object
+      properties:
+        username:
+          type: string
+          example: s290683
+        password:
+          type: string
+          example: moreSecret
+      additionalProperties: false
+      required:
+      - username
+      - password
+  LoginCredentialsSSO:
+    allOf:
+    - "$ref": "#/LoginRequestBase"
+    - type: object
+      properties:
+        uid:
+          type: string
+          example: 123456-1234-5678-123456
+        key:
+          type: string
+          example: abcdef-abcd-efgh-abcdef
+      additionalProperties: false
+      required:
+      - uid
+      - key
+  LoginRequest:
+    oneOf:
+    - "$ref": "#/LoginCredentialsBasic"
+    - "$ref": "#/LoginCredentialsSSO"
+    discriminator:
+      propertyName: loginType
+  LoginRequestBase:
+    type: object
+    properties:
+      loginType:
+        type: string
+        enum:
+        - basic
+        - sso
+      client:
+        "$ref": "#/Client"
+      device:
+        "$ref": "#/Device"
+      preferences:
+        "$ref": "#/UpdatePreferencesRequest"
+    required:
+    - loginType
+    - preferences
+  Message:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 63775600
+      title:
+        type: string
+        example: Nuovo messaggio dalla Segreteria Studenti
+      message:
+        type: string
+        nullable: true
+        example: Puoi venire a ritirare la tua smartcard
+      type:
+        "$ref": "#/MessageType"
+      senderId:
+        type: number
+        example: 150157
+        nullable: true
+      sentAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:00:00Z'
+      isRead:
+        type: boolean
+        example: true
+    required:
+    - id
+    - title
+    - message
+    - type
+    - senderId
+    - sentAt
+    - isRead
+  MessageType:
+    type: string
+    enum:
+    - emergency
+    - event
+    - personal
+    - teacher
+    - secretariat
+    - exams
+    - mfa
+    example: secretariat
+  MfaStatusResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        enum:
+        - active
+        - locked
+        - available
+        - unavailable
+        - needsReauth
+        description: Current MFA status for the user
+      details:
+        type: object
+        nullable: true
+        description: Additional information about the MFA session. Present only
+          if status is `active` or `locked`
+        properties:
+          lastAuth:
+            type: string
+            format: date-time
+            example: '2021-09-30T00:00:00Z'
+            description: Date and time of the last successful MFA authentication
+          authCount:
+            type: integer
+            example: 1
+          serial:
+            type: string
+            description: Identifier of the MFA method in use
+            example: EDUP0000123456
+          description:
+            type: string
+            description: Custom name or label set by the user to identify the MFA
+              method
+            example: My phone
+        required:
+        - lastAuth
+        - authCount
+    required:
+    - status
+    - details
+  NewsItem:
+    allOf:
+    - "$ref": "#/NewsItemOverview"
+    - type: object
+      properties:
+        location:
+          type: string
+          example: Energy Center - Via Paolo Borsellino 38, Torino
+        htmlContent:
+          type: string
+          example: Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium
+            dell'Energy Center del Politecnico</strong>...
+        extras:
+          type: array
+          items:
+            "$ref": "#/NewsItemExtra"
+      required:
+      - id
+      - title
+      - isEvent
+      - shortDescription
+      - eventStartTime
+      - eventEndTime
+      - createdAt
+      - location
+      - htmlContent
+      - extras
+  NewsItemExtra:
+    type: object
+    properties:
+      url:
+        type: string
+        example: https://
+      description:
+        type: string
+        example: Bando
+      type:
+        type: string
+        enum:
+        - link
+        - file
+        - image
+        example: image
+      sizeInKiloBytes:
+        type: integer
+        example: 305
+        nullable: true
+    required:
+    - url
+    - description
+    - type
+    - sizeInKiloBytes
+  NewsItemOverview:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 123
+      title:
+        type: string
+        example: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità
+          per l'inclusione sociale
+      isEvent:
+        type: boolean
+        example: false
+      shortDescription:
+        type: string
+        example: Seminario di presentazione del progetto
+      eventStartTime:
+        type: string
+        example: Dal 30 agosto 2023
+        nullable: true
+      eventEndTime:
+        type: string
+        example: Al 30 agosto 2023
+        nullable: true
+      createdAt:
+        type: string
+        format: date-time
+        example: 2022-08-31 14:00:00.000000000 Z
+    required:
+    - id
+    - title
+    - isEvent
+    - shortDescription
+    - eventStartTime
+    - eventEndTime
+    - createdAt
+  Notification:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 63775600
+      title:
+        type: string
+        example: Nuovo materiale nel corso di Fisica
+      message:
+        type: string
+        nullable: true
+        example: Nuovo file presentazione.pdf aggiunto al materiale del corso di
+          Fisica
+      scope:
+        type: array
+        description: An array representing the hierarchical path to the object this
+          notification is related to (replicates the navigation/modules structure)
+        items:
+          type: string
+        example:
+        - teaching
+        - courses
+        - FIS000
+        - files
+      sentAt:
+        type: string
+        format: date-time
+        example: '2021-10-05T10:00:00Z'
+      isRead:
+        type: boolean
+        example: true
+    required:
+    - id
+    - title
+    - message
+    - type
+    - senderId
+    - sentAt
+    - isRead
+  NotificationPreferences:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          notices:
+            type: boolean
+            example: true
+          files:
+            type: boolean
+            example: true
+          lectures:
+            type: boolean
+            example: true
+          bookings:
+            type: boolean
+            example: true
+          tickets:
+            type: boolean
+            example: true
+        required:
+        - notices
+        - files
+        - lectures
+        - bookings
+        - tickets
+    required:
+    - data
+  Person:
+    allOf:
+    - "$ref": "#/PersonOverview"
+    - type: object
+      properties:
+        email:
+          type: string
+          example: fulvio.corno@polito.it
+        phoneNumbers:
+          type: array
+          items:
+            "$ref": "#/PhoneNumber"
+        facilityShortName:
+          type: string
+          nullable: true
+          example: DAUIN
+        profileUrl:
+          type: string
+          example: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
+        courses:
+          type: array
+          nullable: true
+          items:
+            "$ref": "#/PersonCourse"
+      required:
+      - email
+      - phoneNumbers
+      - facilityShortName
+      - profileUrl
+      - courses
+  PersonCourse:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: The identifier for this course
+        example: 258674
+      shortcode:
+        type: string
+        description: The shortcode for this course
+        example: 01NYHOV
+      name:
+        type: string
+        description: The name of the course
+        example: Computer sciences
+      role:
+        type: string
+        description: The role of the person in this course
+        example: Collaboratore
+      year:
+        type: number
+        description: The year this course was given in
+        example: 2021
+    required:
+    - id
+    - year
+    - role
+    - name
+  PersonOverview:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 2154
+      firstName:
+        type: string
+        example: Fulvio
+      lastName:
+        type: string
+        example: Corno
+      picture:
+        type: string
+        nullable: true
+        example: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+      role:
+        type: string
+        example: Docente
+    required:
+    - id
+    - firstName
+    - lastName
+    - picture
+    - role
+  PhoneNumber:
+    type: object
+    properties:
+      full:
+        type: string
+        example: '0110907053'
+      internal:
+        type: string
+        example: '7053'
+    required:
+    - full
+    - internal
+  Place:
+    allOf:
+    - "$ref": "#/PlaceOverview"
+    - type: object
+      properties:
+        geoJson:
+          "$ref": https://gist.githubusercontent.com/zit0un/3ac0575eb0f3aabdc645c3faad47ab4a/raw/8db5e3ab89418def3a15474979e494c92b69592e/GeoJSON-OAS3.yaml#/components/schemas/Feature
+        capacity:
+          type: integer
+          example: 300
+        structure:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: Dipartimento di Ingegneria Strutturale, Edile e Geotecnica
+            shortName:
+              type: string
+              example: DISEG
+            email:
+              type: string
+              nullable: true
+              example: 
+            phone:
+              type: string
+              nullable: true
+              example: 
+          required:
+          - name
+          - shortName
+          - email
+          - phone
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Personal Computer
+              description:
+                type: string
+                example: Computer fisso da tavolo cablato per la proiezione
+              category:
+                type: string
+                example: Technology
+            required:
+            - name
+            - description
+            - category
+      required:
+      - capacity
+      - structure
+      - resources
+      - geoJson
+  PlaceCategory:
+    type: object
+    properties:
+      id:
+        type: string
+        example: AULA
+      name:
+        type: string
+        example: Aula
+      showInMenu:
+        type: boolean
+        default: false
+      color:
+        type: string
+        example: lightBlue
+        default: gray
+      markerUrl:
+        type: string
+        format: url
+      priority:
+        description: A MapBox style priority number. 0 means most important, larger
+          numbers are less important
+        type: number
+        example: 60
+        default: 100
+      highlighted:
+        description: If tue, markers of this category should be shown initially
+          on the map
+        type: boolean
+        example: true
+        default: false
+    required:
+    - id
+    - name
+  PlaceCategoryOverview:
+    allOf:
+    - "$ref": "#/PlaceCategory"
+    - type: object
+      properties:
+        subCategory:
+          "$ref": "#/PlaceCategory"
+  PlaceOverview:
+    allOf:
+    - type: object
+      properties:
+        id:
+          type: string
+          example: TO_CIT09_XPTE_088
+        room:
+          "$ref": "#/RoomOverview"
+        category:
+          "$ref": "#/PlaceCategoryOverview"
+        site:
+          "$ref": "#/SiteOverview"
+        building:
+          "$ref": "#/BuildingOverview"
+        floor:
+          "$ref": "#/Floor"
+      required:
+      - id
+      - room
+      - category
+      - site
+      - building
+      - floor
+    - "$ref": "#/GeoLocation"
+  PlaceRef:
+    type: object
+    nullable: true
+    properties:
+      buildingId:
+        type: string
+        example: TO_CIT22
+      floorId:
+        type: string
+        example: XPTE
+      name:
+        type: string
+        example: Aula 1P
+      roomId:
+        type: string
+        example: 30
+      siteId:
+        type: string
+        example: TO_CIT
+    required:
+    - buildingId
+    - floorId
+    - name
+    - roomId
+    - siteId
+  RoomOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: '088'
+      name:
+        type: string
+        example: Aula 1D
+    required:
+    - id
+    - name
+  RootPlaceCategory:
+    allOf:
+    - "$ref": "#/PlaceCategory"
+    - type: object
+      properties:
+        subCategories:
+          type: array
+          items:
+            "$ref": "#/PlaceCategory"
+  Site:
+    allOf:
+    - "$ref": "#/SiteOverview"
+    - type: object
+      properties:
+        floors:
+          type: array
+          items:
+            "$ref": "#/Floor"
+        city:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 1272
+            name:
+              type: string
+              example: Torino
+          required:
+          - id
+          - name
+        extent:
+          type: number
+          example: 0.0015
+          description: A delta in degrees that applied to the centroid coordinates
+            of the site determines its extent
+      required:
+      - floors
+      - extent
+      - city
+    - "$ref": "#/GeoLocation"
+  SiteOverview:
+    type: object
+    properties:
+      id:
+        type: string
+        example: TO_CIT
+      name:
+        type: string
+        example: Sede Centrale - Cittadella Politecnica
+    required:
+    - id
+    - name
+  Teacher:
+    type: object
+    properties:
+      id:
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
+    required:
+    - id
+    - firstName
+    - lastName
+  UpdateAssignmentRequest:
+    type: object
+    properties:
+      deletedAt:
+        type: string
+        format: date-time
+        nullable: true
+        example: 2022-07-03 14:00:00.000000000 Z
+    required:
+    - deletedAt
+  UpdateInfo:
+    type: object
+    properties:
+      suggestUpdate:
+        type: boolean
+        example: true
+    required:
+    - suggestUpdate
+  UpdateNotificationPreferencesRequest:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          notices:
+            type: boolean
+            example: true
+          files:
+            type: boolean
+            example: true
+          lectures:
+            type: boolean
+            example: true
+          bookings:
+            type: boolean
+            example: true
+          tickets:
+            type: boolean
+            example: true
+    required:
+    - data
+  UpdatePreferencesRequest:
+    properties:
+      language:
+        type: string
+        enum:
+        - it
+        - en
+        example: it

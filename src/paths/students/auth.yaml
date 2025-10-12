@@ -1,0 +1,37 @@
+  "/auth/switch-career":
+    post:
+      tags:
+      - Students - Auth
+      summary: Switch career | Cambia carriera
+      operationId: switchCareer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: s290683
+                client:
+                  "$ref": "../../components/schemas/common.yaml#/Client"
+                device:
+                  "$ref": "../../components/schemas/common.yaml#/Device"
+              required:
+              - username
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Identity"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

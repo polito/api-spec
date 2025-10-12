@@ -1,0 +1,266 @@
+  "/deadlines":
+    get:
+      tags:
+      - Common - Profile
+      parameters:
+      - name: fromDate
+        in: query
+        description: First day - defaults to 7 days before today
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: Last day - defaults to 7 days after today
+        required: false
+        schema:
+          type: string
+          format: date
+      summary: List deadlines | Elenca scadenze
+      operationId: getDeadlines
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/Deadline"
+                required:
+                - data
+              example:
+                data:
+                - name: Termine per l'iscrizione e pagamento della prima rata, per
+                    gli studenti di anni successivi al primo
+                  type: Iscrizioni e pagamento tasse
+                  date: '2022-10-11'
+                  url: 
+                - name: Trasferimento da altri Atenei italiani
+                  type: Trasferimenti e valutazioni carriere precedenti
+                  date: '2022-10-14'
+                  url: 
+                - name: Termine per superare gli esami
+                  type: Sessioni esami di laurea
+                  date: '2022-11-12'
+                  url: 
+                - name: Termine iscrizione esame finale
+                  type: Sessioni esami di laurea
+                  date: '2022-11-14'
+                  url: 
+                - name: Periodo per la compilazione del piano carriera / carico didattico
+                  type: Iscrizioni e pagamento tasse
+                  date: '2022-11-25'
+                  url: 
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/unreadEmails":
+    get:
+      tags:
+      - Common - Profile
+      summary: Retrieve unread emails number | Recupera il numero di email non lette
+      operationId: getUnreadEmailslNumber
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/EmailBadge"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/messages":
+    get:
+      tags:
+      - Common - Profile
+      summary: List messages | Elenca messaggi
+      operationId: getMessages
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Message"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/messages/{messageId}":
+    delete:
+      tags:
+      - Common - Profile
+      summary: Delete a message | Cancella un messaggio
+      operationId: deleteMessage
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/messageIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Message not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/messages/{messageId}/read":
+    put:
+      tags:
+      - Common - Profile
+      summary: Mark a message as read | Segna un messaggio come letto
+      operationId: markMessageAsRead
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/messageIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Message not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/notifications":
+    get:
+      tags:
+      - Common - Profile
+      summary: List notifications | Elenca notifiche
+      operationId: getNotifications
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Notification"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/notifications/preferences":
+    get:
+      tags:
+      - Common - Profile
+      summary: Get notification preferences | Ottieni preferenze notifiche
+      operationId: getNotificationPreferences
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/NotificationPreferences"
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    patch:
+      tags:
+      - Common - Profile
+      summary: Update notification preferences | Aggiorna preferenze notifiche
+      operationId: updateNotificationPreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/common.yaml#/UpdateNotificationPreferencesRequest"
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/notifications/{notificationId}":
+    delete:
+      tags:
+      - Common - Profile
+      summary: Delete a notification | Cancella una notifica
+      operationId: deleteNotification
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/notificationIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Notification not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/notifications/{notificationId}/read":
+    put:
+      tags:
+      - Common - Profile
+      summary: Mark a notification as read | Segna una notifica come letta
+      operationId: markNotificationAsRead
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/notificationIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Notification not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/preferences":
+    patch:
+      tags:
+      - Common - Profile
+      summary: Update device preferences | Aggiorna preferenze del dispositivo
+      operationId: updateDevicePreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/common.yaml#/UpdatePreferencesRequest"
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/guides":
+    get:
+      tags:
+      - Common - Profile
+      summary: Get guides | Mostra guide
+      operationId: getGuides
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/Guide"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"

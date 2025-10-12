@@ -1,0 +1,65 @@
+  "/people":
+    get:
+      tags:
+      - Common - People
+      summary: Search people | Cerca persone
+      operationId: getPeople
+      parameters:
+      - name: search
+        in: query
+        description: Filter people containing 'search' in their full name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/PersonOverview"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/people/{personId}":
+    get:
+      tags:
+      - Common - People
+      summary: Show person | Mostra persona
+      operationId: getPerson
+      parameters:
+      - name: personId
+        in: path
+        required: true
+        schema:
+          type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Person"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        404:
+          description: Person not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

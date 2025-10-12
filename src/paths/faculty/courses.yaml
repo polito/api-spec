@@ -1,0 +1,158 @@
+  "/faculty/courses/{courseId}/students":
+    get:
+      tags:
+      - Faculty - Courses
+      summary: Elenca studenti iscritti al corso
+      operationId: listFacultyCourseStudents
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/FacultyCourseStudent"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/courses/{courseId}/collaborators":
+    get:
+      tags:
+      - Faculty - Courses
+      summary: Elenca collaboratori assegnati al corso
+      operationId: listAssignmentCollaborators
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/Collaborator"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/courses/{courseId}/collaborators/{collaboratorId}":
+    put:
+      tags:
+      - Faculty - Courses
+      summary: Aggiungi o aggiorna collaboratore
+      description: Operazione idempotente per creare o aggiornare un collaboratore
+        sul corso. Se il collaboratore esiste già, i suoi attributi vengono aggiornati.
+      operationId: upsertAssignmentCollaborator
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      - "$ref": "../../components/parameters.yaml#/CollaboratorId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/CollaboratorUpsertRequest"
+      responses:
+        '200':
+          description: Collaboratore aggiornato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/Collaborator"
+                required:
+                - data
+        '201':
+          description: Collaboratore creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/Collaborator"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Faculty - Courses
+      summary: Rimuovi collaboratore da un incarico
+      operationId: removeAssignmentCollaborator
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      - "$ref": "../../components/parameters.yaml#/CollaboratorId"
+      responses:
+        '204':
+          description: Rimosso
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/courses/{courseId}/message":
+    post:
+      tags:
+      - Faculty - Courses
+      summary: Invia comunicazione agli iscritti al corso
+      operationId: messageCourseSubscribers
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/CourseMessageRequest"
+      responses:
+        '202':
+          description: Accettato (invio in corso)
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/AcceptedResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

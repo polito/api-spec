@@ -1,0 +1,669 @@
+openapi: 3.1.1
+info:
+  title: Polito Students API
+  version: 2.2.3
+  license:
+    name: CC BY-NC 4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0/
+servers:
+- url: https://app.didattica.polito.it/api
+  description: Production server (uses live data)
+- url: https://app.didattica.polito.it/mock/api
+  description: Mock server (uses example data)
+security:
+- bearerAuth: []
+tags:
+- name: Common - Auth
+  description: Autenticazione e servizi collegati.
+- name: Common - Profile
+  description: Profilo utente, messaggi, notifiche e preferenze.
+- name: Common - News
+  description: News dell'Ateneo.
+- name: Common - Places
+  description: Mappa e POI di ateneo.
+- name: Common - Emergencies
+  description: Numeri e riferimenti di emergenza.
+- name: Common - Faults
+  description: Segnalazione guasti e tracciamento stato.
+- name: Common - People
+  description: Ricerca e dettaglio contatti della comunità di ateneo.
+- name: Common - Bookings
+  description: Prenotazioni aule/laboratori e slot disponibili.
+- name: Common - Courses
+  description: Consultazione condivisa delle informazioni sui corsi.
+- name: Students - Auth
+  description: Funzionalità di autenticazione specifiche per studenti.
+- name: Students - Student
+  description: Operazioni sul profilo studente.
+- name: Students - Exams
+  description: Gestione prenotazioni e informazioni sugli appelli d'esame.
+- name: Students - Lectures
+  description: Calendario lezioni, esercitazioni e aule virtuali.
+- name: Students - Esc
+  description: Gestione della European Student Card.
+- name: Students - Tickets
+  description: Apertura e monitoraggio ticket di supporto.
+- name: Students - Job offers
+  description: Consultazione offerte di lavoro e opportunità di carriera.
+- name: Students - Offering
+  description: Navigazione dell'offerta formativa e dei corsi di laurea.
+- name: Students - Surveys
+  description: Questionari e rilevazioni rivolte agli studenti.
+- name: Faculty - Profile
+  description: Operazioni specifiche sul profilo del docente.
+- name: Faculty - Exams
+  description: Gestione appelli e iscritti lato docente.
+- name: Faculty - Courses
+  description: Gestione incarichi didattici del docente, lezioni, materiali, avvisi e collaboratori.
+- name: Faculty - Digital Signature
+  description: Elenco e firma digitale documenti.
+- name: Faculty - Calendar
+  description: Consultazione e gestione dei calendari e degli eventi dell'agenda docente.
+x-tagGroups:
+- name: Common
+  tags:
+  - Common - Auth
+  - Common - Profile
+  - Common - News
+  - Common - Places
+  - Common - Emergencies
+  - Common - Faults
+  - Common - People
+  - Common - Bookings
+  - Common - Courses
+- name: Students
+  tags:
+  - Students - Auth
+  - Students - Student
+  - Students - Exams
+  - Students - Lectures
+  - Students - Esc
+  - Students - Tickets
+  - Students - Job offers
+  - Students - Offering
+  - Students - Surveys
+- name: Faculty
+  tags:
+  - Faculty - Profile
+  - Faculty - Exams
+  - Faculty - Courses
+  - Faculty - Digital Signature
+  - Faculty - Calendar
+paths:
+  /auth/client:
+    $ref: './paths/common/auth.yaml#/~1auth~1client'
+  /auth/login:
+    $ref: './paths/common/auth.yaml#/~1auth~1login'
+  /auth/logout:
+    $ref: './paths/common/auth.yaml#/~1auth~1logout'
+  /auth/mfa/challenge:
+    $ref: './paths/common/auth.yaml#/~1auth~1mfa~1challenge'
+  /auth/mfa/enrol:
+    $ref: './paths/common/auth.yaml#/~1auth~1mfa~1enrol'
+  /auth/mfa/status:
+    $ref: './paths/common/auth.yaml#/~1auth~1mfa~1status'
+  /auth/mfa/validate:
+    $ref: './paths/common/auth.yaml#/~1auth~1mfa~1validate'
+  /auth/serviceLink/liveClass/{meetingID}:
+    $ref: './paths/common/auth.yaml#/~1auth~1serviceLink~1liveClass~1{meetingID}'
+  /auth/serviceLink/mail:
+    $ref: './paths/common/auth.yaml#/~1auth~1serviceLink~1mail'
+  /auth/serviceLink/moodle/{course}:
+    $ref: './paths/common/auth.yaml#/~1auth~1serviceLink~1moodle~1{course}'
+  /auth/switch-career:
+    $ref: './paths/students/auth.yaml#/~1auth~1switch-career'
+  /booking-topics:
+    $ref: './paths/common/bookings.yaml#/~1booking-topics'
+  /booking-topics/{bookingTopicId}/slots:
+    $ref: './paths/common/bookings.yaml#/~1booking-topics~1{bookingTopicId}~1slots'
+  /booking-topics/{bookingTopicId}/slots/{bookingSlotId}/seats:
+    $ref: './paths/common/bookings.yaml#/~1booking-topics~1{bookingTopicId}~1slots~1{bookingSlotId}~1seats'
+  /bookings:
+    $ref: './paths/common/bookings.yaml#/~1bookings'
+  /bookings/{bookingId}:
+    $ref: './paths/common/bookings.yaml#/~1bookings~1{bookingId}'
+  /courses:
+    $ref: './paths/common/courses.yaml#/~1courses'
+  /courses/{courseId}:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}'
+  /courses/{courseId}/assignments:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1assignments'
+  /courses/{courseId}/assignments/{assignmentId}:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1assignments~1{assignmentId}'
+  /courses/{courseId}/files:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1files'
+  /courses/{courseId}/files/{fileId}:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1files~1{fileId}'
+  /courses/{courseId}/guide:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1guide'
+  /courses/{courseId}/lectures:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1lectures'
+  /courses/{courseId}/lectures/{lectureId}:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1lectures~1{lectureId}'
+  /courses/{courseId}/nextLecture:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1nextLecture'
+  /courses/{courseId}/notices:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1notices'
+  /courses/{courseId}/notices/{noticeId}:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1notices~1{noticeId}'
+  /courses/{courseId}/preferences:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1preferences'
+  /courses/{courseId}/videolectures:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1videolectures'
+  /courses/{courseId}/virtual-classrooms:
+    $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1virtual-classrooms'
+  /deadlines:
+    $ref: './paths/common/profile.yaml#/~1deadlines'
+  /emergencies/contacts:
+    $ref: './paths/common/emergencies.yaml#/~1emergencies~1contacts'
+  /esc:
+    $ref: './paths/students/esc.yaml#/~1esc'
+  /esc/create:
+    $ref: './paths/students/esc.yaml#/~1esc~1create'
+  /exams:
+    $ref: './paths/students/exams.yaml#/~1exams'
+  /exams/{examId}/booking:
+    $ref: './paths/students/exams.yaml#/~1exams~1{examId}~1booking'
+  /exams/{examId}/rescheduleRequest:
+    $ref: './paths/students/exams.yaml#/~1exams~1{examId}~1rescheduleRequest'
+  /faculty/calendars:
+    $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars'
+  /faculty/calendars/{calendarId}:
+    $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1{calendarId}'
+  /faculty/calendars/{calendarId}/events:
+    $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1{calendarId}~1events'
+  /faculty/calendars/{calendarId}/events/{eventId}:
+    $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1{calendarId}~1events~1{eventId}'
+  /faculty/courses/{courseId}/collaborators:
+    $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1collaborators'
+  /faculty/courses/{courseId}/collaborators/{collaboratorId}:
+    $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1collaborators~1{collaboratorId}'
+  /faculty/courses/{courseId}/message:
+    $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1message'
+  /faculty/courses/{courseId}/students:
+    $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1students'
+  /faculty/exams:
+    $ref: './paths/faculty/exams.yaml#/~1faculty~1exams'
+  /faculty/exams/{examId}:
+    $ref: './paths/faculty/exams.yaml#/~1faculty~1exams~1{examId}'
+  /faculty/exams/{examId}/notify:
+    $ref: './paths/faculty/exams.yaml#/~1faculty~1exams~1{examId}~1notify'
+  /faculty/exams/{examId}/students/{studentId}:
+    $ref: './paths/faculty/exams.yaml#/~1faculty~1exams~1{examId}~1students~1{studentId}'
+  /faculty/me:
+    $ref: './paths/faculty/profile.yaml#/~1faculty~1me'
+  /faculty/signing/documents:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents'
+  /faculty/signing/documents/{documentId}/sign:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents~1{documentId}~1sign'
+  /faults:
+    $ref: './paths/common/faults.yaml#/~1faults'
+  /faults/{faultId}:
+    $ref: './paths/common/faults.yaml#/~1faults~1{faultId}'
+  /grades:
+    $ref: './paths/students/student.yaml#/~1grades'
+  /guides:
+    $ref: './paths/common/profile.yaml#/~1guides'
+  /job-offers:
+    $ref: './paths/students/job-offers.yaml#/~1job-offers'
+  /job-offers/{jobOfferId}:
+    $ref: './paths/students/job-offers.yaml#/~1job-offers~1{jobOfferId}'
+  /lectures:
+    $ref: './paths/students/lectures.yaml#/~1lectures'
+  /me:
+    $ref: './paths/students/student.yaml#/~1me'
+  /messages:
+    $ref: './paths/common/profile.yaml#/~1messages'
+  /messages/{messageId}:
+    $ref: './paths/common/profile.yaml#/~1messages~1{messageId}'
+  /messages/{messageId}/read:
+    $ref: './paths/common/profile.yaml#/~1messages~1{messageId}~1read'
+  /news:
+    $ref: './paths/common/news.yaml#/~1news'
+  /news/{newsItemId}:
+    $ref: './paths/common/news.yaml#/~1news~1{newsItemId}'
+  /notifications:
+    $ref: './paths/common/profile.yaml#/~1notifications'
+  /notifications/preferences:
+    $ref: './paths/common/profile.yaml#/~1notifications~1preferences'
+  /notifications/{notificationId}:
+    $ref: './paths/common/profile.yaml#/~1notifications~1{notificationId}'
+  /notifications/{notificationId}/read:
+    $ref: './paths/common/profile.yaml#/~1notifications~1{notificationId}~1read'
+  /offering:
+    $ref: './paths/students/offering.yaml#/~1offering'
+  /offering/courses/{courseShortcode}:
+    $ref: './paths/students/offering.yaml#/~1offering~1courses~1{courseShortcode}'
+  /offering/courses/{courseShortcode}/statistics:
+    $ref: './paths/students/offering.yaml#/~1offering~1courses~1{courseShortcode}~1statistics'
+  /offering/degrees/{degreeId}:
+    $ref: './paths/students/offering.yaml#/~1offering~1degrees~1{degreeId}'
+  /people:
+    $ref: './paths/common/people.yaml#/~1people'
+  /people/{personId}:
+    $ref: './paths/common/people.yaml#/~1people~1{personId}'
+  /preferences:
+    $ref: './paths/common/profile.yaml#/~1preferences'
+  /provisional-grades:
+    $ref: './paths/students/student.yaml#/~1provisional-grades'
+  /provisional-grades/{provisionalGradeId}/accept:
+    $ref: './paths/students/student.yaml#/~1provisional-grades~1{provisionalGradeId}~1accept'
+  /provisional-grades/{provisionalGradeId}/reject:
+    $ref: './paths/students/student.yaml#/~1provisional-grades~1{provisionalGradeId}~1reject'
+  /surveys:
+    $ref: './paths/students/surveys.yaml#/~1surveys'
+  /ticket-faqs:
+    $ref: './paths/students/tickets.yaml#/~1ticket-faqs'
+  /ticket-topics:
+    $ref: './paths/students/tickets.yaml#/~1ticket-topics'
+  /tickets:
+    $ref: './paths/students/tickets.yaml#/~1tickets'
+  /tickets/{ticketId}:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}'
+  /tickets/{ticketId}/attachments/{attachmentId}:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}~1attachments~1{attachmentId}'
+  /tickets/{ticketId}/close:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}~1close'
+  /tickets/{ticketId}/read:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}~1read'
+  /tickets/{ticketId}/replies:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}~1replies'
+  /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
+    $ref: './paths/students/tickets.yaml#/~1tickets~1{ticketId}~1replies~1{replyId}~1attachments~1{attachmentId}'
+  /unreadEmails:
+    $ref: './paths/common/profile.yaml#/~1unreadEmails'
+  /v2/place-categories:
+    $ref: './paths/common/places.yaml#/~1v2~1place-categories'
+  /v2/places:
+    $ref: './paths/common/places.yaml#/~1v2~1places'
+  /v2/places/bookings:
+    $ref: './paths/common/places.yaml#/~1v2~1places~1bookings'
+  /v2/places/{placeId}:
+    $ref: './paths/common/places.yaml#/~1v2~1places~1{placeId}'
+  /v2/sites:
+    $ref: './paths/common/places.yaml#/~1v2~1sites'
+  /v2/sites/{siteId}/buildings:
+    $ref: './paths/common/places.yaml#/~1v2~1sites~1{siteId}~1buildings'
+  /v2/sites/{siteId}/free-rooms:
+    $ref: './paths/common/places.yaml#/~1v2~1sites~1{siteId}~1free-rooms'
+components:
+  parameters:
+    acceptLanguageHeader:
+      $ref: './components/parameters.yaml#/acceptLanguageHeader'
+    assignmentIdParam:
+      $ref: './components/parameters.yaml#/assignmentIdParam'
+    AssignmentId:
+      $ref: './components/parameters.yaml#/AssignmentId'
+    CalendarEventId:
+      $ref: './components/parameters.yaml#/CalendarEventId'
+    CalendarId:
+      $ref: './components/parameters.yaml#/CalendarId'
+    CollaboratorId:
+      $ref: './components/parameters.yaml#/CollaboratorId'
+    CourseId:
+      $ref: './components/parameters.yaml#/CourseId'
+    courseIdParam:
+      $ref: './components/parameters.yaml#/courseIdParam'
+    courseShortcodeParam:
+      $ref: './components/parameters.yaml#/courseShortcodeParam'
+    degreeIdParam:
+      $ref: './components/parameters.yaml#/degreeIdParam'
+    DocumentId:
+      $ref: './components/parameters.yaml#/DocumentId'
+    ExamId:
+      $ref: './components/parameters.yaml#/ExamId'
+    FaultId:
+      $ref: './components/parameters.yaml#/FaultId'
+    jobOfferIdParam:
+      $ref: './components/parameters.yaml#/jobOfferIdParam'
+    LectureId:
+      $ref: './components/parameters.yaml#/LectureId'
+    MaterialId:
+      $ref: './components/parameters.yaml#/MaterialId'
+    messageIdParam:
+      $ref: './components/parameters.yaml#/messageIdParam'
+    NoticeId:
+      $ref: './components/parameters.yaml#/NoticeId'
+    notificationIdParam:
+      $ref: './components/parameters.yaml#/notificationIdParam'
+    PageParam:
+      $ref: './components/parameters.yaml#/PageParam'
+    PageSizeParam:
+      $ref: './components/parameters.yaml#/PageSizeParam'
+    pathPlaceId:
+      $ref: './components/parameters.yaml#/pathPlaceId'
+    pathSiteId:
+      $ref: './components/parameters.yaml#/pathSiteId'
+    provisionalGradeIdParam:
+      $ref: './components/parameters.yaml#/provisionalGradeIdParam'
+    queryBuildingId:
+      $ref: './components/parameters.yaml#/queryBuildingId'
+    queryFloorId:
+      $ref: './components/parameters.yaml#/queryFloorId'
+    queryPlaceCategoryId:
+      $ref: './components/parameters.yaml#/queryPlaceCategoryId'
+    queryPlaceSubCategoryId:
+      $ref: './components/parameters.yaml#/queryPlaceSubCategoryId'
+    querySiteId:
+      $ref: './components/parameters.yaml#/querySiteId'
+    StudentId:
+      $ref: './components/parameters.yaml#/StudentId'
+    teacherIdQueryParam:
+      $ref: './components/parameters.yaml#/teacherIdQueryParam'
+    ticketAttachmentIdParam:
+      $ref: './components/parameters.yaml#/ticketAttachmentIdParam'
+    ticketIdParam:
+      $ref: './components/parameters.yaml#/ticketIdParam'
+    ticketReplyIdParam:
+      $ref: './components/parameters.yaml#/ticketReplyIdParam'
+    yearQueryParam:
+      $ref: './components/parameters.yaml#/yearQueryParam'
+  responses:
+    BadRequestResponse:
+      $ref: './components/responses.yaml#/BadRequestResponse'
+    ConflictResponse:
+      $ref: './components/responses.yaml#/ConflictResponse'
+    CreatedAckResponse:
+      $ref: './components/responses.yaml#/CreatedAckResponse'
+    ErrorEscResponse:
+      $ref: './components/responses.yaml#/ErrorEscResponse'
+    ErrorResponse:
+      $ref: './components/responses.yaml#/ErrorResponse'
+    NotFoundResponse:
+      $ref: './components/responses.yaml#/NotFoundResponse'
+    UnauthorizedResponse:
+      $ref: './components/responses.yaml#/UnauthorizedResponse'
+  securitySchemes:
+    bearerAuth:
+      $ref: './components/security-schemes.yaml#/bearerAuth'
+  schemas:
+    AcceptedResponse:
+      $ref: './components/schemas/common.yaml#/AcceptedResponse'
+    Booking:
+      $ref: './components/schemas/common.yaml#/Booking'
+    BookingLocationCheck:
+      $ref: './components/schemas/common.yaml#/BookingLocationCheck'
+    BookingPlaceRef:
+      $ref: './components/schemas/common.yaml#/BookingPlaceRef'
+    BookingSeatCell:
+      $ref: './components/schemas/common.yaml#/BookingSeatCell'
+    BookingSeats:
+      $ref: './components/schemas/common.yaml#/BookingSeats'
+    BookingSeatsRow:
+      $ref: './components/schemas/common.yaml#/BookingSeatsRow'
+    BookingSlot:
+      $ref: './components/schemas/common.yaml#/BookingSlot'
+    BookingSubtopic:
+      $ref: './components/schemas/common.yaml#/BookingSubtopic'
+    BookingSubtopicOverview:
+      $ref: './components/schemas/common.yaml#/BookingSubtopicOverview'
+    BookingTopic:
+      $ref: './components/schemas/common.yaml#/BookingTopic'
+    BookingTopicLeaf:
+      $ref: './components/schemas/common.yaml#/BookingTopicLeaf'
+    BookingTopicOverview:
+      $ref: './components/schemas/common.yaml#/BookingTopicOverview'
+    BookingVirtualPlaceRef:
+      $ref: './components/schemas/common.yaml#/BookingVirtualPlaceRef'
+    Building:
+      $ref: './components/schemas/common.yaml#/Building'
+    BuildingOverview:
+      $ref: './components/schemas/common.yaml#/BuildingOverview'
+    Client:
+      $ref: './components/schemas/common.yaml#/Client'
+    ClientVersionRequest:
+      $ref: './components/schemas/common.yaml#/ClientVersionRequest'
+    Collaborator:
+      $ref: './components/schemas/faculty.yaml#/Collaborator'
+    CollaboratorUpsertRequest:
+      $ref: './components/schemas/faculty.yaml#/CollaboratorUpsertRequest'
+    Course:
+      $ref: './components/schemas/common.yaml#/Course'
+    CourseAssignment:
+      $ref: './components/schemas/common.yaml#/CourseAssignment'
+    CourseAssignmentUpload:
+      $ref: './components/schemas/common.yaml#/CourseAssignmentUpload'
+    CourseDirectory:
+      $ref: './components/schemas/common.yaml#/CourseDirectory'
+    CourseDirectoryContent:
+      $ref: './components/schemas/common.yaml#/CourseDirectoryContent'
+    CourseDirectoryEntry:
+      $ref: './components/schemas/common.yaml#/CourseDirectoryEntry'
+    CourseFileOverview:
+      $ref: './components/schemas/common.yaml#/CourseFileOverview'
+    CourseFileUploadRequest:
+      $ref: './components/schemas/common.yaml#/CourseFileUploadRequest'
+    CourseGuideSection:
+      $ref: './components/schemas/common.yaml#/CourseGuideSection'
+    CourseHours:
+      $ref: './components/schemas/students.yaml#/CourseHours'
+    CourseLecture:
+      $ref: './components/schemas/faculty.yaml#/CourseLecture'
+    CourseLectureStaffMember:
+      $ref: './components/schemas/faculty.yaml#/CourseLectureStaffMember'
+    CourseLectureStaffMemberRequest:
+      $ref: './components/schemas/faculty.yaml#/CourseLectureStaffMemberRequest'
+    CourseLectureUpsertRequest:
+      $ref: './components/schemas/faculty.yaml#/CourseLectureUpsertRequest'
+    CourseMessageRequest:
+      $ref: './components/schemas/faculty.yaml#/CourseMessageRequest'
+    CourseNotice:
+      $ref: './components/schemas/faculty.yaml#/CourseNotice'
+    CourseNoticeUpsertRequest:
+      $ref: './components/schemas/faculty.yaml#/CourseNoticeUpsertRequest'
+    CourseNotices:
+      $ref: './components/schemas/common.yaml#/CourseNotices'
+    CourseOverview:
+      $ref: './components/schemas/common.yaml#/CourseOverview'
+    CourseOverviewBase:
+      $ref: './components/schemas/common.yaml#/CourseOverviewBase'
+    CoursePreferencesRequest:
+      $ref: './components/schemas/common.yaml#/CoursePreferencesRequest'
+    CourseStatistics:
+      $ref: './components/schemas/students.yaml#/CourseStatistics'
+    CreateTicketRequest:
+      $ref: './components/schemas/students.yaml#/CreateTicketRequest'
+    Deadline:
+      $ref: './components/schemas/students.yaml#/Deadline'
+    Degree:
+      $ref: './components/schemas/students.yaml#/Degree'
+    DegreeOverview:
+      $ref: './components/schemas/students.yaml#/DegreeOverview'
+    Device:
+      $ref: './components/schemas/common.yaml#/Device'
+    EmailBadge:
+      $ref: './components/schemas/common.yaml#/EmailBadge'
+    EmergencyContact:
+      $ref: './components/schemas/common.yaml#/EmergencyContact'
+    Error:
+      $ref: './components/schemas/common.yaml#/Error'
+    EscError:
+      $ref: './components/schemas/common.yaml#/EscError'
+    EuropeanStudentCard:
+      $ref: './components/schemas/students.yaml#/EuropeanStudentCard'
+    Exam:
+      $ref: './components/schemas/common.yaml#/Exam'
+    ExamEnrollment:
+      $ref: './components/schemas/faculty.yaml#/ExamEnrollment'
+    ExamGrade:
+      $ref: './components/schemas/students.yaml#/ExamGrade'
+    ExamNotificationRequest:
+      $ref: './components/schemas/faculty.yaml#/ExamNotificationRequest'
+    FacultyCalendar:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendar'
+    FacultyCalendarDetail:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarDetail'
+    FacultyCalendarEvent:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarEvent'
+    FacultyCalendarEventCreateRequest:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventCreateRequest'
+    FacultyCalendarEventMaterial:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventMaterial'
+    FacultyCalendarEventTypeEnum:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventTypeEnum'
+    FacultyCourseStudent:
+      $ref: './components/schemas/faculty.yaml#/FacultyCourseStudent'
+    FacultyExam:
+      $ref: './components/schemas/faculty.yaml#/FacultyExam'
+    FacultyExamSummary:
+      $ref: './components/schemas/faculty.yaml#/FacultyExamSummary'
+    FacultyProfile:
+      $ref: './components/schemas/faculty.yaml#/FacultyProfile'
+    FacultyProfileUpdateRequest:
+      $ref: './components/schemas/faculty.yaml#/FacultyProfileUpdateRequest'
+    Fault:
+      $ref: './components/schemas/common.yaml#/Fault'
+    FaultCreateRequest:
+      $ref: './components/schemas/common.yaml#/FaultCreateRequest'
+    FcmRegistrationRequest:
+      $ref: './components/schemas/common.yaml#/FcmRegistrationRequest'
+    Floor:
+      $ref: './components/schemas/common.yaml#/Floor'
+    FreeRoom:
+      $ref: './components/schemas/common.yaml#/FreeRoom'
+    GeoLocation:
+      $ref: './components/schemas/common.yaml#/GeoLocation'
+    GradeCount:
+      $ref: './components/schemas/students.yaml#/GradeCount'
+    Guide:
+      $ref: './components/schemas/students.yaml#/Guide'
+    GuideField:
+      $ref: './components/schemas/students.yaml#/GuideField'
+    GuideSection:
+      $ref: './components/schemas/students.yaml#/GuideSection'
+    Identity:
+      $ref: './components/schemas/common.yaml#/Identity'
+    JobOffer:
+      $ref: './components/schemas/students.yaml#/JobOffer'
+    JobOfferOverview:
+      $ref: './components/schemas/students.yaml#/JobOfferOverview'
+    Lecture:
+      $ref: './components/schemas/students.yaml#/Lecture'
+    LinkToService:
+      $ref: './components/schemas/common.yaml#/LinkToService'
+    LoginCredentialsBasic:
+      $ref: './components/schemas/common.yaml#/LoginCredentialsBasic'
+    LoginCredentialsSSO:
+      $ref: './components/schemas/common.yaml#/LoginCredentialsSSO'
+    LoginRequest:
+      $ref: './components/schemas/common.yaml#/LoginRequest'
+    LoginRequestBase:
+      $ref: './components/schemas/common.yaml#/LoginRequestBase'
+    Message:
+      $ref: './components/schemas/common.yaml#/Message'
+    MessageType:
+      $ref: './components/schemas/common.yaml#/MessageType'
+    MfaStatusResponse:
+      $ref: './components/schemas/common.yaml#/MfaStatusResponse'
+    NewsItem:
+      $ref: './components/schemas/common.yaml#/NewsItem'
+    NewsItemExtra:
+      $ref: './components/schemas/common.yaml#/NewsItemExtra'
+    NewsItemOverview:
+      $ref: './components/schemas/common.yaml#/NewsItemOverview'
+    Notification:
+      $ref: './components/schemas/common.yaml#/Notification'
+    NotificationPreferences:
+      $ref: './components/schemas/common.yaml#/NotificationPreferences'
+    OfferingClass:
+      $ref: './components/schemas/students.yaml#/OfferingClass'
+    OfferingCourse:
+      $ref: './components/schemas/students.yaml#/OfferingCourse'
+    OfferingCourseOverview:
+      $ref: './components/schemas/students.yaml#/OfferingCourseOverview'
+    OfferingCourseStaff:
+      $ref: './components/schemas/students.yaml#/OfferingCourseStaff'
+    PaginatedCourseLectureList:
+      $ref: './components/schemas/faculty.yaml#/PaginatedCourseLectureList'
+    PaginatedFacultyCalendarEventList:
+      $ref: './components/schemas/faculty.yaml#/PaginatedFacultyCalendarEventList'
+    PaginatedFacultyExamList:
+      $ref: './components/schemas/faculty.yaml#/PaginatedFacultyExamList'
+    Person:
+      $ref: './components/schemas/common.yaml#/Person'
+    PersonCourse:
+      $ref: './components/schemas/common.yaml#/PersonCourse'
+    PersonOverview:
+      $ref: './components/schemas/common.yaml#/PersonOverview'
+    PhoneNumber:
+      $ref: './components/schemas/common.yaml#/PhoneNumber'
+    Place:
+      $ref: './components/schemas/common.yaml#/Place'
+    PlaceCategory:
+      $ref: './components/schemas/common.yaml#/PlaceCategory'
+    PlaceCategoryOverview:
+      $ref: './components/schemas/common.yaml#/PlaceCategoryOverview'
+    PlaceOverview:
+      $ref: './components/schemas/common.yaml#/PlaceOverview'
+    PlaceRef:
+      $ref: './components/schemas/common.yaml#/PlaceRef'
+    PreviousYearsToCompare:
+      $ref: './components/schemas/students.yaml#/PreviousYearsToCompare'
+    ProvisionalGrade:
+      $ref: './components/schemas/students.yaml#/ProvisionalGrade'
+    ProvisionalGradeState:
+      $ref: './components/schemas/students.yaml#/ProvisionalGradeState'
+    RelatedVirtualClassroom:
+      $ref: './components/schemas/students.yaml#/RelatedVirtualClassroom'
+    ReplyTicketRequest:
+      $ref: './components/schemas/students.yaml#/ReplyTicketRequest'
+    RoomAvailability:
+      $ref: './components/schemas/faculty.yaml#/RoomAvailability'
+    RoomBookingRequest:
+      $ref: './components/schemas/faculty.yaml#/RoomBookingRequest'
+    RoomOverview:
+      $ref: './components/schemas/common.yaml#/RoomOverview'
+    RootPlaceCategory:
+      $ref: './components/schemas/common.yaml#/RootPlaceCategory'
+    SignableDocument:
+      $ref: './components/schemas/faculty.yaml#/SignableDocument'
+    SignatureStartResponse:
+      $ref: './components/schemas/faculty.yaml#/SignatureStartResponse'
+    Site:
+      $ref: './components/schemas/common.yaml#/Site'
+    SiteOverview:
+      $ref: './components/schemas/common.yaml#/SiteOverview'
+    Student:
+      $ref: './components/schemas/students.yaml#/Student'
+    Survey:
+      $ref: './components/schemas/students.yaml#/Survey'
+    SurveyCourseRef:
+      $ref: './components/schemas/students.yaml#/SurveyCourseRef'
+    SurveyTaxonomy:
+      $ref: './components/schemas/students.yaml#/SurveyTaxonomy'
+    Teacher:
+      $ref: './components/schemas/common.yaml#/Teacher'
+    Ticket:
+      $ref: './components/schemas/students.yaml#/Ticket'
+    TicketAttachment:
+      $ref: './components/schemas/students.yaml#/TicketAttachment'
+    TicketFAQ:
+      $ref: './components/schemas/students.yaml#/TicketFAQ'
+    TicketOverview:
+      $ref: './components/schemas/students.yaml#/TicketOverview'
+    TicketReply:
+      $ref: './components/schemas/students.yaml#/TicketReply'
+    TicketStatus:
+      $ref: './components/schemas/students.yaml#/TicketStatus'
+    TicketSubtopic:
+      $ref: './components/schemas/students.yaml#/TicketSubtopic'
+    TicketTopic:
+      $ref: './components/schemas/students.yaml#/TicketTopic'
+    Track:
+      $ref: './components/schemas/students.yaml#/Track'
+    UpdateAssignmentRequest:
+      $ref: './components/schemas/common.yaml#/UpdateAssignmentRequest'
+    UpdateInfo:
+      $ref: './components/schemas/common.yaml#/UpdateInfo'
+    UpdateNotificationPreferencesRequest:
+      $ref: './components/schemas/common.yaml#/UpdateNotificationPreferencesRequest'
+    UpdatePreferencesRequest:
+      $ref: './components/schemas/common.yaml#/UpdatePreferencesRequest'
+    VideoLecture:
+      $ref: './components/schemas/students.yaml#/VideoLecture'
+    VirtualClassroom:
+      $ref: './components/schemas/students.yaml#/VirtualClassroom'
+    VirtualClassroomLive:
+      $ref: './components/schemas/students.yaml#/VirtualClassroomLive'
+    YearStatistics:
+      $ref: './components/schemas/students.yaml#/YearStatistics'

@@ -1,0 +1,792 @@
+  Collaborator:
+    type: object
+    properties:
+      personId:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+        example: tutwor
+      sections:
+        type: array
+        items:
+          type: string
+      permissions:
+        type: array
+        items:
+          type: string
+          enum:
+          - CAN_READ
+          - CAN_EDIT
+          - CAN_DELETE
+        description: Permessi associati al collaboratore sul corso.
+    required:
+    - personId
+    - name
+    - role
+    - permissions
+  CollaboratorUpsertRequest:
+    type: object
+    description: Schema unificato per creare o aggiornare un collaboratore.
+    properties:
+      role:
+        type: string
+        description: Ruolo del collaboratore nel corso.
+      sections:
+        type: array
+        items:
+          type: string
+        description: Sezioni del corso a cui il collaboratore ha accesso.
+      permissions:
+        type: array
+        items:
+          type: string
+          enum:
+          - CAN_READ
+          - CAN_EDIT
+          - CAN_DELETE
+        description: Permessi del collaboratore sul corso.
+    required:
+    - role
+    - permissions
+  CourseLecture:
+    type: object
+    properties:
+      id:
+        type: string
+      courseId:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+        description: Tipologia dell'evento (es. LECTURE, LAB).
+      startsAt:
+        type: string
+        format: date-time
+      endsAt:
+        type: string
+        format: date-time
+      topic:
+        type:
+        - string
+        - 'null'
+      language:
+        type:
+        - string
+        - 'null'
+      room:
+        "$ref": "./common.yaml#/PlaceRef"
+      staff:
+        type: array
+        items:
+          "$ref": "#/CourseLectureStaffMember"
+    required:
+    - id
+    - courseId
+    - title
+    - type
+    - startsAt
+    - endsAt
+    - staff
+  CourseLectureStaffMember:
+    type: object
+    properties:
+      personId:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+        enum:
+        - OWNER
+        - COLLABORATOR
+    required:
+    - personId
+    - name
+    - role
+  CourseLectureStaffMemberRequest:
+    type: object
+    properties:
+      personId:
+        type: string
+      role:
+        type: string
+        enum:
+        - OWNER
+        - COLLABORATOR
+    required:
+    - personId
+    - role
+  CourseLectureUpsertRequest:
+    type: object
+    properties:
+      title:
+        type: string
+      type:
+        type: string
+        description: Tipologia dell'evento (es. LECTURE, LAB).
+      startsAt:
+        type: string
+        format: date-time
+      endsAt:
+        type: string
+        format: date-time
+      topic:
+        type:
+        - string
+        - 'null'
+      language:
+        type:
+        - string
+        - 'null'
+      room:
+        "$ref": "./common.yaml#/PlaceRef"
+      staff:
+        type: array
+        items:
+          "$ref": "#/CourseLectureStaffMemberRequest"
+    required:
+    - title
+    - type
+    - startsAt
+    - endsAt
+    - staff
+    additionalProperties: false
+  CourseMessageRequest:
+    type: object
+    properties:
+      subject:
+        type: string
+      message:
+        type: string
+      channels:
+        type: array
+        items:
+          type: string
+          enum:
+          - push
+          - email
+        default:
+        - push
+      audience:
+        type: object
+        properties:
+          groups:
+            type: array
+            items:
+              type: string
+              example: all
+          personIds:
+            type: array
+            items:
+              type: string
+    required:
+    - subject
+    - message
+  CourseNotice:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      body:
+        type: string
+      visibleFrom:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      visibleTo:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      createdAt:
+        type: string
+        format: date-time
+      isVisible:
+        type: boolean
+        description: Stato di visibilità corrente dell'avviso.
+    required:
+    - id
+    - title
+    - body
+    - createdAt
+    - isVisible
+  CourseNoticeUpsertRequest:
+    type: object
+    properties:
+      title:
+        type: string
+        minLength: 3
+      body:
+        type: string
+        minLength: 1
+      visibleFrom:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      visibleTo:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      isVisible:
+        type: boolean
+        description: Indica se l'avviso è visibile agli studenti.
+        default: true
+    required:
+    - title
+    - body
+  ExamEnrollment:
+    type: object
+    properties:
+      personId:
+        type: string
+      name:
+        type: string
+      degree:
+        type:
+        - string
+        - 'null'
+      email:
+        type:
+        - string
+        - 'null'
+        format: email
+    required:
+    - personId
+    - name
+  ExamNotificationRequest:
+    type: object
+    properties:
+      subject:
+        type: string
+        minLength: 3
+      message:
+        type: string
+        minLength: 1
+      channels:
+        type: array
+        items:
+          type: string
+          enum:
+          - push
+          - email
+        default:
+        - push
+      recipientPersonIds:
+        type: array
+        description: Lista opzionale di studenti destinatari. Se vuota o assente, il messaggio viene inviato a tutti gli iscritti.
+        items:
+          type: string
+        minItems: 1
+    required:
+    - subject
+    - message
+  FacultyCalendar:
+    type: object
+    properties:
+      id:
+        type: string
+        example: teaching
+      name:
+        type: string
+        example: Calendario didattico
+      description:
+        type: string
+        nullable: true
+        example: Eventi legati ai corsi e alle attività accademiche.
+      color:
+        type: string
+        nullable: true
+        description: Colore principale del calendario espresso in formato HEX.
+        example: "#1976D2"
+      supportsEventCreation:
+        type: boolean
+        description: Indica se il docente può creare eventi manuali nel calendario.
+        example: true
+      defaultVisible:
+        type: boolean
+        nullable: true
+        description: true se il calendario è mostrato per impostazione predefinita.
+        example: true
+    required:
+    - id
+    - name
+    - supportsEventCreation
+    additionalProperties: false
+  FacultyCalendarDetail:
+    type: object
+    properties:
+      calendar:
+        "$ref": "#/FacultyCalendar"
+      events:
+        type: array
+        items:
+          "$ref": "#/FacultyCalendarEvent"
+    required:
+    - calendar
+    - events
+    additionalProperties: false
+  FacultyCalendarEvent:
+    type: object
+    properties:
+      id:
+        type: string
+        example: evt_12345
+      calendarId:
+        type: string
+        example: teaching
+      title:
+        type: string
+        example: Brainstorming for new Activities
+      type:
+        "$ref": "#/FacultyCalendarEventTypeEnum"
+      startsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T14:00:00.000Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T15:30:00.000Z'
+      allDay:
+        type: boolean
+        example: false
+      place:
+        "$ref": "./common.yaml#/PlaceRef"
+      externalLocation:
+        type: string
+        nullable: true
+        example: Sala riunioni Dipartimento DAUIN
+      isLive:
+        type: boolean
+        example: false
+        description: Indica se l'evento è trasmesso in diretta streaming.
+      materials:
+        type: array
+        items:
+          "$ref": "#/FacultyCalendarEventMaterial"
+        description: Materiali collegati all'evento.
+      notes:
+        type: string
+        nullable: true
+        example: Portare il materiale per il laboratorio.
+    required:
+    - id
+    - calendarId
+    - title
+    - type
+    - startsAt
+    - endsAt
+    - allDay
+    additionalProperties: false
+  FacultyCalendarEventCreateRequest:
+    type: object
+    properties:
+      title:
+        type: string
+        example: Brainstorming for new Activities
+      type:
+        "$ref": "#/FacultyCalendarEventTypeEnum"
+      startsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T16:00:00.000Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T17:30:00.000Z'
+      allDay:
+        type: boolean
+        example: false
+      placeId:
+        type: string
+        nullable: true
+        description: Identificativo della stanza selezionata (es. roomId).
+        example: ROOM_002
+      externalLocation:
+        type: string
+        nullable: true
+        description: Descrizione libera della location, usata in alternativa a placeId.
+        example: Sala riunioni Dipartimento DAUIN
+      notes:
+        type: string
+        nullable: true
+        example: Preparare i materiali introduttivi.
+      materialIds:
+        type: array
+        items:
+          type: string
+        description: Identificativi dei materiali didattici da associare all'evento.
+      videoConferenceUrl:
+        type: string
+        format: uri
+        nullable: true
+        example: https://polito.webex.com/meet/docente
+    required:
+    - title
+    - type
+    - startsAt
+    - endsAt
+    - allDay
+    additionalProperties: false
+  FacultyCalendarEventMaterial:
+    type: object
+    properties:
+      id:
+        type: string
+        example: MAT-2023-001
+      title:
+        type: string
+        example: Slides Introduzione
+      url:
+        type: string
+        format: uri
+        example: https://didattica.polito.it/materials/intro.pdf
+      type:
+        type: string
+        enum:
+        - file
+        - link
+        example: file
+    required:
+    - id
+    - title
+    - url
+    - type
+    additionalProperties: false
+  FacultyCalendarEventTypeEnum:
+    type: string
+    enum:
+    - LECTURE
+    - MEETING
+    - OFFICE_HOUR
+    - OTHER
+    example: LECTURE
+  FacultyCourseStudent:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco dello studente
+      firstName:
+        type: string
+        description: Nome dello studente
+      lastName:
+        type: string
+        description: Cognome dello studente
+      username:
+        type: string
+        description: Username istituzionale dello studente
+      picture:
+        type: object
+        properties:
+          url:
+            type: string
+            format: uri
+            description: URL della foto profilo
+        required:
+        - url
+    required:
+    - id
+    - firstName
+    - lastName
+    - username
+  FacultyExam:
+    allOf:
+    - "$ref": "#/FacultyExamSummary"
+    - type: object
+      properties:
+        enrolled:
+          type: array
+          items:
+            "$ref": "#/ExamEnrollment"
+      required:
+      - enrolled
+  FacultyExamSummary:
+    type: object
+    properties:
+      id:
+        type: string
+      courseId:
+        type: string
+      courseName:
+        type: string
+      date:
+        type: string
+        format: date
+      room:
+        type:
+        - string
+        - 'null'
+      enrolledCount:
+        type: integer
+    required:
+    - id
+    - courseId
+    - courseName
+    - date
+    - enrolledCount
+  FacultyProfile:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      personal_email:
+        type: string
+        format: email
+      academic_email:
+        type: string
+        format: email
+      phone:
+        type: string
+      residence:
+        type: string
+      fiscalResidence:
+        type: string
+      iban:
+        type: string
+        example: 'XK238804602955671016'
+      department:
+        type:
+        - string
+        - 'null'
+      publications:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          required:
+          - id
+          - name
+      assignedCourses:
+        type: array
+        items:
+          type: object
+          properties:
+            courseId:
+              type: string
+            name:
+              type: string
+            period:
+              type: string
+            enrolledCount:
+              type: integer
+          required:
+          - courseId
+          - name
+          - period
+    required:
+    - id
+    - name
+    - personal_email
+    - academic_email
+  FacultyProfileUpdateRequest:
+    type: object
+    properties:
+      residence:
+        type: string
+        description: Residenza del docente.
+      fiscalResidence:
+        type: string
+        description: Domicilio fiscale del docente.
+      phone:
+        type: string
+        description: Numero di telefono di contatto.
+      personal_email:
+        type: string
+        format: email
+        description: Indirizzo email personale del docente.
+      academic_email:
+        type: string
+        format: email
+        description: Indirizzo email accademico del docente.
+    additionalProperties: false
+  PaginatedCourseLectureList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          "$ref": "#/CourseLecture"
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
+    required:
+    - data
+    - page
+    - pageSize
+    - total
+  PaginatedFacultyCalendarEventList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          "$ref": "#/FacultyCalendarEvent"
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
+    required:
+    - data
+    - page
+    - pageSize
+    - total
+  PaginatedFacultyExamList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          "$ref": "#/FacultyExamSummary"
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
+    required:
+    - data
+    - page
+    - pageSize
+    - total
+  RoomAvailability:
+    type: object
+    properties:
+      roomId:
+        type: string
+      name:
+        type: string
+      siteId:
+        type: string
+      capacity:
+        type: integer
+      features:
+        type: array
+        items:
+          type: string
+      slots:
+        type: array
+        items:
+          type: object
+          properties:
+            startTime:
+              type: string
+            endTime:
+              type: string
+          required:
+          - startTime
+          - endTime
+    required:
+    - roomId
+    - name
+    - siteId
+    - capacity
+    - slots
+  RoomBookingRequest:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date
+      startTime:
+        type: string
+        pattern: "^\\\\d{2}:\\\\d{2}$"
+      endTime:
+        type: string
+        pattern: "^\\\\d{2}:\\\\d{2}$"
+      capacity:
+        type: integer
+        minimum: 1
+      podiumType:
+        type:
+        - string
+        - 'null'
+      powerOutlets:
+        type: boolean
+        default: false
+      siteId:
+        type: string
+      reason:
+        type: string
+      notes:
+        type:
+        - string
+        - 'null'
+    required:
+    - date
+    - startTime
+    - endTime
+    - capacity
+    - siteId
+    - reason
+  SignableDocument:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      status:
+        type: string
+        enum:
+        - pending
+        - signed
+        - rejected
+      requestedAt:
+        type: string
+        format: date-time
+      signedAt:
+        type:
+        - string
+        - 'null'
+        format: date-time
+      downloadUrl:
+        type: string
+    required:
+    - id
+    - title
+    - status
+    - requestedAt
+    - downloadUrl
+  SignatureStartResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - started
+            - pending_otp
+            - completed
+          redirectUrl:
+            type:
+            - string
+            - 'null'
+          requestId:
+            type: string
+        required:
+        - status
+        - requestId
+    required:
+    - data

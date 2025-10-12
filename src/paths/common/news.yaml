@@ -1,0 +1,48 @@
+  "/news":
+    get:
+      tags:
+      - Common - News
+      summary: List news | Lista news
+      operationId: getNews
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/NewsItemOverview"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+  "/news/{newsItemId}":
+    get:
+      tags:
+      - Common - News
+      summary: Show news | Mostra news
+      operationId: getNewsItem
+      parameters:
+      - name: newsItemId
+        in: path
+        required: true
+        schema:
+          type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/NewsItem"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"

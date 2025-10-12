@@ -1,0 +1,106 @@
+  "/me":
+    get:
+      tags:
+      - Students - Student
+      summary: Retrieve student profile | Recupera il profilo studente
+      operationId: getStudent
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/Student"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/grades":
+    get:
+      tags:
+      - Students - Student
+      summary: Retrieve student grades | Recupera i voti dello studente
+      operationId: getStudentGrades
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/ExamGrade"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/provisional-grades":
+    get:
+      tags:
+      - Students - Student
+      summary: Retrieve student provisional grades | Recupera le valutazioni provvisorie
+        dello studente
+      operationId: getStudentProvisionalGrades
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/ProvisionalGrade"
+                  states:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/ProvisionalGradeState"
+                required:
+                - data
+                - states
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/provisional-grades/{provisionalGradeId}/accept":
+    post:
+      tags:
+      - Students - Student
+      summary: Accept provisional grade | Accetta valutazione provvisoria
+      operationId: acceptProvisionalGrade
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/provisionalGradeIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Provisional grade not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/provisional-grades/{provisionalGradeId}/reject":
+    post:
+      tags:
+      - Students - Student
+      summary: Reject provisional grade | Rifiuta valutazione provvisoria
+      operationId: rejectProvisionalGrade
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/provisionalGradeIdParam"
+      responses:
+        200:
+          description: Success
+        404:
+          description: Provisional grade not found
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

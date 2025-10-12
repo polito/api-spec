@@ -1,0 +1,80 @@
+name: Validate OpenAPI Specification
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - 'openapi.yaml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Bundle spec (test)
+        run: |
+          echo "📦 Test bundling src/index.yaml..."
+          swagger-cli bundle src/index.yaml -o /tmp/openapi.test.yaml -t yaml
+
+      - name: Validate bundled spec with swagger-cli
+        run: |
+          echo "✅ Validating bundled spec with swagger-cli..."
+          swagger-cli validate /tmp/openapi.test.yaml
+
+      - name: Check if openapi.yaml is up-to-date
+        run: |
+          echo "🔍 Checking if openapi.yaml is in sync with src/..."
+          swagger-cli bundle src/index.yaml -o /tmp/openapi.check.yaml -t yaml
+
+          # Compare bundled vs committed (ignoring whitespace differences)
+          if ! diff -w openapi.yaml /tmp/openapi.check.yaml > /dev/null; then
+            echo ""
+            echo "❌ ERROR: openapi.yaml is out of sync with src/"
+            echo ""
+            echo "The committed openapi.yaml doesn't match the bundled version from src/"
+            echo ""
+            echo "📝 To fix this, run locally:"
+            echo "   swagger-cli bundle src/index.yaml -o openapi.yaml -t yaml"
+            echo "   git add openapi.yaml"
+            echo "   git commit -m 'chore: update bundled OpenAPI spec'"
+            echo ""
+            echo "💡 Or wait for the auto-bundle workflow to commit the changes."
+            echo ""
+            exit 1
+          else
+            echo "✅ openapi.yaml is up-to-date with src/"
+          fi
+
+      - name: Install openapi-generator-cli
+        run: |
+          echo "📥 Installing openapi-generator-cli..."
+          npm install -g @openapitools/openapi-generator-cli
+
+      - name: Validate with openapi-generator
+        run: |
+          echo "✅ Validating with openapi-generator..."
+          openapi-generator-cli validate -i /tmp/openapi.test.yaml
+
+      - name: Summary
+        run: |
+          echo ""
+          echo "✅ All validation checks passed!"
+          echo "   ✓ Spec can be bundled without errors"
+          echo "   ✓ swagger-cli validation passed"
+          echo "   ✓ openapi-generator validation passed"
+          echo "   ✓ openapi.yaml is in sync with src/"
+          echo ""

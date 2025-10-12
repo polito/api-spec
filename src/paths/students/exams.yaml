@@ -1,0 +1,231 @@
+  "/exams":
+    get:
+      tags:
+      - Students - Exams
+      summary: List exams | Elenca esami
+      operationId: getExams
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Exam"
+                required:
+                - data
+              example:
+                data:
+                - id: 888137
+                  courseId: 262147
+                  courseShortcode: 01UDROV
+                  courseName: Cybersecurity (AA-ZZ)
+                  teacherId: 1847
+                  type: Scritto
+                  status: booked
+                  bookingStartsAt: 
+                  bookingEndsAt: '2022-08-23T14:00:00Z'
+                  examStartsAt: '2022-08-29T08:00:00Z'
+                  examEndsAt: '2022-08-29T10:00:00Z'
+                  bookedCount: 12
+                  availableCount: 8
+                  moduleNumber: 1
+                  notes: 
+                  places: []
+                  isReschedulable: false
+                  question: 
+                  feedback: Esiste già una prenotazione per l'esame in questione
+                  requestReason: 
+                  requestDetails: 
+                - id: 887981
+                  courseId: 262789
+                  courseShortcode: 01NYHOV
+                  courseName: System and device programming (AA-ZZ)
+                  teacherId: 2893
+                  type: Esami scritti a risposta aperta o chiusa tramite PC
+                  status: available
+                  bookingStartsAt: 
+                  bookingEndsAt: '2022-09-02T14:00:00Z'
+                  examStartsAt: '2022-09-08T14:00:00Z'
+                  examEndsAt: '2022-09-08T18:00:00Z'
+                  bookedCount: 42
+                  availableCount: 108
+                  moduleNumber: 1
+                  notes: 
+                  places: []
+                  isReschedulable: false
+                  question: 
+                  feedback: 
+                  requestReason: 
+                  requestDetails: 
+                - id: 888212
+                  courseId: 217742
+                  courseShortcode: 03LPYOV
+                  courseName: Cryptography (AA-ZZ)
+                  teacherId: 13461
+                  type: Esami scritti a risposta aperta o chiusa tramite PC
+                  status: booked
+                  bookingStartsAt: 
+                  bookingEndsAt: '2022-09-12T14:00:00Z'
+                  examStartsAt: '2022-09-16T11:00:00Z'
+                  examEndsAt: '2022-09-16T13:00:00Z'
+                  bookedCount: 67
+                  availableCount: 8
+                  moduleNumber: 1
+                  notes: 
+                  places: []
+                  isReschedulable: false
+                  question: 
+                  feedback: Esiste già una prenotazione per l'esame in questione
+                  requestReason: 
+                  requestDetails: 
+                - id: 888118
+                  courseId: 217742
+                  courseShortcode: 01TYAOV
+                  courseName: Security verification and testing (AA-ZZ)
+                  teacherId: 1943
+                  type: Esami scritti a risposta aperta o chiusa tramite PC
+                  status: booked
+                  bookingStartsAt: 
+                  bookingEndsAt: '2022-09-09T14:00:00Z'
+                  examStartsAt: '2022-09-15T14:00:00Z'
+                  examEndsAt: '2022-09-15T16:00:00Z'
+                  bookedCount: 26
+                  availableCount: 108
+                  moduleNumber: 1
+                  notes: 
+                  places: []
+                  isReschedulable: false
+                  question: 
+                  feedback: Esiste già una prenotazione per l'esame in questione
+                  requestReason: 
+                  requestDetails: 
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/exams/{examId}/booking":
+    post:
+      tags:
+      - Students - Exams
+      summary: Book exam | Prenota esame
+      operationId: bookExam
+      parameters:
+      - name: examId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courseShortcode:
+                  type: string
+                  description: The course shortcode
+                  example: 01UDROV
+                questionId:
+                  type: integer
+                  description: The id of the question
+                  example: 123456
+                questionOption:
+                  type: integer
+                  description: The index of the chosen option (starting at 1)
+                  example: 1
+                requestReason:
+                  type: string
+                  description: The reason for the exam booking request
+                  example: I'm not sure
+              required:
+              - courseShortcode
+        required: true
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        404:
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Students - Exams
+      summary: Delete exam booking | Annulla prenotazione esame
+      operationId: deleteExamBookingById
+      parameters:
+      - name: examId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Success
+        404:
+          description: Exam or booking not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/exams/{examId}/rescheduleRequest":
+    post:
+      tags:
+      - Students - Exams
+      summary: Ask to reschedule an exam | Chiedi di spostare un esame
+      operationId: rescheduleExam
+      parameters:
+      - name: examId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courseShortcode:
+                  type: string
+                  description: The course shortcode
+                  example: 01UDROV
+                requestReason:
+                  type: string
+                  description: The reason for the exam booking request
+                  example: Nei giorni dell'appello ho i Campionati Italiani di nuoto
+                requestDetails:
+                  type: string
+                  description: The proposed dates for the exam
+                  example: Io potrei sostenerlo prima del 15 febbraio oppure dopo
+                    il 21
+              required:
+              - courseShortcode
+              - requestReason
+              - requestDetails
+        required: true
+      responses:
+        200:
+          description: Success
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        404:
+          description: Exam not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

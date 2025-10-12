@@ -1,0 +1,50 @@
+  "/job-offers":
+    get:
+      tags:
+      - Students - Job offers
+      summary: List job offers | Elenca offerte di lavoro
+      operationId: getJobOffers
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/students.yaml#/JobOfferOverview"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+  "/job-offers/{jobOfferId}":
+    get:
+      tags:
+      - Students - Job offers
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/jobOfferIdParam"
+      summary: Show a job offer | Mostra un'offerta di lavoro
+      operationId: getJobOffer
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/students.yaml#/JobOffer"
+                required:
+                - data
+        404:
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

@@ -1,0 +1,140 @@
+  "/faculty/exams":
+    get:
+      tags:
+      - Faculty - Exams
+      summary: Elenco appelli del docente
+      description: Elenca gli appelli d'esame del docente con filtri opzionali.
+      operationId: listFacultyExams
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: courseId
+        schema:
+          type: string
+        description: Filtra per corso.
+      - in: query
+        name: dateFrom
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: dateTo
+        schema:
+          type: string
+          format: date
+      - "$ref": "../../components/parameters.yaml#/PageParam"
+      - "$ref": "../../components/parameters.yaml#/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/PaginatedFacultyExamList"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/exams/{examId}":
+    get:
+      tags:
+      - Faculty - Exams
+      summary: Dettaglio appello con iscritti
+      description: Restituisce i dettagli dell'appello, inclusa la lista degli studenti
+        iscritti.
+      operationId: getFacultyExam
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ExamId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyExam"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/exams/{examId}/notify":
+    post:
+      tags:
+      - Faculty - Exams
+      summary: Invia comunicazione agli iscritti all'esame
+      description: Invia un messaggio/avviso agli studenti iscritti a un appello specifico, permettendo l'invio sia all'intera lista sia a un sottoinsieme selezionato.
+      operationId: notifyExamSubscribers
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ExamId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/ExamNotificationRequest"
+      responses:
+        '202':
+          description: Accettato (invio in corso)
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/AcceptedResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/exams/{examId}/students/{studentId}":
+    put:
+      tags:
+      - Faculty - Exams
+      summary: Aggiungi studente all'esame
+      description: Inserisce manualmente uno studente tra gli iscritti a un appello
+        (casi eccezionali). Operazione idempotente.
+      operationId: addStudentToExam
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/ExamId"
+      - "$ref": "../../components/parameters.yaml#/StudentId"
+      responses:
+        '200':
+          description: Studente già iscritto (idempotente)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/ExamEnrollment"
+                required:
+                - data
+        '201':
+          description: Studente iscritto con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/ExamEnrollment"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

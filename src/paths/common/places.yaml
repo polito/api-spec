@@ -1,0 +1,279 @@
+  "/v2/place-categories":
+    get:
+      tags:
+      - Common - Places
+      summary: List place categories | Elenca categorie luoghi
+      operationId: getPlaceCategories
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/querySiteId"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/RootPlaceCategory"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/sites":
+    get:
+      tags:
+      - Common - Places
+      summary: List sites | Elenca sedi
+      operationId: getSites
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Site"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/sites/{siteId}/free-rooms":
+    get:
+      tags:
+      - Common - Places
+      summary: List free rooms | Elenca aule libere
+      operationId: getFreeRooms
+      parameters:
+      - name: date
+        in: query
+        description: Date
+        required: true
+        schema:
+          type: string
+      - name: timeFrom
+        in: query
+        description: Start time
+        required: true
+        schema:
+          type: string
+      - name: timeTo
+        in: query
+        description: End time
+        required: true
+        schema:
+          type: string
+      - "$ref": "../../components/parameters.yaml#/pathSiteId"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/FreeRoom"
+                required:
+                - data
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/sites/{siteId}/buildings":
+    get:
+      tags:
+      - Common - Places
+      summary: List buildings | Elenca edifici
+      operationId: getBuildings
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/pathSiteId"
+      - name: search
+        in: query
+        description: Filter buildings containing 'search' in their name
+        schema:
+          type: string
+      - "$ref": "../../components/parameters.yaml#/queryPlaceCategoryId"
+      - "$ref": "../../components/parameters.yaml#/queryPlaceSubCategoryId"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/Building"
+                required:
+                - data
+        404:
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/places":
+    get:
+      tags:
+      - Common - Places
+      summary: Search places | Cerca luoghi
+      operationId: getPlaces
+      parameters:
+      - name: search
+        in: query
+        description: Filter places containing 'search' in their name
+        schema:
+          type: string
+      - "$ref": "../../components/parameters.yaml#/queryPlaceCategoryId"
+      - "$ref": "../../components/parameters.yaml#/queryPlaceSubCategoryId"
+      - "$ref": "../../components/parameters.yaml#/querySiteId"
+      - "$ref": "../../components/parameters.yaml#/queryBuildingId"
+      - "$ref": "../../components/parameters.yaml#/queryFloorId"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/common.yaml#/PlaceOverview"
+                required:
+                - data
+        404:
+          description: Site|Building|Floor not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        500:
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/places/{placeId}":
+    get:
+      tags:
+      - Common - Places
+      summary: Show place | Mostra luogo
+      operationId: getPlace
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/pathPlaceId"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Place"
+                required:
+                - data
+        400:
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+  "/v2/places/bookings":
+    post:
+      tags:
+      - Common - Places
+      summary: Prenota aula/laboratorio
+      operationId: createRoomBooking
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/RoomBookingRequest"
+      responses:
+        '201':
+          "$ref": "../../components/responses.yaml#/CreatedAckResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '409':
+          "$ref": "../../components/responses.yaml#/ConflictResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    get:
+      tags:
+      - Common - Places
+      summary: Ricerca disponibilità aule
+      operationId: searchRoomAvailability
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: siteId
+        schema:
+          type: string
+        description: Sede/ edificio.
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: startTime
+        schema:
+          type: string
+          pattern: "^\\\\d{2}:\\\\d{2}$"
+      - in: query
+        name: endTime
+        schema:
+          type: string
+          pattern: "^\\\\d{2}:\\\\d{2}$"
+      - in: query
+        name: capacity
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: features
+        schema:
+          type: array
+          items:
+            type: string
+        description: Es. ["cattedra","prese_corrente"]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/RoomAvailability"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

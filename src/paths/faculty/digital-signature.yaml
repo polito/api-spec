@@ -1,0 +1,75 @@
+  "/faculty/signing/documents":
+    get:
+      tags:
+      - Faculty - Digital Signature
+      summary: Elenco documenti da firmare
+      operationId: listSignableDocuments
+      security:
+      - bearerAuth: []
+      parameters:
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - pending
+          - signed
+          - rejected
+        description: Filtra per stato del documento.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/SignableDocument"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/signing/documents/{documentId}/sign":
+    post:
+      tags:
+      - Faculty - Digital Signature
+      summary: Avvia firma digitale
+      description: Avvia il flusso di firma digitale tramite provider esterno (es.
+        InfoCert). Restituisce eventuale URL di redirezione o stato asincrono.
+      operationId: signDocument
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/DocumentId"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp:
+                  type:
+                  - string
+                  - 'null'
+                  description: OTP se richiesto dal provider.
+      responses:
+        '202':
+          description: Flusso di firma avviato
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/SignatureStartResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '409':
+          "$ref": "../../components/responses.yaml#/ConflictResponse"
+        '502':
+          description: Errore dal provider esterno

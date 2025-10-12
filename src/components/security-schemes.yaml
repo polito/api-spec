@@ -1,0 +1,3 @@
+  bearerAuth:
+    type: http
+    scheme: bearer

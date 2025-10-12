@@ -1,0 +1,134 @@
+  "/faculty/calendars":
+    get:
+      tags:
+      - Faculty - Calendar
+      summary: Elenca calendari disponibili
+      operationId: listFacultyCalendars
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendar"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/calendars/{calendarId}":
+    get:
+      tags:
+      - Faculty - Calendar
+      summary: Dettaglio calendario ed eventi
+      operationId: getFacultyCalendar
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CalendarId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarDetail"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    post:
+      tags:
+      - Faculty - Calendar
+      summary: Crea un nuovo evento nel calendario
+      operationId: createFacultyCalendarEvent
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CalendarId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEventCreateRequest"
+      responses:
+        '201':
+          description: Creato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEvent"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/calendars/{calendarId}/events":
+    get:
+      tags:
+      - Faculty - Calendar
+      summary: Elenca eventi del calendario
+      operationId: listFacultyCalendarEvents
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CalendarId"
+      - "$ref": "../../components/parameters.yaml#/PageParam"
+      - "$ref": "../../components/parameters.yaml#/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/PaginatedFacultyCalendarEventList"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/calendars/{calendarId}/events/{eventId}":
+    delete:
+      tags:
+      - Faculty - Calendar
+      summary: Elimina un evento dal calendario
+      operationId: deleteFacultyCalendarEvent
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CalendarId"
+      - "$ref": "../../components/parameters.yaml#/CalendarEventId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
