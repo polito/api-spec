@@ -147,6 +147,11 @@
         type: array
         items:
           "$ref": "#/CourseLectureStaffMemberRequest"
+      body:
+        type:
+        - string
+        - 'null'
+        description: Rich-text content or agenda notes associated with the lecture.
     required:
     - title
     - type

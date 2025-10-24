@@ -581,6 +581,16 @@
             id:
               type: number
               example: 244577
+            name:
+              type:
+              - string
+              - 'null'
+              description: Display name of the staff member.
+            access:
+              type:
+              - string
+              - 'null'
+              description: Localized access description (e.g. "Può leggere").
           required:
           - role
           - id
@@ -630,6 +640,18 @@
       sizeInKiloBytes:
         type: integer
         example: 305
+      studentId:
+        type:
+        - string
+        - 'null'
+        description: Identifier of the student who submitted the assignment, if available.
+        example: S290683
+      studentName:
+        type:
+        - string
+        - 'null'
+        description: Display name of the student who submitted the assignment.
+        example: 'Mario Rossi'
     required:
     - id
     - description
@@ -1104,6 +1126,11 @@
         - 'null'
       description:
         type: string
+      title:
+        type:
+        - string
+        - 'null'
+        description: Short title summarising the reported issue.
       attachments:
         type: array
         items:
@@ -1139,6 +1166,11 @@
         type: string
       description:
         type: string
+      title:
+        type:
+        - string
+        - 'null'
+        description: Short title summarising the reported issue.
       attachments:
         type: array
         items:
