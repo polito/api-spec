@@ -594,6 +594,11 @@
           required:
           - role
           - id
+      examCalls:
+        type: array
+        description: Upcoming exam calls associated with this course.
+        items:
+          "$ref": "#/Exam"
     required:
     - id
     - name
@@ -758,40 +763,48 @@
     required:
     - title
     - content
-  CourseNotices:
+  CourseNotice:
     type: object
     properties:
       id:
-        type: integer
-        example: 360724
-      publishedAt:
         type: string
+        example: '360724'
+      title:
+        type:
+        - string
+        - 'null'
+        description: Title assigned to the notice.
+        example: Welcome to HCI 2021
+      body:
+        type:
+        - string
+        - 'null'
+        description: Rich-text body of the notice.
+        example: "<p>Full notice content</p>"
+      content:
+        type: string
+        description: Legacy plain-text representation of the notice body.
+        example: "<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>"
+      status:
+        type: string
+        description: Current visibility status for students.
+        enum:
+        - DRAFT
+        - VISIBLE
+        - EXPIRED
+        example: VISIBLE
+      publishedAt:
+        type:
+        - string
+        - 'null'
         format: date-time
-        example: 2022-07-03 14:00:00.000000000 Z
+        example: 2022-07-03T14:00:00Z
       createdAt:
         type:
         - string
         - 'null'
         format: date-time
         description: Data di creazione dell'avviso lato docente.
-      expiresAt:
-        type: string
-        format: date-time
-        nullable: true
-        example: 2022-08-31 14:00:00.000000000 Z
-      content:
-        type: string
-        example: "<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>"
-      body:
-        type:
-        - string
-        - 'null'
-        description: Testo completo dell'avviso in formato HTML.
-      title:
-        type:
-        - string
-        - 'null'
-        description: Titolo assegnato all'avviso.
       visibleFrom:
         type:
         - string
@@ -802,16 +815,11 @@
         - string
         - 'null'
         format: date-time
-      isVisible:
-        type:
-        - boolean
-        - 'null'
-        description: Stato di visibilità corrente per gli studenti.
     required:
     - id
-    - publishedAt
-    - expiresAt
-    - content
+    - title
+    - body
+    - status
   CourseOverview:
     allOf:
     - "$ref": "#/CourseOverviewBase"
@@ -1120,10 +1128,7 @@
         format: date-time
       location:
         type: string
-      room:
-        type:
-        - string
-        - 'null'
+        description: Generic location details provided by the reporter.
       description:
         type: string
       title:
@@ -1131,18 +1136,6 @@
         - string
         - 'null'
         description: Short title summarising the reported issue.
-      attachments:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: string
-            url:
-              type: string
-          required:
-          - id
-          - url
     required:
     - id
     - status
@@ -1158,12 +1151,9 @@
         - string
         - 'null'
         format: date
-      room:
-        type:
-        - string
-        - 'null'
       location:
         type: string
+        description: Generic location details provided by the reporter.
       description:
         type: string
       title:
@@ -1171,11 +1161,6 @@
         - string
         - 'null'
         description: Short title summarising the reported issue.
-      attachments:
-        type: array
-        items:
-          type: string
-          format: base64
     required:
     - location
     - description

@@ -196,6 +196,12 @@
     schema:
       type: string
     description: ID del collaboratore (personId)
+  PublicationId:
+    name: publicationId
+    in: path
+    required: true
+    schema:
+      type: string
   AssignmentId:
     name: assignmentId
     in: path

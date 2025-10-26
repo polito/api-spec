@@ -638,14 +638,19 @@
                   data:
                     type: array
                     items:
-                      "$ref": "../../components/schemas/common.yaml#/CourseNotices"
+                      "$ref": "../../components/schemas/common.yaml#/CourseNotice"
                 required:
                 - data
               example:
                 data:
-                - id: 332559
+                - id: '332559'
+                  title: Welcome to HCI 2021
+                  body: "<p>Dear students, welcome to the 2021 edition of the Human Computer Interaction course!</p>"
+                  status: VISIBLE
                   publishedAt: '2021-09-22T14:00:00Z'
-                  expiresAt: 
+                  createdAt: '2021-09-21T08:30:00Z'
+                  visibleFrom: '2021-09-22T14:00:00Z'
+                  visibleTo: '2021-10-01T23:59:59Z'
                   content: '<p>Dear students,</p>\r\r<p>welcome to the 2021 edition
                     of the Human Computer Interaction course (<strong>HCI</strong>,
                     for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The
@@ -1135,7 +1140,7 @@
                 type: object
                 properties:
                   data:
-                    "$ref": "../../components/schemas/faculty.yaml#/CourseNotice"
+                    "$ref": "../../components/schemas/common.yaml#/CourseNotice"
                 required:
                 - data
         '400':
@@ -1148,7 +1153,7 @@
                 type: object
                 properties:
                   data:
-                    "$ref": "../../components/schemas/faculty.yaml#/CourseNotice"
+                    "$ref": "../../components/schemas/common.yaml#/CourseNotice"
                 required:
                 - data
         '401':

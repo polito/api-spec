@@ -1393,14 +1393,19 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CourseNotices'
+                      $ref: '#/components/schemas/CourseNotice'
                 required:
                   - data
               example:
                 data:
-                  - id: 332559
+                  - id: '332559'
+                    title: Welcome to HCI 2021
+                    body: '<p>Dear students, welcome to the 2021 edition of the Human Computer Interaction course!</p>'
+                    status: VISIBLE
                     publishedAt: '2021-09-22T14:00:00Z'
-                    expiresAt: null
+                    createdAt: '2021-09-21T08:30:00Z'
+                    visibleFrom: '2021-09-22T14:00:00Z'
+                    visibleTo: '2021-10-01T23:59:59Z'
                     content: '<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r'
         '404':
           description: Course not found
@@ -2423,11 +2428,18 @@ paths:
         - $ref: '#/components/parameters/PageSizeParam'
       responses:
         '200':
-          description: OK
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedFacultyExamList'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FacultyExam'
+                required:
+                  - data
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
         '500':
@@ -2584,6 +2596,29 @@ paths:
                   - data
         '400':
           $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /faculty/me/publications:
+    get:
+      tags:
+        - Faculty - Profile
+      summary: Elenca pubblicazioni del docente
+      description: Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.
+      operationId: listFacultyPublications
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFacultyPublicationList'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
         '500':
@@ -5550,6 +5585,11 @@ components:
             required:
               - role
               - id
+        examCalls:
+          type: array
+          description: Upcoming exam calls associated with this course.
+          items:
+            $ref: '#/components/schemas/Exam'
       required:
         - id
         - name
@@ -5760,6 +5800,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseLectureStaffMember'
+        status:
+          type: string
+          description: Stato di pubblicazione della lezione.
+          enum:
+            - DRAFT
+            - PUBLISHED
       required:
         - id
         - courseId
@@ -5768,6 +5814,7 @@ components:
         - startsAt
         - endsAt
         - staff
+        - status
     CourseLectureStaffMember:
       type: object
       properties:
@@ -5830,6 +5877,13 @@ components:
             - string
             - 'null'
           description: Rich-text content or agenda notes associated with the lecture.
+        status:
+          type: string
+          description: Stato richiesto per la lezione.
+          enum:
+            - DRAFT
+            - PUBLISHED
+          default: DRAFT
       required:
         - title
         - type
@@ -5873,10 +5927,43 @@ components:
       properties:
         id:
           type: string
+          example: '360724'
         title:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Title assigned to the notice.
+          example: Welcome to HCI 2021
         body:
+          type:
+            - string
+            - 'null'
+          description: Rich-text body of the notice.
+          example: <p>Full notice content</p>
+        content:
           type: string
+          description: Legacy plain-text representation of the notice body.
+          example: '<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>'
+        status:
+          type: string
+          description: Current visibility status for students.
+          enum:
+            - DRAFT
+            - VISIBLE
+            - EXPIRED
+          example: VISIBLE
+        publishedAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          example: '2022-07-03T14:00:00Z'
+        createdAt:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: Data di creazione dell'avviso lato docente.
         visibleFrom:
           type:
             - string
@@ -5887,18 +5974,11 @@ components:
             - string
             - 'null'
           format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        isVisible:
-          type: boolean
-          description: Stato di visibilità corrente dell'avviso.
       required:
         - id
         - title
         - body
-        - createdAt
-        - isVisible
+        - status
     CourseNoticeUpsertRequest:
       type: object
       properties:
@@ -5918,67 +5998,17 @@ components:
             - string
             - 'null'
           format: date-time
-        isVisible:
-          type: boolean
-          description: Indica se l'avviso è visibile agli studenti.
-          default: true
+        status:
+          type: string
+          description: Stato richiesto per l'avviso.
+          enum:
+            - DRAFT
+            - VISIBLE
+            - EXPIRED
+          default: DRAFT
       required:
         - title
         - body
-    CourseNotices:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 360724
-        publishedAt:
-          type: string
-          format: date-time
-          example: '2022-07-03 14:00:00.000000000 Z'
-        createdAt:
-          type:
-            - string
-            - 'null'
-          format: date-time
-          description: Data di creazione dell'avviso lato docente.
-        expiresAt:
-          type: string
-          format: date-time
-          nullable: true
-          example: '2022-08-31 14:00:00.000000000 Z'
-        content:
-          type: string
-          example: '<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>'
-        body:
-          type:
-            - string
-            - 'null'
-          description: Testo completo dell'avviso in formato HTML.
-        title:
-          type:
-            - string
-            - 'null'
-          description: Titolo assegnato all'avviso.
-        visibleFrom:
-          type:
-            - string
-            - 'null'
-          format: date-time
-        visibleTo:
-          type:
-            - string
-            - 'null'
-          format: date-time
-        isVisible:
-          type:
-            - boolean
-            - 'null'
-          description: Stato di visibilità corrente per gli studenti.
-      required:
-        - id
-        - publishedAt
-        - expiresAt
-        - content
     CourseOverview:
       allOf:
         - $ref: '#/components/schemas/CourseOverviewBase'
@@ -6797,39 +6827,16 @@ components:
         - username
     FacultyExam:
       allOf:
-        - $ref: '#/components/schemas/FacultyExamSummary'
+        - $ref: '#/components/schemas/Exam'
         - type: object
           properties:
             enrolled:
               type: array
+              description: Students enrolled in this exam call.
               items:
                 $ref: '#/components/schemas/ExamEnrollment'
           required:
             - enrolled
-    FacultyExamSummary:
-      type: object
-      properties:
-        id:
-          type: string
-        courseId:
-          type: string
-        courseName:
-          type: string
-        date:
-          type: string
-          format: date
-        room:
-          type:
-            - string
-            - 'null'
-        enrolledCount:
-          type: integer
-      required:
-        - id
-        - courseId
-        - courseName
-        - date
-        - enrolledCount
     FacultyProfile:
       type: object
       properties:
@@ -6859,15 +6866,7 @@ components:
         publications:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-            required:
-              - id
-              - name
+            $ref: '#/components/schemas/FacultyPublication'
         assignedCourses:
           type: array
           items:
@@ -6911,6 +6910,18 @@ components:
           format: email
           description: Indirizzo email accademico del docente.
       additionalProperties: false
+    FacultyPublication:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identificativo univoco della pubblicazione.
+        name:
+          type: string
+          description: Titolo della pubblicazione.
+      required:
+        - id
+        - name
     Fault:
       type: object
       properties:
@@ -7733,13 +7744,13 @@ components:
         - page
         - pageSize
         - total
-    PaginatedFacultyExamList:
+    PaginatedFacultyPublicationList:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/FacultyExamSummary'
+            $ref: '#/components/schemas/FacultyPublication'
         page:
           type: integer
         pageSize:

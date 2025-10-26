@@ -82,6 +82,12 @@
         type: array
         items:
           "$ref": "#/CourseLectureStaffMember"
+      status:
+        type: string
+        description: Stato di pubblicazione della lezione.
+        enum:
+        - DRAFT
+        - PUBLISHED
     required:
     - id
     - courseId
@@ -90,6 +96,7 @@
     - startsAt
     - endsAt
     - staff
+    - status
   CourseLectureStaffMember:
     type: object
     properties:
@@ -152,6 +159,13 @@
         - string
         - 'null'
         description: Rich-text content or agenda notes associated with the lecture.
+      status:
+        type: string
+        description: Stato richiesto per la lezione.
+        enum:
+        - DRAFT
+        - PUBLISHED
+        default: DRAFT
     required:
     - title
     - type
@@ -190,37 +204,6 @@
     required:
     - subject
     - message
-  CourseNotice:
-    type: object
-    properties:
-      id:
-        type: string
-      title:
-        type: string
-      body:
-        type: string
-      visibleFrom:
-        type:
-        - string
-        - 'null'
-        format: date-time
-      visibleTo:
-        type:
-        - string
-        - 'null'
-        format: date-time
-      createdAt:
-        type: string
-        format: date-time
-      isVisible:
-        type: boolean
-        description: Stato di visibilità corrente dell'avviso.
-    required:
-    - id
-    - title
-    - body
-    - createdAt
-    - isVisible
   CourseNoticeUpsertRequest:
     type: object
     properties:
@@ -240,10 +223,14 @@
         - string
         - 'null'
         format: date-time
-      isVisible:
-        type: boolean
-        description: Indica se l'avviso è visibile agli studenti.
-        default: true
+      status:
+        type: string
+        description: Stato richiesto per l'avviso.
+        enum:
+        - DRAFT
+        - VISIBLE
+        - EXPIRED
+        default: DRAFT
     required:
     - title
     - body
@@ -505,39 +492,16 @@
     - username
   FacultyExam:
     allOf:
-    - "$ref": "#/FacultyExamSummary"
+    - "$ref": "./common.yaml#/Exam"
     - type: object
       properties:
         enrolled:
           type: array
+          description: Students enrolled in this exam call.
           items:
             "$ref": "#/ExamEnrollment"
       required:
       - enrolled
-  FacultyExamSummary:
-    type: object
-    properties:
-      id:
-        type: string
-      courseId:
-        type: string
-      courseName:
-        type: string
-      date:
-        type: string
-        format: date
-      room:
-        type:
-        - string
-        - 'null'
-      enrolledCount:
-        type: integer
-    required:
-    - id
-    - courseId
-    - courseName
-    - date
-    - enrolledCount
   FacultyProfile:
     type: object
     properties:
@@ -566,16 +530,9 @@
         - 'null'
       publications:
         type: array
+        description: Elenco delle pubblicazioni con metadati di file scaricabile.
         items:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-          required:
-          - id
-          - name
+          "$ref": "#/FacultyPublication"
       assignedCourses:
         type: array
         items:
@@ -637,13 +594,45 @@
     - page
     - pageSize
     - total
-  PaginatedFacultyCalendarEventList:
+  FacultyPublication:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco della pubblicazione.
+      name:
+        type: string
+        description: Titolo leggibile della pubblicazione.
+      mimeType:
+        type: string
+        description: Mime type del file.
+      sizeInKiloBytes:
+        type: integer
+        description: Dimensione del file in kilo-byte.
+        example: 2456
+      createdAt:
+        type: string
+        format: date-time
+        description: Data di caricamento della pubblicazione.
+      downloadUrl:
+        type:
+        - string
+        - 'null'
+        format: uri
+        description: URL firmato per il download diretto, se disponibile.
+    required:
+    - id
+    - name
+    - mimeType
+    - sizeInKiloBytes
+    - createdAt
+  PaginatedFacultyPublicationList:
     type: object
     properties:
       data:
         type: array
         items:
-          "$ref": "#/FacultyCalendarEvent"
+          "$ref": "#/FacultyPublication"
       page:
         type: integer
       pageSize:
@@ -655,13 +644,13 @@
     - page
     - pageSize
     - total
-  PaginatedFacultyExamList:
+  PaginatedFacultyCalendarEventList:
     type: object
     properties:
       data:
         type: array
         items:
-          "$ref": "#/FacultyExamSummary"
+          "$ref": "#/FacultyCalendarEvent"
       page:
         type: integer
       pageSize:

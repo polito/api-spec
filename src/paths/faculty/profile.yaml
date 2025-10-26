@@ -55,3 +55,52 @@
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/me/publications":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Elenca pubblicazioni del docente
+      description: Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.
+      operationId: listFacultyPublications
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/PageParam"
+      - "$ref": "../../components/parameters.yaml#/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/PaginatedFacultyPublicationList"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/me/publications/{publicationId}":
+    get:
+      tags:
+      - Faculty - Profile
+      summary: Scarica pubblicazione
+      description: Restituisce un redirect o lo stream del file associato alla pubblicazione indicata.
+      operationId: downloadFacultyPublication
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/PublicationId"
+      responses:
+        '200':
+          description: Success
+        '302':
+          description: Redirect to publication download
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          description: Pubblicazione non trovata
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

@@ -27,11 +27,18 @@
       - "$ref": "../../components/parameters.yaml#/PageSizeParam"
       responses:
         '200':
-          description: OK
+          description: Success
           content:
             application/json:
               schema:
-                "$ref": "../../components/schemas/faculty.yaml#/PaginatedFacultyExamList"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "../../components/schemas/faculty.yaml#/FacultyExam"
+                required:
+                - data
         '401':
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':

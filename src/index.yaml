@@ -192,6 +192,10 @@ paths:
     $ref: './paths/faculty/exams.yaml#/~1faculty~1exams~1{examId}~1students~1{studentId}'
   /faculty/me:
     $ref: './paths/faculty/profile.yaml#/~1faculty~1me'
+  /faculty/me/publications:
+    $ref: './paths/faculty/profile.yaml#/~1faculty~1me~1publications'
+  /faculty/me/publications/{publicationId}:
+    $ref: './paths/faculty/profile.yaml#/~1faculty~1me~1publications~1{publicationId}'
   /faculty/signing/documents:
     $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents'
   /faculty/signing/documents/{documentId}/sign:
@@ -448,11 +452,9 @@ components:
     CourseMessageRequest:
       $ref: './components/schemas/faculty.yaml#/CourseMessageRequest'
     CourseNotice:
-      $ref: './components/schemas/faculty.yaml#/CourseNotice'
+      $ref: './components/schemas/common.yaml#/CourseNotice'
     CourseNoticeUpsertRequest:
       $ref: './components/schemas/faculty.yaml#/CourseNoticeUpsertRequest'
-    CourseNotices:
-      $ref: './components/schemas/common.yaml#/CourseNotices'
     CourseOverview:
       $ref: './components/schemas/common.yaml#/CourseOverview'
     CourseOverviewBase:
@@ -505,12 +507,12 @@ components:
       $ref: './components/schemas/faculty.yaml#/FacultyCourseStudent'
     FacultyExam:
       $ref: './components/schemas/faculty.yaml#/FacultyExam'
-    FacultyExamSummary:
-      $ref: './components/schemas/faculty.yaml#/FacultyExamSummary'
     FacultyProfile:
       $ref: './components/schemas/faculty.yaml#/FacultyProfile'
     FacultyProfileUpdateRequest:
       $ref: './components/schemas/faculty.yaml#/FacultyProfileUpdateRequest'
+    FacultyPublication:
+      $ref: './components/schemas/faculty.yaml#/FacultyPublication'
     Fault:
       $ref: './components/schemas/common.yaml#/Fault'
     FaultCreateRequest:
@@ -577,8 +579,8 @@ components:
       $ref: './components/schemas/faculty.yaml#/PaginatedCourseLectureList'
     PaginatedFacultyCalendarEventList:
       $ref: './components/schemas/faculty.yaml#/PaginatedFacultyCalendarEventList'
-    PaginatedFacultyExamList:
-      $ref: './components/schemas/faculty.yaml#/PaginatedFacultyExamList'
+    PaginatedFacultyPublicationList:
+      $ref: './components/schemas/faculty.yaml#/PaginatedFacultyPublicationList'
     Person:
       $ref: './components/schemas/common.yaml#/Person'
     PersonCourse:
