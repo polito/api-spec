@@ -1,0 +1,5 @@
+# Generated OpenAPI bundle
+openapi.yaml
+
+# Local npm dependencies
+node_modules/
