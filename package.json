@@ -1,0 +1,13 @@
+{
+  "name": "api-spec",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "bundle": "swagger-cli bundle src/index.yaml -o openapi.yaml -t yaml",
+    "validate": "swagger-cli validate openapi.yaml",
+    "bundle:verify": "npm run bundle && npm run validate"
+  },
+  "devDependencies": {
+    "swagger-cli": "^4.0.4"
+  }
+}
