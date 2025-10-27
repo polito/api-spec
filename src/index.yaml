@@ -154,6 +154,10 @@ paths:
     $ref: './paths/common/courses.yaml#/~1courses~1{courseId}~1virtual-classrooms'
   /deadlines:
     $ref: './paths/common/profile.yaml#/~1deadlines'
+  /emergencies:
+    $ref: './paths/common/emergencies.yaml#/~1emergencies'
+  /emergencies/{emergencyId}:
+    $ref: './paths/common/emergencies.yaml#/~1emergencies~1{emergencyId}'
   /emergencies/contacts:
     $ref: './paths/common/emergencies.yaml#/~1emergencies~1contacts'
   /esc:

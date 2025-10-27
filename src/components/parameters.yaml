@@ -156,6 +156,12 @@
     required: true
     schema:
       type: string
+  EmergencyId:
+    name: emergencyId
+    in: path
+    required: true
+    schema:
+      type: string
   PageParam:
     name: page
     in: query

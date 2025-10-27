@@ -963,6 +963,53 @@
     required:
     - name
     - phone
+  Emergency:
+    type: object
+    description: Dati dettagliati di un'emergenza disponibile nell'app.
+    properties:
+      id:
+        type: string
+        description: Identificativo univoco dell'emergenza.
+        example: fire
+      name:
+        type: string
+        description: Nome leggibile dell'emergenza.
+        example: Fire
+      formatted_description:
+        type: string
+        description: Testo formattato con le istruzioni da seguire.
+        example: "<p>Do not use the elevators.</p><ul><li>Leave immediately and close the door behind you.</li><li>If smoke is present, stay low to the ground.</li></ul>"
+      phone_number:
+        type: string
+        description: Numero di telefono da contattare in caso di emergenza.
+        example: "112"
+    required:
+    - id
+    - name
+    - formatted_description
+    - phone_number
+  PaginatedEmergencyList:
+    type: object
+    description: Risposta paginata con l'elenco delle emergenze.
+    properties:
+      data:
+        type: array
+        items:
+          "$ref": "#/Emergency"
+      page:
+        type: integer
+        minimum: 1
+      pageSize:
+        type: integer
+        minimum: 1
+      total:
+        type: integer
+        minimum: 0
+    required:
+    - data
+    - page
+    - pageSize
+    - total
   Error:
     type: object
     properties:

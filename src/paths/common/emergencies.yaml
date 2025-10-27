@@ -1,3 +1,53 @@
+  "/emergencies":
+    get:
+      tags:
+      - Common - Emergencies
+      summary: List emergencies | Elenca emergenze
+      operationId: listEmergencies
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/PageParam"
+      - "$ref": "../../components/parameters.yaml#/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/PaginatedEmergencyList"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/emergencies/{emergencyId}":
+    get:
+      tags:
+      - Common - Emergencies
+      summary: Show emergency | Mostra emergenza
+      operationId: getEmergency
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/EmergencyId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Emergency"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
   "/emergencies/contacts":
     get:
       tags:
