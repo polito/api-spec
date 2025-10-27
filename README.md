@@ -3,66 +3,50 @@ The OpenAPI specification for the REST API of Politecnico di Torino.
 
 ## Project Structure
 
-This specification is organized as a multi-file structure for better maintainability:
+The specification is maintained as a multi-file tree for readability:
 
-- **`openapi.yaml`** - Bundled specification (auto-generated from `src/`)
-- **`src/`** - Source files organized by domain:
-  - `src/index.yaml` - Main specification file with references
-  - `src/paths/` - API endpoints split by domain (common, students, faculty)
-  - `src/components/` - Reusable schemas, parameters, responses
+- `src/index.yaml` — entry point referenced by tooling
+- `src/paths/` — HTTP endpoints grouped by consumer
+- `src/components/` — shared schemas, responses, parameters
+- `openapi.yaml` — generated bundle (ignored by Git; recreate locally when needed)
 
-**Note:** The `openapi.yaml` file is automatically generated via GitHub Actions. Always edit files in the `src/` directory.
+Always edit files under `src/`. The bundled file exists only for tooling and publishing workflows.
+
+## Prerequisites
+
+- Node.js 18 (match the CI environment)
+- npm (ships with Node.js)
+- Optional: Docker and Prism for documentation and mocking
+
+Install dependencies once per clone:
+
+```bash
+npm ci
+```
 
 ## Development Workflow
 
-### Making Changes to the API Specification
-
-1. **Edit source files** in the `src/` directory:
+1. Edit the spec under `src/`.
+2. Bundle and validate locally:
    ```bash
-   # Example: Add a new faculty endpoint
-   vim src/paths/faculty/exams.yaml
+   npm run bundle:verify
    ```
-
-2. **Commit and push your changes**:
+   This runs `swagger-cli bundle` and `swagger-cli validate` via the scripts defined in `package.json`. The command regenerates `openapi.yaml` in-place for local tooling and client generation.
+3. Commit only the source changes:
    ```bash
    git add src/
-   git commit -m "feat: add batch exam enrollment endpoint"
-   git push
+   git commit -m "feat: add emergency endpoints"
    ```
+   The generated `openapi.yaml` is ignored by Git; keep it unstaged.
+4. Open a pull request. The **Validate OpenAPI Specification** workflow runs `npm ci`, `npm run bundle`, `npm run validate`, and validates the bundled spec with `openapi-generator-cli`. The PR must pass this workflow before merging.
 
-3. **Automatic bundling** (via GitHub Actions):
-   - When you push changes to `src/`, a GitHub Action automatically bundles the specification
-   - The bundled `openapi.yaml` is committed back to your branch
-   - You'll see a commit from `github-actions[bot]` with message `chore: auto-bundle OpenAPI spec [skip ci]`
+### Useful npm scripts
 
-4. **Create a Pull Request**:
-   - When you create a PR to `master`, validation workflows run automatically
-   - The validation checks that:
-     - The spec can be bundled without errors
-     - Both `swagger-cli` and `openapi-generator` can validate it
-     - The `openapi.yaml` is in sync with `src/`
-   - PRs cannot be merged if validation fails
-
-### Manual Bundling (Optional)
-
-If you prefer to bundle locally before pushing:
-
-```bash
-# Install swagger-cli (one-time setup)
-npm install -g swagger-cli
-
-# Bundle the specification
-swagger-cli bundle src/index.yaml -o openapi.yaml -t yaml
-
-# Validate the bundled file
-swagger-cli validate openapi.yaml
-
-# Commit both source and bundled files
-git add src/ openapi.yaml
-git commit -m "feat: add new endpoint"
-```
-
-**Note:** Manual bundling is optional. The GitHub Action will bundle automatically when you push to `src/`.
+| Command               | Description                                      |
+|-----------------------|--------------------------------------------------|
+| `npm run bundle`      | Produces `openapi.yaml` from the multi-file spec |
+| `npm run validate`    | Validates the current `openapi.yaml` bundle      |
+| `npm run bundle:verify` | Bundles then validates in a single step         |
 
 ## How to obtain a human-readable interface
 If you are accustomed to using Postman, you can just import the .yaml file containing the specification.
