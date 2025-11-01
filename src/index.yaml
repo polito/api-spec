@@ -206,6 +206,8 @@ paths:
     $ref: './paths/faculty/profile.yaml#/~1faculty~1me~1publications~1{publicationId}'
   /faculty/signing/documents:
     $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents'
+  /faculty/signing/documents/{documentId}:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents~1{documentId}'
   /faculty/signing/documents/{documentId}/initiate:
     $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents~1{documentId}~1initiate'
   /faculty/signing/sessions/{sessionId}:
@@ -296,6 +298,8 @@ paths:
     $ref: './paths/common/places.yaml#/~1v2~1places'
   /v2/places/bookings:
     $ref: './paths/common/places.yaml#/~1v2~1places~1bookings'
+  /v2/places/bookings/{bookingId}:
+    $ref: './paths/common/places.yaml#/~1v2~1places~1bookings~1{bookingId}'
   /v2/places/{placeId}:
     $ref: './paths/common/places.yaml#/~1v2~1places~1{placeId}'
   /v2/sites:

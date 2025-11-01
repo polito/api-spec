@@ -277,3 +277,39 @@
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/v2/places/bookings/{bookingId}":
+    get:
+      tags:
+      - Common - Places
+      summary: Retrieve booking | Mostra prenotazione
+      operationId: getPlaceBooking
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/Booking"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

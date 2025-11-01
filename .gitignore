@@ -3,3 +3,7 @@ openapi.yaml
 
 # Local npm dependencies
 node_modules/
+
+# OSX
+#
+.DS_Store

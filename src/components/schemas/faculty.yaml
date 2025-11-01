@@ -722,6 +722,13 @@
         type: string
       siteId:
         type: string
+      status:
+        type: string
+        enum:
+        - WAITING
+        - ACCEPTED
+        - REJECTED
+        example: WAITING
       capacity:
         type: integer
       features:
@@ -744,6 +751,7 @@
     - roomId
     - name
     - siteId
+    - status
     - capacity
     - slots
   RoomBookingRequest:
@@ -806,6 +814,10 @@
         format: date-time
       downloadUrl:
         type: string
+      expiresAt:
+        type: string
+        format: date-time
+        description: Data di scadenza del documento
       activeSession:
         type:
         - object
@@ -826,6 +838,7 @@
     - status
     - requestedAt
     - downloadUrl
+    - expiresAt
   SigningSession:
     type: object
     description: Rappresenta una sessione di firma attiva con stato e tracciamento tentativi

@@ -34,6 +34,34 @@
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/signing/documents/{documentId}":
+    get:
+      tags:
+      - Faculty - Digital Signature
+      summary: Dettaglio documento da firmare
+      operationId: getFacultySigningDocument
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/DocumentId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/SignableDocument"
+                required:
+                - data
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
   "/faculty/signing/documents/{documentId}/initiate":
     post:
       tags:
