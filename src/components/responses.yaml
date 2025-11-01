@@ -54,3 +54,100 @@
               - status
           required:
           - data
+  SessionExpiredResponse:
+    description: Sessione di firma scaduta
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: SESSION_EXPIRED
+                message:
+                  type: string
+                  example: La sessione di firma è scaduta
+              required:
+              - code
+              - message
+          required:
+          - error
+  TooManyAttemptsResponse:
+    description: Troppi tentativi falliti, sessione bloccata
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: TOO_MANY_ATTEMPTS
+                message:
+                  type: string
+                  example: Troppi tentativi falliti. Sessione bloccata.
+                retryAfter:
+                  type: integer
+                  description: Secondi prima di poter riprovare
+                  example: 3600
+              required:
+              - code
+              - message
+          required:
+          - error
+  InvalidOtpResponse:
+    description: Codice OTP non valido
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: INVALID_OTP
+                message:
+                  type: string
+                  example: Codice OTP non valido
+                attemptsRemaining:
+                  type: integer
+                  description: Tentativi rimasti prima del blocco
+                  example: 2
+              required:
+              - code
+              - message
+              - attemptsRemaining
+          required:
+          - error
+  PreconditionFailedResponse:
+    description: Step precedente non completato
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: STEP_NOT_COMPLETED
+                message:
+                  type: string
+                  example: Devi completare prima la verifica OTP
+                requiredStep:
+                  type: string
+                  example: otp_verification
+              required:
+              - code
+              - message
+              - requiredStep
+          required:
+          - error

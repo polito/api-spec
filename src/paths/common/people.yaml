@@ -11,6 +11,12 @@
         required: true
         schema:
           type: string
+      - name: role
+        in: query
+        description: Filter people by role
+        required: false
+        schema:
+          type: string
       responses:
         200:
           description: Success

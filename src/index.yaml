@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: Polito Students API
-  version: 2.2.3
+  version: 2.2.4
   license:
     name: CC BY-NC 4.0
     url: https://creativecommons.org/licenses/by-nc/4.0/
@@ -178,6 +178,8 @@ paths:
     $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1{calendarId}~1events'
   /faculty/calendars/{calendarId}/events/{eventId}:
     $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1{calendarId}~1events~1{eventId}'
+  /faculty/calendars/events:
+    $ref: './paths/faculty/calendar.yaml#/~1faculty~1calendars~1events'
   /faculty/courses/{courseId}/collaborators:
     $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1collaborators'
   /faculty/courses/{courseId}/collaborators/{collaboratorId}:
@@ -186,6 +188,8 @@ paths:
     $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1message'
   /faculty/courses/{courseId}/students:
     $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1students'
+  /faculty/courses/{courseId}/students/{studentId}:
+    $ref: './paths/faculty/courses.yaml#/~1faculty~1courses~1{courseId}~1students~1{studentId}'
   /faculty/exams:
     $ref: './paths/faculty/exams.yaml#/~1faculty~1exams'
   /faculty/exams/{examId}:
@@ -202,8 +206,14 @@ paths:
     $ref: './paths/faculty/profile.yaml#/~1faculty~1me~1publications~1{publicationId}'
   /faculty/signing/documents:
     $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents'
-  /faculty/signing/documents/{documentId}/sign:
-    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents~1{documentId}~1sign'
+  /faculty/signing/documents/{documentId}/initiate:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1documents~1{documentId}~1initiate'
+  /faculty/signing/sessions/{sessionId}:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1sessions~1{sessionId}'
+  /faculty/signing/sessions/{sessionId}/sign:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1sessions~1{sessionId}~1sign'
+  /faculty/signing/sessions/{sessionId}/verify-otp:
+    $ref: './paths/faculty/digital-signature.yaml#/~1faculty~1signing~1sessions~1{sessionId}~1verify-otp'
   /faults:
     $ref: './paths/common/faults.yaml#/~1faults'
   /faults/{faultId}:
@@ -318,6 +328,8 @@ components:
       $ref: './components/parameters.yaml#/degreeIdParam'
     DocumentId:
       $ref: './components/parameters.yaml#/DocumentId'
+    SessionId:
+      $ref: './components/parameters.yaml#/SessionId'
     ExamId:
       $ref: './components/parameters.yaml#/ExamId'
     FaultId:
@@ -377,8 +389,16 @@ components:
       $ref: './components/responses.yaml#/ErrorEscResponse'
     ErrorResponse:
       $ref: './components/responses.yaml#/ErrorResponse'
+    InvalidOtpResponse:
+      $ref: './components/responses.yaml#/InvalidOtpResponse'
     NotFoundResponse:
       $ref: './components/responses.yaml#/NotFoundResponse'
+    PreconditionFailedResponse:
+      $ref: './components/responses.yaml#/PreconditionFailedResponse'
+    SessionExpiredResponse:
+      $ref: './components/responses.yaml#/SessionExpiredResponse'
+    TooManyAttemptsResponse:
+      $ref: './components/responses.yaml#/TooManyAttemptsResponse'
     UnauthorizedResponse:
       $ref: './components/responses.yaml#/UnauthorizedResponse'
   securitySchemes:
@@ -503,6 +523,8 @@ components:
       $ref: './components/schemas/faculty.yaml#/FacultyCalendarEvent'
     FacultyCalendarEventCreateRequest:
       $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventCreateRequest'
+    FacultyCalendarEventUpsertRequest:
+      $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventUpsertRequest'
     FacultyCalendarEventMaterial:
       $ref: './components/schemas/faculty.yaml#/FacultyCalendarEventMaterial'
     FacultyCalendarEventTypeEnum:
@@ -623,8 +645,22 @@ components:
       $ref: './components/schemas/common.yaml#/RootPlaceCategory'
     SignableDocument:
       $ref: './components/schemas/faculty.yaml#/SignableDocument'
-    SignatureStartResponse:
-      $ref: './components/schemas/faculty.yaml#/SignatureStartResponse'
+    SigningSession:
+      $ref: './components/schemas/faculty.yaml#/SigningSession'
+    InitiateSigningRequest:
+      $ref: './components/schemas/faculty.yaml#/InitiateSigningRequest'
+    InitiateSigningResponse:
+      $ref: './components/schemas/faculty.yaml#/InitiateSigningResponse'
+    VerifyOtpRequest:
+      $ref: './components/schemas/faculty.yaml#/VerifyOtpRequest'
+    VerifyOtpResponse:
+      $ref: './components/schemas/faculty.yaml#/VerifyOtpResponse'
+    SignWithPinRequest:
+      $ref: './components/schemas/faculty.yaml#/SignWithPinRequest'
+    SignWithPinResponse:
+      $ref: './components/schemas/faculty.yaml#/SignWithPinResponse'
+    SessionStatusResponse:
+      $ref: './components/schemas/faculty.yaml#/SessionStatusResponse'
     Site:
       $ref: './components/schemas/common.yaml#/Site'
     SiteOverview:

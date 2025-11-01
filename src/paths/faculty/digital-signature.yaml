@@ -34,14 +34,13 @@
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
-  "/faculty/signing/documents/{documentId}/sign":
+  "/faculty/signing/documents/{documentId}/initiate":
     post:
       tags:
       - Faculty - Digital Signature
-      summary: Avvia firma digitale
-      description: Avvia il flusso di firma digitale tramite provider esterno (es.
-        InfoCert). Restituisce eventuale URL di redirezione o stato asincrono.
-      operationId: signDocument
+      summary: Avvia processo di firma (Step 1)
+      description: Inizia il flusso di firma generando una sessione e inviando l'OTP al docente
+      operationId: initiateDocumentSigning
       security:
       - bearerAuth: []
       parameters:
@@ -51,25 +50,121 @@
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                otp:
-                  type:
-                  - string
-                  - 'null'
-                  description: OTP se richiesto dal provider.
+              "$ref": "../../components/schemas/faculty.yaml#/InitiateSigningRequest"
       responses:
-        '202':
-          description: Flusso di firma avviato
+        '200':
+          description: Sessione creata, OTP inviato
           content:
             application/json:
               schema:
-                "$ref": "../../components/schemas/faculty.yaml#/SignatureStartResponse"
+                "$ref": "../../components/schemas/faculty.yaml#/InitiateSigningResponse"
         '400':
           "$ref": "../../components/responses.yaml#/BadRequestResponse"
         '401':
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
         '409':
           "$ref": "../../components/responses.yaml#/ConflictResponse"
-        '502':
-          description: Errore dal provider esterno
+        '429':
+          "$ref": "../../components/responses.yaml#/TooManyAttemptsResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/signing/sessions/{sessionId}/verify-otp":
+    post:
+      tags:
+      - Faculty - Digital Signature
+      summary: Verifica OTP (Step 2)
+      description: Verifica il codice OTP inserito dall'utente
+      operationId: verifySigningOtp
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/SessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/VerifyOtpRequest"
+      responses:
+        '200':
+          description: OTP verificato con successo
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/VerifyOtpResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/InvalidOtpResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '410':
+          "$ref": "../../components/responses.yaml#/SessionExpiredResponse"
+        '429':
+          "$ref": "../../components/responses.yaml#/TooManyAttemptsResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/signing/sessions/{sessionId}/sign":
+    post:
+      tags:
+      - Faculty - Digital Signature
+      summary: Firma con PIN (Step 3)
+      description: Completa la firma digitale inserendo il PIN personale
+      operationId: signDocumentWithPin
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/SessionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/SignWithPinRequest"
+      responses:
+        '200':
+          description: Documento firmato con successo
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/SignWithPinResponse"
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '410':
+          "$ref": "../../components/responses.yaml#/SessionExpiredResponse"
+        '412':
+          "$ref": "../../components/responses.yaml#/PreconditionFailedResponse"
+        '429':
+          "$ref": "../../components/responses.yaml#/TooManyAttemptsResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/signing/sessions/{sessionId}":
+    get:
+      tags:
+      - Faculty - Digital Signature
+      summary: Stato sessione di firma
+      description: Ottiene lo stato corrente di una sessione di firma (utile per debugging e recovery)
+      operationId: getSigningSessionStatus
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/SessionId"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/SessionStatusResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

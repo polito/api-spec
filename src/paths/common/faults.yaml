@@ -93,3 +93,21 @@
           "$ref": "../../components/responses.yaml#/NotFoundResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Common - Faults
+      summary: Elimina segnalazione guasto
+      operationId: deleteFault
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/FaultId"
+      responses:
+        '204':
+          description: Eliminato
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"

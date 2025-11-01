@@ -28,6 +28,49 @@
           "$ref": "../../components/responses.yaml#/NotFoundResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/courses/{courseId}/students/{studentId}":
+    put:
+      tags:
+      - Faculty - Courses
+      summary: Aggiungi studente al corso
+      description: Operazione idempotente per iscrivere uno studente al corso.
+      operationId: enrollStudentInCourse
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CourseId"
+      - "$ref": "../../components/parameters.yaml#/StudentId"
+      responses:
+        '200':
+          description: Studente già iscritto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCourseStudent"
+                required:
+                - data
+        '201':
+          description: Studente iscritto con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCourseStudent"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
   "/faculty/courses/{courseId}/collaborators":
     get:
       tags:

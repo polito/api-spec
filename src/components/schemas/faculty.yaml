@@ -428,6 +428,57 @@
     - endsAt
     - allDay
     additionalProperties: false
+  FacultyCalendarEventUpsertRequest:
+    type: object
+    description: Schema unificato per creare o aggiornare un evento del calendario.
+    properties:
+      title:
+        type: string
+        example: Brainstorming for new Activities
+      type:
+        "$ref": "#/FacultyCalendarEventTypeEnum"
+      startsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T16:00:00.000Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2023-12-18T17:30:00.000Z'
+      allDay:
+        type: boolean
+        example: false
+      placeId:
+        type: string
+        nullable: true
+        description: Identificativo della stanza selezionata (es. roomId).
+        example: ROOM_002
+      externalLocation:
+        type: string
+        nullable: true
+        description: Descrizione libera della location, usata in alternativa a placeId.
+        example: Sala riunioni Dipartimento DAUIN
+      notes:
+        type: string
+        nullable: true
+        example: Preparare i materiali introduttivi.
+      materialIds:
+        type: array
+        items:
+          type: string
+        description: Identificativi dei materiali didattici da associare all'evento.
+      videoConferenceUrl:
+        type: string
+        format: uri
+        nullable: true
+        example: https://polito.webex.com/meet/docente
+    required:
+    - title
+    - type
+    - startsAt
+    - endsAt
+    - allDay
+    additionalProperties: false
   FacultyCalendarEventMaterial:
     type: object
     properties:
@@ -755,32 +806,201 @@
         format: date-time
       downloadUrl:
         type: string
+      activeSession:
+        type:
+        - object
+        - 'null'
+        description: Sessione di firma attiva per questo documento (se presente)
+        properties:
+          sessionId:
+            type: string
+            format: uuid
+          status:
+            type: string
+          expiresAt:
+            type: string
+            format: date-time
     required:
     - id
     - title
     - status
     - requestedAt
     - downloadUrl
-  SignatureStartResponse:
+  SigningSession:
+    type: object
+    description: Rappresenta una sessione di firma attiva con stato e tracciamento tentativi
+    properties:
+      sessionId:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+      documentId:
+        type: string
+      status:
+        type: string
+        enum:
+        - otp_sent
+        - otp_verified
+        - completed
+        - expired
+        - locked
+        description: Stato corrente della sessione
+      currentStep:
+        type: string
+        enum:
+        - otp_required
+        - pin_required
+        - completed
+        description: Prossimo step richiesto
+      createdAt:
+        type: string
+        format: date-time
+      expiresAt:
+        type: string
+        format: date-time
+        description: Scadenza della sessione (15 minuti dalla creazione)
+      otpAttemptsRemaining:
+        type: integer
+        minimum: 0
+        maximum: 3
+        default: 3
+      pinAttemptsRemaining:
+        type: integer
+        minimum: 0
+        maximum: 3
+        default: 3
+      otpDeliveredTo:
+        type:
+        - string
+        - 'null'
+        description: Telefono o email mascherati dove è stato inviato l'OTP
+        example: "***1234"
+    required:
+    - sessionId
+    - documentId
+    - status
+    - currentStep
+    - expiresAt
+  InitiateSigningRequest:
+    type: object
+    description: Richiesta opzionale per specificare il metodo di invio OTP
+    properties:
+      deliveryMethod:
+        type: string
+        enum:
+        - sms
+        - email
+        description: Metodo preferito per l'invio dell'OTP
+  InitiateSigningResponse:
     type: object
     properties:
       data:
         type: object
         properties:
+          sessionId:
+            type: string
+            format: uuid
           status:
             type: string
             enum:
-            - started
-            - pending_otp
-            - completed
-          redirectUrl:
-            type:
-            - string
-            - 'null'
-          requestId:
+            - otp_sent
+          expiresAt:
             type: string
+            format: date-time
+          otpDeliveredTo:
+            type: string
+            description: Telefono o email mascherati
+            example: "***1234"
         required:
+        - sessionId
         - status
-        - requestId
+        - expiresAt
+    required:
+    - data
+  VerifyOtpRequest:
+    type: object
+    properties:
+      otp:
+        type: string
+        pattern: "^[0-9]{6}$"
+        description: Codice OTP a 6 cifre
+        example: "123456"
+    required:
+    - otp
+    additionalProperties: false
+  VerifyOtpResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          sessionId:
+            type: string
+            format: uuid
+          status:
+            type: string
+            enum:
+            - otp_verified
+          nextStep:
+            type: string
+            enum:
+            - pin_required
+          attemptsRemaining:
+            type: integer
+            description: Tentativi OTP rimasti (solo se fallito)
+        required:
+        - sessionId
+        - status
+        - nextStep
+    required:
+    - data
+  SignWithPinRequest:
+    type: object
+    properties:
+      pin:
+        type: string
+        minLength: 4
+        maxLength: 8
+        description: PIN personale per la firma digitale
+        example: "1234"
+      provider:
+        type: string
+        enum:
+        - internal
+        - external
+        description: Provider per la verifica del PIN (opzionale, default internal)
+    required:
+    - pin
+    additionalProperties: false
+  SignWithPinResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          documentId:
+            type: string
+          status:
+            type: string
+            enum:
+            - signed
+          signedAt:
+            type: string
+            format: date-time
+          signedDocument:
+            "$ref": "#/SignableDocument"
+        required:
+        - documentId
+        - status
+        - signedAt
+        - signedDocument
+    required:
+    - data
+  SessionStatusResponse:
+    type: object
+    description: Risposta per verificare lo stato corrente della sessione
+    properties:
+      data:
+        "$ref": "#/SigningSession"
     required:
     - data

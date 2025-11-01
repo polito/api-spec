@@ -24,6 +24,64 @@
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
+  "/faculty/calendars/events":
+    get:
+      tags:
+      - Faculty - Calendar
+      summary: Elenca tutti gli eventi da tutti i calendari
+      description: Restituisce gli eventi da tutti i calendari disponibili, con possibilità di filtrare per specifici calendari.
+      operationId: listAllFacultyCalendarEvents
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: calendarId
+        in: query
+        description: Filtra eventi per specifici calendari (ripetibile)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: true
+      - name: type
+        in: query
+        description: Filtra per tipo di evento
+        required: false
+        schema:
+          type: string
+          enum:
+          - LECTURE
+          - MEETING
+          - OFFICE_HOUR
+          - OTHER
+      - name: startDate
+        in: query
+        description: Data inizio periodo (inclusa)
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: Data fine periodo (inclusa)
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - "$ref": "../../components/parameters.yaml#/PageParam"
+      - "$ref": "../../components/parameters.yaml#/PageSizeParam"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/faculty.yaml#/PaginatedFacultyCalendarEventList"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
   "/faculty/calendars/{calendarId}":
     get:
       tags:
@@ -46,41 +104,6 @@
                     "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarDetail"
                 required:
                 - data
-        '401':
-          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
-        '404':
-          "$ref": "../../components/responses.yaml#/NotFoundResponse"
-        '500':
-          "$ref": "../../components/responses.yaml#/ErrorResponse"
-    post:
-      tags:
-      - Faculty - Calendar
-      summary: Crea un nuovo evento nel calendario
-      operationId: createFacultyCalendarEvent
-      security:
-      - bearerAuth: []
-      parameters:
-      - "$ref": "../../components/parameters.yaml#/CalendarId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEventCreateRequest"
-      responses:
-        '201':
-          description: Creato
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEvent"
-                required:
-                - data
-        '400':
-          "$ref": "../../components/responses.yaml#/BadRequestResponse"
         '401':
           "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
         '404':
@@ -113,6 +136,60 @@
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"
   "/faculty/calendars/{calendarId}/events/{eventId}":
+    put:
+      tags:
+      - Faculty - Calendar
+      summary: Crea o aggiorna un evento del calendario
+      description: Crea un nuovo evento o aggiorna un evento esistente. Utilizza semantica upsert con ID generato dal client.
+      operationId: upsertFacultyCalendarEvent
+      security:
+      - bearerAuth: []
+      parameters:
+      - "$ref": "../../components/parameters.yaml#/CalendarId"
+      - "$ref": "../../components/parameters.yaml#/CalendarEventId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEventUpsertRequest"
+      responses:
+        '200':
+          description: Evento aggiornato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEvent"
+                required:
+                - data
+        '201':
+          description: Evento creato
+          headers:
+            Location:
+              description: URI del nuovo evento creato
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/faculty.yaml#/FacultyCalendarEvent"
+                required:
+                - data
+        '400':
+          "$ref": "../../components/responses.yaml#/BadRequestResponse"
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          "$ref": "../../components/responses.yaml#/NotFoundResponse"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
     delete:
       tags:
       - Faculty - Calendar
