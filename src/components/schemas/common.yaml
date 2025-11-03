@@ -70,6 +70,280 @@
     - seat
     - cancelableUntil
     - location
+  PlaceBooking:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 123456
+      referenceCode:
+        type: string
+        description: Codice esterno mostrato nelle interfacce utente.
+        example: REQ-123456
+      status:
+        type: string
+        enum:
+        - PENDING
+        - ACCEPTED
+        - REJECTED
+        example: PENDING
+      type:
+        type: string
+        enum:
+        - ROOM
+        - STRUCTURE
+        - EVENT
+        example: ROOM
+      title:
+        type: string
+        example: Richiesta aule studio
+      description:
+        type: string
+        nullable: true
+        example: Sessione di studio con tutor
+      requestedAt:
+        type: string
+        format: date-time
+        example: '2024-04-01T09:00:00Z'
+      requestedBy:
+        "$ref": "#/PlaceBookingContact"
+      requestedFor:
+        allOf:
+        - "$ref": "#/PlaceBookingContact"
+        - nullable: true
+      startsAt:
+        type: string
+        format: date-time
+        example: '2024-04-10T08:00:00Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2024-04-10T12:00:00Z'
+      location:
+        "$ref": "#/PlaceBookingLocation"
+      capacity:
+        type:
+        - integer
+        - 'null'
+        example: 12
+      equipment:
+        type: array
+        items:
+          type: string
+        example:
+        - lavagna
+        - proiettore
+      services:
+        type: array
+        items:
+          type: string
+        example:
+        - assistance
+      notes:
+        type:
+        - string
+        - 'null'
+        example: Allestire i tavoli in modalità esame
+      actions:
+        "$ref": "#/PlaceBookingActions"
+    required:
+    - id
+    - referenceCode
+    - status
+    - type
+    - title
+    - requestedAt
+    - requestedBy
+    - startsAt
+    - endsAt
+    - location
+    - actions
+  PlaceBookingActions:
+    type: object
+    properties:
+      canEdit:
+        type: boolean
+        example: true
+      canCancel:
+        type: boolean
+        example: true
+      canApprove:
+        type: boolean
+        example: false
+      canReject:
+        type: boolean
+        example: false
+    required:
+    - canEdit
+    - canCancel
+    - canApprove
+    - canReject
+  PlaceBookingContact:
+    type: object
+    properties:
+      personId:
+        type:
+        - string
+        - 'null'
+        example: s123456
+      fullName:
+        type: string
+        example: Mario Rossi
+      role:
+        type:
+        - string
+        - 'null'
+        example: Studente
+      email:
+        type:
+        - string
+        - 'null'
+        format: email
+        example: mario.rossi@example.com
+      phoneNumber:
+        type:
+        - string
+        - 'null'
+        example: "+39 011 1234567"
+    required:
+    - fullName
+  PlaceBookingLocation:
+    type: object
+    properties:
+      siteId:
+        type: string
+        example: TO_CIT
+      siteName:
+        type: string
+        example: Cittadella Politecnica
+      buildingId:
+        type:
+        - string
+        - 'null'
+        example: TO_CIT22
+      buildingName:
+        type:
+        - string
+        - 'null'
+        example: Palazzina Aule Einaudi
+      floorId:
+        type:
+        - string
+        - 'null'
+        example: 1
+      floorName:
+        type:
+        - string
+        - 'null'
+        example: Primo piano
+      roomId:
+        type:
+        - string
+        - 'null'
+        example: '088'
+      roomName:
+        type:
+        - string
+        - 'null'
+        example: Aula 1D
+      address:
+        type:
+        - string
+        - 'null'
+        example: Corso Castelfidardo 30/A, Torino
+    required:
+    - siteId
+    - siteName
+  PlaceBookingUpsertRequest:
+    type: object
+    properties:
+      bookingId:
+        type:
+        - integer
+        - 'null'
+        description: Fornire per aggiornare una prenotazione esistente.
+        example: 123456
+      status:
+        type: string
+        enum:
+        - PENDING
+        - ACCEPTED
+        - REJECTED
+        example: PENDING
+      type:
+        type: string
+        enum:
+        - ROOM
+        - STRUCTURE
+        - EVENT
+        example: ROOM
+      title:
+        type: string
+        example: Richiesta aule studio
+      description:
+        type:
+        - string
+        - 'null'
+        example: Sessione aperta agli studenti del primo anno
+      requestedFor:
+        allOf:
+        - "$ref": "#/PlaceBookingContact"
+        - nullable: true
+      startsAt:
+        type: string
+        format: date-time
+        example: '2024-04-10T08:00:00Z'
+      endsAt:
+        type: string
+        format: date-time
+        example: '2024-04-10T12:00:00Z'
+      siteId:
+        type: string
+        example: TO_CIT
+      buildingId:
+        type:
+        - string
+        - 'null'
+        example: TO_CIT22
+      floorId:
+        type:
+        - string
+        - 'null'
+        example: 1
+      roomId:
+        type:
+        - string
+        - 'null'
+        example: '088'
+      capacity:
+        type:
+        - integer
+        - 'null'
+        example: 12
+      equipment:
+        type: array
+        items:
+          type: string
+        example:
+        - lavagna
+        - proiettore
+      services:
+        type: array
+        items:
+          type: string
+        example:
+        - assistance
+      notes:
+        type:
+        - string
+        - 'null'
+        example: Allestire i tavoli in modalità esame
+    required:
+    - status
+    - type
+    - startsAt
+    - endsAt
+    - siteId
   BookingLocationCheck:
     type: object
     properties:

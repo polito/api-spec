@@ -195,11 +195,11 @@
         400:
           "$ref": "../../components/responses.yaml#/BadRequestResponse"
   "/v2/places/bookings":
-    post:
+    put:
       tags:
       - Common - Places
-      summary: Prenota aula/laboratorio
-      operationId: createRoomBooking
+      summary: Crea o aggiorna prenotazione spazio | Create or update a place booking
+      operationId: upsertPlaceBooking
       security:
       - bearerAuth: []
       requestBody:
@@ -207,10 +207,19 @@
         content:
           application/json:
             schema:
-              "$ref": "../../components/schemas/faculty.yaml#/RoomBookingRequest"
+              "$ref": "../../components/schemas/common.yaml#/PlaceBookingUpsertRequest"
       responses:
-        '201':
-          "$ref": "../../components/responses.yaml#/CreatedAckResponse"
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "../../components/schemas/common.yaml#/PlaceBooking"
+                required:
+                - data
         '400':
           "$ref": "../../components/responses.yaml#/BadRequestResponse"
         '401':
@@ -222,46 +231,49 @@
     get:
       tags:
       - Common - Places
-      summary: Ricerca disponibilità aule
-      operationId: searchRoomAvailability
+      summary: Elenca prenotazioni spazi | List place bookings
+      operationId: getPlaceBookings
       security:
       - bearerAuth: []
       parameters:
       - in: query
+        name: status
+        description: Filtro per stato prenotazione.
+        schema:
+          type: string
+          enum:
+          - PENDING
+          - ACCEPTED
+          - REJECTED
+      - in: query
+        name: type
+        description: Filtro per tipologia prenotazione.
+        schema:
+          type: string
+          enum:
+          - ROOM
+          - STRUCTURE
+          - EVENT
+      - in: query
         name: siteId
         schema:
           type: string
-        description: Sede/ edificio.
+        description: Limita le prenotazioni ad una specifica sede.
       - in: query
-        name: date
+        name: from
         schema:
           type: string
-          format: date
+          format: date-time
+        description: Mostra prenotazioni con inizio a partire da questo istante (incluso).
       - in: query
-        name: startTime
+        name: to
         schema:
           type: string
-          pattern: "^\\\\d{2}:\\\\d{2}$"
-      - in: query
-        name: endTime
-        schema:
-          type: string
-          pattern: "^\\\\d{2}:\\\\d{2}$"
-      - in: query
-        name: capacity
-        schema:
-          type: integer
-          minimum: 1
-      - in: query
-        name: features
-        schema:
-          type: array
-          items:
-            type: string
-        description: Es. ["cattedra","prese_corrente"]
+          format: date-time
+        description: Mostra prenotazioni con inizio antecedente o uguale a questo istante.
       responses:
         '200':
-          description: OK
+          description: Success
           content:
             application/json:
               schema:
@@ -270,7 +282,7 @@
                   data:
                     type: array
                     items:
-                      "$ref": "../../components/schemas/faculty.yaml#/RoomAvailability"
+                      "$ref": "../../components/schemas/common.yaml#/PlaceBooking"
                 required:
                 - data
         '401':
@@ -281,7 +293,7 @@
     get:
       tags:
       - Common - Places
-      summary: Retrieve booking | Mostra prenotazione
+      summary: Mostra prenotazione spazio | Retrieve place booking
       operationId: getPlaceBooking
       security:
       - bearerAuth: []
@@ -300,7 +312,7 @@
                 type: object
                 properties:
                   data:
-                    "$ref": "../../components/schemas/common.yaml#/Booking"
+                    "$ref": "../../components/schemas/common.yaml#/PlaceBooking"
                 required:
                 - data
         '401':
@@ -311,5 +323,33 @@
             application/json:
               schema:
                 "$ref": "../../components/schemas/common.yaml#/Error"
+        '500':
+          "$ref": "../../components/responses.yaml#/ErrorResponse"
+    delete:
+      tags:
+      - Common - Places
+      summary: Annulla prenotazione spazio | Delete place booking
+      operationId: deletePlaceBooking
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Success
+        '401':
+          "$ref": "../../components/responses.yaml#/UnauthorizedResponse"
+        '404':
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/schemas/common.yaml#/Error"
+        '409':
+          "$ref": "../../components/responses.yaml#/ConflictResponse"
         '500':
           "$ref": "../../components/responses.yaml#/ErrorResponse"

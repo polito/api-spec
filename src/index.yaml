@@ -625,6 +625,16 @@ components:
       $ref: './components/schemas/common.yaml#/PlaceCategory'
     PlaceCategoryOverview:
       $ref: './components/schemas/common.yaml#/PlaceCategoryOverview'
+    PlaceBooking:
+      $ref: './components/schemas/common.yaml#/PlaceBooking'
+    PlaceBookingActions:
+      $ref: './components/schemas/common.yaml#/PlaceBookingActions'
+    PlaceBookingContact:
+      $ref: './components/schemas/common.yaml#/PlaceBookingContact'
+    PlaceBookingLocation:
+      $ref: './components/schemas/common.yaml#/PlaceBookingLocation'
+    PlaceBookingUpsertRequest:
+      $ref: './components/schemas/common.yaml#/PlaceBookingUpsertRequest'
     PlaceOverview:
       $ref: './components/schemas/common.yaml#/PlaceOverview'
     PlaceRef:
@@ -639,10 +649,6 @@ components:
       $ref: './components/schemas/students.yaml#/RelatedVirtualClassroom'
     ReplyTicketRequest:
       $ref: './components/schemas/students.yaml#/ReplyTicketRequest'
-    RoomAvailability:
-      $ref: './components/schemas/faculty.yaml#/RoomAvailability'
-    RoomBookingRequest:
-      $ref: './components/schemas/faculty.yaml#/RoomBookingRequest'
     RoomOverview:
       $ref: './components/schemas/common.yaml#/RoomOverview'
     RootPlaceCategory:
