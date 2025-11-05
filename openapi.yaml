@@ -3972,9 +3972,12 @@ components:
         totDistance:
           type: number
           description: Total distance of the route in meters.
-        stairsOrElevatorsCount:
+        stairsCount:
           type: number
-          description: Number of floors crossed in the route.
+          description: Number of stairs crossed in the route.
+        elevatorsCount:
+          type: number
+          description: Number of elevators crossed in the route.
         features:
           type: array
           items:
