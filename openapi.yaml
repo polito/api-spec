@@ -3998,12 +3998,16 @@ components:
           $ref: '#/components/schemas/GeoJSONPoint'
         endPoint:
           $ref: '#/components/schemas/GeoJSONPoint'
+        segmentId:
+          type: integer
+          description: Identifier of the segment in the path.
         features:
           $ref: '#/components/schemas/GeoJSONFeatureGeometry'
       required:
         - type
         - startPoint
         - endPoint
+        - segmentId
         - features
     
     GeoJSONPoint:
@@ -4019,7 +4023,7 @@ components:
           items:
               type: number
       required: [ type, coordinates ]
-    
+      
     GeoJSONFeatureGeometry:
       type: object
       properties:
@@ -4048,14 +4052,7 @@ components:
               type: string
             fn_fl_id:
               type: string
-            path_seq:
-              type: integer
-#            startPoint:
-#              startpoint:
-#              $ref: '#/components/schemas/GeoJSONPoint'
-#            endpoint:
-#              $ref: '#/components/schemas/GeoJSONPoint'
-      required: [type, geometry]
+      required: [type, geometry, properties]
 
     Deadline:
       type: object
