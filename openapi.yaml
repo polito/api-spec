@@ -3978,6 +3978,9 @@ components:
         elevatorsCount:
           type: number
           description: Number of elevators crossed in the route.
+        stepsCount:
+          type: number
+          description: Number of steps crossed in the route.
         features:
           type: array
           items:
@@ -3985,7 +3988,9 @@ components:
       required:
         - type
         - totDistance
-        - stairsOrElevatorsCount
+        - stairsCount
+        - elevatorsCount
+        - stepsCount
         - features
 
     NavigationResponseFeature:
