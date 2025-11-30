@@ -7,3 +7,11 @@ node_modules/
 # OSX
 #
 .DS_Store
+
+# Generated TypeScript API clients
+typescript-fetch-client/
+clients/
+*.tsbuildinfo
+
+# OpenAPI Generator metadata
+.openapi-generator/

@@ -5,9 +5,13 @@
   "scripts": {
     "bundle": "swagger-cli bundle src/index.yaml -o openapi.yaml -t yaml",
     "validate": "swagger-cli validate openapi.yaml",
-    "bundle:verify": "npm run bundle && npm run validate"
+    "bundle:verify": "npm run bundle && npm run validate",
+    "generate:client": "npm run bundle && npx @openapitools/openapi-generator-cli version-manager set 7.4.0 && npx @openapitools/openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o typescript-fetch-client --additional-properties=supportsES6=true,npmName=@polito/api-client,npmVersion=1.0.0",
+    "generate:client:fix": "npm run generate:client && npm run fix:client",
+    "fix:client": "echo '// @ts-nocheck' | cat - typescript-fetch-client/src/runtime.ts > temp && mv temp typescript-fetch-client/src/runtime.ts && ([ -f typescript-fetch-client/src/models/FeatureAllOfId.ts ] && (echo '// @ts-nocheck' | cat - typescript-fetch-client/src/models/FeatureAllOfId.ts > temp && mv temp typescript-fetch-client/src/models/FeatureAllOfId.ts) || true)"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.4",
     "swagger-cli": "^4.0.4"
   }
 }
