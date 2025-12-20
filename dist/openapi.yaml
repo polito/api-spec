@@ -1400,6 +1400,32 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /emergencecies:
+    get:
+      operationId: StudentNs_getEmergencies
+      summary: Show emergencecies text and number | Mostra testi e numeri di emergenza
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmergencyResponse'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Student
   /esc:
     delete:
       operationId: Esc_escDelete
@@ -5169,6 +5195,102 @@ components:
         unreadEmails:
           type: string
           example: 99+
+    EmergencyContent:
+      type: object
+      required:
+        - content
+        - cta
+      properties:
+        title:
+          type: string
+          example: Emergency Title
+        content:
+          type: string
+          example: Important information regarding the emergency.
+        cta:
+          $ref: '#/components/schemas/EmergencyCta'
+    EmergencyCta:
+      type: object
+      required:
+        - text
+        - action
+        - color
+        - primary
+      properties:
+        text:
+          type: string
+          example: Emergenza 112
+        action:
+          $ref: '#/components/schemas/EmergencySite'
+        icon:
+          type: string
+          example: fa-phone
+        color:
+          type: string
+          example: '#E11D48'
+        primary:
+          type: boolean
+          example: true
+    EmergencyHour:
+      type: object
+      required:
+        - day
+        - open
+        - close
+      properties:
+        day:
+          type: string
+          example: Monday
+        open:
+          type: string
+          example: '09:00'
+        close:
+          type: string
+          example: '18:00'
+    EmergencyResponse:
+      type: object
+      required:
+        - icon
+        - name
+        - content
+        - cta
+      properties:
+        icon:
+          type: string
+          example: fa-warning
+        name:
+          type: string
+          example: Emergency Name
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyContent'
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+    EmergencySite:
+      type: object
+      required:
+        - places
+        - phoneNumber
+        - hours
+        - backup
+      properties:
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
+        phoneNumber:
+          type: string
+          example: +39 011 090 1234
+        hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyHour'
+        backup:
+          type: boolean
+          example: true
     EnrolMfaRequest:
       type: object
       required:
