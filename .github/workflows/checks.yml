@@ -1,0 +1,53 @@
+name: Ensure code quality
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: "corretto"
+          java-version: "17"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Ensure linting
+        run: |
+          npm run format
+          if [[ $(git status --porcelain) ]]; then
+            echo "Linting introduced changes. Please fix the issues.";
+            git --no-pager diff;
+            exit 1;
+          fi
+
+      - name: Typespec compile
+        run: npm run compile
+
+      - name: Check openapi is in sync
+        run: |
+          if [[ $(git status --porcelain) ]]; then
+            echo "OpenAPI spec is out of date. Did you forget to run 'npm run compile'?";
+            exit 1;
+          fi
+
+      - name: Openapi Generation
+        run: npm run generate

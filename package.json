@@ -1,0 +1,27 @@
+{
+  "name": "polito-api-spec",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Polito Students API TypeSpec Definition",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/polito/api-spec.git"
+  },
+  "packageManager": "npm@10.8.2",
+  "scripts": {
+    "watch": "tsp compile src --watch",
+    "format": "tsp format src/**/*.tsp",
+    "compile": "tsp compile src",
+    "generate": "rm -rf dist/client && openapi-generator-cli generate -i ./dist/openapi.yaml -g typescript-fetch -o ./dist/client --git-user-id=polito --git-repo-id=api-spec --additional-properties=npmName=@polito/api-client,npmRepository=https://npm.pkg.github.com/,supportsES6=true,modelPropertyNaming=original,removeOperationIdPrefix=true && cp dist/openapi.yaml dist/client/openapi.yaml && cd dist/client",
+    "build": "npm run compile && npm run generate",
+    "copy-local": "rm -rf ../students-app/node_modules/@polito/api-client/* && rsync -av ./dist/client/ ../students-app/node_modules/@polito/api-client/ && cd ../students-app/node_modules/@polito/api-client && npm run build"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.25.2",
+    "@typespec/compiler": "^1.7.0",
+    "@typespec/http": "^1.7.0",
+    "@typespec/openapi": "^1.7.0",
+    "@typespec/openapi3": "^1.7.0",
+    "yaml": "^2.8.2"
+  }
+}
