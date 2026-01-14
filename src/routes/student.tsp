@@ -228,6 +228,66 @@ model Guide {
   sections: GuideSection[];
 }
 
+model EmergencyHour {
+  @example("Monday")
+  day: string;
+
+  @example("09:00")
+  open: string;
+
+  @example("18:00")
+  close: string;
+}
+
+model EmergencySite {
+  places: PlaceRef[];
+
+  @example("+39 011 090 1234")
+  phoneNumber: string;
+
+  hours: EmergencyHour[];
+
+  @example(true)
+  backup: boolean;
+}
+
+model EmergencyCta {
+  @example("Emergenza 112")
+  text: string;
+
+  action: EmergencySite;
+
+  @example("fa-phone")
+  icon?: string;
+
+  @example("#E11D48")
+  color: string;
+
+  @example(true)
+  primary: boolean;
+}
+
+model EmergencyContent {
+  @example("Emergency Title")
+  title?: string;
+
+  @example("Important information regarding the emergency.")
+  content: string;
+
+  cta: EmergencyCta;
+}
+
+model EmergencyResponse {
+  @example("fa-warning")
+  icon: string;
+
+  @example("Emergency Name")
+  name: string;
+
+  content: EmergencyContent[];
+  cta: EmergencyCta[];
+}
+
 model Student {
   @example("s290683")
   username: string;
@@ -343,6 +403,11 @@ interface StudentNs {
   @get
   @summary("Get guides | Mostra guide")
   getGuides(): OkDataResponse<Guide[]> | BaseErrors;
+
+  @route("/emergencecies")
+  @get
+  @summary("Show emergencecies text and number | Mostra testi e numeri di emergenza")
+  getEmergencies(): EmergencyResponse | BaseErrors;
 }
 
 @tag("Student")
