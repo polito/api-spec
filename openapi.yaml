@@ -373,6 +373,29 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '500':
           $ref: '#/components/responses/ErrorResponse'
+          
+  /auth/serviceLink/virtualQueue:
+    get:
+      tags:
+        - Auth
+      summary: Get authorised service link for Mail
+      operationId: getvirtualQueueLink
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required: [ data ]
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'  
+
   
   /me:
     get:
