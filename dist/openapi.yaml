@@ -7,19 +7,19 @@ info:
     url: https://creativecommons.org/licenses/by-nc/4.0/
 tags:
   - name: Auth
-  - name: Student
   - name: Bookings
   - name: Courses
   - name: Lectures
-  - name: Exams
-  - name: Esc
   - name: News
   - name: People
   - name: Places
-  - name: Tickets
+  - name: Esc
+  - name: Exams
   - name: Job offers
   - name: Offering
+  - name: Student
   - name: Surveys
+  - name: Tickets
 paths:
   /auth/client:
     patch:
