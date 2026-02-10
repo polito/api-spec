@@ -9,9 +9,9 @@
   },
   "packageManager": "npm@10.8.2",
   "scripts": {
-    "watch": "tsp compile src --watch",
+    "watch": "tsp compile src/clients/student --watch",
     "format": "tsp format src/**/*.tsp",
-    "compile": "tsp compile src",
+    "compile": "tsp compile src/clients/student",
     "generate": "rm -rf dist/client && openapi-generator-cli generate -i ./dist/openapi.yaml -g typescript-fetch -o ./dist/client --git-user-id=polito --git-repo-id=api-spec --additional-properties=npmName=@polito/api-client,npmRepository=https://npm.pkg.github.com/,supportsES6=true,modelPropertyNaming=original,removeOperationIdPrefix=true && cp dist/openapi.yaml dist/client/openapi.yaml && cd dist/client",
     "build": "npm run compile && npm run generate",
     "copy-local": "rm -rf ../students-app/node_modules/@polito/api-client/* && rsync -av ./dist/client/ ../students-app/node_modules/@polito/api-client/ && cd ../students-app/node_modules/@polito/api-client && npm run build"

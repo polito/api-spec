@@ -1,8 +1,8 @@
 import "@typespec/http";
 import "@typespec/openapi3";
 
-import "../common.tsp";
-import "../examples/surveys.tsp";
+import "../../common.tsp";
+import "../../examples/student/surveys.tsp";
 
 namespace PolitoAPI;
 

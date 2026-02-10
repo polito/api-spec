@@ -1,9 +1,9 @@
 import "@typespec/http";
 import "@typespec/openapi3";
 
-import "../common.tsp";
+import "../../common.tsp";
 
-import "../examples/courses.tsp";
+import "../../examples/common/courses.tsp";
 
 using Http;
 using OpenAPI;
