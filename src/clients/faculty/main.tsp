@@ -12,21 +12,15 @@ import "../../routes/common/news.tsp";
 import "../../routes/common/people.tsp";
 import "../../routes/common/places.tsp";
 
-// Student routes
-import "../../routes/student/esc.tsp";
-import "../../routes/student/exams.tsp";
-import "../../routes/student/job-offers.tsp";
-import "../../routes/student/offering.tsp";
-import "../../routes/student/student.tsp";
-import "../../routes/student/surveys.tsp";
-import "../../routes/student/tickets.tsp";
+// Faculty routes
+import "../../routes/faculty/courses.tsp";
 
 import "./version.tsp";
 
 using Http;
 using OpenAPI;
 
-@service(#{ title: "Polito Students API" })
+@service(#{ title: "Polito Faculty API" })
 @info(#{
   version: version,
   license: #{

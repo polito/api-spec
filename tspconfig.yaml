@@ -2,4 +2,4 @@ emit:
   - "@typespec/openapi3"
 options:
   "@typespec/openapi3":
-    emitter-output-dir: "{project-root}/dist"
+    emitter-output-dir: "{output-dir}"

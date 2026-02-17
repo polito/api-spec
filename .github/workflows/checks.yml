@@ -13,6 +13,9 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        client: [student, faculty]
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +43,7 @@ jobs:
           fi
 
       - name: Typespec compile
-        run: npm run compile
+        run: npm run compile:${{ matrix.client }}
 
       - name: Check openapi is in sync
         run: |
@@ -50,4 +53,4 @@ jobs:
           fi
 
       - name: Openapi Generation
-        run: npm run generate
+        run: npm run generate:${{ matrix.client }}
