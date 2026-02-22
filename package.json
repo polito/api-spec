@@ -9,21 +9,14 @@
   },
   "packageManager": "npm@10.8.2",
   "scripts": {
-    "watch:student": "tsp compile src/clients/student --output-dir dist/student --watch",
-    "watch:faculty": "tsp compile src/clients/faculty --output-dir dist/faculty --watch",
-    "compile:student": "tsp compile src/clients/student --output-dir dist/student",
-    "compile:faculty": "tsp compile src/clients/faculty --output-dir dist/faculty",
-    "compile": "npm run compile:student && npm run compile:faculty",
-    "generate:student": "rm -rf dist/student/client && openapi-generator-cli generate -i ./dist/student/openapi.yaml -g typescript-fetch -o ./dist/student/client --git-user-id=polito --git-repo-id=api-spec --additional-properties=npmName=@polito/student-api-client,npmRepository=https://npm.pkg.github.com/,supportsES6=true,modelPropertyNaming=original,removeOperationIdPrefix=true && cp dist/student/openapi.yaml dist/student/client/openapi.yaml && cd dist/student/client",
-    "generate:faculty": "rm -rf dist/faculty/client && openapi-generator-cli generate -i ./dist/faculty/openapi.yaml -g typescript-fetch -o ./dist/faculty/client --git-user-id=polito --git-repo-id=api-spec --additional-properties=npmName=@polito/faculty-api-client,npmRepository=https://npm.pkg.github.com/,supportsES6=true,modelPropertyNaming=original,removeOperationIdPrefix=true && cp dist/faculty/openapi.yaml dist/faculty/client/openapi.yaml && cd dist/faculty/client",
-    "generate": "npm run generate:student && npm run generate:faculty",
-    "build:student": "npm run compile:student && npm run generate:student",
-    "build:faculty": "npm run compile:faculty && npm run generate:faculty",
-    "build": "npm run compile && npm run generate",
-    "copy-local:student": "rm -rf ../students-app/node_modules/@polito/student-api-client/* && rsync -av ./dist/student/client/ ../students-app/node_modules/@polito/student-api-client/ && cd ../students-app/node_modules/@polito/student-api-client && npm run build",
-    "copy-local:faculty": "rm -rf ../faculty-app/node_modules/@polito/faculty-api-client/* && rsync -av ./dist/faculty/client/ ../faculty-app/node_modules/@polito/faculty-api-client/ && cd ../faculty-app/node_modules/@polito/faculty-api-client && npm run build",
-    "copy-local": "npm run copy-local:student && npm run copy-local:faculty",
-    "format": "tsp format src/**/*.tsp"
+    "watch:student": "apimanager watch student",
+    "watch:faculty": "apimanager watch faculty",
+    "compile": "apimanager compile",
+    "generate": "apimanager generate",
+    "build": "apimanager build",
+    "copy-local": "apimanager copy-local",
+    "help": "apimanager help",
+    "format": "apimanager format"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.25.2",
@@ -32,5 +25,8 @@
     "@typespec/openapi": "^1.7.0",
     "@typespec/openapi3": "^1.7.0",
     "yaml": "^2.8.2"
+  },
+  "bin": {
+    "apimanager": "./scripts/apimanager.js"
   }
 }
