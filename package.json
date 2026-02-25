@@ -9,6 +9,7 @@
   },
   "packageManager": "npm@10.8.2",
   "scripts": {
+    "apimanager": "node scripts/apimanager.js",
     "watch": "node scripts/apimanager.js watch",
     "compile": "node scripts/apimanager.js compile",
     "generate": "node scripts/apimanager.js generate",

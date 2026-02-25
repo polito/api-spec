@@ -149,8 +149,7 @@ async function formatFiles() {
 }
 
 function resolveClients(clientArg, availableClients, { allowAll = true } = {}) {
-  // Default to 'all' if no client specified
-  const client = clientArg || 'all';
+  const client = clientArg;
 
   if (client === 'all') {
     if (!allowAll) {
@@ -201,7 +200,7 @@ program
 program
   .command('compile')
   .description('Compile TypeSpec to OpenAPI')
-  .argument('[client]', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
+  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
   .action(async (client) => {
     const clients = resolveClients(client, availableClients);
     await runForClients(clients, compileClient);
@@ -211,7 +210,7 @@ program
 program
   .command('generate')
   .description('Generate TypeScript client from OpenAPI spec')
-  .argument('[client]', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
+  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
   .action(async (client) => {
     const clients = resolveClients(client, availableClients);
     await runForClients(clients, generateClient);
@@ -221,7 +220,7 @@ program
 program
   .command('build')
   .description('Compile TypeSpec and generate client (compile + generate)')
-  .argument('[client]', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
+  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
   .action(async (client) => {
     const clients = resolveClients(client, availableClients);
     await runForClients(clients, buildClient);
@@ -240,7 +239,7 @@ program
 program
   .command('copy-local')
   .description('Copy generated client to local app node_modules')
-  .argument('[client]', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
+  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
   .option('-t, --target <dir>', 'custom target directory (overrides default)')
   .action(async (client, options) => {
     const clients = resolveClients(client, availableClients);
