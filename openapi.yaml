@@ -2950,6 +2950,13 @@ paths:
           schema:
             type: boolean
             default: false
+        - name: usePrivate
+          in: query
+          description: Use private paths (e.g., through buildings) if user can have access to them
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
         200:
           description: Success
@@ -4006,6 +4013,9 @@ components:
         segmentId:
           type: integer
           description: Identifier of the segment in the path.
+        private:
+          type: integer
+          description: Identifier of private segment in the path.
         features:
           $ref: '#/components/schemas/GeoJSONFeatureGeometry'
       required:
@@ -4013,6 +4023,7 @@ components:
         - startPoint
         - endPoint
         - segmentId
+        - private
         - features
     
     GeoJSONPoint:
