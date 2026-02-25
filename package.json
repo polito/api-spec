@@ -10,11 +10,9 @@
   "packageManager": "npm@10.8.2",
   "scripts": {
     "apimanager": "node scripts/apimanager.js",
-    "watch": "node scripts/apimanager.js watch",
     "compile": "node scripts/apimanager.js compile",
     "generate": "node scripts/apimanager.js generate",
-    "build": "node scripts/apimanager.js build",
-    "copy-local": "node scripts/apimanager.js copy-local",
+    "deploy-local": "node scripts/apimanager.js deploy-local",
     "help": "node scripts/apimanager.js --help",
     "format": "node scripts/apimanager.js format"
   },

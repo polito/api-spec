@@ -119,15 +119,10 @@ async function generateClient(clientName) {
   log(colors.green, `Generated client for ${clientName}`);
 }
 
-async function buildClient(clientName) {
+async function deployLocalClient(clientName, targetDir) {
   await compileClient(clientName);
   await generateClient(clientName);
-}
-
-async function watchClient(clientName) {
-  const { srcDir, outputDir } = getClientConfig(clientName);
-  log(colors.cyan, `Watching ${clientName}...`);
-  await runCommand("tsp", ["compile", srcDir, "--output-dir", outputDir, "--watch"]);
+  await copyLocalClient(clientName, targetDir);
 }
 
 async function copyLocalClient(clientName, targetDir) {
@@ -218,32 +213,13 @@ program
   });
 
 program
-  .command('build')
-  .description('Compile TypeSpec and generate client (compile + generate)')
-  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
-  .action(async (client) => {
-    const clients = resolveClients(client, availableClients);
-    await runForClients(clients, buildClient);
-    log(colors.green, "Done!");
-  });
-
-program
-  .command('watch')
-  .description('Compile TypeSpec in watch mode (auto-recompile on changes)')
-  .argument('<client>', `client name (available: ${availableClients.join(', ') || 'none'})`)
-  .action(async (client) => {
-    const clients = resolveClients(client, availableClients, { allowAll: false });
-    await watchClient(clients[0]);
-  });
-
-program
-  .command('copy-local')
-  .description('Copy generated client to local app node_modules')
+  .command('deploy-local')
+  .description('Build and deploy client to local app (compile + generate + copy)')
   .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
   .option('-t, --target <dir>', 'custom target directory (overrides default)')
   .action(async (client, options) => {
     const clients = resolveClients(client, availableClients);
-    await runForClients(clients, (c) => copyLocalClient(c, options.target));
+    await runForClients(clients, (c) => deployLocalClient(c, options.target));
     log(colors.green, "Done!");
   });
 
