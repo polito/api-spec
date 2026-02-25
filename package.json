@@ -9,14 +9,13 @@
   },
   "packageManager": "npm@10.8.2",
   "scripts": {
-    "watch:student": "apimanager watch student",
-    "watch:faculty": "apimanager watch faculty",
-    "compile": "apimanager compile",
-    "generate": "apimanager generate",
-    "build": "apimanager build",
-    "copy-local": "apimanager copy-local",
-    "help": "apimanager help",
-    "format": "apimanager format"
+    "watch": "node scripts/apimanager.js watch",
+    "compile": "node scripts/apimanager.js compile",
+    "generate": "node scripts/apimanager.js generate",
+    "build": "node scripts/apimanager.js build",
+    "copy-local": "node scripts/apimanager.js copy-local",
+    "help": "node scripts/apimanager.js --help",
+    "format": "node scripts/apimanager.js format"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.25.2",
@@ -24,9 +23,7 @@
     "@typespec/http": "^1.7.0",
     "@typespec/openapi": "^1.7.0",
     "@typespec/openapi3": "^1.7.0",
+    "commander": "^14.0.3",
     "yaml": "^2.8.2"
-  },
-  "bin": {
-    "apimanager": "./scripts/apimanager.js"
   }
 }

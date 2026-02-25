@@ -148,22 +148,28 @@ async function formatFiles() {
   log(colors.green, "Formatted all .tsp files");
 }
 
-function resolveClients(clientArg, availableClients) {
-  if(clientArg === undefined || clientArg === null) {
-    log(colors.red, "Error: missing required argument 'client'");
-    log(colors.yellow, `Available clients: ${availableClients.join(", ") || "(none)"}`);
-    log(colors.cyan, `Tip: You can also use 'all' to target all clients.`);
-    process.exit(1);
-  }
-  if (clientArg === 'all') {
+function resolveClients(clientArg, availableClients, { allowAll = true } = {}) {
+  // Default to 'all' if no client specified
+  const client = clientArg || 'all';
+
+  if (client === 'all') {
+    if (!allowAll) {
+      log(colors.red, "The 'all' option is not supported for this command");
+      log(colors.yellow, `Available clients: ${availableClients.join(", ") || "(none)"}`);
+      process.exit(1);
+    }
+    if (availableClients.length === 0) {
+      log(colors.red, "No clients found in src/clients/");
+      process.exit(1);
+    }
     return availableClients;
   }
-  if (!availableClients.includes(clientArg)) {
-    log(colors.red, `Client not found: ${clientArg}`);
+  if (!availableClients.includes(client)) {
+    log(colors.red, `Client not found: ${client}`);
     log(colors.yellow, `Available clients: ${availableClients.join(", ") || "(none)"}`);
     process.exit(1);
   }
-  return [clientArg];
+  return [client];
 }
 
 async function runForClients(clients, action) {
@@ -225,13 +231,9 @@ program
 program
   .command('watch')
   .description('Compile TypeSpec in watch mode (auto-recompile on changes)')
-  .argument('[client]', `client name (available: ${availableClients.join(', ') || 'none'})`)
+  .argument('<client>', `client name (available: ${availableClients.join(', ') || 'none'})`)
   .action(async (client) => {
-    if (client === 'all') {
-      log(colors.red, "The 'watch' command does not support 'all'");
-      process.exit(1);
-    }
-    const clients = resolveClients(client, availableClients);
+    const clients = resolveClients(client, availableClients, { allowAll: false });
     await watchClient(clients[0]);
   });
 

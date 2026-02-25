@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "const version = \"$TAG_VERSION\";" > src/clients/$CLIENT/version.tsp
           npm install
-          npm run build:$CLIENT
+          npm run build -- $CLIENT
 
       - name: Publish the client
         run: npm publish
