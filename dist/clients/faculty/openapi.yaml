@@ -3922,6 +3922,7 @@ components:
       type: object
       required:
         - platform
+        - ToothPicCompatible
       properties:
         name:
           type: string
@@ -3933,6 +3934,8 @@ components:
           type: string
         manufacturer:
           type: string
+        ToothPicCompatible:
+          type: boolean
     EnrolMfaRequest:
       type: object
       required:
