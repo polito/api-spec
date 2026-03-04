@@ -3564,10 +3564,7 @@ paths:
           in: query
           required: true
           schema:
-            type: string
-            enum:
-              - 'true'
-              - 'false'
+            type: boolean
           explode: false
       responses:
         '204':

@@ -211,7 +211,7 @@ interface Tickets {
   giveTicketReplyFeedback(
     @path ticketId: integer,
     @path replyId: integer,
-    @query feedback: "true" | "false",
+    @query feedback: boolean,
   ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/replies/{replyId}/attachments/{attachmentId}")
