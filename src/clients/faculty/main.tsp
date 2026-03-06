@@ -14,7 +14,6 @@ import "../../routes/common/people.tsp";
 import "../../routes/common/places.tsp";
 
 // Faculty routes
-import "../../routes/faculty/courses.tsp";
 
 import "./version.tsp";
 

@@ -6,6 +6,7 @@ info:
     name: CC BY-NC 4.0
     url: https://creativecommons.org/licenses/by-nc/4.0/
 tags:
+  - name: Announcements
   - name: Auth
   - name: Bookings
   - name: Courses
@@ -21,6 +22,85 @@ tags:
   - name: Surveys
   - name: Tickets
 paths:
+  /announcements:
+    get:
+      operationId: Announcements_getAnnouncements
+      summary: List announcements | Lista annunci
+      parameters:
+        - name: new
+          in: query
+          required: false
+          schema:
+            type: boolean
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Announcement'
+                required:
+                  - data
+              example:
+                data:
+                  - id: abc-123
+                    title: Welcome to the app
+                    contents: Here is a quick guide to get started.
+                    description: Onboarding announcement
+                    scope: onboarding
+                    seen: false
+                  - id: def-456
+                    title: New feature available
+                    contents: Check out the new booking system.
+                    scope: appInfo
+                    seen: true
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Announcements
+  /announcements/{announcementId}/read:
+    put:
+      operationId: Announcements_markAnnouncementAsRead
+      summary: Mark announcement as read | Segna annuncio come letto
+      parameters:
+        - name: announcementId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Announcements
   /auth/client:
     patch:
       operationId: Auth_appInfo
@@ -4047,6 +4127,46 @@ security:
   - BearerAuth: []
 components:
   schemas:
+    Announcement:
+      type: object
+      required:
+        - id
+        - title
+        - contents
+        - scope
+        - seen
+      properties:
+        id:
+          type: string
+          example: abc-123
+        title:
+          type: string
+          example: Welcome to the app
+        contents:
+          type: string
+          example: Here is a quick guide to get started.
+        description:
+          type: string
+          example: Onboarding announcement
+        scope:
+          allOf:
+            - $ref: '#/components/schemas/AnnouncementScope'
+          example: onboarding
+        seen:
+          type: boolean
+          example: false
+      example:
+        id: abc-123
+        title: Welcome to the app
+        contents: Here is a quick guide to get started.
+        description: Onboarding announcement
+        scope: onboarding
+        seen: false
+    AnnouncementScope:
+      type: string
+      enum:
+        - onboarding
+        - appInfo
     AppInfoRequest:
       type: object
       properties:

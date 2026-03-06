@@ -6,6 +6,7 @@ info:
     name: CC BY-NC 4.0
     url: https://creativecommons.org/licenses/by-nc/4.0/
 tags:
+  - name: Announcements
   - name: Auth
   - name: Bookings
   - name: Courses
@@ -13,8 +14,86 @@ tags:
   - name: News
   - name: People
   - name: Places
-  - name: Faculty - Courses
 paths:
+  /announcements:
+    get:
+      operationId: Announcements_getAnnouncements
+      summary: List announcements | Lista annunci
+      parameters:
+        - name: new
+          in: query
+          required: false
+          schema:
+            type: boolean
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Announcement'
+                required:
+                  - data
+              example:
+                data:
+                  - id: abc-123
+                    title: Welcome to the app
+                    contents: Here is a quick guide to get started.
+                    description: Onboarding announcement
+                    scope: onboarding
+                    seen: false
+                  - id: def-456
+                    title: New feature available
+                    contents: Check out the new booking system.
+                    scope: appInfo
+                    seen: true
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Announcements
+  /announcements/{announcementId}/read:
+    put:
+      operationId: Announcements_markAnnouncementAsRead
+      summary: Mark announcement as read | Segna annuncio come letto
+      parameters:
+        - name: announcementId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Announcements
   /auth/client:
     patch:
       operationId: Auth_appInfo
@@ -1325,351 +1404,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
-  /faculty/courses/{courseId}/collaborators:
-    get:
-      operationId: FacultyCourses_listAssignmentCollaborators
-      summary: Elenca collaboratori assegnati al corso
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Collaborator'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
-  /faculty/courses/{courseId}/collaborators/{collaboratorId}:
-    put:
-      operationId: FacultyCourses_upsertAssignmentCollaborator
-      summary: Aggiungi o aggiorna collaboratore
-      description: Operazione idempotente per creare o aggiornare un collaboratore sul corso. Se il collaboratore esiste già, i suoi attributi vengono aggiornati.
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: collaboratorId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Updated collaborator
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Collaborator'
-                required:
-                  - data
-        '201':
-          description: Created collaborator
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Collaborator'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: '#/components/schemas/ErrorResponse'
-                  - $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CollaboratorUpsertRequest'
-    delete:
-      operationId: FacultyCourses_removeAssignmentCollaborator
-      summary: Rimuovi collaboratore da un incarico
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: collaboratorId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Removed collaborator
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
-  /faculty/courses/{courseId}/message:
-    post:
-      operationId: FacultyCourses_messageCourseSubscribers
-      summary: Invia comunicazione agli iscritti al corso
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '202':
-          description: Accepted (sending)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: '#/components/schemas/ErrorResponse'
-                  - $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CourseMessageRequest'
-  /faculty/courses/{courseId}/students:
-    get:
-      operationId: FacultyCourses_listFacultyCourseStudents
-      summary: Elenca studenti iscritti al corso
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/FacultyCourseStudent'
-                required:
-                  - data
-              example:
-                data:
-                  - id: s123456
-                    firstName: Mario
-                    lastName: Rossi
-                    username: s123456
-                    picture:
-                      url: https://didattica.polito.it/photos/s123456.jpg
-                  - id: s234567
-                    firstName: Luigi
-                    lastName: Verdi
-                    username: s234567
-                    picture:
-                      url: https://didattica.polito.it/photos/s234567.jpg
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
-  /faculty/courses/{courseId}/students/{studentId}:
-    put:
-      operationId: FacultyCourses_enrollStudentInCourse
-      summary: Aggiungi studente al corso
-      description: Operazione idempotente per iscrivere uno studente al corso.
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: studentId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/FacultyCourseStudent'
-                required:
-                  - data
-        '201':
-          description: The request has succeeded and a new resource has been created as a result.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/FacultyCourseStudent'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                anyOf:
-                  - $ref: '#/components/schemas/ErrorResponse'
-                  - $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Courses
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -2949,6 +2683,46 @@ security:
   - BearerAuth: []
 components:
   schemas:
+    Announcement:
+      type: object
+      required:
+        - id
+        - title
+        - contents
+        - scope
+        - seen
+      properties:
+        id:
+          type: string
+          example: abc-123
+        title:
+          type: string
+          example: Welcome to the app
+        contents:
+          type: string
+          example: Here is a quick guide to get started.
+        description:
+          type: string
+          example: Onboarding announcement
+        scope:
+          allOf:
+            - $ref: '#/components/schemas/AnnouncementScope'
+          example: onboarding
+        seen:
+          type: boolean
+          example: false
+      example:
+        id: abc-123
+        title: Welcome to the app
+        contents: Here is a quick guide to get started.
+        description: Onboarding announcement
+        scope: onboarding
+        seen: false
+    AnnouncementScope:
+      type: string
+      enum:
+        - onboarding
+        - appInfo
     AppInfoRequest:
       type: object
       properties:
@@ -3416,54 +3190,6 @@ components:
         appVersion:
           type: string
           example: 1.6.2
-    Collaborator:
-      type: object
-      required:
-        - personId
-        - name
-        - role
-        - permissions
-      properties:
-        personId:
-          type: string
-          example: p002
-        name:
-          type: string
-          example: Luigi Verdi
-        role:
-          type: string
-          example: Tutor
-        sections:
-          type: array
-          items:
-            type: string
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollaboratorPermission'
-    CollaboratorPermission:
-      type: string
-      enum:
-        - CAN_READ
-        - CAN_EDIT
-        - CAN_DELETE
-    CollaboratorUpsertRequest:
-      type: object
-      required:
-        - sections
-        - permissions
-      properties:
-        role:
-          type: string
-          example: Tutor
-        sections:
-          type: array
-          items:
-            type: string
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CollaboratorPermission'
     Course:
       type: object
       required:
@@ -3727,38 +3453,6 @@ components:
         mimeType: application/pdf
         createdAt: '2024-06-01T10:00:00Z'
         checksum: deadbeefcafebabe0000000000000000
-    CourseMessageRequest:
-      type: object
-      required:
-        - subject
-        - message
-        - channels
-        - audience
-      properties:
-        subject:
-          type: string
-          example: Avviso importante
-        message:
-          type: string
-          example: Messaggio importante
-        channels:
-          type: array
-          items:
-            type: string
-        audience:
-          type: object
-          properties:
-            groups:
-              type: array
-              items:
-                type: string
-            personIds:
-              type: array
-              items:
-                type: string
-          required:
-            - groups
-            - personIds
     CourseModule:
       type: object
       required:
@@ -4003,35 +3697,6 @@ components:
             - expiresAt
             - qrCode
           nullable: true
-    FacultyCourseStudent:
-      type: object
-      required:
-        - id
-        - firstName
-        - lastName
-        - username
-      properties:
-        id:
-          type: string
-          example: s123456
-        firstName:
-          type: string
-          example: Mario
-        lastName:
-          type: string
-          example: Rossi
-        username:
-          type: string
-          example: s123456
-        picture:
-          type: object
-          properties:
-            url:
-              type: string
-              format: uri
-              example: https://example.com/picture.jpg
-          required:
-            - url
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4876,19 +4541,6 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
-    StudentAlreadyEnrolledResponse:
-      type: object
-      required:
-        - body
-      properties:
-        body:
-          type: object
-          properties:
-            data:
-              $ref: '#/components/schemas/FacultyCourseStudent'
-          required:
-            - data
-      description: Studente già iscritto
     SwitchCareerRequest:
       type: object
       required:
