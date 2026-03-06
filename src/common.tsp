@@ -62,6 +62,11 @@ model GuideSection {
   content: string;
 }
 
+enum AnnouncementScope {
+  onboarding,
+  appInfo,
+}
+
 /* UTILS */
 
 @error

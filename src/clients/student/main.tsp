@@ -5,6 +5,7 @@ import "@typespec/openapi3";
 import "../../common.tsp";
 
 // Common routes
+import "../../routes/common/announcements.tsp";
 import "../../routes/common/auth.tsp";
 import "../../routes/common/bookings.tsp";
 import "../../routes/common/courses.tsp";
