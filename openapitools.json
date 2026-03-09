@@ -4,12 +4,24 @@
   "generator-cli": {
     "version": "7.17.0",
     "generators": {
-      "typescript-fetch": {
-        "inputSpec": "./dist/openapi.yaml",
+      "student": {
+        "inputSpec": "./dist/student/openapi.yaml",
         "generatorName": "typescript-fetch",
-        "output": "./dist/client",
+        "output": "./dist/student/client",
         "additionalProperties": {
-          "npmName": "@polito/api-client",
+          "npmName": "@polito/student-api-client",
+          "npmRepository": "https://github.com/polito/api-spec.git",
+          "supportsES6": true,
+          "modelPropertyNaming": "original",
+          "enumPropertyNaming": "original"
+        }
+      },
+      "faculty": {
+        "inputSpec": "./dist/faculty/openapi.yaml",
+        "generatorName": "typescript-fetch",
+        "output": "./dist/faculty/client",
+        "additionalProperties": {
+          "npmName": "@polito/faculty-api-client",
           "npmRepository": "https://github.com/polito/api-spec.git",
           "supportsES6": true,
           "modelPropertyNaming": "original",

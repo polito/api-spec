@@ -40,7 +40,7 @@ jobs:
           fi
 
       - name: Typespec compile
-        run: npm run compile
+        run: npm run compile all
 
       - name: Check openapi is in sync
         run: |
@@ -50,4 +50,4 @@ jobs:
           fi
 
       - name: Openapi Generation
-        run: npm run generate
+        run: npm run generate all

@@ -30,6 +30,7 @@ model Device {
   version?: string;
   `model`?: string;
   manufacturer?: string;
+  toothPicCompatible: boolean;
 }
 
 model UpdateInfo {

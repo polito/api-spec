@@ -9,12 +9,12 @@
   },
   "packageManager": "npm@10.8.2",
   "scripts": {
-    "watch": "tsp compile src/clients/student --watch",
-    "format": "tsp format src/**/*.tsp",
-    "compile": "tsp compile src/clients/student",
-    "generate": "rm -rf dist/client && openapi-generator-cli generate -i ./dist/openapi.yaml -g typescript-fetch -o ./dist/client --git-user-id=polito --git-repo-id=api-spec --additional-properties=npmName=@polito/api-client,npmRepository=https://npm.pkg.github.com/,supportsES6=true,modelPropertyNaming=original,removeOperationIdPrefix=true && cp dist/openapi.yaml dist/client/openapi.yaml && cd dist/client",
-    "build": "npm run compile && npm run generate",
-    "copy-local": "rm -rf ../students-app/node_modules/@polito/api-client/* && rsync -av ./dist/client/ ../students-app/node_modules/@polito/api-client/ && cd ../students-app/node_modules/@polito/api-client && npm run build"
+    "apimanager": "node scripts/apimanager.js",
+    "compile": "node scripts/apimanager.js compile",
+    "generate": "node scripts/apimanager.js generate",
+    "deploy-local": "node scripts/apimanager.js deploy-local",
+    "help": "node scripts/apimanager.js --help",
+    "format": "node scripts/apimanager.js format"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.25.2",
@@ -22,6 +22,7 @@
     "@typespec/http": "^1.7.0",
     "@typespec/openapi": "^1.7.0",
     "@typespec/openapi3": "^1.7.0",
+    "commander": "^14.0.3",
     "yaml": "^2.8.2"
   }
 }
