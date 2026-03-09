@@ -27,7 +27,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Detect client and version
         id: detect
@@ -37,6 +37,7 @@ jobs:
             echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
           else
             echo "client=${GITHUB_REF_NAME%%-v*}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF_NAME##*-v}" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup Node.js
@@ -51,20 +52,17 @@ jobs:
           distribution: "corretto"
           java-version: "17"
 
-      - id: get_version
-        uses: battila7/get-version-action@v2.2.1
-
       - name: Generate the client
         env:
-          TAG_VERSION: ${{ steps.detect.outputs.version || steps.get_version.outputs.version-without-v }}
+          TAG_VERSION: ${{ steps.detect.outputs.version }}
           CLIENT: ${{ steps.detect.outputs.client }}
         run: |
           echo "const version = \"$TAG_VERSION\";" > src/clients/$CLIENT/version.tsp
           npm install
-          npm run build -- $CLIENT
+          npm run generate -- $CLIENT
 
       - name: Publish the client
         run: npm publish
-        working-directory: ./dist/${{ steps.detect.outputs.client }}/client
+        working-directory: ./dist/clients/${{ steps.detect.outputs.client }}/client
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
