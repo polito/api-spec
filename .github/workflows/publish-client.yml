@@ -16,10 +16,8 @@ on:
         type: string
   push:
     tags:
-      - "student-v[0-9]+.[0-9]+.[0-9]+"
-      - "student-v[0-9]+.[0-9]+.[0-9]+-ALPHA.[0-9]+"
-      - "faculty-v[0-9]+.[0-9]+.[0-9]+"
-      - "faculty-v[0-9]+.[0-9]+.[0-9]+-ALPHA.[0-9]+"
+      - "[a-z]+-v[0-9]+.[0-9]+.[0-9]+"
+      - "[a-z]+-v[0-9]+.[0-9]+.[0-9]+-ALPHA.[0-9]+"
 
 permissions:
   contents: read
