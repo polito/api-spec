@@ -136,6 +136,13 @@ model Course {
     @example(244577)
     id: numeric;
   }[];
+  CoursePreferences: {
+    @example("fa-user")
+    icon?: string;
+
+    @example("#ff0000")
+    color?: string;
+  };
 }
 
 @example(_ex_course_directory)
@@ -278,6 +285,12 @@ model CoursePreferencesRequest {
     @example(true)
     lectures?: boolean;
   };
+
+  @example("fa-user")
+  icon?: string;
+
+  @example("#ff0000")
+  color?: string;
 }
 
 model UpdateAssignmentRequest {
