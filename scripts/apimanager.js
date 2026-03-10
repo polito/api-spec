@@ -4,7 +4,8 @@ import { Command } from 'commander';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, statSync, readFileSync, mkdtempSync, rmSync } from 'fs';
+import { tmpdir } from 'os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
@@ -137,6 +138,37 @@ async function copyLocalClient(clientName, targetDir) {
   log(colors.green, `Copied ${clientName} to local app`);
 }
 
+async function checkClient(clientName) {
+  const { srcDir, outputDir } = getClientConfig(clientName);
+  const tmpDir = mkdtempSync(join(tmpdir(), 'tsp-check-'));
+
+  try {
+    log(colors.cyan, `Checking ${clientName}...`);
+    await runCommand("tsp", ["compile", srcDir, "--output-dir", tmpDir]);
+
+    const currentFile = join(ROOT_DIR, outputDir, "openapi.yaml");
+    const tmpFile = join(tmpDir, "openapi.yaml");
+
+    if (!existsSync(currentFile)) {
+      log(colors.red, `${clientName}: dist openapi.yaml not found`);
+      return false;
+    }
+
+    const current = readFileSync(currentFile, "utf-8");
+    const compiled = readFileSync(tmpFile, "utf-8");
+
+    if (current !== compiled) {
+      log(colors.red, `${clientName}: OpenAPI spec is out of date`);
+      return false;
+    }
+
+    log(colors.green, `${clientName}: up to date`);
+    return true;
+  } finally {
+    rmSync(tmpDir, { recursive: true, force: true });
+  }
+}
+
 async function formatFiles() {
   log(colors.cyan, "Formatting TypeSpec files...");
   await runCommand("tsp", ["format", "src/**/*.tsp"]);
@@ -220,6 +252,28 @@ program
   .action(async (client, options) => {
     const clients = resolveClients(client, availableClients);
     await runForClients(clients, (c) => deployLocalClient(c, options.target));
+    log(colors.green, "Done!");
+  });
+
+program
+  .command('check')
+  .description('Check if OpenAPI specs are up to date (without modifying files)')
+  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
+  .action(async (client) => {
+    const clients = resolveClients(client, availableClients);
+    const outdated = [];
+    for (const c of clients) {
+      log(colors.blue, `\n=== ${c} ===\n`);
+      const ok = await checkClient(c);
+      if (!ok) outdated.push(c);
+    }
+    if (outdated.length > 0) {
+      const suggestion = outdated.length === availableClients.length
+        ? "npm run compile all"
+        : outdated.map(c => `npm run compile ${c}`).join(" && ");
+      log(colors.red, `\nRun '${suggestion}' to update.`);
+      process.exit(1);
+    }
     log(colors.green, "Done!");
   });
 

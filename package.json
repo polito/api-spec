@@ -14,7 +14,9 @@
     "generate": "node scripts/apimanager.js generate",
     "deploy-local": "node scripts/apimanager.js deploy-local",
     "help": "node scripts/apimanager.js --help",
-    "format": "node scripts/apimanager.js format"
+    "check": "node scripts/apimanager.js check",
+    "format": "node scripts/apimanager.js format",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.25.2",
@@ -23,6 +25,11 @@
     "@typespec/openapi": "^1.7.0",
     "@typespec/openapi3": "^1.7.0",
     "commander": "^14.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
     "yaml": "^2.8.2"
+  },
+  "lint-staged": {
+    "src/**/*.tsp": "tsp format"
   }
 }
