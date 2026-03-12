@@ -42,7 +42,6 @@ const _ex_ticket_reply = #{
   id: 1145890,
   message: "Non si può fare.",
   isFromAgent: true,
-  isAiAgent: false,
   agentId: 351,
   isRead: true,
   createdAt: utcDateTime.fromISO("2022-08-31T14:00:00Z"),
