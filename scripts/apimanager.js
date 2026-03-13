@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, resolve, isAbsolute } from 'path';
 import { existsSync, readdirSync, statSync, readFileSync, mkdtempSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 
@@ -55,7 +55,6 @@ function getClientConfig(clientName) {
     srcDir: `src/clients/${clientName}`,
     outputDir: `dist/clients/${clientName}`,
     npmName: `@polito/${clientName}-api-client`,
-    localAppDir: `./${clientName}-app`,
   };
 }
 
@@ -120,21 +119,38 @@ async function generateClient(clientName) {
   log(colors.green, `Generated client for ${clientName}`);
 }
 
-async function deployLocalClient(clientName, targetDir) {
+async function deployLocalClient(clientName, { dir, project }) {
+  const { outputDir, npmName } = getClientConfig(clientName);
+
+  let finalTargetDir;
+  if (dir) {
+    finalTargetDir = resolve(ROOT_DIR, dir);
+  } else {
+    const projectDir = resolve(ROOT_DIR, '..', project);
+    if (!existsSync(join(projectDir, 'package.json'))) {
+      log(colors.red, `Project "${project}" not found (no package.json in ${projectDir})`);
+      process.exit(1);
+    }
+    finalTargetDir = join(projectDir, 'node_modules', npmName);
+  }
+
+  if (!existsSync(finalTargetDir)) {
+    log(colors.red, `Target directory ${finalTargetDir} does not exist.`);
+    process.exit(1);
+  }
+
   await compileClient(clientName);
   await generateClient(clientName);
-  await copyLocalClient(clientName, targetDir);
+  await copyLocalClient(clientName, outputDir, finalTargetDir);
 }
 
-async function copyLocalClient(clientName, targetDir) {
-  const { outputDir, npmName, localAppDir } = getClientConfig(clientName);
+async function copyLocalClient(clientName, outputDir, finalTargetDir) {
   const clientDir = `${outputDir}/client`;
-  const finalTargetDir = targetDir || `${localAppDir}/node_modules/${npmName}`;
-
+  
   log(colors.cyan, `Copying ${clientName} to ${finalTargetDir}...`);
   await runCommand("rm", ["-rf", `${finalTargetDir}/*`]);
   await runCommand("rsync", ["-av", `${clientDir}/`, `${finalTargetDir}/`]);
-  await runCommand("npm", ["run", "build"], { cwd: join(ROOT_DIR, finalTargetDir) });
+  await runCommand("npm", ["run", "build"], { cwd: finalTargetDir });
   log(colors.green, `Copied ${clientName} to local app`);
 }
 
@@ -247,11 +263,25 @@ program
 program
   .command('deploy-local')
   .description('Build and deploy client to local app (compile + generate + copy)')
-  .argument('<client>', `client name or "all" (available: ${availableClients.join(', ') || 'none'})`)
-  .option('-t, --target <dir>', 'custom target directory (overrides default)')
+  .argument('<client>', `client name (available: ${availableClients.join(', ') || 'none'})`)
+  .option('-d, --dir <dir>', 'target directory (exact path)')
+  .option('-p, --project <name>', 'target project name (copies to ../name/node_modules/...)')
   .action(async (client, options) => {
+    if (!options.dir && !options.project) {
+      log(colors.red, 'Error: you must specify either --dir or --project');
+      process.exit(1);
+    }
+    if (options.dir && options.project) {
+      log(colors.red, 'Error: --dir and --project are mutually exclusive');
+      process.exit(1);
+    }
+
     const clients = resolveClients(client, availableClients);
-    await runForClients(clients, (c) => deployLocalClient(c, options.target));
+    if(clients.length > 1){
+      log(colors.red, `Error: specify a single client (available: ${availableClients.join(', ') || 'none'})`);
+      process.exit(1);
+    }
+    await runForClients(clients, (c) => deployLocalClient(c, options));
     log(colors.green, "Done!");
   });
 
