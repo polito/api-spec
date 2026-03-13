@@ -90,12 +90,24 @@ alias NoContentResponse = {
   @statusCode statusCode: 204;
 };
 
+alias AcceptedResponse = {
+  @statusCode statusCode: 202;
+  @body body: {
+    message?: string;
+  };
+};
+
 alias RedirectResponse = {
   @statusCode statusCode: 302;
 };
 
 alias BadRequest = {
   @statusCode statusCode: 400;
+  @body body: ErrorResponse;
+};
+
+alias NotAuthorized = {
+  @statusCode statusCode: 401;
   @body body: ErrorResponse;
 };
 
