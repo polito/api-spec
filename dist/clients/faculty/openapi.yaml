@@ -3208,6 +3208,7 @@ components:
         - vcOtherCourses
         - notifications
         - staff
+        - CoursePreferences
       properties:
         id:
           type: integer
@@ -3321,6 +3322,15 @@ components:
             required:
               - role
               - id
+        CoursePreferences:
+          type: object
+          properties:
+            icon:
+              type: string
+              example: fa-user
+            color:
+              type: string
+              example: '#ff0000'
     CourseAssignment:
       type: object
       required:
@@ -3587,6 +3597,12 @@ components:
             lectures:
               type: boolean
               example: true
+        icon:
+          type: string
+          example: fa-user
+        color:
+          type: string
+          example: '#ff0000'
     CreateBookingRequest:
       type: object
       required:
