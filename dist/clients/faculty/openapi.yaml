@@ -48,11 +48,13 @@ paths:
                     description: Onboarding announcement
                     scope: onboarding
                     seen: false
+                    date: '2026-01-01T12:00:00Z'
                   - id: def-456
                     title: New feature available
                     contents: Check out the new booking system.
                     scope: appInfo
                     seen: true
+                    date: '2026-02-15T09:30:00Z'
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -2242,11 +2244,12 @@ paths:
                     teacherName: Stefano Quer
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules:
                       - id: 251008
                         name: Programming Module A
+                        shortcode: 01NYHOV
                         teachingPeriod: 2-2
                         teacherId: 3001
                         teacherName: Mario Rossi
@@ -2254,10 +2257,11 @@ paths:
                           - id: 251005
                             year: '2024'
                         isOverBooking: false
-                        isInPersonalStudyPlan: true
+                        enrollmentRole: student
                         year: '2025'
                       - id: 251009
                         name: Programming Module B
+                        shortcode: 01NYHOV
                         teachingPeriod: 2-2
                         teacherId: 3002
                         teacherName: Giovanni Verdi
@@ -2265,7 +2269,7 @@ paths:
                           - id: 251006
                             year: '2024'
                         isOverBooking: false
-                        isInPersonalStudyPlan: true
+                        enrollmentRole: student
                         year: '2025'
                   - id: 252121
                     name: Web Applications II
@@ -2276,7 +2280,7 @@ paths:
                     teacherName: Giovanni Malnati
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 252126
@@ -2288,7 +2292,7 @@ paths:
                     teacherName: Riccardo Sisto
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 252138
@@ -2300,7 +2304,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 252258
@@ -2312,7 +2316,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 252788
@@ -2324,7 +2328,7 @@ paths:
                     teacherName: Edgar Ernesto Sanchez Sanchez
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 252842
@@ -2336,7 +2340,7 @@ paths:
                     teacherName: Luigi De Russis
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: 253378
@@ -2348,7 +2352,7 @@ paths:
                     teacherName: Antonio Jose Di Scala
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
                   - id: null
@@ -2360,7 +2364,7 @@ paths:
                     teacherName: null
                     previousEditions: []
                     isOverBooking: false
-                    isInPersonalStudyPlan: true
+                    enrollmentRole: student
                     year: '2025'
                     modules: null
         '400':
@@ -2691,6 +2695,7 @@ components:
         - contents
         - scope
         - seen
+        - date
       properties:
         id:
           type: string
@@ -2711,6 +2716,13 @@ components:
         seen:
           type: boolean
           example: false
+        date:
+          type: string
+          format: date-time
+          example: '2026-01-01T12:00:00Z'
+        cover:
+          type: string
+          example: https://example.com/announcement-cover.jpg
       example:
         id: abc-123
         title: Welcome to the app
@@ -2718,6 +2730,7 @@ components:
         description: Onboarding announcement
         scope: onboarding
         seen: false
+        date: '2026-01-01T12:00:00Z'
     AnnouncementScope:
       type: string
       enum:
@@ -3193,15 +3206,7 @@ components:
     Course:
       type: object
       required:
-        - id
-        - name
-        - shortcode
         - cfu
-        - teachingPeriod
-        - teacherId
-        - isOverBooking
-        - isInPersonalStudyPlan
-        - year
         - links
         - moodleCourses
         - vcPreviousYears
@@ -3209,38 +3214,9 @@ components:
         - notifications
         - staff
       properties:
-        id:
-          type: integer
-          nullable: true
-          description: The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page
-          example: 258674
-        name:
-          type: string
-          example: System and device programming
-        shortcode:
-          type: string
-          example: 01NYHOV
         cfu:
           type: integer
           example: 10
-        teachingPeriod:
-          type: string
-          description: The semester(s) this course belongs to
-          example: 2-2
-        teacherId:
-          type: integer
-          nullable: true
-          example: 2893
-        isOverBooking:
-          type: boolean
-          example: false
-        isInPersonalStudyPlan:
-          type: boolean
-          description: Included in the PSP | Incluso nel carico didattico
-          example: true
-        year:
-          type: string
-          example: '2022'
         links:
           type: array
           items:
@@ -3321,6 +3297,8 @@ components:
             required:
               - role
               - id
+      allOf:
+        - $ref: '#/components/schemas/CourseModule'
     CourseAssignment:
       type: object
       required:
@@ -3411,6 +3389,13 @@ components:
         mapping:
           directory: '#/components/schemas/CourseDirectory'
           file: '#/components/schemas/CourseFileOverview'
+    CourseEnrollmentRole:
+      type: string
+      enum:
+        - student
+        - viewer
+        - teacher
+        - collaborator
     CourseFileOverview:
       type: object
       required:
@@ -3457,13 +3442,14 @@ components:
       type: object
       required:
         - id
+        - shortcode
         - name
         - teachingPeriod
         - teacherId
         - teacherName
         - previousEditions
         - isOverBooking
-        - isInPersonalStudyPlan
+        - enrollmentRole
         - year
       properties:
         id:
@@ -3473,6 +3459,9 @@ components:
             The identifier for the current instance of this course.
             If null this is not a teaching (such as thesis), it won't have a course page
           example: 258674
+        shortcode:
+          type: string
+          example: 01NYHOV
         name:
           type: string
           example: System and device programming
@@ -3499,16 +3488,18 @@ components:
         isOverBooking:
           type: boolean
           example: false
-        isInPersonalStudyPlan:
-          type: boolean
-          description: Included in the PSP | Incluso nel carico didattico
-          example: true
+        enrollmentRole:
+          allOf:
+            - $ref: '#/components/schemas/CourseEnrollmentRole'
+          description: Type of enrollment of the user for this course
+          example: student
         year:
           type: string
           example: '2022'
       example:
         id: 251008
         name: Programming Module A
+        shortcode: ProgModA
         teachingPeriod: 2-2
         teacherId: 3001
         teacherName: Mario Rossi
@@ -3516,7 +3507,7 @@ components:
           - id: 251005
             year: '2024'
         isOverBooking: false
-        isInPersonalStudyPlan: true
+        enrollmentRole: student
         year: '2025'
     CourseModuleEdition:
       type: object
@@ -3556,15 +3547,11 @@ components:
       type: object
       required:
         - cfu
-        - shortcode
         - modules
       properties:
         cfu:
           type: integer
           example: 10
-        shortcode:
-          type: string
-          example: 01NYHOV
         modules:
           type: array
           items:

@@ -8,6 +8,11 @@ namespace PolitoAPI;
 
 using Http;
 
+enum AnnouncementScope {
+  onboarding: "onboarding",
+  appInfo: "appInfo",
+}
+
 @example(_ex_announcement)
 model Announcement {
   @example("abc-123")
@@ -27,6 +32,12 @@ model Announcement {
 
   @example(false)
   seen: boolean;
+
+  @example(utcDateTime.fromISO("2026-01-01T12:00:00Z"))
+  date: utcDateTime;
+
+  @example("https://example.com/announcement-cover.jpg")
+  cover?: string;
 }
 
 @tag("Announcements")

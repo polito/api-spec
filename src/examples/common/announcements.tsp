@@ -1,9 +1,5 @@
 import "@typespec/http";
 
-import "../../common.tsp";
-
-using Http;
-
 namespace PolitoAPI;
 
 const _ex_announcement = #{
@@ -13,6 +9,7 @@ const _ex_announcement = #{
   description: "Onboarding announcement",
   scope: AnnouncementScope.onboarding,
   seen: false,
+  date: utcDateTime.fromISO("2026-01-01T12:00:00Z"),
 };
 
 const _ex_getAnnouncements_resp = #{
@@ -27,6 +24,7 @@ const _ex_getAnnouncements_resp = #{
           description: "Onboarding announcement",
           scope: AnnouncementScope.onboarding,
           seen: false,
+          date: utcDateTime.fromISO("2026-01-01T12:00:00Z"),
         },
         #{
           id: "def-456",
@@ -34,6 +32,7 @@ const _ex_getAnnouncements_resp = #{
           contents: "Check out the new booking system.",
           scope: AnnouncementScope.appInfo,
           seen: true,
+          date: utcDateTime.fromISO("2026-02-15T09:30:00Z"),
         }
       ],
     },

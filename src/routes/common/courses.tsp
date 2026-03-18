@@ -18,12 +18,29 @@ model CourseModuleEdition {
   id: integer;
 }
 
+enum CourseEnrollmentRole {
+  /** A student enrolled in the course, in personal study plan */
+  student: "student",
+
+  /** A user who can access the course content, not in the personal study plan */
+  viewer: "viewer",
+
+  /** A user who is the teacher of the course */
+  teacher: "teacher",
+
+  /** A user who is a collaborator in the course */
+  collaborator: "collaborator",
+}
+
 @example(_ex_course_module)
 model CourseModule {
   /** The identifier for the current instance of this course.
    * If null this is not a teaching (such as thesis), it won't have a course page */
   @example(258674)
   id: integer | null;
+
+  @example("01NYHOV")
+  shortcode: string;
 
   @example("System and device programming")
   name: string;
@@ -45,9 +62,9 @@ model CourseModule {
   @example(false)
   isOverBooking: boolean;
 
-  /** Included in the PSP | Incluso nel carico didattico */
-  @example(true)
-  isInPersonalStudyPlan: boolean;
+  /** Type of enrollment of the user for this course */
+  @example(CourseEnrollmentRole.student)
+  enrollmentRole: CourseEnrollmentRole;
 
   @example("2022")
   year: string;
@@ -57,42 +74,12 @@ model CourseOverview extends CourseModule {
   @example(10)
   cfu: integer;
 
-  @example("01NYHOV")
-  shortcode: string;
-
   modules: CourseModule[] | null;
 }
 
-model Course {
-  /** The identifier for the current instance of this course. If null this is not a teaching (such as thesis), it won't have a course page */
-  @example(258674)
-  id: integer | null;
-
-  @example("System and device programming")
-  name: string;
-
-  @example("01NYHOV")
-  shortcode: string;
-
+model Course extends CourseModule {
   @example(10)
   cfu: integer;
-
-  /** The semester(s) this course belongs to */
-  @example("2-2")
-  teachingPeriod: string;
-
-  @example(2893)
-  teacherId: integer | null;
-
-  @example(false)
-  isOverBooking: boolean;
-
-  /** Included in the PSP | Incluso nel carico didattico */
-  @example(true)
-  isInPersonalStudyPlan: boolean;
-
-  @example("2022")
-  year: string;
 
   links: {
     @example("https://docs.google.com/document/d/13hpWEDQxziSkhSU0PuqxMXntqZYp3ffDKZ2-umQ7Ywo/edit?usp=sharing")
