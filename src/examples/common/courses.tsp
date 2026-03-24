@@ -1198,7 +1198,6 @@ const _ex_course_module = #{
   teachingPeriod: "2-2",
   teacherId: 3001,
   teacherName: "Mario Rossi",
-  previousEditions: #[#{ id: 251005, year: "2024" }],
   isOverBooking: false,
   enrollmentRole: CourseEnrollmentRole.student,
   year: "2025",

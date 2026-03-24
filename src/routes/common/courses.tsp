@@ -55,10 +55,6 @@ model CourseModule {
   @example("Mario Rossi")
   teacherName: string | null;
 
-  /** Previous editions of this course that were part of the student's PSP */
-  @example(#[#{ id: 244577, year: "2021" }])
-  previousEditions: CourseModuleEdition[];
-
   @example(false)
   isOverBooking: boolean;
 
@@ -70,11 +66,17 @@ model CourseModule {
   year: string;
 }
 
-model CourseOverview extends CourseModule {
+model CourseModuleOverview extends CourseModule {
+  /** Previous editions of this course that were part of the student's PSP */
+  @example(#[#{ id: 244577, year: "2021" }])
+  previousEditions: CourseModuleEdition[];
+}
+
+model CourseOverview extends CourseModuleOverview {
   @example(10)
   cfu: integer;
 
-  modules: CourseModule[] | null;
+  modules: CourseModuleOverview[] | null;
 }
 
 model Course extends CourseModule {
