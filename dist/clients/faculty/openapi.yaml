@@ -14,6 +14,7 @@ tags:
   - name: News
   - name: People
   - name: Places
+  - name: Factotum
 paths:
   /announcements:
     get:
@@ -1406,6 +1407,450 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /incidents:
+    get:
+      operationId: FacultyFactotum_getIncidents
+      summary: List my incidents | Elenca le mie segnalazioni
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IncidentReport'
+                required:
+                  - data
+              example:
+                data:
+                  - id: INC-2026-0042
+                    description: Rubinetto del bagno donne che perde da ieri sera
+                    date: '2026-04-20T18:30:00Z'
+                    status: new
+                    place:
+                      siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+                      name: Aula 1P
+                    issueCategory:
+                      id: IDRAULICO
+                      name: Idraulico
+                      description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                    equipment: null
+                    attachments:
+                      - id: 0
+                        filename: foto.jpg
+                        mimeType: image/jpeg
+                        sizeInKiloBytes: 512
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+    post:
+      operationId: FacultyFactotum_createIncident
+      summary: Create incident | Crea segnalazione
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/IncidentReport'
+                required:
+                  - data
+              example:
+                data:
+                  id: INC-2026-0042
+                  description: Rubinetto del bagno donne che perde da ieri sera
+                  date: '2026-04-20T18:30:00Z'
+                  status: new
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                    name: Aula 1P
+                  issueCategory:
+                    id: IDRAULICO
+                    name: Idraulico
+                    description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                  equipment: null
+                  attachments:
+                    - id: 0
+                      filename: foto.jpg
+                      mimeType: image/jpeg
+                      sizeInKiloBytes: 512
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateFacultyIncidentRequest'
+            encoding:
+              place:
+                contentType: application/json
+  /incidents/by-place:
+    get:
+      operationId: FacultyFactotum_getIncidentsByPlace
+      summary: List incidents at a place | Elenca segnalazioni del locale
+      parameters:
+        - name: buildingId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: floorId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: roomId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IncidentReport'
+                required:
+                  - data
+              example:
+                data:
+                  - id: INC-2026-0042
+                    description: Rubinetto del bagno donne che perde da ieri sera
+                    date: '2026-04-20T18:30:00Z'
+                    status: new
+                    place:
+                      siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+                      name: Aula 1P
+                    issueCategory:
+                      id: IDRAULICO
+                      name: Idraulico
+                      description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                    equipment: null
+                    attachments:
+                      - id: 0
+                        filename: foto.jpg
+                        mimeType: image/jpeg
+                        sizeInKiloBytes: 512
+                  - id: INC-2026-0040
+                    description: Banco rotto
+                    date: '2026-01-19T16:28:00Z'
+                    status: resolved
+                    place:
+                      siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+                      name: Aula 1P
+                    issueCategory:
+                      id: ARREDI
+                      name: Arredi
+                      description: Arredi danneggiati
+                    equipment: null
+                    attachments: []
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+  /incidents/form-data:
+    get:
+      operationId: FacultyFactotum_getIncidentFormData
+      summary: Get incident form data | Dati per form segnalazione
+      parameters:
+        - name: buildingId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: floorId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: roomId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyIncidentFormData'
+                required:
+                  - data
+              example:
+                data:
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                    name: Aula 1P
+                  issueCategories:
+                    - id: ELETTRICO
+                      name: Elettrico
+                      description: Problemi elettrici
+                    - id: IDRAULICO
+                      name: Idraulico
+                      description: Problemi idraulici
+                    - id: ARREDI
+                      name: Arredi
+                      description: Arredi danneggiati
+                    - id: CLIMA
+                      name: Condizionamento e Riscaldamento
+                      description: Problemi climatizzazione
+                  equipments:
+                    - id: EQ-00123
+                      name: Proiettore aula
+                      description: Proiettore a soffitto Epson EB-992F
+                  predefinedDescriptions:
+                    - Flusso di lavoro
+                    - Risposta necessaria entro 1 Settimana
+                    - Completamento necessario entro 1 Mesi
+                    - Nessuna procedura necessaria
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+  /incidents/{incidentId}:
+    get:
+      operationId: FacultyFactotum_getIncident
+      summary: Show incident | Mostra segnalazione
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/IncidentReport'
+                required:
+                  - data
+              example:
+                data:
+                  id: INC-2026-0042
+                  description: Rubinetto del bagno donne che perde da ieri sera
+                  date: '2026-04-20T18:30:00Z'
+                  status: new
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                    name: Aula 1P
+                  issueCategory:
+                    id: IDRAULICO
+                    name: Idraulico
+                    description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                  equipment: null
+                  attachments:
+                    - id: 0
+                      filename: foto.jpg
+                      mimeType: image/jpeg
+                      sizeInKiloBytes: 512
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+    put:
+      operationId: FacultyFactotum_updateIncident
+      summary: Update incident | Modifica segnalazione
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/IncidentReport'
+                required:
+                  - data
+              example:
+                data:
+                  id: INC-2026-0042
+                  description: Rubinetto del bagno donne che perde — aggiornato dopo sopralluogo
+                  date: '2026-04-20T18:30:00Z'
+                  status: resolved
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                    name: Aula 1P
+                  issueCategory:
+                    id: IDRAULICO
+                    name: Idraulico
+                    description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                  equipment: null
+                  attachments: []
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIncidentRequest'
+  /incidents/{incidentId}/attachments/{attachmentId}:
+    get:
+      operationId: FacultyFactotum_getIncidentAttachment
+      summary: Download incident attachment | Scarica allegato segnalazione
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attachmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '302':
+          description: Redirection
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -3447,7 +3892,6 @@ components:
         - teachingPeriod
         - teacherId
         - teacherName
-        - previousEditions
         - isOverBooking
         - enrollmentRole
         - year
@@ -3477,14 +3921,6 @@ components:
           type: string
           nullable: true
           example: Mario Rossi
-        previousEditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseModuleEdition'
-          description: Previous editions of this course that were part of the student's PSP
-          example:
-            - id: 244577
-              year: '2021'
         isOverBooking:
           type: boolean
           example: false
@@ -3503,9 +3939,6 @@ components:
         teachingPeriod: 2-2
         teacherId: 3001
         teacherName: Mario Rossi
-        previousEditions:
-          - id: 251005
-            year: '2024'
         isOverBooking: false
         enrollmentRole: student
         year: '2025'
@@ -3521,6 +3954,21 @@ components:
         id:
           type: integer
           example: 244577
+    CourseModuleOverview:
+      type: object
+      required:
+        - previousEditions
+      properties:
+        previousEditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseModuleEdition'
+          description: Previous editions of this course that were part of the student's PSP
+          example:
+            - id: 244577
+              year: '2021'
+      allOf:
+        - $ref: '#/components/schemas/CourseModule'
     CourseNotices:
       type: object
       required:
@@ -3555,10 +4003,10 @@ components:
         modules:
           type: array
           items:
-            $ref: '#/components/schemas/CourseModule'
+            $ref: '#/components/schemas/CourseModuleOverview'
           nullable: true
       allOf:
-        - $ref: '#/components/schemas/CourseModule'
+        - $ref: '#/components/schemas/CourseModuleOverview'
     CoursePreferencesRequest:
       type: object
       properties:
@@ -3585,6 +4033,24 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreateFacultyIncidentRequest:
+      type: object
+      properties:
+        place:
+          $ref: '#/components/schemas/PlaceRef'
+        idIssueCategory:
+          type: string
+        description:
+          type: string
+        idEquipment:
+          type: string
+        attachment:
+          type: string
+          format: binary
+      required:
+        - place
+        - idIssueCategory
+        - description
     Department:
       type: object
       required:
@@ -3632,6 +4098,23 @@ components:
       example:
         description: some identifier you chose
         pubkey: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
+    Equipment:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        id: EQ-00123
+        name: Proiettore aula
+        description: Proiettore a soffitto Epson EB-992F
     ErrorResponse:
       type: object
       properties:
@@ -3684,6 +4167,31 @@ components:
             - expiresAt
             - qrCode
           nullable: true
+    FacultyIncidentFormData:
+      type: object
+      required:
+        - place
+        - issueCategories
+        - equipments
+        - predefinedDescriptions
+      properties:
+        place:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PlaceRef'
+          nullable: true
+        issueCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueCategory'
+        equipments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Equipment'
+        predefinedDescriptions:
+          type: array
+          items:
+            type: string
     FcmRegistrationRequest:
       type: object
       properties:
@@ -3812,6 +4320,106 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    IncidentAttachment:
+      type: object
+      required:
+        - id
+        - filename
+        - mimeType
+        - sizeInKiloBytes
+      properties:
+        id:
+          type: number
+        filename:
+          type: string
+        mimeType:
+          type: string
+        sizeInKiloBytes:
+          type: integer
+      example:
+        id: 0
+        filename: foto.jpg
+        mimeType: image/jpeg
+        sizeInKiloBytes: 512
+    IncidentReport:
+      type: object
+      required:
+        - id
+        - description
+        - date
+        - status
+        - place
+        - issueCategory
+        - equipment
+        - attachments
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        place:
+          $ref: '#/components/schemas/PlaceRef'
+        issueCategory:
+          $ref: '#/components/schemas/IssueCategory'
+        equipment:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Equipment'
+          nullable: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentAttachment'
+      example:
+        id: INC-2026-0042
+        description: Rubinetto del bagno donne che perde da ieri sera
+        date: '2026-04-20T18:30:00Z'
+        status: new
+        place:
+          siteId: TO_CIT
+          buildingId: TO_CIT11
+          floorId: XP02
+          roomId: '017'
+          name: Aula 1P
+        issueCategory:
+          id: IDRAULICO
+          name: Idraulico
+          description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+        equipment: null
+        attachments:
+          - id: 0
+            filename: foto.jpg
+            mimeType: image/jpeg
+            sizeInKiloBytes: 512
+    IncidentStatus:
+      type: string
+      enum:
+        - new
+        - in_progress
+        - resolved
+        - closed
+    IssueCategory:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        id: IDRAULICO
+        name: Idraulico
+        description: 'Problemi idraulici: rubinetti, scarichi, perdite'
     Lecture:
       type: object
       required:
@@ -4560,6 +5168,17 @@ components:
         isLocationChecked:
           type: boolean
           example: true
+    UpdateIncidentRequest:
+      type: object
+      properties:
+        description:
+          type: string
+        idIssueCategory:
+          type: string
+        idEquipment:
+          type: string
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
     UpdateInfo:
       type: object
       required:

@@ -16,6 +16,7 @@ tags:
   - name: Places
   - name: Esc
   - name: Exams
+  - name: Factotum
   - name: Job offers
   - name: Offering
   - name: Student
@@ -1810,6 +1811,175 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
+  /incidents:
+    get:
+      operationId: StudentFactotum_getIncidents
+      summary: List my incidents | Elenca le mie segnalazioni
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StudentIncidentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: INC-2026-0042
+                    date: '2026-04-20T18:30:00Z'
+                    issueCategory:
+                      id: IDRAULICO
+                      name: Idraulico
+                      description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                  - id: INC-2026-0039
+                    date: '2026-01-25T15:09:00Z'
+                    issueCategory:
+                      id: ELETTRICO
+                      name: Elettrico
+                      description: Problemi elettrici
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+    post:
+      operationId: StudentFactotum_createIncident
+      summary: Create incident | Crea segnalazione
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StudentIncidentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  id: INC-2026-0042
+                  date: '2026-04-20T18:30:00Z'
+                  issueCategory:
+                    id: IDRAULICO
+                    name: Idraulico
+                    description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateStudentIncidentRequest'
+            encoding:
+              place:
+                contentType: application/json
+  /incidents/form-data:
+    get:
+      operationId: StudentFactotum_getIncidentFormData
+      summary: Get incident form data | Dati per form segnalazione
+      parameters:
+        - name: buildingId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: floorId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: roomId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StudentIncidentFormData'
+                required:
+                  - data
+              example:
+                data:
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                    name: Aula 1P
+                  issueCategories:
+                    - id: ELETTRICO
+                      name: Elettrico
+                      description: Problemi elettrici
+                    - id: IDRAULICO
+                      name: Idraulico
+                      description: Problemi idraulici
+                    - id: ARREDI
+                      name: Arredi
+                      description: Arredi danneggiati
+                    - id: CLIMA
+                      name: Condizionamento e Riscaldamento
+                      description: Problemi climatizzazione
+                  predefinedDescriptions:
+                    - Flusso di lavoro
+                    - Risposta necessaria entro 1 Settimana
+                    - Completamento necessario entro 1 Mesi
+                    - Nessuna procedura necessaria
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
   /job-offers:
     get:
       operationId: JobOffers_getJobOffers
@@ -5138,6 +5308,22 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreateStudentIncidentRequest:
+      type: object
+      properties:
+        place:
+          $ref: '#/components/schemas/PlaceRef'
+        idIssueCategory:
+          type: string
+        description:
+          type: string
+        attachment:
+          type: string
+          format: binary
+      required:
+        - place
+        - idIssueCategory
+        - description
     CreateTicketRequest:
       type: object
       properties:
@@ -5730,6 +5916,30 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    IncidentStatus:
+      type: string
+      enum:
+        - new
+        - in_progress
+        - resolved
+        - closed
+    IssueCategory:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        id: IDRAULICO
+        name: Idraulico
+        description: 'Problemi idraulici: rubinetti, scarichi, perdite'
     JobOffer:
       type: object
       required:
@@ -7021,6 +7231,48 @@ components:
           nullable: true
         europeanStudentCard:
           $ref: '#/components/schemas/EuropeanStudentCard'
+    StudentIncidentFormData:
+      type: object
+      required:
+        - place
+        - issueCategories
+        - predefinedDescriptions
+      properties:
+        place:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/PlaceRef'
+          nullable: true
+        issueCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/IssueCategory'
+        predefinedDescriptions:
+          type: array
+          items:
+            type: string
+    StudentIncidentOverview:
+      type: object
+      required:
+        - id
+        - date
+        - issueCategory
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        issueCategory:
+          $ref: '#/components/schemas/IssueCategory'
+      description: 'Vista minimale per gli studenti: solo tipo di problema e data'
+      example:
+        id: INC-2026-0042
+        date: '2026-04-20T18:30:00Z'
+        issueCategory:
+          id: IDRAULICO
+          name: Idraulico
+          description: 'Problemi idraulici: rubinetti, scarichi, perdite'
     Survey:
       type: object
       required:
