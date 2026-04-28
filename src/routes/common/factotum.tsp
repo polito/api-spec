@@ -15,7 +15,7 @@ enum IncidentStatus {
   closed: "closed",
 }
 
-/* Relativo al tipo di problema */
+/** Relativo al tipo di problema */
 @example(_ex_issue_category)
 model IssueCategory {
   id: string;

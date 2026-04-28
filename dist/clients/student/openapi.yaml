@@ -1811,56 +1811,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
-  /incidents:
-    get:
-      operationId: StudentFactotum_getIncidents
-      summary: List my incidents | Elenca le mie segnalazioni
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/StudentIncidentOverview'
-                required:
-                  - data
-              example:
-                data:
-                  - id: INC-2026-0042
-                    date: '2026-04-20T18:30:00Z'
-                    issueCategory:
-                      id: IDRAULICO
-                      name: Idraulico
-                      description: 'Problemi idraulici: rubinetti, scarichi, perdite'
-                  - id: INC-2026-0039
-                    date: '2026-01-25T15:09:00Z'
-                    issueCategory:
-                      id: ELETTRICO
-                      name: Elettrico
-                      description: Problemi elettrici
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Factotum
+  /incident:
     post:
-      operationId: StudentFactotum_createIncident
+      operationId: StudentFactotumCreate_createIncident
       summary: Create incident | Crea segnalazione
+      description: |-
+        Crea una nuova segnalazione di guasto/anomalia. La richiesta è
+        multipart/form-data per consentire l'upload opzionale di un allegato
+        (es. foto del problema). Il riferimento al locale, la categoria e la
+        descrizione sono obbligatori.
       parameters: []
       responses:
         '201':
@@ -1909,6 +1868,10 @@ paths:
     get:
       operationId: StudentFactotum_getIncidentFormData
       summary: Get incident form data | Dati per form segnalazione
+      description: |-
+        Restituisce i dati necessari a precompilare il form di nuova segnalazione
+        per uno specifico locale: riferimento al posto, categorie di problema
+        disponibili e descrizioni predefinite.
       parameters:
         - name: buildingId
           in: query
@@ -1943,11 +1906,11 @@ paths:
               example:
                 data:
                   place:
-                    siteId: TO_CIT
-                    buildingId: TO_CIT11
-                    floorId: XP02
-                    roomId: '017'
-                    name: Aula 1P
+                    - siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+                      name: Aula 1P
                   issueCategories:
                     - id: ELETTRICO
                       name: Elettrico
@@ -1961,11 +1924,76 @@ paths:
                     - id: CLIMA
                       name: Condizionamento e Riscaldamento
                       description: Problemi climatizzazione
-                  predefinedDescriptions:
-                    - Flusso di lavoro
-                    - Risposta necessaria entro 1 Settimana
-                    - Completamento necessario entro 1 Mesi
-                    - Nessuna procedura necessaria
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+  /incidents/roomIncidents:
+    get:
+      operationId: StudentFactotum_roomIncidents
+      summary: List incidents at a place | Elenca segnalazioni del locale
+      description: |-
+        Elenca le segnalazioni associate a uno specifico locale in vista
+        minimale (id, data, categoria di problema). Lo studente non ha accesso
+        all'elenco delle proprie segnalazioni: può solo consultare lo storico
+        dei problemi di un locale prima di aprirne una nuova.
+      parameters:
+        - name: buildingId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: floorId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: roomId
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StudentIncidentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: INC-2026-0042
+                    date: '2026-04-20T18:30:00Z'
+                    issueCategory:
+                      id: IDRAULICO
+                      name: Idraulico
+                      description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+                  - id: INC-2026-0039
+                    date: '2026-01-25T15:09:00Z'
+                    issueCategory:
+                      id: ELETTRICO
+                      name: Elettrico
+                      description: Problemi elettrici
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -5317,9 +5345,12 @@ components:
           type: string
         description:
           type: string
-        attachment:
-          type: string
-          format: binary
+        attachments:
+          type: array
+          items:
+            type: string
+            format: binary
+          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
       required:
         - place
         - idIssueCategory
@@ -5936,6 +5967,7 @@ components:
           type: string
         description:
           type: string
+      description: Relativo al tipo di problema
       example:
         id: IDRAULICO
         name: Idraulico
@@ -7236,21 +7268,16 @@ components:
       required:
         - place
         - issueCategories
-        - predefinedDescriptions
       properties:
         place:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PlaceRef'
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
           nullable: true
         issueCategories:
           type: array
           items:
             $ref: '#/components/schemas/IssueCategory'
-        predefinedDescriptions:
-          type: array
-          items:
-            type: string
     StudentIncidentOverview:
       type: object
       required:
@@ -7265,7 +7292,10 @@ components:
           format: date-time
         issueCategory:
           $ref: '#/components/schemas/IssueCategory'
-      description: 'Vista minimale per gli studenti: solo tipo di problema e data'
+      description: |-
+        Vista minimale per gli studenti: solo tipo di problema e data.
+        Da capire se mostrare anche description e attachment, o se sono
+        visibili solo al personale di facoltà.
       example:
         id: INC-2026-0042
         date: '2026-04-20T18:30:00Z'

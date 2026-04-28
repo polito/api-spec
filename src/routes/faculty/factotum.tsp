@@ -16,7 +16,10 @@ model Equipment {
   description: string;
 }
 
-// chiarire se l'attachment è solo foto, oppure può essere qualunque tipo di file
+/**
+ * Allegato di una segnalazione. Da chiarire se può essere solo una foto
+ * oppure qualunque tipo di file.
+ */
 @example(_ex_incident_attachment)
 model IncidentAttachment {
   id: numeric;
@@ -25,6 +28,10 @@ model IncidentAttachment {
   sizeInKiloBytes: integer;
 }
 
+/**
+ * Segnalazione completa. Lato faculty descrizione e allegati sono
+ * sempre visibili.
+ */
 @example(_ex_incident_report)
 model IncidentReport {
   id: string;
@@ -38,10 +45,9 @@ model IncidentReport {
 }
 
 model FacultyIncidentFormData {
-  place: PlaceRef | null;
+  place: PlaceRef[] | null;
   issueCategories: IssueCategory[];
   equipments: Equipment[];
-  predefinedDescriptions: string[];
 }
 
 model CreateFacultyIncidentRequest {
@@ -49,19 +55,17 @@ model CreateFacultyIncidentRequest {
   idIssueCategory: HttpPart<string>;
   description: HttpPart<string>;
   idEquipment?: HttpPart<string>;
-  attachment?: HttpPart<bytes>;
-}
-
-model UpdateIncidentRequest {
-  description?: string;
-  idIssueCategory?: string;
-  idEquipment?: string;
-  status?: IncidentStatus;
+  attachments?: HttpPart<bytes>[];
 }
 
 @tag("Factotum")
 @route("/incidents")
 interface FacultyFactotum {
+  /**
+   * Restituisce i dati necessari a precompilare il form di nuova segnalazione
+   * per uno specifico locale: riferimento al posto, categorie di problema
+   * disponibili, attrezzature presenti e descrizioni predefinite.
+   */
   @get
   @route("/form-data")
   @summary("Get incident form data | Dati per form segnalazione")
@@ -72,46 +76,46 @@ interface FacultyFactotum {
     @query roomId: string,
   ): OkDataResponse<FacultyIncidentFormData> | BaseErrors;
 
+  /**
+   * Elenca le segnalazioni create dall'utente autenticato, con tutti i
+   * dettagli (descrizione, stato, allegati).
+   */
   @get
+  @route("/myIncidents")
   @summary("List my incidents | Elenca le mie segnalazioni")
-  @opExample(_ex_faculty_getIncidents_resp)
-  getIncidents(): OkDataResponse<IncidentReport[]> | BaseErrors;
+  @opExample(_ex_faculty_myIncidents_resp)
+  myIncidents(): OkDataResponse<IncidentReport[]> | BaseErrors;
 
+  /**
+   * Elenca le segnalazioni associate a uno specifico locale, indipendentemente
+   * da chi le ha create. Utile per consultare lo storico dei problemi del
+   * locale prima di aprirne una nuova.
+   */
   @get
-  @route("/by-place")
+  @route("/roomIncidents")
   @summary("List incidents at a place | Elenca segnalazioni del locale")
-  @opExample(_ex_faculty_getIncidentsByPlace_resp)
-  getIncidentsByPlace(
+  @opExample(_ex_faculty_roomIncidents_resp)
+  roomIncidents(
     @query buildingId: string,
     @query floorId: string,
     @query roomId: string,
   ): OkDataResponse<IncidentReport[]> | BaseErrors;
 
-  @post
-  @summary("Create incident | Crea segnalazione")
-  @opExample(_ex_faculty_createIncident_resp)
-  createIncident(
-    @header contentType: "multipart/form-data",
-    @multipartBody body: CreateFacultyIncidentRequest,
-  ): OkDataCreatedResponse<IncidentReport> | BaseErrors;
-
-  @get
+  /**
+   * Elimina una segnalazione esistente.
+   */
   @route("/{incidentId}")
-  @summary("Show incident | Mostra segnalazione")
-  @opExample(_ex_getIncident_resp)
-  getIncident(
+  @delete
+  @summary("Delete incident | Elimina segnalazione")
+  deleteIncident(
     @path incidentId: string,
-  ): OkDataResponse<IncidentReport> | BaseErrors;
+  ): NoContentResponse | NotFoundResponse | BaseErrors;
 
-  @route("/{incidentId}")
-  @put
-  @summary("Update incident | Modifica segnalazione")
-  @opExample(_ex_updateIncident_resp)
-  updateIncident(
-    @path incidentId: string,
-    @body body: UpdateIncidentRequest,
-  ): OkDataResponse<IncidentReport> | NotFoundResponse | BaseErrors;
-
+  /**
+   * Scarica il contenuto binario di un allegato di una segnalazione.
+   * Può rispondere con il file inline oppure con un redirect a una URL
+   * di download temporanea.
+   */
   @get
   @route("/{incidentId}/attachments/{attachmentId}")
   @summary("Download incident attachment | Scarica allegato segnalazione")
@@ -123,4 +127,22 @@ interface FacultyFactotum {
     | RedirectResponse
     | NotFoundResponse
     | BaseErrors;
+}
+
+@tag("Factotum")
+@route("/incident")
+interface FacultyFactotumCreate {
+  /**
+   * Crea una nuova segnalazione di guasto/anomalia. La richiesta è
+   * multipart/form-data per consentire l'upload opzionale di un allegato
+   * (es. foto del problema). Il riferimento al locale, la categoria e la
+   * descrizione sono obbligatori; l'attrezzatura coinvolta è opzionale.
+   */
+  @post
+  @summary("Create incident | Crea segnalazione")
+  @opExample(_ex_faculty_createIncident_resp)
+  createIncident(
+    @header contentType: "multipart/form-data",
+    @multipartBody body: CreateFacultyIncidentRequest,
+  ): OkDataCreatedResponse<IncidentReport> | BaseErrors;
 }

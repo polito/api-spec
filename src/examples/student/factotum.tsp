@@ -11,7 +11,7 @@ const _ex_student_incident_overview = #{
   issueCategory: _ex_issue_category,
 };
 
-const _ex_student_getIncidents_resp = #{
+const _ex_student_roomIncidents_resp = #{
   returnType: #{
     statusCode: 200,
     body: #{
@@ -36,9 +36,8 @@ const _ex_student_getIncidentFormData_resp = #{
     statusCode: 200,
     body: #{
       data: #{
-        place: _ex_place_ref,
+        place: #[_ex_place_ref],
         issueCategories: _ex_issue_categories_list,
-        predefinedDescriptions: _ex_predefined_descriptions,
       },
     },
   },

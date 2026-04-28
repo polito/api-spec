@@ -29,11 +29,11 @@ const _ex_incident_report = #{
   attachments: #[_ex_incident_attachment],
 };
 
-const _ex_faculty_getIncidents_resp = #{
+const _ex_faculty_myIncidents_resp = #{
   returnType: #{ statusCode: 200, body: #{ data: #[_ex_incident_report] } },
 };
 
-const _ex_faculty_getIncidentsByPlace_resp = #{
+const _ex_faculty_roomIncidents_resp = #{
   returnType: #{
     statusCode: 200,
     body: #{
@@ -63,10 +63,9 @@ const _ex_faculty_getIncidentFormData_resp = #{
     statusCode: 200,
     body: #{
       data: #{
-        place: _ex_place_ref,
+        place: #[_ex_place_ref],
         issueCategories: _ex_issue_categories_list,
         equipments: #[_ex_equipment],
-        predefinedDescriptions: _ex_predefined_descriptions,
       },
     },
   },
@@ -76,24 +75,3 @@ const _ex_faculty_createIncident_resp = #{
   returnType: #{ statusCode: 201, body: #{ data: _ex_incident_report } },
 };
 
-const _ex_getIncident_resp = #{
-  returnType: #{ statusCode: 200, body: #{ data: _ex_incident_report } },
-};
-
-const _ex_updateIncident_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{
-      data: #{
-        id: "INC-2026-0042",
-        description: "Rubinetto del bagno donne che perde — aggiornato dopo sopralluogo",
-        date: utcDateTime.fromISO("2026-04-20T18:30:00Z"),
-        status: IncidentStatus.resolved,
-        place: _ex_place_ref,
-        issueCategory: _ex_issue_category,
-        equipment: null,
-        attachments: #[],
-      },
-    },
-  },
-};
