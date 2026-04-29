@@ -52,7 +52,7 @@ model IncidentFormData {
   equipments: Equipment[] | null;
 }
 
-model CreateIncidentRequest {
+model IncidentRequest {
   place: HttpPart<PlaceRef>;
   idIssueCategory: HttpPart<string>;
   description: HttpPart<string>;
@@ -105,6 +105,6 @@ interface Factotum {
   @summary("Create incident | Crea segnalazione")
   createIncident(
     @header contentType: "multipart/form-data",
-    @multipartBody body: CreateIncidentRequest,
+    @multipartBody body: IncidentRequest,
   ): OkResponse | BaseErrors;
 }

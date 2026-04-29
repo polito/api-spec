@@ -1847,7 +1847,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateIncidentRequest'
+              $ref: '#/components/schemas/IncidentRequest'
             encoding:
               place:
                 contentType: application/json
@@ -5323,27 +5323,6 @@ components:
         seatId:
           type: integer
           example: 20018
-    CreateIncidentRequest:
-      type: object
-      properties:
-        place:
-          $ref: '#/components/schemas/PlaceRef'
-        idIssueCategory:
-          type: string
-        description:
-          type: string
-        idEquipment:
-          type: string
-        attachments:
-          type: array
-          items:
-            type: string
-            format: binary
-          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
-      required:
-        - place
-        - idIssueCategory
-        - description
     CreateTicketRequest:
       type: object
       properties:
@@ -5999,6 +5978,27 @@ components:
           id: IDRAULICO
           name: Idraulico
           description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+    IncidentRequest:
+      type: object
+      properties:
+        place:
+          $ref: '#/components/schemas/PlaceRef'
+        idIssueCategory:
+          type: string
+        description:
+          type: string
+        idEquipment:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: string
+            format: binary
+          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
+      required:
+        - place
+        - idIssueCategory
+        - description
     IncidentStatus:
       type: string
       enum:

@@ -12,7 +12,7 @@ const _ex_incident_attachment = #{
   sizeInKiloBytes: 512,
 };
 
-const _ex_incident_report = #{
+const _ex_incident = #{
   id: "INC-2026-0042",
   description: "Rubinetto del bagno donne che perde da ieri sera",
   date: utcDateTime.fromISO("2026-04-20T18:30:00Z"),
@@ -28,5 +28,5 @@ const _ex_faculty_listIncidents_resp = #{
 };
 
 const _ex_faculty_getIncident_resp = #{
-  returnType: #{ statusCode: 200, body: #{ data: _ex_incident_report } },
+  returnType: #{ statusCode: 200, body: #{ data: _ex_incident } },
 };

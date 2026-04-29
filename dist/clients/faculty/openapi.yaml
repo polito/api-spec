@@ -1443,7 +1443,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateIncidentRequest'
+              $ref: '#/components/schemas/IncidentRequest'
             encoding:
               place:
                 contentType: application/json
@@ -1656,7 +1656,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/IncidentReport'
+                    $ref: '#/components/schemas/Incident'
                 required:
                   - data
               example:
@@ -3953,27 +3953,6 @@ components:
         seatId:
           type: integer
           example: 20018
-    CreateIncidentRequest:
-      type: object
-      properties:
-        place:
-          $ref: '#/components/schemas/PlaceRef'
-        idIssueCategory:
-          type: string
-        description:
-          type: string
-        idEquipment:
-          type: string
-        attachments:
-          type: array
-          items:
-            type: string
-            format: binary
-          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
-      required:
-        - place
-        - idIssueCategory
-        - description
     Department:
       type: object
       required:
@@ -4218,6 +4197,56 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    Incident:
+      type: object
+      required:
+        - description
+        - status
+        - place
+        - equipment
+        - attachments
+      properties:
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        place:
+          $ref: '#/components/schemas/PlaceRef'
+        equipment:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Equipment'
+          nullable: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentAttachment'
+      allOf:
+        - $ref: '#/components/schemas/IncidentOverview'
+      description: |-
+        Segnalazione completa lato faculty: estende `IncidentOverview` con
+        descrizione, stato, locale, eventuale attrezzatura e allegati.
+      example:
+        id: INC-2026-0042
+        description: Rubinetto del bagno donne che perde da ieri sera
+        date: '2026-04-20T18:30:00Z'
+        status: new
+        place:
+          siteId: TO_CIT
+          buildingId: TO_CIT11
+          floorId: XP02
+          roomId: '017'
+          name: Aula 1P
+        issueCategory:
+          id: IDRAULICO
+          name: Idraulico
+          description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+        equipment: null
+        attachments:
+          - id: 0
+            filename: foto.jpg
+            mimeType: image/jpeg
+            sizeInKiloBytes: 512
     IncidentAttachment:
       type: object
       required:
@@ -4288,56 +4317,27 @@ components:
           id: IDRAULICO
           name: Idraulico
           description: 'Problemi idraulici: rubinetti, scarichi, perdite'
-    IncidentReport:
+    IncidentRequest:
       type: object
-      required:
-        - description
-        - status
-        - place
-        - equipment
-        - attachments
       properties:
-        description:
-          type: string
-        status:
-          $ref: '#/components/schemas/IncidentStatus'
         place:
           $ref: '#/components/schemas/PlaceRef'
-        equipment:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Equipment'
-          nullable: true
+        idIssueCategory:
+          type: string
+        description:
+          type: string
+        idEquipment:
+          type: string
         attachments:
           type: array
           items:
-            $ref: '#/components/schemas/IncidentAttachment'
-      allOf:
-        - $ref: '#/components/schemas/IncidentOverview'
-      description: |-
-        Segnalazione completa lato faculty: estende `IncidentOverview` con
-        descrizione, stato, locale, eventuale attrezzatura e allegati.
-      example:
-        id: INC-2026-0042
-        description: Rubinetto del bagno donne che perde da ieri sera
-        date: '2026-04-20T18:30:00Z'
-        status: new
-        place:
-          siteId: TO_CIT
-          buildingId: TO_CIT11
-          floorId: XP02
-          roomId: '017'
-          name: Aula 1P
-        issueCategory:
-          id: IDRAULICO
-          name: Idraulico
-          description: 'Problemi idraulici: rubinetti, scarichi, perdite'
-        equipment: null
-        attachments:
-          - id: 0
-            filename: foto.jpg
-            mimeType: image/jpeg
-            sizeInKiloBytes: 512
+            type: string
+            format: binary
+          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
+      required:
+        - place
+        - idIssueCategory
+        - description
     IncidentStatus:
       type: string
       enum:

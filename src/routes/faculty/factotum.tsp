@@ -25,8 +25,8 @@ model IncidentAttachment {
  * Segnalazione completa lato faculty: estende `IncidentOverview` con
  * descrizione, stato, locale, eventuale attrezzatura e allegati.
  */
-@example(_ex_incident_report)
-model IncidentReport extends IncidentOverview {
+@example(_ex_incident)
+model Incident extends IncidentOverview {
   description: string;
   status: IncidentStatus;
   place: PlaceRef;
@@ -56,7 +56,7 @@ interface FacultyFactotum {
   @opExample(_ex_faculty_getIncident_resp)
   getIncident(
     @path incidentId: string,
-  ): OkDataResponse<IncidentReport> | NotFoundResponse | BaseErrors;
+  ): OkDataResponse<Incident> | NotFoundResponse | BaseErrors;
 
   /**
    * Elimina una segnalazione esistente.
