@@ -3447,7 +3447,6 @@ components:
         - teachingPeriod
         - teacherId
         - teacherName
-        - previousEditions
         - isOverBooking
         - enrollmentRole
         - year
@@ -3477,14 +3476,6 @@ components:
           type: string
           nullable: true
           example: Mario Rossi
-        previousEditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseModuleEdition'
-          description: Previous editions of this course that were part of the student's PSP
-          example:
-            - id: 244577
-              year: '2021'
         isOverBooking:
           type: boolean
           example: false
@@ -3503,9 +3494,6 @@ components:
         teachingPeriod: 2-2
         teacherId: 3001
         teacherName: Mario Rossi
-        previousEditions:
-          - id: 251005
-            year: '2024'
         isOverBooking: false
         enrollmentRole: student
         year: '2025'
@@ -3521,6 +3509,21 @@ components:
         id:
           type: integer
           example: 244577
+    CourseModuleOverview:
+      type: object
+      required:
+        - previousEditions
+      properties:
+        previousEditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseModuleEdition'
+          description: Previous editions of this course that were part of the student's PSP
+          example:
+            - id: 244577
+              year: '2021'
+      allOf:
+        - $ref: '#/components/schemas/CourseModule'
     CourseNotices:
       type: object
       required:
@@ -3555,10 +3558,10 @@ components:
         modules:
           type: array
           items:
-            $ref: '#/components/schemas/CourseModule'
+            $ref: '#/components/schemas/CourseModuleOverview'
           nullable: true
       allOf:
-        - $ref: '#/components/schemas/CourseModule'
+        - $ref: '#/components/schemas/CourseModuleOverview'
     CoursePreferencesRequest:
       type: object
       properties:
@@ -3585,6 +3588,16 @@ components:
         seatId:
           type: integer
           example: 20018
+    DayOfWeek:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
     Department:
       type: object
       required:
@@ -4085,6 +4098,23 @@ components:
         eventStartTime: Dal 30 agosto 2023
         eventEndTime: Al 30 agosto 2023
         createdAt: '2022-08-31T14:00:00Z'
+    OpeningHours:
+      type: object
+      required:
+        - days
+        - from
+        - to
+      properties:
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayOfWeek'
+        from:
+          type: string
+          example: '08:30'
+        to:
+          type: string
+          example: '20:00'
     Person:
       type: object
       required:
