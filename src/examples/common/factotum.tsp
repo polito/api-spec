@@ -77,9 +77,5 @@ const _ex_listIncidents_resp = #{
 };
 
 const _ex_getIssueCategories_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{ data: _ex_issue_categories_list },
-  },
+  returnType: #{ statusCode: 200, body: #{ data: _ex_issue_categories_list } },
 };
-
