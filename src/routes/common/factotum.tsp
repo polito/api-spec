@@ -15,12 +15,24 @@ enum IncidentStatus {
   closed: "closed",
 }
 
+/**
+ * Priorità di intervento associata a una categoria di problema.
+ * Determina l'urgenza con cui la segnalazione viene gestita.
+ */
+enum IncidentPriority {
+  low: "low",
+  medium: "medium",
+  high: "high",
+  urgent: "urgent",
+}
+
 /** Relativo al tipo di problema */
 @example(_ex_issue_category)
 model IssueCategory {
   id: string;
   name: string;
   description: string;
+  priority: IncidentPriority;
 }
 
 /**

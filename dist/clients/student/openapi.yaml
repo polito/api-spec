@@ -1854,15 +1854,19 @@ paths:
                   - id: ELETTRICO
                     name: Elettrico
                     description: Problemi elettrici
+                    priority: urgent
                   - id: IDRAULICO
                     name: Idraulico
                     description: Problemi idraulici
+                    priority: high
                   - id: ARREDI
                     name: Arredi
                     description: Arredi danneggiati
+                    priority: low
                   - id: CLIMA
                     name: Condizionamento e Riscaldamento
                     description: Problemi climatizzazione
+                    priority: medium
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -5942,6 +5946,16 @@ components:
           buildingId: TO_CIT11
           floorId: XP02
           roomId: '017'
+    IncidentPriority:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+        - urgent
+      description: |-
+        Priorità di intervento associata a una categoria di problema.
+        Determina l'urgenza con cui la segnalazione viene gestita.
     IncidentRequest:
       type: object
       properties:
@@ -5974,6 +5988,7 @@ components:
         - id
         - name
         - description
+        - priority
       properties:
         id:
           type: string
@@ -5981,11 +5996,14 @@ components:
           type: string
         description:
           type: string
+        priority:
+          $ref: '#/components/schemas/IncidentPriority'
       description: Relativo al tipo di problema
       example:
         id: IDRAULICO
         name: Idraulico
         description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+        priority: high
     JobOffer:
       type: object
       required:
