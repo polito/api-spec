@@ -10,18 +10,11 @@ const _ex_issue_category = #{
   description: "Problemi idraulici: rubinetti, scarichi, perdite",
 };
 
-const _ex_equipment = #{
-  id: "EQ-00123",
-  name: "Proiettore aula",
-  description: "Proiettore a soffitto Epson EB-992F",
-};
-
-const _ex_place_ref = #{
+const _ex_place_id = #{
   siteId: "TO_CIT",
   buildingId: "TO_CIT11",
   floorId: "XP02",
   roomId: "017",
-  name: "Aula 1P",
 };
 
 const _ex_issue_categories_list = #[
@@ -45,10 +38,11 @@ const _ex_predefined_descriptions = #[
 const _ex_incident_overview = #{
   id: "INC-2026-0042",
   date: utcDateTime.fromISO("2026-04-20T18:30:00Z"),
-  issueCategory: _ex_issue_category,
+  issueCategoryId: "IDRAULICO",
+  place: _ex_place_id,
 };
 
-const _ex_roomIncidents_resp = #{
+const _ex_listIncidents_resp = #{
   returnType: #{
     statusCode: 200,
     body: #{
@@ -57,27 +51,18 @@ const _ex_roomIncidents_resp = #{
         #{
           id: "INC-2026-0039",
           date: utcDateTime.fromISO("2026-01-25T15:09:00Z"),
-          issueCategory: #{
-            id: "ELETTRICO",
-            name: "Elettrico",
-            description: "Problemi elettrici",
-          },
+          issueCategoryId: "ELETTRICO",
+          place: _ex_place_id,
         }
       ],
     },
   },
 };
 
-const _ex_getIncidentFormData_resp = #{
+const _ex_getIssueCategories_resp = #{
   returnType: #{
     statusCode: 200,
-    body: #{
-      data: #{
-        place: _ex_place_ref,
-        issueCategories: _ex_issue_categories_list,
-        equipments: null,
-      },
-    },
+    body: #{ data: _ex_issue_categories_list },
   },
 };
 

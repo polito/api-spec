@@ -17,14 +17,9 @@ const _ex_incident = #{
   description: "Rubinetto del bagno donne che perde da ieri sera",
   date: utcDateTime.fromISO("2026-04-20T18:30:00Z"),
   status: IncidentStatus.new,
-  place: _ex_place_ref,
-  issueCategory: _ex_issue_category,
-  equipment: null,
+  place: _ex_place_id,
+  issueCategoryId: "IDRAULICO",
   attachments: #[_ex_incident_attachment],
-};
-
-const _ex_faculty_listIncidents_resp = #{
-  returnType: #{ statusCode: 200, body: #{ data: #[_ex_incident_overview] } },
 };
 
 const _ex_faculty_getIncident_resp = #{

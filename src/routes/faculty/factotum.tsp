@@ -23,47 +23,37 @@ model IncidentAttachment {
 
 /**
  * Segnalazione completa lato faculty: estende `IncidentOverview` con
- * descrizione, stato, locale, eventuale attrezzatura e allegati.
+ * descrizione, stato e allegati. I dettagli di categoria si recuperano
+ * dal relativo endpoint.
  */
 @example(_ex_incident)
 model Incident extends IncidentOverview {
   description: string;
   status: IncidentStatus;
-  place: PlaceRef;
-  equipment: Equipment | null;
   attachments: IncidentAttachment[];
 }
 
 @tag("Factotum")
-@route("/incidents")
+@route("/incidents/reports")
 interface FacultyFactotum {
-  /**
-   * Elenca le segnalazioni create dall'utente autenticato, con tutti i
-   * dettagli (descrizione, stato, allegati).
-   */
-  @get
-  @summary("List incidents | Elenca segnalazioni")
-  @opExample(_ex_faculty_listIncidents_resp)
-  listIncidents(): OkDataResponse<IncidentOverview[]> | BaseErrors;
-
   /**
    * Restituisce la singola segnalazione identificata da `incidentId`,
    * con tutti i dettagli.
    */
   @get
   @route("/{incidentId}")
-  @summary("Get incident | Mostra segnalazione")
+  @summary("Get incident (faculty) | Mostra segnalazione (faculty)")
   @opExample(_ex_faculty_getIncident_resp)
   getIncident(
     @path incidentId: string,
   ): OkDataResponse<Incident> | NotFoundResponse | BaseErrors;
 
   /**
-   * Elimina una segnalazione esistente.
+   * Annulla una segnalazione esistente.
    */
   @route("/{incidentId}")
   @delete
-  @summary("Delete incident | Elimina segnalazione")
+  @summary("Delete incident (faculty) | Annulla segnalazione (faculty)")
   deleteIncident(
     @path incidentId: string,
   ): NoContentResponse | NotFoundResponse | BaseErrors;
@@ -75,7 +65,7 @@ interface FacultyFactotum {
    */
   @get
   @route("/{incidentId}/attachments/{attachmentId}")
-  @summary("Download incident attachment | Scarica allegato segnalazione")
+  @summary("Download incident attachment (faculty) | Scarica allegato segnalazione (faculty)")
   getIncidentAttachment(@path incidentId: string, @path attachmentId: integer):
     | {
         @header contentType: "application/octet-stream";

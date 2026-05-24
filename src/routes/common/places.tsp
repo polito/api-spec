@@ -135,6 +135,7 @@ model Place {
     phone: string | null;
   } | null;
   resources: {
+    id: string;
     name: string;
     description: string;
     category: string;
