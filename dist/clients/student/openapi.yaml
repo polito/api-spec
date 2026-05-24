@@ -3649,6 +3649,47 @@ paths:
             type: boolean
           explode: false
       responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Tickets
+  /tickets/{ticketId}/replies/{replyId}/resolve:
+    put:
+      operationId: Tickets_resolveTicket
+      summary: Resolve a ticket | Risolvi un ticket
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: replyId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
@@ -3665,6 +3706,12 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveTicketRequest'
   /unreadEmails:
     get:
       operationId: StudentNs_getUnreadEmailsNumber
@@ -6816,6 +6863,17 @@ components:
           type: string
         requestDetails:
           type: string
+    ResolveTicketRequest:
+      type: object
+      required:
+        - rating
+      properties:
+        rating:
+          type: integer
+          example: 4
+        comment:
+          type: string
+          example: La risposta è stata molto utile, grazie!
     RootPlaceCategory:
       type: object
       required:

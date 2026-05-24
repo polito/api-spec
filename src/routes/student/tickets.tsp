@@ -137,6 +137,14 @@ model ReplyTicketRequest {
   attachment?: HttpPart<bytes>;
 }
 
+model ResolveTicketRequest {
+  @example(4)
+  rating: integer;
+
+  @example("La risposta è stata molto utile, grazie!")
+  comment?: string;
+}
+
 @tag("Tickets")
 @route("/ticket-faqs")
 interface TicketFAQs {
@@ -215,6 +223,15 @@ interface Tickets {
     @path ticketId: integer,
     @path replyId: integer,
     @query positive: boolean,
+  ): OkDataResponse<boolean> | BaseErrors;
+
+  @route("/{ticketId}/replies/{replyId}/resolve")
+  @put
+  @summary("Resolve a ticket | Risolvi un ticket")
+  resolveTicket(
+    @path ticketId: integer,
+    @path replyId: integer,
+    @body body: ResolveTicketRequest,
   ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/replies/{replyId}/attachments/{attachmentId}")
