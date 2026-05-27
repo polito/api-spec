@@ -21,27 +21,3 @@ const _ex_listFacultyCourseStudents_resp = #{
     },
   },
 };
-
-const _ex_listAssignmentCollaborators_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{
-      data: #[
-        #{
-          personId: "p002",
-          name: "Luigi Verdi",
-          role: "Teaching Assistant",
-          courses: #["251007", "252121"],
-          permissions: #["CAN_READ", "CAN_EDIT"],
-        },
-        #{
-          personId: "p003",
-          name: "Anna Bianchi",
-          role: "Tutor",
-          courses: #["251007"],
-          permissions: #["CAN_READ"],
-        }
-      ],
-    },
-  },
-};
