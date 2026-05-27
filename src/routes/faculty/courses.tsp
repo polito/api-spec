@@ -29,34 +29,6 @@ model FacultyCourseStudent {
   };
 }
 
-model Collaborator {
-  @example("p002")
-  personId: string;
-
-  @example("Luigi Verdi")
-  name: string;
-
-  @example("Tutor")
-  role: string;
-
-  sections?: string[];
-  permissions: CollaboratorPermission[];
-}
-
-enum CollaboratorPermission {
-  CAN_READ,
-  CAN_EDIT,
-  CAN_DELETE,
-}
-
-model CollaboratorUpsertRequest {
-  @example("Tutor")
-  role?: string;
-
-  sections: string[];
-  permissions: CollaboratorPermission[];
-}
-
 model CourseMessageRequest {
   @example("Avviso importante")
   subject: string;
@@ -76,21 +48,6 @@ model CourseMessageRequest {
 @doc("Studente già iscritto")
 model StudentAlreadyEnrolledResponse {
   ...OkDataResponse<FacultyCourseStudent>;
-}
-
-@doc("Updated collaborator")
-model CollaboratorUpdatedResponse {
-  ...OkDataResponse<Collaborator>;
-}
-
-@doc("Created collaborator")
-model CollaboratorCreatedResponse {
-  ...OkDataCreatedResponse<Collaborator>;
-}
-
-@doc("Removed collaborator")
-model CollaboratorRemovedResponse {
-  ...NoContentResponse;
 }
 
 @doc("Accepted (sending)")
@@ -122,39 +79,6 @@ interface FacultyCourses {
     | BadRequest
     | NotFound
     | BaseErrors;
-
-  @get
-  @route("/collaborators")
-  @summary("Elenca collaboratori assegnati al corso")
-  listAssignmentCollaborators(@path courseId: integer):
-    | OkDataResponse<Collaborator[]>
-    | NotAuthorized
-    | NotFound
-    | BaseErrors;
-
-  @put
-  @route("/collaborators/{collaboratorId}")
-  @summary("Aggiungi o aggiorna collaboratore")
-  @doc("Operazione idempotente per creare o aggiornare un collaboratore sul corso. Se il collaboratore esiste già, i suoi attributi vengono aggiornati.")
-  upsertAssignmentCollaborator(
-    @path courseId: integer,
-    @path collaboratorId: string,
-    @body body: CollaboratorUpsertRequest,
-  ):
-    | CollaboratorUpdatedResponse
-    | CollaboratorCreatedResponse
-    | BadRequest
-    | NotAuthorized
-    | NotFound
-    | BaseErrors;
-
-  @delete
-  @route("/collaborators/{collaboratorId}")
-  @summary("Rimuovi collaboratore da un incarico")
-  removeAssignmentCollaborator(
-    @path courseId: integer,
-    @path collaboratorId: string,
-  ): CollaboratorRemovedResponse | NotAuthorized | NotFound | BaseErrors;
 
   @post
   @route("/message")
