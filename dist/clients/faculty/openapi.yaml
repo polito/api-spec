@@ -358,6 +358,143 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidateMfaRequest'
+  /auth/profile:
+    get:
+      operationId: Profile_getProfile
+      summary: Get user profile | Ottieni il profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AuthProfile'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/event-admissions:
+    get:
+      operationId: Profile_getEventAdmissions
+      summary: Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/picture:
+    get:
+      operationId: Profile_getProfilePicture
+      summary: Get user profile picture | Ottieni la foto del profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/token/{type}:
+    get:
+      operationId: Profile_getTokenQr
+      summary: Get a QR for a specific service | Ottieni un QR per un servizio specifico
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/TokenType'
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
   /auth/serviceLink/liveClass/{meetingID}:
     get:
       operationId: ServiceLink_getLiveClassLink
@@ -2748,6 +2885,30 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+    AuthProfile:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+        - allusernames
+      properties:
+        username:
+          type: string
+          example: s290683
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Pezzolla
+        allusernames:
+          type: array
+          items:
+            type: string
+          example:
+            - '290683'
+            - '213956'
     Booking:
       type: object
       required:
@@ -3447,7 +3608,6 @@ components:
         - teachingPeriod
         - teacherId
         - teacherName
-        - previousEditions
         - isOverBooking
         - enrollmentRole
         - year
@@ -3477,14 +3637,6 @@ components:
           type: string
           nullable: true
           example: Mario Rossi
-        previousEditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseModuleEdition'
-          description: Previous editions of this course that were part of the student's PSP
-          example:
-            - id: 244577
-              year: '2021'
         isOverBooking:
           type: boolean
           example: false
@@ -3503,9 +3655,6 @@ components:
         teachingPeriod: 2-2
         teacherId: 3001
         teacherName: Mario Rossi
-        previousEditions:
-          - id: 251005
-            year: '2024'
         isOverBooking: false
         enrollmentRole: student
         year: '2025'
@@ -3521,6 +3670,21 @@ components:
         id:
           type: integer
           example: 244577
+    CourseModuleOverview:
+      type: object
+      required:
+        - previousEditions
+      properties:
+        previousEditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseModuleEdition'
+          description: Previous editions of this course that were part of the student's PSP
+          example:
+            - id: 244577
+              year: '2021'
+      allOf:
+        - $ref: '#/components/schemas/CourseModule'
     CourseNotices:
       type: object
       required:
@@ -3555,10 +3719,10 @@ components:
         modules:
           type: array
           items:
-            $ref: '#/components/schemas/CourseModule'
+            $ref: '#/components/schemas/CourseModuleOverview'
           nullable: true
       allOf:
-        - $ref: '#/components/schemas/CourseModule'
+        - $ref: '#/components/schemas/CourseModuleOverview'
     CoursePreferencesRequest:
       type: object
       properties:
@@ -3684,6 +3848,60 @@ components:
             - expiresAt
             - qrCode
           nullable: true
+    Event:
+      type: object
+      required:
+        - id
+        - category
+        - type
+        - startValidationDate
+        - endValidationDate
+        - startDate
+        - place
+        - maxParticipants
+        - availableSeats
+      properties:
+        id:
+          type: string
+        category:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        startValidationDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T9:00:00Z'
+        endValidationDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T9:55:00Z'
+        startDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T10:00:00Z'
+        endDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T12:00:00Z'
+        place:
+          type: object
+          properties:
+            placeName:
+              type: string
+            placeId:
+              $ref: '#/components/schemas/PlaceRef'
+          required:
+            - placeName
+        maxParticipants:
+          type: integer
+          example: 15
+        availableSeats:
+          type: integer
+          example: 3
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4542,6 +4760,11 @@ components:
           $ref: '#/components/schemas/Device'
       example:
         username: s290683
+    TokenType:
+      type: string
+      enum:
+        - card
+        - event
     UpdateAssignmentRequest:
       type: object
       properties:

@@ -365,6 +365,143 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidateMfaRequest'
+  /auth/profile:
+    get:
+      operationId: Profile_getProfile
+      summary: Get user profile | Ottieni il profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AuthProfile'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/event-admissions:
+    get:
+      operationId: Profile_getEventAdmissions
+      summary: Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/picture:
+    get:
+      operationId: Profile_getProfilePicture
+      summary: Get user profile picture | Ottieni la foto del profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/token/{type}:
+    get:
+      operationId: Profile_getTokenQr
+      summary: Get a QR for a specific service | Ottieni un QR per un servizio specifico
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/TokenType'
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
   /auth/serviceLink/liveClass/{meetingID}:
     get:
       operationId: ServiceLink_getLiveClassLink
@@ -754,6 +891,37 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /careers:
+    get:
+      operationId: StudentNs_getStudent
+      summary: Retrieve student careers | Recupera la cariera dello studente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Studentcareers'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Student
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -2542,37 +2710,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Lectures
-  /me:
-    get:
-      operationId: StudentNs_getStudent
-      summary: Retrieve student profile | Recupera il profilo studente
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Student'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Student
   /messages:
     get:
       operationId: Messages_getMessages
@@ -4230,6 +4367,30 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+    AuthProfile:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+        - allusernames
+      properties:
+        username:
+          type: string
+          example: s290683
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Pezzolla
+        allusernames:
+          type: array
+          items:
+            type: string
+          example:
+            - '290683'
+            - '213956'
     BookExamRequest:
       type: object
       required:
@@ -5391,6 +5552,60 @@ components:
             - expiresAt
             - qrCode
           nullable: true
+    Event:
+      type: object
+      required:
+        - id
+        - category
+        - type
+        - startValidationDate
+        - endValidationDate
+        - startDate
+        - place
+        - maxParticipants
+        - availableSeats
+      properties:
+        id:
+          type: string
+        category:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        startValidationDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T9:00:00Z'
+        endValidationDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T9:55:00Z'
+        startDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T10:00:00Z'
+        endDate:
+          type: string
+          format: date-time
+          example: '2026-05-29T12:00:00Z'
+        place:
+          type: object
+          properties:
+            placeName:
+              type: string
+            placeId:
+              $ref: '#/components/schemas/PlaceRef'
+          required:
+            - placeName
+        maxParticipants:
+          type: integer
+          example: 15
+        availableSeats:
+          type: integer
+          example: 3
     Exam:
       type: object
       required:
@@ -6890,14 +7105,10 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
-    Student:
+    Studentcareers:
       type: object
       required:
-        - username
-        - firstName
-        - lastName
         - status
-        - allCareerIds
         - degreeId
         - degreeCode
         - degreeLevel
@@ -6920,18 +7131,7 @@ components:
         - enrollmentCredits
         - enrollmentAttendedCredits
         - enrollmentAcquiredCredits
-        - smartCardPicture
-        - europeanStudentCard
       properties:
-        username:
-          type: string
-          example: s290683
-        firstName:
-          type: string
-          example: Luca
-        lastName:
-          type: string
-          example: Pezzolla
         status:
           type: string
           enum:
@@ -6941,14 +7141,6 @@ components:
             - graduated
             - career_closed
           example: active
-        allCareerIds:
-          type: array
-          items:
-            type: string
-          description: All the ids related to this student
-          example:
-            - '290683'
-            - '213956'
         degreeId:
           type: string
           example: 81-6
@@ -7016,11 +7208,6 @@ components:
           type: integer
         enrollmentAcquiredCredits:
           type: integer
-        smartCardPicture:
-          type: string
-          nullable: true
-        europeanStudentCard:
-          $ref: '#/components/schemas/EuropeanStudentCard'
     Survey:
       type: object
       required:
@@ -7426,6 +7613,11 @@ components:
         subtopics:
           - id: 103
             name: Accesso studenti esterni
+    TokenType:
+      type: string
+      enum:
+        - card
+        - event
     Track:
       type: object
       required:

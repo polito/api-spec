@@ -228,22 +228,9 @@ model Guide {
   sections: GuideSection[];
 }
 
-model Student {
-  @example("s290683")
-  username: string;
-
-  @example("Luca")
-  firstName: string;
-
-  @example("Pezzolla")
-  lastName: string;
-
+model Studentcareers {
   @example("active")
   status: "active" | "closed" | "cancelled" | "graduated" | "career_closed";
-
-  /** All the ids related to this student */
-  @example(#["290683", "213956"])
-  allCareerIds: string[];
 
   @example("81-6")
   degreeId: string;
@@ -299,16 +286,14 @@ model Student {
   enrollmentCredits: integer;
   enrollmentAttendedCredits: integer;
   enrollmentAcquiredCredits: integer;
-  smartCardPicture: string | null;
-  europeanStudentCard: EuropeanStudentCard;
 }
 
 @tag("Student")
 interface StudentNs {
-  @route("/me")
+  @route("/careers")
   @get
-  @summary("Retrieve student profile | Recupera il profilo studente")
-  getStudent(): OkDataResponse<Student> | BaseErrors;
+  @summary("Retrieve student careers | Recupera la cariera dello studente")
+  getStudent(): OkDataResponse<Studentcareers> | BaseErrors;
 
   @route("/deadlines")
   @get

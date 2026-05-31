@@ -9,6 +9,11 @@ using OpenAPI;
 
 namespace PolitoAPI;
 
+enum TokenType {
+  card,
+  event,
+}
+
 @example(_ex_identity)
 model Identity {
   @example("s290683")
@@ -157,6 +162,51 @@ model LinkToService {
   url: string;
 }
 
+model AuthProfile {
+  @example("s290683")
+  username: string;
+
+  @example("Luca")
+  firstName: string;
+
+  @example("Pezzolla")
+  lastName: string;
+
+  @example(#["290683", "213956"])
+  allusernames: string[];
+}
+
+model Event {
+  id: string;
+  category: string;
+  type: string;
+  title?: string;
+  description?: string;
+
+  @example(utcDateTime.fromISO("2026-05-29T9:00:00Z"))
+  startValidationDate: utcDateTime;
+
+  @example(utcDateTime.fromISO("2026-05-29T9:55:00Z"))
+  endValidationDate: utcDateTime;
+
+  @example(utcDateTime.fromISO("2026-05-29T10:00:00Z"))
+  startDate: utcDateTime;
+
+  @example(utcDateTime.fromISO("2026-05-29T12:00:00Z"))
+  endDate?: utcDateTime;
+
+  place: {
+    placeName: string;
+    placeId?: PlaceRef;
+  };
+
+  @example(15)
+  maxParticipants: integer;
+
+  @example(3)
+  availableSeats: integer;
+}
+
 model AppInfoRequest {
   ...ClientVersionRequest;
   ...FcmRegistrationRequest;
@@ -255,4 +305,30 @@ interface ServiceLink {
   @route("/mail")
   @summary("Get authorised service link for Mail")
   getMailLink(): OkDataResponse<LinkToService> | BaseErrors;
+}
+
+@tag("Auth")
+@route("/auth/profile")
+interface Profile {
+  @get
+  @summary("Get user profile | Ottieni il profilo utente")
+  getProfile(): OkDataResponse<AuthProfile> | BaseErrors;
+
+  @route("/picture")
+  @get
+  @summary("Get user profile picture | Ottieni la foto del profilo utente")
+  getProfilePicture(): OkDataResponse<string> | BaseErrors;
+
+  @route("token/{type}")
+  @get
+  @summary("Get a QR for a specific service | Ottieni un QR per un servizio specifico")
+  getTokenQr(
+    @path type: TokenType,
+    @query id?: string,
+  ): OkDataResponse<string> | BaseErrors;
+
+  @route("/event-admissions")
+  @get
+  @summary("Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso")
+  getEventAdmissions(): OkDataResponse<Event[]> | BaseErrors;
 }
