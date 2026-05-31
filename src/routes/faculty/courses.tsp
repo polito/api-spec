@@ -2,6 +2,7 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../common/courses.tsp";
 import "../../examples/faculty/courses.tsp";
 
 using Http;
@@ -43,6 +44,19 @@ model CourseMessageRequest {
   };
 }
 
+model CourseNoticeRequest {
+  @example("Contenuto dell'avviso")
+  content: string;
+
+  @example(utcDateTime.fromISO("2022-07-03T14:00:00Z"))
+  publishedDate: utcDateTime;
+
+  expiresAt: utcDateTime | null;
+
+  @example(true)
+  isVisible: boolean;
+}
+
 // Response aliases with descriptions
 
 @doc("Studente già iscritto")
@@ -58,6 +72,25 @@ model CourseMessageAcceptedResponse {
 @tag("Faculty - Courses")
 @route("/faculty/courses/{courseId}")
 interface FacultyCourses {
+  @post
+  @route("/notices")
+  @summary("Publish notices | Pubblica avvisi")
+  @opExample(_ex_publishCourseNotice_req)
+  publishCourseNotice(
+    @path courseId: integer,
+    @path isDraft: boolean,
+    @body body: CourseNoticeRequest,
+  ): NoContentResponse | BaseErrors;
+
+  @delete
+  @route("/notices/{noticeId}")
+  @summary("Delete notice | Elimina avviso")
+  @opExample(_ex_deleteCourseNotice_resp)
+  deleteCourseNotice(
+    @path courseId: integer,
+    @path noticeId: integer,
+  ): NoContentResponse | BaseErrors;
+
   @get
   @route("/students")
   @summary("Elenca studenti iscritti al corso")

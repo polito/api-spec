@@ -1,3 +1,22 @@
+const _ex_publishCourseNotice_req = #{
+  parameters: #{
+    courseId: 251007,
+    isDraft: false,
+    body: #{
+      content: "<p>Lezione di domani spostata in aula 7T.</p>",
+      publishedDate: utcDateTime.fromISO("2025-10-14T09:00:00Z"),
+      expiresAt: utcDateTime.fromISO("2025-10-20T23:59:59Z"),
+      isVisible: true,
+    },
+  },
+  returnType: #{ statusCode: 204 },
+};
+
+const _ex_deleteCourseNotice_resp = #{
+  parameters: #{ courseId: 251007, noticeId: 360724 },
+  returnType: #{ statusCode: 204 },
+};
+
 const _ex_listFacultyCourseStudents_resp = #{
   returnType: #{
     statusCode: 200,
