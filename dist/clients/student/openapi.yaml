@@ -1204,6 +1204,7 @@ paths:
                     publishedAt: '2021-09-22T14:00:00Z'
                     expiresAt: null
                     content: "<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r"
+                    status: visible
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -5031,6 +5032,12 @@ components:
               year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
+    CourseNoticeStatus:
+      type: string
+      enum:
+        - visible
+        - draft
+        - expired
     CourseNotices:
       type: object
       required:
@@ -5038,6 +5045,7 @@ components:
         - publishedAt
         - expiresAt
         - content
+        - status
       properties:
         id:
           type: integer
@@ -5053,6 +5061,10 @@ components:
         content:
           type: string
           example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
+        status:
+          allOf:
+            - $ref: '#/components/schemas/CourseNoticeStatus'
+          example: visible
     CourseOverview:
       type: object
       required:

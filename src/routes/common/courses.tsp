@@ -32,6 +32,12 @@ enum CourseEnrollmentRole {
   collaborator: "collaborator",
 }
 
+enum CourseNoticeStatus {
+  visible: "visible",
+  draft: "draft",
+  expired: "expired",
+}
+
 @example(_ex_course_module)
 model CourseModule {
   /** The identifier for the current instance of this course.
@@ -254,6 +260,9 @@ model CourseNotices {
 
   @example("<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>")
   content: string;
+
+  @example(CourseNoticeStatus.visible)
+  status: CourseNoticeStatus;
 }
 
 model CoursePreferencesRequest {
