@@ -3852,56 +3852,49 @@ components:
       type: object
       required:
         - id
-        - category
-        - type
-        - startValidationDate
-        - endValidationDate
-        - startDate
+        - context
+        - title
+        - startsAt
+        - endsAt
         - place
-        - maxParticipants
-        - availableSeats
+        - placeName
+        - totalAdmissions
+        - remainingAdmissions
       properties:
         id:
           type: string
-        category:
+          example: graduation-2026-01
+        context:
           type: string
-        type:
-          type: string
+          example: Lauree
         title:
           type: string
+          example: Cerimonia di proclamazione
+        startsAt:
+          type: string
+          format: date-time
+          example: '2026-07-20T09:00:00Z'
+        endsAt:
+          type: string
+          format: date-time
+          example: '2026-07-20T12:00:00Z'
         description:
           type: string
-        startValidationDate:
-          type: string
-          format: date-time
-          example: '2026-05-29T9:00:00Z'
-        endValidationDate:
-          type: string
-          format: date-time
-          example: '2026-05-29T9:55:00Z'
-        startDate:
-          type: string
-          format: date-time
-          example: '2026-05-29T10:00:00Z'
-        endDate:
-          type: string
-          format: date-time
-          example: '2026-05-29T12:00:00Z'
         place:
           type: object
-          properties:
-            placeName:
-              type: string
-            placeId:
-              $ref: '#/components/schemas/PlaceRef'
-          required:
-            - placeName
-        maxParticipants:
+          allOf:
+            - $ref: '#/components/schemas/PlaceRef'
+          nullable: true
+        placeName:
+          type: string
+          nullable: true
+          example: Aula Magna
+        totalAdmissions:
           type: integer
           example: 15
-        availableSeats:
+        remainingAdmissions:
           type: integer
-          example: 3
+          example: 8
     FcmRegistrationRequest:
       type: object
       properties:

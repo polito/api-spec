@@ -177,34 +177,33 @@ model AuthProfile {
 }
 
 model Event {
+  @example("graduation-2026-01")
   id: string;
-  category: string;
-  type: string;
-  title?: string;
+
+  @example("Lauree")
+  context: string;
+
+  @example("Cerimonia di proclamazione")
+  title: string;
+
+  @example(utcDateTime.fromISO("2026-07-20T09:00:00Z"))
+  startsAt: utcDateTime;
+
+  @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
+  endsAt: utcDateTime;
+
   description?: string;
 
-  @example(utcDateTime.fromISO("2026-05-29T9:00:00Z"))
-  startValidationDate: utcDateTime;
+  place: PlaceRef | null;
 
-  @example(utcDateTime.fromISO("2026-05-29T9:55:00Z"))
-  endValidationDate: utcDateTime;
-
-  @example(utcDateTime.fromISO("2026-05-29T10:00:00Z"))
-  startDate: utcDateTime;
-
-  @example(utcDateTime.fromISO("2026-05-29T12:00:00Z"))
-  endDate?: utcDateTime;
-
-  place: {
-    placeName: string;
-    placeId?: PlaceRef;
-  };
+  @example("Aula Magna")
+  placeName: string | null;
 
   @example(15)
-  maxParticipants: integer;
+  totalAdmissions: integer;
 
-  @example(3)
-  availableSeats: integer;
+  @example(8)
+  remainingAdmissions: integer;
 }
 
 model AppInfoRequest {
