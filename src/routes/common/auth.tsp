@@ -181,19 +181,20 @@ model Event {
   id: string;
 
   @example("Lauree")
-  context: string;
+  contextName: string;
+
+  contextId: string;
 
   @example("Cerimonia di proclamazione")
   title: string;
 
   @example(utcDateTime.fromISO("2026-07-20T09:00:00Z"))
-  startsAt: utcDateTime;
+  eventStartsAt: utcDateTime;
 
   @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
-  endsAt: utcDateTime;
+  eventEndsAt: utcDateTime;
 
   description?: string;
-
   place: PlaceRef | null;
 
   @example("Aula Magna")
@@ -246,6 +247,18 @@ model EnrolMfaRequest {
 
   @example("dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK")
   pubkey: string;
+}
+
+/** QR rendered as an SVG image */
+model TokenQrSvgResponse {
+  @header contentType: "image/svg+xml";
+  @body svg: string;
+}
+
+/** Raw token content as plain text */
+model TokenQrTextResponse {
+  @header contentType: "text/plain";
+  @body token: string;
 }
 
 @tag("Auth")
@@ -318,15 +331,19 @@ interface Profile {
   @summary("Get user profile picture | Ottieni la foto del profilo utente")
   getProfilePicture(): OkDataResponse<string> | BaseErrors;
 
-  @route("token/{type}")
+  @route("/token")
   @get
   @summary("Get a QR for a specific service | Ottieni un QR per un servizio specifico")
   getTokenQr(
-    @path type: TokenType,
+    @query type: TokenType,
     @query id?: string,
-  ): OkDataResponse<string> | BaseErrors;
+    @header accept: "image/svg+xml" | "text/plain",
+  ): TokenQrSvgResponse | TokenQrTextResponse | BaseErrors;
+}
 
-  @route("/event-admissions")
+@tag("Event Admissions")
+@route("/event-admissions")
+interface EventAdmission {
   @get
   @summary("Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso")
   getEventAdmissions(): OkDataResponse<Event[]> | BaseErrors;
