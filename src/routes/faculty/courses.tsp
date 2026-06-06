@@ -71,6 +71,7 @@ model FacultyCourseStudentDetail {
     @example(6)
     cfu: integer;
   };
+
   @example("CINZT3")
   degreeCode: string;
 
@@ -110,7 +111,6 @@ model CompensativeMeasures {
   /** Reporting procedure handbook document. */
   handbook: CompensativeMeasuresDocument;
 }
-
 
 model CourseNoticeRequest {
   @example("Contenuto dell'avviso")
