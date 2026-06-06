@@ -210,13 +210,21 @@ const _ex_listFacultyCourseAssignments_resp = #{
         #{
           id: 947503,
           filename: "PresentationGroup03.zip",
-          student: #{ id: "s348759", firstName: "Giuliana", lastName: "Annone" },
+          student: #{
+            id: "s348759",
+            firstName: "Giuliana",
+            lastName: "Annone",
+          },
           status: FacultyAssignmentStatus.new,
         },
         #{
           id: 947502,
           filename: "PresentationGroup02.zip",
-          student: #{ id: "s345658", firstName: "Lorenzo", lastName: "Ciovenco" },
+          student: #{
+            id: "s345658",
+            firstName: "Lorenzo",
+            lastName: "Ciovenco",
+          },
           status: FacultyAssignmentStatus.seen,
         },
         #{
