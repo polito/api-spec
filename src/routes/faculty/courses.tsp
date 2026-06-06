@@ -11,7 +11,8 @@ namespace PolitoAPI;
 
 // Models
 
-model FacultyCourseStudent {
+/** Student enrolled in the course, used in listings. */
+model FacultyCourseStudentOverview {
   @example("s123456")
   id: string;
 
@@ -24,10 +25,96 @@ model FacultyCourseStudent {
   @example("s123456")
   username: string;
 
+  @example("s123456@studenti.polito.it")
+  email: string;
+
   picture?: {
     @example("https://example.com/picture.jpg")
     url: url;
   };
+}
+
+/** Aggregate statistics about the students enrolled in the course. */
+model FacultyCourseStudentsStats {
+  @example(204)
+  totalEnrolled: integer;
+
+  @example(10)
+  withAttendanceIssues: integer;
+
+  @example(0)
+  tookExam: integer;
+
+  @example(42)
+  withExamDebts: integer;
+
+  @example(194)
+  eligibleForExam: integer;
+
+  @example(152)
+  firstTimeInAcademicYear: integer;
+}
+
+/** Result of an exam taken by the student. */
+model FacultyCourseExamResult {
+  @example(plainDate.fromISO("2025-02-23"))
+  date: plainDate;
+
+  /** Grade obtained (e.g. "30L", "28", "passed"). */
+  @example("30L")
+  grade: string;
+}
+
+/** Full information about a single student enrolled in the course */
+model FacultyCourseStudentDetail {
+  ...FacultyCourseStudentOverview;
+  course: {
+    @example("02JSKPD")
+    shortcode: string;
+
+    @example(6)
+    cfu: integer;
+  };
+  @example("CINZT3")
+  degreeCode: string;
+
+  @example("COMPUTER ENGINEERING")
+  degreeName: string;
+
+  examResult: FacultyCourseExamResult | null;
+
+  /** Academic year of subscription. */
+  @example("2025/2026")
+  subscription: string;
+
+  @example("Italian")
+  citizenship: string;
+
+  @example(true)
+  hasSpecialNeeds: boolean;
+}
+
+/** Document attached to the compensative measures (e.g. a handbook). */
+model CompensativeMeasuresDocument {
+  @example("Reporting procedure handbook")
+  name: string;
+
+  @example("https://didattica.polito.it/docs/handbook.pdf")
+  url: url;
+}
+
+/** Compensative measures (special needs) granted to a student for the course. */
+model CompensativeMeasures {
+  /** HTML describing the compensatory measures granted to the student. */
+  @example("<p>List of compensatory measures granted to Stefania Sassi</p><ul><li><b>Calculator</b> allowed</li></ul>")
+  content: string;
+
+  /** Link to the full list of requests for this course. */
+  @example("https://didattica.polito.it/special-needs/requests")
+  moreDetailsUrl: url;
+
+  /** Reporting procedure handbook document. */
+  handbook: CompensativeMeasuresDocument;
 }
 
 model CourseMessageRequest {
@@ -100,12 +187,14 @@ model MoveCourseItemsRequest {
   destinationFolderId: string | null;
 }
 
-// Response aliases with descriptions
-
-@doc("Studente già iscritto")
-model StudentAlreadyEnrolledResponse {
-  ...OkDataResponse<FacultyCourseStudent>;
+/** Request to enroll one or more students in the course at once. */
+model EnrollStudentsRequest {
+  /** IDs (matricole) of the students to enroll. */
+  @example(#["s123456", "s234567"])
+  studentIds: string[];
 }
+
+// Response aliases with descriptions
 
 @doc("Accepted (sending)")
 model CourseMessageAcceptedResponse {
@@ -144,28 +233,6 @@ interface FacultyCourses {
     @path noticeId: integer,
   ): NoContentResponse | BaseErrors;
 
-  @get
-  @route("/students")
-  @summary("Elenca studenti iscritti al corso")
-  @opExample(_ex_listFacultyCourseStudents_resp)
-  listFacultyCourseStudents(@path courseId: integer):
-    | OkDataResponse<FacultyCourseStudent[]>
-    | NotAuthorized
-    | NotFound
-    | BaseErrors;
-
-  @put
-  @route("/students/{studentId}")
-  @summary("Aggiungi studente al corso")
-  @doc("Operazione idempotente per iscrivere uno studente al corso.")
-  enrollStudentInCourse(@path courseId: integer, @path studentId: string):
-    | OkDataResponse<FacultyCourseStudent>
-    | OkDataCreatedResponse<FacultyCourseStudent>
-    | NotAuthorized
-    | BadRequest
-    | NotFound
-    | BaseErrors;
-
   @post
   @route("/message")
   @summary("Invia comunicazione agli iscritti al corso")
@@ -173,6 +240,79 @@ interface FacultyCourses {
     @path courseId: integer,
     @body body: CourseMessageRequest,
   ): CourseMessageAcceptedResponse | NotAuthorized | BadRequest | BaseErrors;
+}
+
+@tag("Faculty - Course Students")
+@route("/faculty/courses/{courseId}/students")
+interface FacultyCourseStudents {
+  @get
+  @summary("List students | Elenca studenti iscritti al corso")
+  @doc("Restituisce la vista overview degli studenti iscritti al corso.")
+  @opExample(_ex_listFacultyCourseStudents_resp)
+  listFacultyCourseStudents(@path courseId: integer):
+    | OkDataResponse<FacultyCourseStudentOverview[]>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @get
+  @route("/stats")
+  @summary("Students stats | Statistiche studenti")
+  @opExample(_ex_getCourseStudentsStats_resp)
+  getCourseStudentsStats(@path courseId: integer):
+    | OkDataResponse<FacultyCourseStudentsStats>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @get
+  @route("/search")
+  @summary("Search enrollable students | Cerca studenti da iscrivere")
+  @doc("Cerca studenti da iscrivere al corso per nome, cognome o matricola.")
+  @opExample(_ex_searchEnrollableStudents_resp)
+  searchEnrollableStudents(
+    @path courseId: integer,
+
+    /** Filter students by name, surname or student number. */
+    @query search: string,
+  ):
+    | OkDataResponse<FacultyCourseStudentOverview[]>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @get
+  @route("/{studentId}")
+  @summary("Show student | Mostra studente")
+  @doc("Restituisce tutte le informazioni di un singolo studente iscritto al corso.")
+  @opExample(_ex_getFacultyCourseStudent_resp)
+  getFacultyCourseStudent(@path courseId: integer, @path studentId: string):
+    | OkDataResponse<FacultyCourseStudentDetail>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @get
+  @route("/{studentId}/special-needs")
+  @summary("Student compensative measures | Misure compensative studente")
+  @opExample(_ex_getCourseStudentSpecialNeeds_resp)
+  getCourseStudentSpecialNeeds(
+    @path courseId: integer,
+    @path studentId: string,
+  ):
+    | OkDataResponse<CompensativeMeasures>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @post
+  @summary("Add students | Aggiungi studenti al corso")
+  @doc("Iscrive uno o più studenti al corso. Operazione idempotente.")
+  @opExample(_ex_enrollStudents_resp)
+  enrollStudentsInCourse(
+    @path courseId: integer,
+    @body body: EnrollStudentsRequest,
+  ): NoContentResponse | NotAuthorized | BadRequest | NotFound | BaseErrors;
 }
 
 @tag("Faculty - Course Files")
@@ -185,7 +325,7 @@ interface FacultyCourseFiles {
   createCourseFolder(
     @path courseId: integer,
     @body body: CreateCourseFolderRequest,
-  ): OkDataCreatedResponse<CourseDirectory> | NotAuthorized | NotFound | BaseErrors;
+  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
 
   @patch(#{ implicitOptionality: false })
   @route("/folders/{folderId}")
@@ -195,16 +335,17 @@ interface FacultyCourseFiles {
     @path courseId: integer,
     @path folderId: string,
     @body body: UpdateCourseFolderRequest,
-  ): OkDataResponse<CourseDirectory> | NotAuthorized | NotFound | BaseErrors;
+  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
 
   @delete
   @route("/folders/{folderId}")
   @summary("Delete folder | Elimina cartella")
   @doc("Elimina la cartella e ricorsivamente tutto il suo contenuto.")
-  deleteCourseFolder(
-    @path courseId: integer,
-    @path folderId: string,
-  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
+  deleteCourseFolder(@path courseId: integer, @path folderId: string):
+    | NoContentResponse
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
 
   @post
   @summary("Upload files | Carica file")
@@ -213,17 +354,18 @@ interface FacultyCourseFiles {
     @path courseId: integer,
     @header contentType: "multipart/form-data",
     @multipartBody body: CourseFileUpload,
-  ): OkDataCreatedResponse<CourseFileOverview[]> | NotAuthorized | NotFound | BaseErrors;
+  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
 
   @post
   @route("/move")
   @summary("Move files | Sposta file")
   @doc("Sposta uno o più file e/o cartelle in una cartella di destinazione.")
   @opExample(_ex_moveCourseItems_resp)
-  moveCourseItems(
-    @path courseId: integer,
-    @body body: MoveCourseItemsRequest,
-  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
+  moveCourseItems(@path courseId: integer, @body body: MoveCourseItemsRequest):
+    | NoContentResponse
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
 
   @patch(#{ implicitOptionality: false })
   @route("/{fileId}")
@@ -233,13 +375,14 @@ interface FacultyCourseFiles {
     @path courseId: integer,
     @path fileId: string,
     @body body: UpdateCourseFileRequest,
-  ): OkDataResponse<CourseFileOverview> | NotAuthorized | NotFound | BaseErrors;
+  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
 
   @delete
   @route("/{fileId}")
   @summary("Delete file | Elimina file")
-  deleteCourseFile(
-    @path courseId: integer,
-    @path fileId: string,
-  ): NoContentResponse | NotAuthorized | NotFound | BaseErrors;
+  deleteCourseFile(@path courseId: integer, @path fileId: string):
+    | NoContentResponse
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
 }
