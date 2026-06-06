@@ -925,6 +925,39 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateAssignmentRequest'
+  /courses/{courseId}/assignments/{assignmentId}/removal-request:
+    post:
+      operationId: Courses_requestAssignmentRemoval
+      summary: Request assignment removal | Richiedi rimozione elaborato
+      description: Lo studente richiede al docente la rimozione del proprio elaborato.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
   /courses/{courseId}/files:
     get:
       operationId: Courses_getCourseFiles

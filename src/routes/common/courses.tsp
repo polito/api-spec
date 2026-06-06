@@ -334,6 +334,15 @@ interface Courses {
     @body body: UpdateAssignmentRequest,
   ): NoContentResponse | BaseErrors;
 
+  @route("/{courseId}/assignments/{assignmentId}/removal-request")
+  @post
+  @summary("Request assignment removal | Richiedi rimozione elaborato")
+  @doc("Lo studente richiede al docente la rimozione del proprio elaborato.")
+  requestAssignmentRemoval(
+    @path courseId: integer,
+    @path assignmentId: integer,
+  ): NoContentResponse | BaseErrors;
+
   @route("/{courseId}/guide")
   @get
   @summary("Show guide | Mostra guida")
