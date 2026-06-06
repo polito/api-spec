@@ -6,7 +6,21 @@ const _ex_publishCourseNotice_req = #{
       content: "<p>Lezione di domani spostata in aula 7T.</p>",
       publishedDate: utcDateTime.fromISO("2025-10-14T09:00:00Z"),
       expiresAt: utcDateTime.fromISO("2025-10-20T23:59:59Z"),
-      isVisible: true,
+      isAlwaysVisible: true,
+    },
+  },
+  returnType: #{ statusCode: 204 },
+};
+
+const _ex_updateCourseNotice_resp = #{
+  parameters: #{
+    courseId: 251007,
+    noticeId: 360724,
+    body: #{
+      content: "<p>Aggiornamento: lezione spostata in aula 10T.</p>",
+      publishedDate: utcDateTime.fromISO("2025-10-14T09:00:00Z"),
+      expiresAt: utcDateTime.fromISO("2025-10-22T23:59:59Z"),
+      isAlwaysVisible: false,
     },
   },
   returnType: #{ statusCode: 204 },
