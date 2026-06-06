@@ -134,6 +134,19 @@ const _ex_enrollStudents_resp = #{
   returnType: #{ statusCode: 204 },
 };
 
+const _ex_sendStudentsMessage_resp = #{
+  parameters: #{
+    courseId: 251007,
+    body: #{
+      studentIds: #["s123456", "s123457", "s123458"],
+      channel: MessageChannel.email,
+      title: "Lezione di recupero",
+      message: "Si avvisano gli studenti che la lezione di recupero si terrà venerdì alle 14:00 in aula 7T.",
+    },
+  },
+  returnType: #{ statusCode: 202, body: #{ message: "Message accepted" } },
+};
+
 const _ex_getCourseStudentsStats_resp = #{
   returnType: #{
     statusCode: 200,
@@ -187,4 +200,64 @@ const _ex_getCourseStudentSpecialNeeds_resp = #{
       },
     },
   },
+};
+
+const _ex_listFacultyCourseAssignments_resp = #{
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #[
+        #{
+          id: 947503,
+          filename: "PresentationGroup03.zip",
+          student: #{ id: "s348759", firstName: "Giuliana", lastName: "Annone" },
+          status: FacultyAssignmentStatus.new,
+        },
+        #{
+          id: 947502,
+          filename: "PresentationGroup02.zip",
+          student: #{ id: "s345658", firstName: "Lorenzo", lastName: "Ciovenco" },
+          status: FacultyAssignmentStatus.seen,
+        },
+        #{
+          id: 947501,
+          filename: "PresentationGroup01.zip",
+          student: #{ id: "s345600", firstName: "Marco", lastName: "Bruno" },
+          status: FacultyAssignmentStatus.removalRequested,
+        }
+      ],
+    },
+  },
+};
+
+const _ex_getFacultyCourseAssignment_resp = #{
+  parameters: #{ courseId: 251007, assignmentId: 947503 },
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #{
+        id: 947503,
+        description: "A presentation on advanced robotics and automation. Group 03.",
+        mimeType: "application/x-zip-compressed",
+        filename: "PresentationGroup03.zip",
+        uploadedAt: utcDateTime.fromISO("2025-11-17T14:00:00Z"),
+        deletedAt: null,
+        url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S348759/6791f0016c78599138828211522fa84d/62cebc94",
+        sizeInKiloBytes: 305,
+        student: #{ id: "s348759", firstName: "Giuliana", lastName: "Annone" },
+        status: FacultyAssignmentStatus.new,
+      },
+    },
+  },
+};
+
+const _ex_answerCourseAssignment_resp = #{
+  parameters: #{
+    courseId: 251007,
+    assignmentId: 947503,
+    body: #{
+      message: "Dear student, I cannot open the file you uploaded. Please try again to upload the folder in another format. Thank you!",
+    },
+  },
+  returnType: #{ statusCode: 202, body: #{ message: "Answer accepted" } },
 };

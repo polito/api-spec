@@ -11,7 +11,6 @@ namespace PolitoAPI;
 
 // Models
 
-/** Student enrolled in the course, used in listings. */
 model FacultyCourseStudentOverview {
   @example("s123456")
   id: string;
@@ -34,7 +33,6 @@ model FacultyCourseStudentOverview {
   };
 }
 
-/** Aggregate statistics about the students enrolled in the course. */
 model FacultyCourseStudentsStats {
   @example(204)
   totalEnrolled: integer;
@@ -55,7 +53,6 @@ model FacultyCourseStudentsStats {
   firstTimeInAcademicYear: integer;
 }
 
-/** Result of an exam taken by the student. */
 model FacultyCourseExamResult {
   @example(plainDate.fromISO("2025-02-23"))
   date: plainDate;
@@ -65,7 +62,6 @@ model FacultyCourseExamResult {
   grade: string;
 }
 
-/** Full information about a single student enrolled in the course */
 model FacultyCourseStudentDetail {
   ...FacultyCourseStudentOverview;
   course: {
@@ -94,7 +90,6 @@ model FacultyCourseStudentDetail {
   hasSpecialNeeds: boolean;
 }
 
-/** Document attached to the compensative measures (e.g. a handbook). */
 model CompensativeMeasuresDocument {
   @example("Reporting procedure handbook")
   name: string;
@@ -103,7 +98,6 @@ model CompensativeMeasuresDocument {
   url: url;
 }
 
-/** Compensative measures (special needs) granted to a student for the course. */
 model CompensativeMeasures {
   /** HTML describing the compensatory measures granted to the student. */
   @example("<p>List of compensatory measures granted to Stefania Sassi</p><ul><li><b>Calculator</b> allowed</li></ul>")
@@ -117,19 +111,6 @@ model CompensativeMeasures {
   handbook: CompensativeMeasuresDocument;
 }
 
-model CourseMessageRequest {
-  @example("Avviso importante")
-  subject: string;
-
-  @example("Messaggio importante")
-  message: string;
-
-  channels: string[];
-  audience: {
-    groups: string[];
-    personIds: string[];
-  };
-}
 
 model CourseNoticeRequest {
   @example("Contenuto dell'avviso")
@@ -187,18 +168,79 @@ model MoveCourseItemsRequest {
   destinationFolderId: string | null;
 }
 
-/** Request to enroll one or more students in the course at once. */
 model EnrollStudentsRequest {
   /** IDs (matricole) of the students to enroll. */
   @example(#["s123456", "s234567"])
   studentIds: string[];
 }
 
-// Response aliases with descriptions
+enum MessageChannel {
+  email: "email",
+  notify: "notify",
+}
 
-@doc("Accepted (sending)")
-model CourseMessageAcceptedResponse {
-  ...AcceptedResponse;
+model StudentsMessageRequest {
+  /** IDs (matricole) of the students to send the message to. */
+  @example(#["s123456", "s234567"])
+  studentIds: string[];
+
+  channel: MessageChannel;
+
+  /** Title of the email. Required for the `email` channel, ignored for `notify`. */
+  @example("Lezione di recupero")
+  title?: string;
+
+  /** Message body. Maximum 4000 characters. */
+  @maxLength(4000)
+  @example("Si avvisano gli studenti che...")
+  message: string;
+}
+
+// Assignment management (faculty)
+
+enum FacultyAssignmentStatus {
+  /** Newly submitted, not yet seen by the faculty. */
+  new: "new",
+
+  seen: "seen",
+
+  /** The student has requested the removal of this submission. */
+  removalRequested: "removal_requested",
+}
+
+model FacultyAssignmentAuthor {
+  @example("s348759")
+  id: string;
+
+  @example("Giuliana")
+  firstName: string;
+
+  @example("Annone")
+  lastName: string;
+}
+
+model FacultyCourseAssignmentOverview {
+  @example(947503)
+  id: integer;
+
+  @example("PresentationGroup03.zip")
+  filename: string;
+
+  student: FacultyAssignmentAuthor;
+  status: FacultyAssignmentStatus;
+}
+
+model FacultyCourseAssignmentDetail {
+  ...CourseAssignment;
+  student: FacultyAssignmentAuthor;
+  status: FacultyAssignmentStatus;
+}
+
+model AssignmentAnswerRequest {
+  /** Answer message. Maximum 4000 characters. */
+  @maxLength(4000)
+  @example("Dear student, I cannot open the file you uploaded. Please try again to upload the folder in another format. Thank you!")
+  message: string;
 }
 
 @tag("Faculty - Courses")
@@ -232,14 +274,6 @@ interface FacultyCourses {
     @path courseId: integer,
     @path noticeId: integer,
   ): NoContentResponse | BaseErrors;
-
-  @post
-  @route("/message")
-  @summary("Invia comunicazione agli iscritti al corso")
-  messageCourseSubscribers(
-    @path courseId: integer,
-    @body body: CourseMessageRequest,
-  ): CourseMessageAcceptedResponse | NotAuthorized | BadRequest | BaseErrors;
 }
 
 @tag("Faculty - Course Students")
@@ -313,6 +347,16 @@ interface FacultyCourseStudents {
     @path courseId: integer,
     @body body: EnrollStudentsRequest,
   ): NoContentResponse | NotAuthorized | BadRequest | NotFound | BaseErrors;
+
+  @post
+  @route("/messages")
+  @summary("Send message to students | Invia messaggio agli studenti")
+  @doc("Invia un messaggio agli studenti selezionati via email o notifica in-app. Per il canale `notify`, agli studenti che non hanno installato l'app viene inviato un SMS.")
+  @opExample(_ex_sendStudentsMessage_resp)
+  sendStudentsMessage(
+    @path courseId: integer,
+    @body body: StudentsMessageRequest,
+  ): AcceptedResponse | NotAuthorized | BadRequest | NotFound | BaseErrors;
 }
 
 @tag("Faculty - Course Files")
@@ -385,4 +429,51 @@ interface FacultyCourseFiles {
     | NotAuthorized
     | NotFound
     | BaseErrors;
+}
+
+@tag("Faculty - Course Assignments")
+@route("/faculty/courses/{courseId}/assignments")
+interface FacultyCourseAssignments {
+  @get
+  @summary("List assignments | Elenca elaborati")
+  @doc("Restituisce gli elaborati consegnati dagli studenti per il corso.")
+  @opExample(_ex_listFacultyCourseAssignments_resp)
+  listFacultyCourseAssignments(@path courseId: integer):
+    | OkDataResponse<FacultyCourseAssignmentOverview[]>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @get
+  @route("/{assignmentId}")
+  @summary("Show assignment | Mostra elaborato")
+  @opExample(_ex_getFacultyCourseAssignment_resp)
+  getFacultyCourseAssignment(
+    @path courseId: integer,
+    @path assignmentId: integer,
+  ):
+    | OkDataResponse<FacultyCourseAssignmentDetail>
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @delete
+  @route("/{assignmentId}")
+  @summary("Delete assignment | Elimina elaborato")
+  deleteCourseAssignment(@path courseId: integer, @path assignmentId: integer):
+    | NoContentResponse
+    | NotAuthorized
+    | NotFound
+    | BaseErrors;
+
+  @post
+  @route("/{assignmentId}/answer")
+  @summary("Answer assignment | Rispondi all'elaborato")
+  @doc("Invia una risposta allo studente riguardo al suo elaborato.")
+  @opExample(_ex_answerCourseAssignment_resp)
+  answerCourseAssignment(
+    @path courseId: integer,
+    @path assignmentId: integer,
+    @body body: AssignmentAnswerRequest,
+  ): AcceptedResponse | NotAuthorized | BadRequest | NotFound | BaseErrors;
 }
