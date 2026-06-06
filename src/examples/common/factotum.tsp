@@ -8,7 +8,11 @@ const _ex_issue_category = #{
   id: "IDRAULICO",
   name: "Idraulico",
   description: "Problemi idraulici: rubinetti, scarichi, perdite",
-  priority: IncidentPriority.high,
+  priority: #[
+    IncidentPriority.medium,
+    IncidentPriority.high,
+    IncidentPriority.urgent
+  ],
 };
 
 const _ex_place_id = #{
@@ -23,25 +27,29 @@ const _ex_issue_categories_list = #[
     id: "ELETTRICO",
     name: "Elettrico",
     description: "Problemi elettrici",
-    priority: IncidentPriority.urgent,
+    priority: #[IncidentPriority.high, IncidentPriority.urgent],
   },
   #{
     id: "IDRAULICO",
     name: "Idraulico",
     description: "Problemi idraulici",
-    priority: IncidentPriority.high,
+    priority: #[IncidentPriority.medium, IncidentPriority.high],
   },
   #{
     id: "ARREDI",
     name: "Arredi",
     description: "Arredi danneggiati",
-    priority: IncidentPriority.low,
+    priority: #[IncidentPriority.low, IncidentPriority.medium],
   },
   #{
     id: "CLIMA",
     name: "Condizionamento e Riscaldamento",
     description: "Problemi climatizzazione",
-    priority: IncidentPriority.medium,
+    priority: #[
+      IncidentPriority.low,
+      IncidentPriority.medium,
+      IncidentPriority.high
+    ],
   }
 ];
 

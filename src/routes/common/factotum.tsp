@@ -32,7 +32,9 @@ model IssueCategory {
   id: string;
   name: string;
   description: string;
-  priority: IncidentPriority;
+
+  /** Priorità selezionabili all'apertura di una segnalazione di questa categoria. */
+  priority: IncidentPriority[];
 }
 
 /**
@@ -54,7 +56,10 @@ model IncidentRequest {
   issueCategoryId: HttpPart<string>;
   description: HttpPart<string>;
 
-  /** Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare. */
+  /**
+   * Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
+   * Numero massimo di allegati: 4.
+   */
   attachments?: HttpPart<bytes>[];
 }
 
@@ -62,17 +67,14 @@ model IncidentRequest {
 @route("/incidents")
 interface Factotum {
   /**
-   * Elenca le categorie di problema applicabili a uno specifico locale.
+   * Elenca le categorie di problema disponibili. Le categorie sono globali
+   * e non dipendono dal locale.
    */
   @get
   @route("/categories")
   @summary("List issue categories | Elenca categorie di problema")
   @opExample(_ex_getIssueCategories_resp)
-  getIssueCategories(
-    @query buildingId: string,
-    @query floorId: string,
-    @query roomId: string,
-  ): OkDataResponse<IssueCategory[]> | BaseErrors;
+  getIssueCategories(): OkDataResponse<IssueCategory[]> | BaseErrors;
 
   /**
    * Elenca le segnalazioni in vista minimale (id, data, id categoria di

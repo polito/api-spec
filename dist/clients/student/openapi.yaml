@@ -1815,26 +1815,10 @@ paths:
     get:
       operationId: Factotum_getIssueCategories
       summary: List issue categories | Elenca categorie di problema
-      description: Elenca le categorie di problema applicabili a uno specifico locale.
-      parameters:
-        - name: buildingId
-          in: query
-          required: true
-          schema:
-            type: string
-          explode: false
-        - name: floorId
-          in: query
-          required: true
-          schema:
-            type: string
-          explode: false
-        - name: roomId
-          in: query
-          required: true
-          schema:
-            type: string
-          explode: false
+      description: |-
+        Elenca le categorie di problema disponibili. Le categorie sono globali
+        e non dipendono dal locale.
+      parameters: []
       responses:
         '200':
           description: The request has succeeded.
@@ -1854,19 +1838,28 @@ paths:
                   - id: ELETTRICO
                     name: Elettrico
                     description: Problemi elettrici
-                    priority: urgent
+                    priority:
+                      - high
+                      - urgent
                   - id: IDRAULICO
                     name: Idraulico
                     description: Problemi idraulici
-                    priority: high
+                    priority:
+                      - medium
+                      - high
                   - id: ARREDI
                     name: Arredi
                     description: Arredi danneggiati
-                    priority: low
+                    priority:
+                      - low
+                      - medium
                   - id: CLIMA
                     name: Condizionamento e Riscaldamento
                     description: Problemi climatizzazione
-                    priority: medium
+                    priority:
+                      - low
+                      - medium
+                      - high
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -5970,7 +5963,9 @@ components:
           items:
             type: string
             format: binary
-          description: Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
+          description: |-
+            Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
+            Numero massimo di allegati: 4.
       required:
         - place
         - issueCategoryId
@@ -5997,13 +5992,19 @@ components:
         description:
           type: string
         priority:
-          $ref: '#/components/schemas/IncidentPriority'
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentPriority'
+          description: Priorità selezionabili all'apertura di una segnalazione di questa categoria.
       description: Relativo al tipo di problema
       example:
         id: IDRAULICO
         name: Idraulico
         description: 'Problemi idraulici: rubinetti, scarichi, perdite'
-        priority: high
+        priority:
+          - medium
+          - high
+          - urgent
     JobOffer:
       type: object
       required:
