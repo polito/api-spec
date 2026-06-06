@@ -144,7 +144,6 @@ model UpdateCourseFolderRequest {
 }
 
 model CourseFileUpload {
-  /** Files to upload. Multiple files can be uploaded at once. */
   files: HttpPart<bytes>[];
 
   /** Destination folder. If omitted, files are uploaded to the root. */
@@ -160,16 +159,13 @@ model UpdateCourseFileRequest {
 }
 
 model MoveCourseItemsRequest {
-  /** IDs of files and/or folders to move. */
   @example(#["2", "33352562"])
   itemIds: string[];
 
-  /** Destination folder. `null` moves to the root. */
   destinationFolderId: string | null;
 }
 
 model EnrollStudentsRequest {
-  /** IDs (matricole) of the students to enroll. */
   @example(#["s123456", "s234567"])
   studentIds: string[];
 }
@@ -180,17 +176,14 @@ enum MessageChannel {
 }
 
 model StudentsMessageRequest {
-  /** IDs (matricole) of the students to send the message to. */
   @example(#["s123456", "s234567"])
   studentIds: string[];
 
   channel: MessageChannel;
 
-  /** Title of the email. Required for the `email` channel, ignored for `notify`. */
   @example("Lezione di recupero")
   title?: string;
 
-  /** Message body. Maximum 4000 characters. */
   @maxLength(4000)
   @example("Si avvisano gli studenti che...")
   message: string;
@@ -199,13 +192,8 @@ model StudentsMessageRequest {
 // Assignment management (faculty)
 
 enum FacultyAssignmentStatus {
-  /** Newly submitted, not yet seen by the faculty. */
   new: "new",
-
   seen: "seen",
-
-  /** The student has requested the removal of this submission. */
-  removalRequested: "removal_requested",
 }
 
 model FacultyAssignmentAuthor {
@@ -237,17 +225,15 @@ model FacultyCourseAssignmentDetail {
 }
 
 model AssignmentAnswerRequest {
-  /** Answer message. Maximum 4000 characters. */
   @maxLength(4000)
   @example("Dear student, I cannot open the file you uploaded. Please try again to upload the folder in another format. Thank you!")
   message: string;
 }
 
 @tag("Faculty - Courses")
-@route("/faculty/courses/{courseId}")
+@route("/faculty/courses/{courseId}/notices")
 interface FacultyCourses {
   @post
-  @route("/notices")
   @summary("Publish notices | Pubblica avvisi")
   @opExample(_ex_publishCourseNotice_req)
   publishCourseNotice(
@@ -257,7 +243,7 @@ interface FacultyCourses {
   ): NoContentResponse | BaseErrors;
 
   @put
-  @route("/notices/{noticeId}")
+  @route("/{noticeId}")
   @summary("Update notice | Modifica avviso")
   @opExample(_ex_updateCourseNotice_resp)
   updateCourseNotice(
@@ -267,7 +253,7 @@ interface FacultyCourses {
   ): NoContentResponse | BaseErrors;
 
   @delete
-  @route("/notices/{noticeId}")
+  @route("/{noticeId}")
   @summary("Delete notice | Elimina avviso")
   @opExample(_ex_deleteCourseNotice_resp)
   deleteCourseNotice(
