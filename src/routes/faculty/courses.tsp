@@ -54,7 +54,7 @@ model CourseNoticeRequest {
   expiresAt: utcDateTime | null;
 
   @example(true)
-  isVisible: boolean;
+  isAlwaysVisible: boolean;
 }
 
 // Response aliases with descriptions
@@ -79,6 +79,16 @@ interface FacultyCourses {
   publishCourseNotice(
     @path courseId: integer,
     @path isDraft: boolean,
+    @body body: CourseNoticeRequest,
+  ): NoContentResponse | BaseErrors;
+
+  @put
+  @route("/notices/{noticeId}")
+  @summary("Update notice | Modifica avviso")
+  @opExample(_ex_updateCourseNotice_resp)
+  updateCourseNotice(
+    @path courseId: integer,
+    @path noticeId: integer,
     @body body: CourseNoticeRequest,
   ): NoContentResponse | BaseErrors;
 
