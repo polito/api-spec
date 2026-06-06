@@ -26,6 +26,73 @@ const _ex_updateCourseNotice_resp = #{
   returnType: #{ statusCode: 204 },
 };
 
+const _ex_createCourseFolder_resp = #{
+  parameters: #{
+    courseId: 251007,
+    body: #{ name: "Laboratori", parentId: null },
+  },
+  returnType: #{
+    statusCode: 201,
+    body: #{
+      data: #{
+        type: "directory",
+        id: "33352562",
+        name: "Laboratori",
+        files: #[],
+      },
+    },
+  },
+};
+
+const _ex_updateCourseFolder_resp = #{
+  parameters: #{
+    courseId: 251007,
+    folderId: "33352562",
+    body: #{ name: "Laboratori 2024" },
+  },
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #{
+        type: "directory",
+        id: "33352562",
+        name: "Laboratori 2024",
+        files: #[],
+      },
+    },
+  },
+};
+
+const _ex_updateCourseFile_resp = #{
+  parameters: #{
+    courseId: 251007,
+    fileId: "2",
+    body: #{ name: "Lecture1_rev.pdf", parentId: "33352562" },
+  },
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #{
+        type: "file",
+        id: "2",
+        name: "Lecture1_rev.pdf",
+        sizeInKiloBytes: 2048,
+        mimeType: "application/pdf",
+        createdAt: utcDateTime.fromISO("2024-06-01T10:00:00Z"),
+        checksum: "deadbeefcafebabe0000000000000000",
+      },
+    },
+  },
+};
+
+const _ex_moveCourseItems_resp = #{
+  parameters: #{
+    courseId: 251007,
+    body: #{ itemIds: #["2", "33352562"], destinationFolderId: "44463673" },
+  },
+  returnType: #{ statusCode: 204 },
+};
+
 const _ex_deleteCourseNotice_resp = #{
   parameters: #{ courseId: 251007, noticeId: 360724 },
   returnType: #{ statusCode: 204 },
