@@ -195,7 +195,7 @@ model Event {
   eventEndsAt: utcDateTime;
 
   description?: string;
-  place: PlaceRef | null;
+  place: string | null;
 
   @example("Aula Magna")
   placeName: string | null;
@@ -251,16 +251,17 @@ model EnrolMfaRequest {
 
 /** QR rendered as an SVG image */
 model TokenQrSvgResponse {
+  @statusCode statusCode: 200;
   @header contentType: "image/svg+xml";
   @body svg: string;
 }
 
 /** Raw token content as plain text */
 model TokenQrTextResponse {
+  @statusCode statusCode: 200;
   @header contentType: "text/plain";
   @body token: string;
 }
-
 @tag("Auth")
 @route("/auth/mfa")
 interface Mfa {

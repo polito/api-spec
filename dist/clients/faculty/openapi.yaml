@@ -3892,9 +3892,7 @@ components:
         description:
           type: string
         place:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PlaceRef'
+          type: string
           nullable: true
         placeName:
           type: string
