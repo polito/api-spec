@@ -399,14 +399,10 @@ paths:
         '200':
           description: The request has succeeded.
           content:
-            application/json:
+            image/jpeg:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: string
-                required:
-                  - data
+                type: string
+                format: binary
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -549,6 +545,37 @@ paths:
           description: Moodle course identifier
           schema:
             type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/serviceLink/smartcard:
+    get:
+      operationId: ServiceLink_getSmartCardLink
+      summary: Get authorised service link for SmartCard
+      parameters: []
       responses:
         '200':
           description: The request has succeeded.

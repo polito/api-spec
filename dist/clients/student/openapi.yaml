@@ -406,14 +406,10 @@ paths:
         '200':
           description: The request has succeeded.
           content:
-            application/json:
+            image/jpeg:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: string
-                required:
-                  - data
+                type: string
+                format: binary
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -556,6 +552,37 @@ paths:
           description: Moodle course identifier
           schema:
             type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/serviceLink/smartcard:
+    get:
+      operationId: ServiceLink_getSmartCardLink
+      summary: Get authorised service link for SmartCard
+      parameters: []
       responses:
         '200':
           description: The request has succeeded.
@@ -866,37 +893,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
-  /careers:
-    get:
-      operationId: StudentNs_getStudent
-      summary: Retrieve student careers | Recupera la cariera dello studente
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Studentcareers'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Student
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -3364,6 +3360,37 @@ paths:
       responses:
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Student
+  /student/career:
+    get:
+      operationId: StudentNew_getStudentCareer
+      summary: Retrieve student career | Recupera la cariera dello studente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StudentCareer'
+                required:
+                  - data
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -7107,7 +7134,7 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
-    Studentcareers:
+    StudentCareer:
       type: object
       required:
         - status

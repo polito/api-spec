@@ -262,6 +262,13 @@ model TokenQrTextResponse {
   @header contentType: "text/plain";
   @body token: string;
 }
+
+model PictureResponse {
+  @statusCode statusCode: 200;
+  @header contentType: "image/jpeg";
+  @body picture: bytes;
+}
+
 @tag("Auth")
 @route("/auth/mfa")
 interface Mfa {
@@ -318,6 +325,11 @@ interface ServiceLink {
   @route("/mail")
   @summary("Get authorised service link for Mail")
   getMailLink(): OkDataResponse<LinkToService> | BaseErrors;
+
+  @get
+  @route("/smartcard")
+  @summary("Get authorised service link for SmartCard")
+  getSmartCardLink(): OkDataResponse<LinkToService> | BaseErrors;
 }
 
 @tag("Auth")
@@ -330,7 +342,7 @@ interface Profile {
   @route("/picture")
   @get
   @summary("Get user profile picture | Ottieni la foto del profilo utente")
-  getProfilePicture(): OkDataResponse<string> | BaseErrors;
+  getProfilePicture(): PictureResponse | BaseErrors;
 
   @route("/token")
   @get

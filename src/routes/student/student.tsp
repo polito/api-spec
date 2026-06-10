@@ -228,7 +228,7 @@ model Guide {
   sections: GuideSection[];
 }
 
-model Studentcareers {
+model StudentCareer {
   @example("active")
   status: "active" | "closed" | "cancelled" | "graduated" | "career_closed";
 
@@ -290,11 +290,6 @@ model Studentcareers {
 
 @tag("Student")
 interface StudentNs {
-  @route("/careers")
-  @get
-  @summary("Retrieve student careers | Recupera la cariera dello studente")
-  getStudent(): OkDataResponse<Studentcareers> | BaseErrors;
-
   @route("/deadlines")
   @get
   @summary("List deadlines | Elenca scadenze")
@@ -328,6 +323,15 @@ interface StudentNs {
   @get
   @summary("Get guides | Mostra guide")
   getGuides(): OkDataResponse<Guide[]> | BaseErrors;
+}
+
+@tag("Student")
+@route("/student")
+interface StudentNew {
+  @route("/career")
+  @get
+  @summary("Retrieve student career | Recupera la cariera dello studente")
+  getStudentCareer(): OkDataResponse<StudentCareer> | BaseErrors;
 }
 
 @tag("Student")
