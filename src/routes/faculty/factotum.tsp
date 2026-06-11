@@ -10,8 +10,8 @@ namespace PolitoAPI;
 using Http;
 
 /**
- * Allegato di una segnalazione. Da chiarire se può essere solo una foto
- * oppure qualunque tipo di file.
+ * Attachment of an incident. To be clarified whether it can be only a photo
+ * or any type of file.
  */
 @example(_ex_incident_attachment)
 model IncidentAttachment {
@@ -22,9 +22,9 @@ model IncidentAttachment {
 }
 
 /**
- * Segnalazione completa lato faculty: estende `IncidentOverview` con
- * descrizione, stato e allegati. I dettagli di categoria si recuperano
- * dal relativo endpoint.
+ * Full incident on the faculty side: extends `IncidentOverview` with
+ * description, status and attachments. Category details are retrieved
+ * from the relevant endpoint.
  */
 @example(_ex_incident)
 model Incident extends IncidentOverview {
@@ -37,8 +37,8 @@ model Incident extends IncidentOverview {
 @route("/incidents/reports")
 interface FacultyFactotum {
   /**
-   * Restituisce la singola segnalazione identificata da `incidentId`,
-   * con tutti i dettagli.
+   * Returns the single incident identified by `incidentId`,
+   * with all the details.
    */
   @get
   @route("/{incidentId}")
@@ -49,7 +49,7 @@ interface FacultyFactotum {
   ): OkDataResponse<Incident> | NotFoundResponse | BaseErrors;
 
   /**
-   * Annulla una segnalazione esistente.
+   * Cancels an existing incident.
    */
   @route("/{incidentId}")
   @delete
@@ -59,9 +59,9 @@ interface FacultyFactotum {
   ): NoContentResponse | NotFoundResponse | BaseErrors;
 
   /**
-   * Scarica il contenuto binario di un allegato di una segnalazione.
-   * Può rispondere con il file inline oppure con un redirect a una URL
-   * di download temporanea.
+   * Downloads the binary content of an incident attachment.
+   * May respond with the file inline or with a redirect to a temporary
+   * download URL.
    */
   @get
   @route("/{incidentId}/attachments/{attachmentId}")

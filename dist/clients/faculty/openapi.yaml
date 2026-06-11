@@ -1412,8 +1412,8 @@ paths:
       operationId: Factotum_getIssueCategories
       summary: List issue categories | Elenca categorie di problema
       description: |-
-        Elenca le categorie di problema disponibili. Le categorie sono globali
-        e non dipendono dal locale.
+        Lists the available issue categories. Categories are global
+        and do not depend on the place.
       parameters: []
       responses:
         '200':
@@ -1475,11 +1475,10 @@ paths:
       operationId: Factotum_listIncidents
       summary: List incidents | Elenca segnalazioni
       description: |-
-        Elenca le segnalazioni in vista minimale (id, data, id categoria di
-        problema). Se i filtri di locale sono specificati, restituisce solo le
-        segnalazioni associate a quel locale (utile per consultare lo storico
-        prima di aprirne una nuova); senza filtri restituisce tutte le
-        segnalazioni dell'utente autenticato.
+        Lists incidents in minimal view (id, date, issue category id). If the
+        place filters are specified, returns only the incidents associated with
+        that place (useful for consulting the history before opening a new one);
+        without filters it returns all the incidents of the authenticated user.
       parameters:
         - name: buildingId
           in: query
@@ -1549,10 +1548,10 @@ paths:
       operationId: Factotum_createIncident
       summary: Create incident | Crea segnalazione
       description: |-
-        Crea una nuova segnalazione di guasto/anomalia. La richiesta è
-        multipart/form-data per consentire l'upload opzionale di allegati
-        (es. foto del problema). Il riferimento al locale, la categoria e la
-        descrizione sono obbligatori.
+        Creates a new fault/anomaly incident. The request is
+        multipart/form-data to allow the optional upload of an attachment
+        (e.g. photo of the problem). The place reference, the category, the
+        priority and the description are mandatory.
       parameters: []
       responses:
         '200':
@@ -1560,7 +1559,17 @@ paths:
           content:
             application/json:
               schema:
-                nullable: true
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      insertedId:
+                        type: integer
+                    required:
+                      - insertedId
+                required:
+                  - data
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1584,13 +1593,15 @@ paths:
             encoding:
               place:
                 contentType: application/json
+              priority:
+                contentType: application/json
   /incidents/reports/{incidentId}:
     get:
       operationId: FacultyFactotum_getIncident
       summary: Get incident (faculty) | Mostra segnalazione (faculty)
       description: |-
-        Restituisce la singola segnalazione identificata da `incidentId`,
-        con tutti i dettagli.
+        Returns the single incident identified by `incidentId`,
+        with all the details.
       parameters:
         - name: incidentId
           in: path
@@ -1645,7 +1656,7 @@ paths:
     delete:
       operationId: FacultyFactotum_deleteIncident
       summary: Delete incident (faculty) | Annulla segnalazione (faculty)
-      description: Annulla una segnalazione esistente.
+      description: Cancels an existing incident.
       parameters:
         - name: incidentId
           in: path
@@ -1676,9 +1687,9 @@ paths:
       operationId: FacultyFactotum_getIncidentAttachment
       summary: Download incident attachment (faculty) | Scarica allegato segnalazione (faculty)
       description: |-
-        Scarica il contenuto binario di un allegato di una segnalazione.
-        Può rispondere con il file inline oppure con un redirect a una URL
-        di download temporanea.
+        Downloads the binary content of an incident attachment.
+        May respond with the file inline or with a redirect to a temporary
+        download URL.
       parameters:
         - name: incidentId
           in: path
@@ -4143,9 +4154,9 @@ components:
       allOf:
         - $ref: '#/components/schemas/IncidentOverview'
       description: |-
-        Segnalazione completa lato faculty: estende `IncidentOverview` con
-        descrizione, stato e allegati. I dettagli di categoria si recuperano
-        dal relativo endpoint.
+        Full incident on the faculty side: extends `IncidentOverview` with
+        description, status and attachments. Category details are retrieved
+        from the relevant endpoint.
       example:
         id: INC-2026-0042
         description: Rubinetto del bagno donne che perde da ieri sera
@@ -4179,8 +4190,8 @@ components:
         sizeInKiloBytes:
           type: integer
       description: |-
-        Allegato di una segnalazione. Da chiarire se può essere solo una foto
-        oppure qualunque tipo di file.
+        Attachment of an incident. To be clarified whether it can be only a photo
+        or any type of file.
       example:
         id: 0
         filename: foto.jpg
@@ -4204,10 +4215,9 @@ components:
         place:
           $ref: '#/components/schemas/PlaceIds'
       description: |-
-        Vista minimale di una segnalazione: id, data, locale e id della
-        categoria di problema. I dettagli della categoria si recuperano da
-        `/incidents/categories`. Faculty estende questo modello con i
-        dettagli completi.
+        Minimal view of an incident: id, date, place and issue category id.
+        Category details are retrieved from `/incidents/categories`. Faculty
+        extends this model with the full details.
       example:
         id: INC-2026-0042
         date: '2026-04-20T18:30:00Z'
@@ -4225,8 +4235,8 @@ components:
         - high
         - urgent
       description: |-
-        Priorità di intervento associata a una categoria di problema.
-        Determina l'urgenza con cui la segnalazione viene gestita.
+        Intervention priority associated with an issue category.
+        Determines the urgency with which the incident is handled.
     IncidentRequest:
       type: object
       properties:
@@ -4234,19 +4244,17 @@ components:
           $ref: '#/components/schemas/PlaceIds'
         issueCategoryId:
           type: string
+        priority:
+          $ref: '#/components/schemas/IncidentPriority'
         description:
           type: string
-        attachments:
-          type: array
-          items:
-            type: string
-            format: binary
-          description: |-
-            Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
-            Numero massimo di allegati: 4.
+        attachment:
+          type: string
+          format: binary
       required:
         - place
         - issueCategoryId
+        - priority
         - description
     IncidentStatus:
       type: string
@@ -4273,8 +4281,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/IncidentPriority'
-          description: Priorità selezionabili all'apertura di una segnalazione di questa categoria.
-      description: Relativo al tipo di problema
+          description: Priorities selectable when opening an incident of this category.
+      description: Related to the type of issue
       example:
         id: IDRAULICO
         name: Idraulico

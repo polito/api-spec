@@ -16,8 +16,8 @@ enum IncidentStatus {
 }
 
 /**
- * Priorità di intervento associata a una categoria di problema.
- * Determina l'urgenza con cui la segnalazione viene gestita.
+ * Intervention priority associated with an issue category.
+ * Determines the urgency with which the incident is handled.
  */
 enum IncidentPriority {
   low: "low",
@@ -26,22 +26,21 @@ enum IncidentPriority {
   urgent: "urgent",
 }
 
-/** Relativo al tipo di problema */
+/** Related to the type of issue */
 @example(_ex_issue_category)
 model IssueCategory {
   id: string;
   name: string;
   description: string;
 
-  /** Priorità selezionabili all'apertura di una segnalazione di questa categoria. */
+  /** Priorities selectable when opening an incident of this category. */
   priority: IncidentPriority[];
 }
 
 /**
- * Vista minimale di una segnalazione: id, data, locale e id della
- * categoria di problema. I dettagli della categoria si recuperano da
- * `/incidents/categories`. Faculty estende questo modello con i
- * dettagli completi.
+ * Minimal view of an incident: id, date, place and issue category id.
+ * Category details are retrieved from `/incidents/categories`. Faculty
+ * extends this model with the full details.
  */
 @example(_ex_incident_overview)
 model IncidentOverview {
@@ -54,21 +53,17 @@ model IncidentOverview {
 model IncidentRequest {
   place: HttpPart<PlaceIds>;
   issueCategoryId: HttpPart<string>;
+  priority: HttpPart<IncidentPriority>;
   description: HttpPart<string>;
-
-  /**
-   * Lista di allegati. Si è ipotizzato l'upload di immagini, da verificare.
-   * Numero massimo di allegati: 4.
-   */
-  attachments?: HttpPart<bytes>[];
+  attachment?: HttpPart<bytes>;
 }
 
 @tag("Factotum")
 @route("/incidents")
 interface Factotum {
   /**
-   * Elenca le categorie di problema disponibili. Le categorie sono globali
-   * e non dipendono dal locale.
+   * Lists the available issue categories. Categories are global
+   * and do not depend on the place.
    */
   @get
   @route("/categories")
@@ -77,11 +72,10 @@ interface Factotum {
   getIssueCategories(): OkDataResponse<IssueCategory[]> | BaseErrors;
 
   /**
-   * Elenca le segnalazioni in vista minimale (id, data, id categoria di
-   * problema). Se i filtri di locale sono specificati, restituisce solo le
-   * segnalazioni associate a quel locale (utile per consultare lo storico
-   * prima di aprirne una nuova); senza filtri restituisce tutte le
-   * segnalazioni dell'utente autenticato.
+   * Lists incidents in minimal view (id, date, issue category id). If the
+   * place filters are specified, returns only the incidents associated with
+   * that place (useful for consulting the history before opening a new one);
+   * without filters it returns all the incidents of the authenticated user.
    */
   @get
   @route("/reports")
@@ -94,10 +88,10 @@ interface Factotum {
   ): OkDataResponse<IncidentOverview[]> | BaseErrors;
 
   /**
-   * Crea una nuova segnalazione di guasto/anomalia. La richiesta è
-   * multipart/form-data per consentire l'upload opzionale di allegati
-   * (es. foto del problema). Il riferimento al locale, la categoria e la
-   * descrizione sono obbligatori.
+   * Creates a new fault/anomaly incident. The request is
+   * multipart/form-data to allow the optional upload of an attachment
+   * (e.g. photo of the problem). The place reference, the category, the
+   * priority and the description are mandatory.
    */
   @post
   @route("/reports")
@@ -105,5 +99,7 @@ interface Factotum {
   createIncident(
     @header contentType: "multipart/form-data",
     @multipartBody body: IncidentRequest,
-  ): OkResponse | BaseErrors;
+  ): OkDataResponse<{
+    insertedId: integer;
+  }> | BaseErrors;
 }
