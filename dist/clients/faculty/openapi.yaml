@@ -11,6 +11,7 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Factotum
   - name: News
   - name: People
   - name: Places
@@ -1406,6 +1407,326 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /incidents/categories:
+    get:
+      operationId: Factotum_getIssueCategories
+      summary: List issue categories | Elenca categorie di problema
+      description: |-
+        Lists the available issue categories. Categories are global
+        and do not depend on the place.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IssueCategory'
+                required:
+                  - data
+              example:
+                data:
+                  - id: ELETTRICO
+                    name: Elettrico
+                    description: Problemi elettrici
+                    priority:
+                      - high
+                      - urgent
+                  - id: IDRAULICO
+                    name: Idraulico
+                    description: Problemi idraulici
+                    priority:
+                      - medium
+                      - high
+                  - id: ARREDI
+                    name: Arredi
+                    description: Arredi danneggiati
+                    priority:
+                      - low
+                      - medium
+                  - id: CLIMA
+                    name: Condizionamento e Riscaldamento
+                    description: Problemi climatizzazione
+                    priority:
+                      - low
+                      - medium
+                      - high
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+  /incidents/reports:
+    get:
+      operationId: Factotum_listIncidents
+      summary: List incidents | Elenca segnalazioni
+      description: |-
+        Lists incidents in minimal view (id, date, issue category id). If the
+        place filters are specified, returns only the incidents associated with
+        that place (useful for consulting the history before opening a new one);
+        without filters it returns all the incidents of the authenticated user.
+      parameters:
+        - name: buildingId
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+        - name: floorId
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+        - name: roomId
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IncidentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: INC-2026-0042
+                    date: '2026-04-20T18:30:00Z'
+                    issueCategoryId: IDRAULICO
+                    place:
+                      siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+                  - id: INC-2026-0039
+                    date: '2026-01-25T15:09:00Z'
+                    issueCategoryId: ELETTRICO
+                    place:
+                      siteId: TO_CIT
+                      buildingId: TO_CIT11
+                      floorId: XP02
+                      roomId: '017'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+    post:
+      operationId: Factotum_createIncident
+      summary: Create incident | Crea segnalazione
+      description: |-
+        Creates a new fault/anomaly incident. The request is
+        multipart/form-data to allow the optional upload of an attachment
+        (e.g. photo of the problem). The place reference, the category, the
+        priority and the description are mandatory.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      insertedId:
+                        type: integer
+                    required:
+                      - insertedId
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IncidentRequest'
+            encoding:
+              place:
+                contentType: application/json
+              priority:
+                contentType: application/json
+  /incidents/reports/{incidentId}:
+    get:
+      operationId: FacultyFactotum_getIncident
+      summary: Get incident (faculty) | Mostra segnalazione (faculty)
+      description: |-
+        Returns the single incident identified by `incidentId`,
+        with all the details.
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Incident'
+                required:
+                  - data
+              example:
+                data:
+                  id: INC-2026-0042
+                  description: Rubinetto del bagno donne che perde da ieri sera
+                  date: '2026-04-20T18:30:00Z'
+                  status: new
+                  place:
+                    siteId: TO_CIT
+                    buildingId: TO_CIT11
+                    floorId: XP02
+                    roomId: '017'
+                  issueCategoryId: IDRAULICO
+                  attachments:
+                    - id: 0
+                      filename: foto.jpg
+                      mimeType: image/jpeg
+                      sizeInKiloBytes: 512
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+    delete:
+      operationId: FacultyFactotum_deleteIncident
+      summary: Delete incident (faculty) | Annulla segnalazione (faculty)
+      description: Cancels an existing incident.
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
+  /incidents/reports/{incidentId}/attachments/{attachmentId}:
+    get:
+      operationId: FacultyFactotum_getIncidentAttachment
+      summary: Download incident attachment (faculty) | Scarica allegato segnalazione (faculty)
+      description: |-
+        Downloads the binary content of an incident attachment.
+        May respond with the file inline or with a redirect to a temporary
+        download URL.
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attachmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '302':
+          description: Redirection
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Factotum
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -3447,7 +3768,6 @@ components:
         - teachingPeriod
         - teacherId
         - teacherName
-        - previousEditions
         - isOverBooking
         - enrollmentRole
         - year
@@ -3477,14 +3797,6 @@ components:
           type: string
           nullable: true
           example: Mario Rossi
-        previousEditions:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseModuleEdition'
-          description: Previous editions of this course that were part of the student's PSP
-          example:
-            - id: 244577
-              year: '2021'
         isOverBooking:
           type: boolean
           example: false
@@ -3503,9 +3815,6 @@ components:
         teachingPeriod: 2-2
         teacherId: 3001
         teacherName: Mario Rossi
-        previousEditions:
-          - id: 251005
-            year: '2024'
         isOverBooking: false
         enrollmentRole: student
         year: '2025'
@@ -3521,6 +3830,21 @@ components:
         id:
           type: integer
           example: 244577
+    CourseModuleOverview:
+      type: object
+      required:
+        - previousEditions
+      properties:
+        previousEditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseModuleEdition'
+          description: Previous editions of this course that were part of the student's PSP
+          example:
+            - id: 244577
+              year: '2021'
+      allOf:
+        - $ref: '#/components/schemas/CourseModule'
     CourseNotices:
       type: object
       required:
@@ -3555,10 +3879,10 @@ components:
         modules:
           type: array
           items:
-            $ref: '#/components/schemas/CourseModule'
+            $ref: '#/components/schemas/CourseModuleOverview'
           nullable: true
       allOf:
-        - $ref: '#/components/schemas/CourseModule'
+        - $ref: '#/components/schemas/CourseModuleOverview'
     CoursePreferencesRequest:
       type: object
       properties:
@@ -3812,6 +4136,161 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    Incident:
+      type: object
+      required:
+        - description
+        - status
+        - attachments
+      properties:
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentAttachment'
+      allOf:
+        - $ref: '#/components/schemas/IncidentOverview'
+      description: |-
+        Full incident on the faculty side: extends `IncidentOverview` with
+        description, status and attachments. Category details are retrieved
+        from the relevant endpoint.
+      example:
+        id: INC-2026-0042
+        description: Rubinetto del bagno donne che perde da ieri sera
+        date: '2026-04-20T18:30:00Z'
+        status: new
+        place:
+          siteId: TO_CIT
+          buildingId: TO_CIT11
+          floorId: XP02
+          roomId: '017'
+        issueCategoryId: IDRAULICO
+        attachments:
+          - id: 0
+            filename: foto.jpg
+            mimeType: image/jpeg
+            sizeInKiloBytes: 512
+    IncidentAttachment:
+      type: object
+      required:
+        - id
+        - filename
+        - mimeType
+        - sizeInKiloBytes
+      properties:
+        id:
+          type: number
+        filename:
+          type: string
+        mimeType:
+          type: string
+        sizeInKiloBytes:
+          type: integer
+      description: |-
+        Attachment of an incident. To be clarified whether it can be only a photo
+        or any type of file.
+      example:
+        id: 0
+        filename: foto.jpg
+        mimeType: image/jpeg
+        sizeInKiloBytes: 512
+    IncidentOverview:
+      type: object
+      required:
+        - id
+        - date
+        - issueCategoryId
+        - place
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        issueCategoryId:
+          type: string
+        place:
+          $ref: '#/components/schemas/PlaceIds'
+      description: |-
+        Minimal view of an incident: id, date, place and issue category id.
+        Category details are retrieved from `/incidents/categories`. Faculty
+        extends this model with the full details.
+      example:
+        id: INC-2026-0042
+        date: '2026-04-20T18:30:00Z'
+        issueCategoryId: IDRAULICO
+        place:
+          siteId: TO_CIT
+          buildingId: TO_CIT11
+          floorId: XP02
+          roomId: '017'
+    IncidentPriority:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+        - urgent
+      description: |-
+        Intervention priority associated with an issue category.
+        Determines the urgency with which the incident is handled.
+    IncidentRequest:
+      type: object
+      properties:
+        place:
+          $ref: '#/components/schemas/PlaceIds'
+        issueCategoryId:
+          type: string
+        priority:
+          $ref: '#/components/schemas/IncidentPriority'
+        description:
+          type: string
+        attachment:
+          type: string
+          format: binary
+      required:
+        - place
+        - issueCategoryId
+        - priority
+        - description
+    IncidentStatus:
+      type: string
+      enum:
+        - new
+        - in_progress
+        - resolved
+        - closed
+    IssueCategory:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - priority
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        priority:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentPriority'
+          description: Priorities selectable when opening an incident of this category.
+      description: Related to the type of issue
+      example:
+        id: IDRAULICO
+        name: Idraulico
+        description: 'Problemi idraulici: rubinetti, scarichi, perdite'
+        priority:
+          - medium
+          - high
+          - urgent
     Lecture:
       type: object
       required:
@@ -4295,6 +4774,8 @@ components:
           items:
             type: object
             properties:
+              id:
+                type: string
               name:
                 type: string
               description:
@@ -4302,6 +4783,7 @@ components:
               category:
                 type: string
             required:
+              - id
               - name
               - description
               - category
@@ -4374,6 +4856,22 @@ components:
           example: false
         subCategory:
           $ref: '#/components/schemas/PlaceCategory'
+    PlaceIds:
+      type: object
+      required:
+        - buildingId
+        - floorId
+        - roomId
+        - siteId
+      properties:
+        buildingId:
+          type: string
+        floorId:
+          type: string
+        roomId:
+          type: string
+        siteId:
+          type: string
     PlaceOverview:
       type: object
       required:

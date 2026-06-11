@@ -9,6 +9,7 @@ import "../../routes/common/announcements.tsp";
 import "../../routes/common/auth.tsp";
 import "../../routes/common/bookings.tsp";
 import "../../routes/common/courses.tsp";
+import "../../routes/common/factotum.tsp";
 import "../../routes/common/news.tsp";
 import "../../routes/common/people.tsp";
 import "../../routes/common/places.tsp";

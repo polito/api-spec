@@ -11,11 +11,15 @@ model UpdatePreferencesRequest {
   language?: "it" | "en";
 }
 
-model PlaceRef {
+model PlaceIds {
   buildingId: string;
   floorId: string;
   roomId: string;
   siteId: string;
+}
+
+model PlaceRef {
+  ...PlaceIds;
   name: string;
 }
 
