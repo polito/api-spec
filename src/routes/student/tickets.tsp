@@ -38,7 +38,9 @@ model TicketTopic {
 enum TicketStatus {
   new: "new",
   pending: "pending",
+  waiting_user: "waiting_user",
   closed: "closed",
+  resolved: "resolved",
 }
 
 @example(_ex_ticket_attachment)
@@ -123,6 +125,7 @@ model Ticket {
   ...TicketOverview;
   replies: TicketReply[];
   attachments: TicketAttachment[];
+  needsFeedback: boolean;
 }
 
 model CreateTicketRequest {
@@ -137,7 +140,7 @@ model ReplyTicketRequest {
   attachment?: HttpPart<bytes>;
 }
 
-model ResolveTicketRequest {
+model TicketFeedbackRequest {
   @example(4)
   rating: integer;
 
@@ -195,6 +198,14 @@ interface Tickets {
   @summary("Mark a ticket as closed | Segna un ticket come chiuso")
   markTicketAsClosed(@path ticketId: integer): NoContentResponse | BaseErrors;
 
+  @route("/{ticketId}/feedback")
+  @put
+  @summary("Provide feedback about a ticket | Fornisci feedback su un ticket")
+  provideTicketFeedback(
+    @path ticketId: integer,
+    @body body: TicketFeedbackRequest,
+  ): OkDataResponse<boolean> | BaseErrors;
+
   @route("/{ticketId}/attachments/{attachmentId}")
   @get
   @summary("Download ticket attachment | Scarica allegato del ticket")
@@ -231,7 +242,7 @@ interface Tickets {
   resolveTicket(
     @path ticketId: integer,
     @path replyId: integer,
-    @body body: ResolveTicketRequest,
+    @body body: TicketFeedbackRequest,
   ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/replies/{replyId}/attachments/{attachmentId}")

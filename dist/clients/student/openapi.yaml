@@ -3521,6 +3521,48 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
+  /tickets/{ticketId}/feedback:
+    put:
+      operationId: Tickets_provideTicketFeedback
+      summary: Provide feedback about a ticket | Fornisci feedback su un ticket
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Tickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketFeedbackRequest'
   /tickets/{ticketId}/read:
     put:
       operationId: Tickets_markTicketAsRead
@@ -3711,7 +3753,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResolveTicketRequest'
+              $ref: '#/components/schemas/TicketFeedbackRequest'
   /unreadEmails:
     get:
       operationId: StudentNs_getUnreadEmailsNumber
@@ -6863,17 +6905,6 @@ components:
           type: string
         requestDetails:
           type: string
-    ResolveTicketRequest:
-      type: object
-      required:
-        - rating
-      properties:
-        rating:
-          type: integer
-          example: 4
-        comment:
-          type: string
-          example: La risposta è stata molto utile, grazie!
     RootPlaceCategory:
       type: object
       required:
@@ -7242,6 +7273,7 @@ components:
         - updatedAt
         - replies
         - attachments
+        - needsFeedback
       properties:
         id:
           type: number
@@ -7283,6 +7315,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
+        needsFeedback:
+          type: boolean
     TicketAttachment:
       type: object
       required:
@@ -7328,6 +7362,17 @@ components:
         id: 3623
         question: Ho dimenticato il mio nome utente e/o la password e non riesco più ad accedere ad Apply@Polito. Come posso fare?
         answer: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href="https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT">Log-in</a>&nbsp;e segui le istruzioni.
+    TicketFeedbackRequest:
+      type: object
+      required:
+        - rating
+      properties:
+        rating:
+          type: integer
+          example: 4
+        comment:
+          type: string
+          example: La risposta è stata molto utile, grazie!
     TicketOverview:
       type: object
       required:
@@ -7445,7 +7490,9 @@ components:
       enum:
         - new
         - pending
+        - waiting_user
         - closed
+        - resolved
     TicketSubtopic:
       type: object
       required:
