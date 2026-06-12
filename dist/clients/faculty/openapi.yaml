@@ -419,8 +419,9 @@ paths:
         - Auth
   /auth/profile/token:
     get:
-      operationId: Profile_getTokenQr
-      summary: Get a QR for a specific service | Ottieni un QR per un servizio specifico
+      operationId: Profile_getAccessToken
+      summary: Get an access token for a specific service | Ottieni un token di accesso per un servizio specifico
+      description: 'Returns the access token as plain text, or rendered as a QR code (SVG) when requested with `Accept: image/svg+xml`. | Restituisce il token di accesso come testo, oppure come codice QR (SVG) se richiesto con `Accept: image/svg+xml`.'
       parameters:
         - name: type
           in: query
@@ -2926,7 +2927,7 @@ components:
         - username
         - firstName
         - lastName
-        - allusernames
+        - allUsernames
       properties:
         username:
           type: string
@@ -2937,13 +2938,13 @@ components:
         lastName:
           type: string
           example: Pezzolla
-        allusernames:
+        allUsernames:
           type: array
           items:
             type: string
           example:
-            - '290683'
-            - '213956'
+            - S290683
+            - S213956
     Booking:
       type: object
       required:

@@ -172,8 +172,8 @@ model AuthProfile {
   @example("Pezzolla")
   lastName: string;
 
-  @example(#["290683", "213956"])
-  allusernames: string[];
+  @example(#["S290683", "S213956"])
+  allUsernames: string[];
 }
 
 model Event {
@@ -250,14 +250,14 @@ model EnrolMfaRequest {
 }
 
 /** QR rendered as an SVG image */
-model TokenQrSvgResponse {
+model SvgResponse {
   @statusCode statusCode: 200;
   @header contentType: "image/svg+xml";
   @body svg: string;
 }
 
 /** Raw token content as plain text */
-model TokenQrTextResponse {
+model AccessTokenResponse {
   @statusCode statusCode: 200;
   @header contentType: "text/plain";
   @body token: string;
@@ -346,12 +346,13 @@ interface Profile {
 
   @route("/token")
   @get
-  @summary("Get a QR for a specific service | Ottieni un QR per un servizio specifico")
-  getTokenQr(
+  @summary("Get an access token for a specific service | Ottieni un token di accesso per un servizio specifico")
+  @doc("Returns the access token as plain text, or rendered as a QR code (SVG) when requested with `Accept: image/svg+xml`. | Restituisce il token di accesso come testo, oppure come codice QR (SVG) se richiesto con `Accept: image/svg+xml`.")
+  getAccessToken(
     @query type: TokenType,
     @query id?: string,
     @header accept: "image/svg+xml" | "text/plain",
-  ): TokenQrSvgResponse | TokenQrTextResponse | BaseErrors;
+  ): SvgResponse | AccessTokenResponse | BaseErrors;
 }
 
 @tag("Event Admissions")
