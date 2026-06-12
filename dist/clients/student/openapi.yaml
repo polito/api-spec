@@ -404,7 +404,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: The request has succeeded.
+          description: Image rendered as a JPEG
           content:
             image/jpeg:
               schema:
@@ -582,7 +582,7 @@ paths:
   /auth/serviceLink/smartcard:
     get:
       operationId: ServiceLink_getSmartCardLink
-      summary: Get authorised service link for SmartCard
+      summary: Get authenticated smartcard picture endpoint | Ottieni l'endpoint autenticato per l'immagine della smartcard
       parameters: []
       responses:
         '200':
@@ -5610,6 +5610,7 @@ components:
           example: Lauree
         contextId:
           type: string
+          example: LAUREE
         title:
           type: string
           example: Cerimonia di proclamazione
@@ -5623,9 +5624,11 @@ components:
           example: '2026-07-20T12:00:00Z'
         description:
           type: string
+          example: Cerimonia di proclamazione e consegna dei diplomi
         place:
           type: string
           nullable: true
+          example: aula-magna
         placeName:
           type: string
           nullable: true

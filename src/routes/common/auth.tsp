@@ -183,6 +183,7 @@ model Event {
   @example("Lauree")
   contextName: string;
 
+  @example("LAUREE")
   contextId: string;
 
   @example("Cerimonia di proclamazione")
@@ -194,7 +195,10 @@ model Event {
   @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
   eventEndsAt: utcDateTime;
 
+  @example("Cerimonia di proclamazione e consegna dei diplomi")
   description?: string;
+
+  @example("aula-magna")
   place: string | null;
 
   @example("Aula Magna")
@@ -263,10 +267,11 @@ model AccessTokenResponse {
   @body token: string;
 }
 
-model PictureResponse {
+/** Image rendered as a JPEG */
+model JpegResponse {
   @statusCode statusCode: 200;
   @header contentType: "image/jpeg";
-  @body picture: bytes;
+  @body image: bytes;
 }
 
 @tag("Auth")
@@ -328,7 +333,7 @@ interface ServiceLink {
 
   @get
   @route("/smartcard")
-  @summary("Get authorised service link for SmartCard")
+  @summary("Get authenticated smartcard picture endpoint | Ottieni l'endpoint autenticato per l'immagine della smartcard")
   getSmartCardLink(): OkDataResponse<LinkToService> | BaseErrors;
 }
 
@@ -342,7 +347,7 @@ interface Profile {
   @route("/picture")
   @get
   @summary("Get user profile picture | Ottieni la foto del profilo utente")
-  getProfilePicture(): PictureResponse | BaseErrors;
+  getProfilePicture(): JpegResponse | BaseErrors;
 
   @route("/token")
   @get
