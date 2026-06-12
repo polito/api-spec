@@ -1,3 +1,5 @@
+namespace PolitoAPI;
+
 const _ex_publishCourseNotice_req = #{
   parameters: #{
     courseId: 251007,

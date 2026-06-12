@@ -194,6 +194,7 @@ model StudentsMessageRequest {
 enum FacultyAssignmentStatus {
   new: "new",
   seen: "seen",
+  removalRequested: "removalRequested",
 }
 
 model FacultyAssignmentAuthor {
