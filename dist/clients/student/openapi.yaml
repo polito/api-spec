@@ -7151,9 +7151,7 @@ components:
         - isCurrentlyEnrolled
         - averageGrade
         - estimatedFinalGrade
-        - averageGradePurged
-        - estimatedFinalGradePurged
-        - usePurgedAverageFinalGrade
+        - isFinalGradePurged
         - mastersAdmissionAverageGrade
         - totalOnTimeExamPoints
         - maxOnTimeExamPoints
@@ -7203,17 +7201,9 @@ components:
           type: number
           nullable: true
           example: 105
-        averageGradePurged:
-          type: number
-          nullable: true
-          description: Purged grade is only available for bachelor degree students
-        estimatedFinalGradePurged:
-          type: number
-          nullable: true
-          description: Purged grade is only available for bachelor degree students
-        usePurgedAverageFinalGrade:
+        isFinalGradePurged:
           type: boolean
-          description: Specify whether to use purgedAverageFinalGrade or averageFinalGrade as the graduation grade shown
+          description: Specify whether estimatedFinelGrade is purged - Purged grade is only available for bachelor degree students
         mastersAdmissionAverageGrade:
           type: number
           nullable: true
