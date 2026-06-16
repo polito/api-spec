@@ -259,14 +259,8 @@ model StudentCareer {
   @example(105)
   estimatedFinalGrade: numeric | null;
 
-  /** Purged grade is only available for bachelor degree students */
-  averageGradePurged: numeric | null;
-
-  /** Purged grade is only available for bachelor degree students */
-  estimatedFinalGradePurged: numeric | null;
-
-  /** Specify whether to use purgedAverageFinalGrade or averageFinalGrade as the graduation grade shown */
-  usePurgedAverageFinalGrade: boolean;
+  /** Specify whether estimatedFinelGrade is purged - Purged grade is only available for bachelor degree students */
+  isFinalGradePurged: boolean;
 
   /** Master's admission grade is only available for bachelor degree students */
   mastersAdmissionAverageGrade: numeric | null;
