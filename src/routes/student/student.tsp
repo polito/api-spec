@@ -228,22 +228,9 @@ model Guide {
   sections: GuideSection[];
 }
 
-model Student {
-  @example("s290683")
-  username: string;
-
-  @example("Luca")
-  firstName: string;
-
-  @example("Pezzolla")
-  lastName: string;
-
+model StudentCareer {
   @example("active")
   status: "active" | "closed" | "cancelled" | "graduated" | "career_closed";
-
-  /** All the ids related to this student */
-  @example(#["290683", "213956"])
-  allCareerIds: string[];
 
   @example("81-6")
   degreeId: string;
@@ -272,14 +259,8 @@ model Student {
   @example(105)
   estimatedFinalGrade: numeric | null;
 
-  /** Purged grade is only available for bachelor degree students */
-  averageGradePurged: numeric | null;
-
-  /** Purged grade is only available for bachelor degree students */
-  estimatedFinalGradePurged: numeric | null;
-
-  /** Specify whether to use purgedAverageFinalGrade or averageFinalGrade as the graduation grade shown */
-  usePurgedAverageFinalGrade: boolean;
+  /** Specify whether estimatedFinelGrade is purged - Purged grade is only available for bachelor degree students */
+  isFinalGradePurged: boolean;
 
   /** Master's admission grade is only available for bachelor degree students */
   mastersAdmissionAverageGrade: numeric | null;
@@ -299,17 +280,10 @@ model Student {
   enrollmentCredits: integer;
   enrollmentAttendedCredits: integer;
   enrollmentAcquiredCredits: integer;
-  smartCardPicture: string | null;
-  europeanStudentCard: EuropeanStudentCard;
 }
 
 @tag("Student")
 interface StudentNs {
-  @route("/me")
-  @get
-  @summary("Retrieve student profile | Recupera il profilo studente")
-  getStudent(): OkDataResponse<Student> | BaseErrors;
-
   @route("/deadlines")
   @get
   @summary("List deadlines | Elenca scadenze")
@@ -343,6 +317,15 @@ interface StudentNs {
   @get
   @summary("Get guides | Mostra guide")
   getGuides(): OkDataResponse<Guide[]> | BaseErrors;
+}
+
+@tag("Student")
+@route("/student")
+interface StudentNew {
+  @route("/career")
+  @get
+  @summary("Retrieve student career | Recupera la cariera dello studente")
+  getStudentCareer(): OkDataResponse<StudentCareer> | BaseErrors;
 }
 
 @tag("Student")

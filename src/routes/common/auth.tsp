@@ -9,6 +9,11 @@ using OpenAPI;
 
 namespace PolitoAPI;
 
+enum TokenType {
+  card,
+  event,
+}
+
 @example(_ex_identity)
 model Identity {
   @example("s290683")
@@ -157,6 +162,55 @@ model LinkToService {
   url: string;
 }
 
+model AuthProfile {
+  @example("s290683")
+  username: string;
+
+  @example("Luca")
+  firstName: string;
+
+  @example("Pezzolla")
+  lastName: string;
+
+  @example(#["S290683", "S213956"])
+  allUsernames: string[];
+}
+
+model Event {
+  @example("graduation-2026-01")
+  id: string;
+
+  @example("Lauree")
+  contextName: string;
+
+  @example("LAUREE")
+  contextId: string;
+
+  @example("Cerimonia di proclamazione")
+  title: string;
+
+  @example(utcDateTime.fromISO("2026-07-20T09:00:00Z"))
+  eventStartsAt: utcDateTime;
+
+  @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
+  eventEndsAt: utcDateTime;
+
+  @example("Cerimonia di proclamazione e consegna dei diplomi")
+  description?: string;
+
+  @example("aula-magna")
+  place: string | null;
+
+  @example("Aula Magna")
+  placeName: string | null;
+
+  @example(15)
+  totalAdmissions: integer;
+
+  @example(8)
+  remainingAdmissions: integer;
+}
+
 model AppInfoRequest {
   ...ClientVersionRequest;
   ...FcmRegistrationRequest;
@@ -197,6 +251,27 @@ model EnrolMfaRequest {
 
   @example("dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK")
   pubkey: string;
+}
+
+/** QR rendered as an SVG image */
+model SvgResponse {
+  @statusCode statusCode: 200;
+  @header contentType: "image/svg+xml";
+  @body svg: string;
+}
+
+/** Raw token content as plain text */
+model AccessTokenResponse {
+  @statusCode statusCode: 200;
+  @header contentType: "text/plain";
+  @body token: string;
+}
+
+/** Image rendered as a JPEG */
+model JpegResponse {
+  @statusCode statusCode: 200;
+  @header contentType: "image/jpeg";
+  @body image: bytes;
 }
 
 @tag("Auth")
@@ -255,4 +330,40 @@ interface ServiceLink {
   @route("/mail")
   @summary("Get authorised service link for Mail")
   getMailLink(): OkDataResponse<LinkToService> | BaseErrors;
+
+  @get
+  @route("/smartcard")
+  @summary("Get authenticated smartcard picture endpoint | Ottieni l'endpoint autenticato per l'immagine della smartcard")
+  getSmartCardLink(): OkDataResponse<LinkToService> | BaseErrors;
+}
+
+@tag("Auth")
+@route("/auth/profile")
+interface Profile {
+  @get
+  @summary("Get user profile | Ottieni il profilo utente")
+  getProfile(): OkDataResponse<AuthProfile> | BaseErrors;
+
+  @route("/picture")
+  @get
+  @summary("Get user profile picture | Ottieni la foto del profilo utente")
+  getProfilePicture(): JpegResponse | BaseErrors;
+
+  @route("/token")
+  @get
+  @summary("Get an access token for a specific service | Ottieni un token di accesso per un servizio specifico")
+  @doc("Returns the access token as plain text, or rendered as a QR code (SVG) when requested with `Accept: image/svg+xml`. | Restituisce il token di accesso come testo, oppure come codice QR (SVG) se richiesto con `Accept: image/svg+xml`.")
+  getAccessToken(
+    @query type: TokenType,
+    @query id?: string,
+    @header accept: "image/svg+xml" | "text/plain",
+  ): SvgResponse | AccessTokenResponse | BaseErrors;
+}
+
+@tag("Event Admissions")
+@route("/event-admissions")
+interface EventAdmission {
+  @get
+  @summary("Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso")
+  getEventAdmissions(): OkDataResponse<Event[]> | BaseErrors;
 }
