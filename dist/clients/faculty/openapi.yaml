@@ -8,6 +8,7 @@ info:
 tags:
   - name: Announcements
   - name: Auth
+  - name: Event Admissions
   - name: Bookings
   - name: Courses
   - name: Lectures
@@ -358,6 +359,114 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ValidateMfaRequest'
+  /auth/profile:
+    get:
+      operationId: Profile_getProfile
+      summary: Get user profile | Ottieni il profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AuthProfile'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/picture:
+    get:
+      operationId: Profile_getProfilePicture
+      summary: Get user profile picture | Ottieni la foto del profilo utente
+      parameters: []
+      responses:
+        '200':
+          description: Image rendered as a JPEG
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/profile/token:
+    get:
+      operationId: Profile_getAccessToken
+      summary: Get an access token for a specific service | Ottieni un token di accesso per un servizio specifico
+      description: 'Returns the access token as plain text, or rendered as a QR code (SVG) when requested with `Accept: image/svg+xml`. | Restituisce il token di accesso come testo, oppure come codice QR (SVG) se richiesto con `Accept: image/svg+xml`.'
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/TokenType'
+          explode: false
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+        - name: accept
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - image/svg+xml
+              - text/plain
+      responses:
+        '200':
+          description: QR rendered as an SVG image
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
   /auth/serviceLink/liveClass/{meetingID}:
     get:
       operationId: ServiceLink_getLiveClassLink
@@ -437,6 +546,37 @@ paths:
           description: Moodle course identifier
           schema:
             type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LinkToService'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Auth
+  /auth/serviceLink/smartcard:
+    get:
+      operationId: ServiceLink_getSmartCardLink
+      summary: Get authenticated smartcard picture endpoint | Ottieni l'endpoint autenticato per l'immagine della smartcard
+      parameters: []
       responses:
         '200':
           description: The request has succeeded.
@@ -1406,6 +1546,39 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /event-admissions:
+    get:
+      operationId: EventAdmission_getEventAdmissions
+      summary: Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Event Admissions
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -2748,6 +2921,30 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+    AuthProfile:
+      type: object
+      required:
+        - username
+        - firstName
+        - lastName
+        - allUsernames
+      properties:
+        username:
+          type: string
+          example: s290683
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Pezzolla
+        allUsernames:
+          type: array
+          items:
+            type: string
+          example:
+            - S290683
+            - S213956
     Booking:
       type: object
       required:
@@ -3687,6 +3884,57 @@ components:
             - expiresAt
             - qrCode
           nullable: true
+    Event:
+      type: object
+      required:
+        - id
+        - contextName
+        - contextId
+        - title
+        - eventStartsAt
+        - eventEndsAt
+        - place
+        - placeName
+        - totalAdmissions
+        - remainingAdmissions
+      properties:
+        id:
+          type: string
+          example: graduation-2026-01
+        contextName:
+          type: string
+          example: Lauree
+        contextId:
+          type: string
+          example: LAUREE
+        title:
+          type: string
+          example: Cerimonia di proclamazione
+        eventStartsAt:
+          type: string
+          format: date-time
+          example: '2026-07-20T09:00:00Z'
+        eventEndsAt:
+          type: string
+          format: date-time
+          example: '2026-07-20T12:00:00Z'
+        description:
+          type: string
+          example: Cerimonia di proclamazione e consegna dei diplomi
+        place:
+          type: string
+          nullable: true
+          example: aula-magna
+        placeName:
+          type: string
+          nullable: true
+          example: Aula Magna
+        totalAdmissions:
+          type: integer
+          example: 15
+        remainingAdmissions:
+          type: integer
+          example: 8
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4545,6 +4793,11 @@ components:
           $ref: '#/components/schemas/Device'
       example:
         username: s290683
+    TokenType:
+      type: string
+      enum:
+        - card
+        - event
     UpdateAssignmentRequest:
       type: object
       properties:

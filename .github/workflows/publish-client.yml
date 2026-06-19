@@ -69,7 +69,7 @@ jobs:
           npm run generate -- $CLIENT
 
       - name: Publish the client
-        run: npm publish
+        run: npm install && npm publish
         working-directory: ./dist/clients/${{ steps.detect.outputs.client }}/client
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
