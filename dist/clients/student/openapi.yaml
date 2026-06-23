@@ -3889,44 +3889,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/replies/{replyId}/resolve:
-    put:
-      operationId: Tickets_resolveTicket
-      summary: Resolve a ticket | Risolvi un ticket
-      parameters:
-        - name: ticketId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: replyId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Tickets
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TicketFeedbackRequest'
   /unreadEmails:
     get:
       operationId: StudentNs_getUnreadEmailsNumber
@@ -5882,6 +5844,22 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+    FeedbackProvided:
+      type: object
+      required:
+        - rating
+        - createdAt
+      properties:
+        rating:
+          type: number
+          example: 3
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+      example:
+        rating: 3
+        createdAt: '2022-08-31T14:00:00Z'
     Floor:
       type: object
       required:
@@ -7484,6 +7462,7 @@ components:
         - replies
         - attachments
         - needsFeedback
+        - duplicateId
       properties:
         id:
           type: number
@@ -7527,6 +7506,11 @@ components:
             $ref: '#/components/schemas/TicketAttachment'
         needsFeedback:
           type: boolean
+        feedbackProvided:
+          $ref: '#/components/schemas/FeedbackProvided'
+        duplicateId:
+          type: integer
+          nullable: true
     TicketAttachment:
       type: object
       required:
@@ -7633,7 +7617,7 @@ components:
         id: 1145890
         subject: Sostituzione esame in piano carriera
         message: Buongiorno, vi contatto per sostituire A con B
-        status: new
+        status: open
         hasAttachments: true
         isFromAgent: false
         agentId: null
@@ -7698,11 +7682,13 @@ components:
     TicketStatus:
       type: string
       enum:
-        - new
+        - open
         - pending
         - waiting_user
-        - closed
+        - incoming
         - resolved
+        - autoresolved
+        - duplicate
     TicketSubtopic:
       type: object
       required:

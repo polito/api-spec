@@ -36,11 +36,13 @@ model TicketTopic {
 }
 
 enum TicketStatus {
-  new: "new",
+  open: "open",
   pending: "pending",
   waiting_user: "waiting_user",
-  closed: "closed",
+  incoming: "incoming",
   resolved: "resolved",
+  autoresolved: "autoresolved",
+  duplicate: "duplicate",
 }
 
 @example(_ex_ticket_attachment)
@@ -56,6 +58,15 @@ model TicketAttachment {
 
   @example(305)
   sizeInKiloBytes: integer;
+}
+
+@example(_ex_feedback_provided)
+model FeedbackProvided {
+  @example(3)
+  rating: numeric;
+
+  @example(utcDateTime.fromISO("2022-08-31T14:00:00Z"))
+  createdAt: utcDateTime;
 }
 
 @example(_ex_ticket_overview)
@@ -126,6 +137,8 @@ model Ticket {
   replies: TicketReply[];
   attachments: TicketAttachment[];
   needsFeedback: boolean;
+  feedbackProvided?: FeedbackProvided;
+  duplicateId: integer | null;
 }
 
 model CreateTicketRequest {
@@ -235,15 +248,6 @@ interface Tickets {
     @path replyId: integer,
     @query positive: boolean,
   ): OkDataResponse<boolean> | BaseErrors;
-
-  @route("/{ticketId}/replies/{replyId}/resolve")
-  @put
-  @summary("Resolve a ticket | Risolvi un ticket")
-  resolveTicket(
-    @path ticketId: integer,
-    @path replyId: integer,
-    @body body: TicketFeedbackRequest,
-  ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/replies/{replyId}/attachments/{attachmentId}")
   @get
