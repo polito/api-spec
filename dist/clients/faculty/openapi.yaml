@@ -829,6 +829,208 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateBookingRequest'
+  /bookings/interdepartmental-spaces:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaces
+      summary: Get the list of interdepartmental spaces
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InterdepartmentalSpaceFilter'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/types:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaceTypes
+      summary: Get the list of interdepartmental space types
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Types'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/{id}:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpace
+      summary: Get a specific interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InterdepartmentalSpace'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/{id}/events:
+    post:
+      operationId: InterdepartmentalSpacesService_createSpaceEvent
+      summary: Create an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+  /bookings/interdepartmental-spaces/{id}/events/{eventId}:
+    patch:
+      operationId: InterdepartmentalSpacesService_updateSpaceEvent
+      summary: Update an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+    delete:
+      operationId: InterdepartmentalSpacesService_deleteSpaceEvent
+      summary: Delete an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
   /bookings/{bookingId}:
     delete:
       operationId: BookingsManagement_deleteBooking
@@ -1580,208 +1782,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Event Admissions
-  /interdepartmental-spaces:
-    get:
-      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaces
-      summary: Get the list of interdepartmental spaces
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/InterdepartmentalSpaceFilter'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
-  /interdepartmental-spaces/types:
-    get:
-      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaceTypes
-      summary: Get the list of interdepartmental space types
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Types'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
-  /interdepartmental-spaces/{id}:
-    get:
-      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpace
-      summary: Get a specific interdepartmental space
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/InterdepartmentalSpace'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
-  /interdepartmental-spaces/{id}/events:
-    post:
-      operationId: InterdepartmentalSpacesService_createSpaceEvent
-      summary: Create an event in an interdepartmental space
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSpaceEventRequest'
-  /interdepartmental-spaces/{id}/events/{eventId}:
-    patch:
-      operationId: InterdepartmentalSpacesService_updateSpaceEvent
-      summary: Update an event in an interdepartmental space
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: eventId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSpaceEventRequest'
-    delete:
-      operationId: InterdepartmentalSpacesService_deleteSpaceEvent
-      summary: Delete an event in an interdepartmental space
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: eventId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Interdepartmental Spaces
   /lectures:
     get:
       operationId: Lectures_getLectures
