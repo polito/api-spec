@@ -5642,19 +5642,9 @@ components:
     Exam:
       type: object
       required:
-        - id
-        - courseId
-        - courseShortcode
-        - courseName
         - teacherId
-        - type
         - status
         - bookingStartsAt
-        - bookingEndsAt
-        - examStartsAt
-        - examEndsAt
-        - bookedCount
-        - availableCount
         - question
         - feedback
         - isReschedulable
@@ -5663,51 +5653,18 @@ components:
         - requestReason
         - requestDetails
       properties:
-        id:
-          type: integer
-        courseId:
-          type: number
-        courseShortcode:
-          type: string
-        courseName:
-          type: string
         teacherId:
           type: integer
-        type:
-          type: string
         places:
           type: array
           items:
             $ref: '#/components/schemas/PlaceRef'
         status:
-          type: string
-          enum:
-            - available
-            - booked
-            - requestable
-            - requested
-            - requestAccepted
-            - requestRejected
-            - unavailable
+          $ref: '#/components/schemas/ExamStatus'
         bookingStartsAt:
           type: string
           format: date-time
           nullable: true
-        bookingEndsAt:
-          type: string
-          format: date-time
-        examStartsAt:
-          type: string
-          format: date-time
-          nullable: true
-        examEndsAt:
-          type: string
-          format: date-time
-          nullable: true
-        bookedCount:
-          type: integer
-        availableCount:
-          type: integer
         question:
           type: object
           properties:
@@ -5742,6 +5699,51 @@ components:
         requestDetails:
           type: string
           nullable: true
+      allOf:
+        - $ref: '#/components/schemas/ExamBase'
+    ExamBase:
+      type: object
+      required:
+        - id
+        - courseId
+        - courseShortcode
+        - courseName
+        - type
+        - bookingEndsAt
+        - examStartsAt
+        - examEndsAt
+        - bookedCount
+        - availableCount
+      properties:
+        id:
+          type: integer
+        courseId:
+          type: number
+        courseShortcode:
+          type: string
+        courseName:
+          type: string
+        type:
+          type: string
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
+        bookingEndsAt:
+          type: string
+          format: date-time
+        examStartsAt:
+          type: string
+          format: date-time
+          nullable: true
+        examEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        bookedCount:
+          type: integer
+        availableCount:
+          type: integer
     ExamGrade:
       type: object
       required:
@@ -5787,6 +5789,16 @@ components:
           type: boolean
           description: Defines whether the credits from the exam count toward the total required for graduation
           example: true
+    ExamStatus:
+      type: string
+      enum:
+        - available
+        - booked
+        - requestable
+        - requested
+        - requestAccepted
+        - requestRejected
+        - unavailable
     FcmRegistrationRequest:
       type: object
       properties:

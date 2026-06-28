@@ -2,6 +2,7 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../../routes/common/exams.tsp";
 import "../../examples/faculty/exams.tsp";
 
 using Http;
@@ -10,75 +11,33 @@ namespace PolitoAPI;
 
 model ExamEnrollment {
   @example("290683")
-  personId: string;
+  username: string;
 
-  @example("Mario Rossi")
+  @example("Mario")
   name: string;
 
-  @example("Ingegneria Informatica")
-  degree: string | null;
-
-  @example("mario.rossi@studenti.polito.it")
-  email: string | null;
+  @example("Rossi")
+  surname: string;
 }
 
-model FacultyExam {
-  @example(888122)
-  id: integer;
+model ExamAttendee extends ExamEnrollment {
+  /** Se lo studente ha diritto a tempo aggiuntivo (DSA/BES) */
+  @example(true)
+  needsExtraTime: boolean;
 
-  @example(262147)
-  courseId: integer;
+  /** Minuti aggiuntivi concessi, null se non applicabile */
+  @example(30)
+  extraTimeMinutes: integer | null;
 
-  @example("02JSKOV")
-  courseShortcode: string;
-
-  @example("Human Computer Interaction")
-  courseName: string;
-
-  @example(2154)
-  teacherId: integer;
-
-  @example("Esami scritti a risposta aperta o chiusa tramite PC")
-  type: string;
-
-  places: PlaceRef[];
-
-  @example("available")
-  status: string;
-
-  @example(utcDateTime.fromISO("2026-03-04T11:07:28.541Z"))
-  bookingStartsAt: utcDateTime;
-
-  @example(utcDateTime.fromISO("2022-08-31T14:00:00Z"))
-  bookingEndsAt: utcDateTime;
-
-  @example(utcDateTime.fromISO("2022-09-02T14:00:00Z"))
-  examStartsAt: utcDateTime;
-
-  @example(utcDateTime.fromISO("2022-09-02T17:00:00Z"))
-  examEndsAt: utcDateTime;
-
-  @example(42)
-  bookedCount: integer;
-
-  @example(8)
-  availableCount: integer;
-
-  question: string | null;
-  feedback: string | null;
-
+  /** Se lo studente risulta presente all'esame */
   @example(false)
-  isReschedulable: boolean;
+  isPresent: boolean;
+}
 
-  notes: string | null;
-
-  @example(1)
-  moduleNumber: integer;
-
-  requestReason: string | null;
-  requestDetails: string | null;
-
-  enrolled: ExamEnrollment[];
+model CheckAttendanceRequest {
+  /** Matricole degli studenti risultati presenti */
+  @example(#["290683", "291045"])
+  presentUsernames: string[];
 }
 
 model ExamNotificationRequest {
@@ -104,27 +63,34 @@ model AcceptedData {
 }
 
 @tag("Faculty - Exams")
-@route("/faculty/exams")
+@route("/exams")
 interface FacultyExams {
   @get
-  @summary("List faculty exams | Elenco appelli del docente")
-  @doc("Elenca gli appelli d'esame del docente con filtri opzionali.")
-  @opExample(_ex_listFacultyExams_resp)
-  listFacultyExams(
-    @query courseId?: string,
-    @query dateFrom?: plainDate,
-    @query dateTo?: plainDate,
-    @query page?: integer = 1,
-    @query pageSize?: integer = 20,
-  ): OkDataResponse<FacultyExam[]> | NotAuthorized | ServerError;
+  @summary("List exams | Elenca esami")
+  @opExample(_ex_getExams_resp)
+  getExams(): OkDataResponse<ExamBase[]> | BaseErrors;
 
-  @route("/{examId}")
+  @route("/{examId}/students")
   @get
-  @summary("Get faculty exam details | Dettaglio appello con iscritti")
-  @doc("Restituisce i dettagli dell'appello, inclusa la lista degli studenti iscritti.")
-  @opExample(_ex_getFacultyExam_resp)
-  getFacultyExam(@path examId: integer):
-    | OkDataResponse<FacultyExam>
+  @summary("List students in exam | Elenca studenti nell'esame")
+  @doc("Restituisce la lista degli studenti iscritti a un appello specifico.")
+  @opExample(_ex_listStudentsInExam_resp)
+  listStudentsInExam(@path examId: integer):
+    | OkDataResponse<ExamAttendee[]>
+    | NotAuthorized
+    | NotFound
+    | ServerError;
+
+  @route("/{examId}/attendance")
+  @post
+  @summary("Check exam attendance | Verifica presenze all'esame")
+  @doc("Registra le presenze passando l'array delle matricole presenti. Restituisce lo stato aggiornato delle presenze.")
+  @opExample(_ex_checkAttendance_resp)
+  checkAttendance(
+    @path examId: integer,
+    @body body: CheckAttendanceRequest,
+  ):
+    | OkDataResponse<ExamAttendee[]>
     | NotAuthorized
     | NotFound
     | ServerError;
@@ -137,7 +103,9 @@ interface FacultyExams {
   notifyExamSubscribers(
     @path examId: integer,
     @body body: ExamNotificationRequest,
-  ): AcceptedResponse<{ data: AcceptedData }> | NotAuthorized | BaseErrors;
+  ): AcceptedResponse<{
+    data: AcceptedData;
+  }> | NotAuthorized | BaseErrors;
 
   @route("/{examId}/students/{studentId}")
   @put
@@ -147,6 +115,28 @@ interface FacultyExams {
   addStudentToExam(@path examId: integer, @path studentId: integer):
     | OkDataResponse<ExamEnrollment>
     | OkDataCreatedResponse<ExamEnrollment>
+    | NotAuthorized
+    | NotFound
+    | ServerError;
+
+  @route("/{examId}/students/{studentId}")
+  @get
+  @summary("Check if student registration for the exam is possible | Verifica se possibile l'iscrizione studente all'esame")
+  @opExample(_ex_enrollStudentToExam_resp)
+  checkStudentEnrollment(@path examId: integer, @path studentId: integer):
+    | NoContentResponse
+    | ErrorResponse
+    | NotAuthorized
+    | NotFound
+    | ServerError;
+
+  @route("/{examId}/students/{studentId}")
+  @post
+  @summary("Enroll student to exam | Iscrivi studente all'esame")
+  @doc("Iscrive uno studente a un appello specifico. Operazione")
+  @opExample(_ex_enrollStudentToExam_resp)
+  enrollStudentToExam(@path examId: integer, @path studentId: integer):
+    | NoContentResponse
     | NotAuthorized
     | NotFound
     | ServerError;

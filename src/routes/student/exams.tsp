@@ -2,34 +2,28 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../../routes/common/exams.tsp";
 import "../../examples/student/exams.tsp";
 
 using Http;
 
 namespace PolitoAPI;
 
-model Exam {
-  id: integer;
-  courseId: numeric;
-  courseShortcode: string;
-  courseName: string;
+union ExamStatus {
+  available: "available",
+  booked: "booked",
+  requestable: "requestable",
+  requested: "requested",
+  requestAccepted: "requestAccepted",
+  requestRejected: "requestRejected",
+  unavailable: "unavailable",
+}
+
+model Exam extends ExamBase {
   teacherId: integer;
-  type: string;
   places?: PlaceRef[];
-  status:
-    | "available"
-    | "booked"
-    | "requestable"
-    | "requested"
-    | "requestAccepted"
-    | "requestRejected"
-    | "unavailable";
+  status: ExamStatus;
   bookingStartsAt: utcDateTime | null;
-  bookingEndsAt: utcDateTime;
-  examStartsAt: utcDateTime | null;
-  examEndsAt: utcDateTime | null;
-  bookedCount: integer;
-  availableCount: integer;
   question: {
     id: integer;
     statement: string;

@@ -15,6 +15,7 @@ tags:
   - name: News
   - name: People
   - name: Places
+  - name: Faculty - Exams
 paths:
   /announcements:
     get:
@@ -1579,6 +1580,379 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Event Admissions
+  /exams:
+    get:
+      operationId: FacultyExams_getExams
+      summary: List exams | Elenca esami
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ExamBase'
+                required:
+                  - data
+              example:
+                data:
+                  - id: 888122
+                    courseId: 262147
+                    courseShortcode: 02JSKOV
+                    courseName: Human Computer Interaction
+                    type: Esami scritti a risposta aperta o chiusa tramite PC
+                    places:
+                      - buildingId: TO_CIT22
+                        floorId: XPTE
+                        name: Aula 1P
+                        roomId: '30'
+                        siteId: TO_CIT
+                    bookingEndsAt: '2026-08-31T14:00:00Z'
+                    examStartsAt: '2026-09-02T14:00:00Z'
+                    examEndsAt: '2026-09-02T17:00:00Z'
+                    bookedCount: 42
+                    availableCount: 8
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+  /exams/{examId}/attendance:
+    post:
+      operationId: FacultyExams_checkAttendance
+      summary: Check exam attendance | Verifica presenze all'esame
+      description: Registra le presenze passando l'array delle matricole presenti. Restituisce lo stato aggiornato delle presenze.
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ExamAttendee'
+                required:
+                  - data
+              example:
+                data:
+                  - username: '290683'
+                    name: Mario
+                    surname: Rossi
+                    needsExtraTime: true
+                    extraTimeMinutes: 30
+                    isPresent: true
+                  - username: '291045'
+                    name: Laura
+                    surname: Bianchi
+                    needsExtraTime: false
+                    extraTimeMinutes: null
+                    isPresent: true
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckAttendanceRequest'
+  /exams/{examId}/notify:
+    post:
+      operationId: FacultyExams_notifyExamSubscribers
+      summary: Notify exam subscribers | Invia comunicazione agli iscritti all'esame
+      description: Invia un messaggio/avviso agli studenti iscritti a un appello specifico, permettendo l'invio sia all'intera lista sia a un sottoinsieme selezionato.
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AcceptedData'
+                required:
+                  - data
+              example:
+                data:
+                  status: accepted
+                  trackingId: track-abc-123
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamNotificationRequest'
+  /exams/{examId}/students:
+    get:
+      operationId: FacultyExams_listStudentsInExam
+      summary: List students in exam | Elenca studenti nell'esame
+      description: Restituisce la lista degli studenti iscritti a un appello specifico.
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ExamAttendee'
+                required:
+                  - data
+              example:
+                data:
+                  - username: '290683'
+                    name: Mario
+                    surname: Rossi
+                    needsExtraTime: true
+                    extraTimeMinutes: 30
+                    isPresent: false
+                  - username: '291045'
+                    name: Laura
+                    surname: Bianchi
+                    needsExtraTime: false
+                    extraTimeMinutes: null
+                    isPresent: false
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+  /exams/{examId}/students/{studentId}:
+    put:
+      operationId: FacultyExams_addStudentToExam
+      summary: Add student to exam | Aggiungi studente all'esame
+      description: Inserisce manualmente uno studente tra gli iscritti a un appello (casi eccezionali). Operazione idempotente.
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ExamEnrollment'
+                required:
+                  - data
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ExamEnrollment'
+                required:
+                  - data
+              example:
+                data:
+                  username: '292145'
+                  name: Anna
+                  surname: Ferrari
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+    get:
+      operationId: FacultyExams_checkStudentEnrollment
+      summary: Check if student registration for the exam is possible | Verifica se possibile l'iscrizione studente all'esame
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
+    post:
+      operationId: FacultyExams_enrollStudentToExam
+      summary: Enroll student to exam | Iscrivi studente all'esame
+      description: Iscrive uno studente a un appello specifico. Operazione
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Exams
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -2860,6 +3234,18 @@ security:
   - BearerAuth: []
 components:
   schemas:
+    AcceptedData:
+      type: object
+      required:
+        - status
+        - trackingId
+      properties:
+        status:
+          type: string
+          example: accepted
+        trackingId:
+          type: string
+          example: track-abc-123
     Announcement:
       type: object
       required:
@@ -3366,6 +3752,19 @@ components:
           $ref: '#/components/schemas/PlaceCategoryOverview'
         geoJson:
           $ref: '#/components/schemas/GeoJsonPolygon'
+    CheckAttendanceRequest:
+      type: object
+      required:
+        - presentUsernames
+      properties:
+        presentUsernames:
+          type: array
+          items:
+            type: string
+          description: Matricole degli studenti risultati presenti
+          example:
+            - '290683'
+            - '291045'
     Client:
       type: object
       required:
@@ -3935,6 +4334,114 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
+    ExamAttendee:
+      type: object
+      required:
+        - needsExtraTime
+        - extraTimeMinutes
+        - isPresent
+      properties:
+        needsExtraTime:
+          type: boolean
+          description: Se lo studente ha diritto a tempo aggiuntivo (DSA/BES)
+          example: true
+        extraTimeMinutes:
+          type: integer
+          nullable: true
+          description: Minuti aggiuntivi concessi, null se non applicabile
+          example: 30
+        isPresent:
+          type: boolean
+          description: Se lo studente risulta presente all'esame
+          example: false
+      allOf:
+        - $ref: '#/components/schemas/ExamEnrollment'
+    ExamBase:
+      type: object
+      required:
+        - id
+        - courseId
+        - courseShortcode
+        - courseName
+        - type
+        - bookingEndsAt
+        - examStartsAt
+        - examEndsAt
+        - bookedCount
+        - availableCount
+      properties:
+        id:
+          type: integer
+        courseId:
+          type: number
+        courseShortcode:
+          type: string
+        courseName:
+          type: string
+        type:
+          type: string
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
+        bookingEndsAt:
+          type: string
+          format: date-time
+        examStartsAt:
+          type: string
+          format: date-time
+          nullable: true
+        examEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        bookedCount:
+          type: integer
+        availableCount:
+          type: integer
+    ExamEnrollment:
+      type: object
+      required:
+        - username
+        - name
+        - surname
+      properties:
+        username:
+          type: string
+          example: '290683'
+        name:
+          type: string
+          example: Mario
+        surname:
+          type: string
+          example: Rossi
+    ExamNotificationRequest:
+      type: object
+      required:
+        - subject
+        - message
+        - channels
+      properties:
+        subject:
+          type: string
+          example: 'Importante: modifica orario esame'
+        message:
+          type: string
+          example: Si comunica che l'orario dell'esame è stato spostato alle ore 14:00.
+        channels:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - sms
+        recipientPersonIds:
+          type: array
+          items:
+            type: string
+          example:
+            - '290683'
+            - '291045'
     FcmRegistrationRequest:
       type: object
       properties:

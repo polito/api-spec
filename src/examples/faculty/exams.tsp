@@ -4,8 +4,8 @@ using Http;
 
 namespace PolitoAPI;
 
-// List faculty exams example
-const _ex_listFacultyExams_resp = #{
+// List exams example
+const _ex_getExams_resp = #{
   returnType: #{
     statusCode: 200,
     body: #{
@@ -15,7 +15,6 @@ const _ex_listFacultyExams_resp = #{
           courseId: 262147,
           courseShortcode: "02JSKOV",
           courseName: "Human Computer Interaction",
-          teacherId: 2154,
           type: "Esami scritti a risposta aperta o chiusa tramite PC",
           places: #[
             #{
@@ -26,84 +25,67 @@ const _ex_listFacultyExams_resp = #{
               siteId: "TO_CIT",
             },
           ],
-          status: "available",
-          bookingStartsAt: utcDateTime.fromISO("2026-03-04T11:07:28.541Z"),
-          bookingEndsAt: utcDateTime.fromISO("2022-08-31T14:00:00Z"),
-          examStartsAt: utcDateTime.fromISO("2022-09-02T14:00:00Z"),
-          examEndsAt: utcDateTime.fromISO("2022-09-02T17:00:00Z"),
+          bookingEndsAt: utcDateTime.fromISO("2026-08-31T14:00:00Z"),
+          examStartsAt: utcDateTime.fromISO("2026-09-02T14:00:00Z"),
+          examEndsAt: utcDateTime.fromISO("2026-09-02T17:00:00Z"),
           bookedCount: 42,
           availableCount: 8,
-          question: null,
-          feedback: null,
-          isReschedulable: false,
-          notes: null,
-          moduleNumber: 1,
-          requestReason: null,
-          requestDetails: null,
-          enrolled: #[
-            #{
-              personId: "290683",
-              name: "Mario Rossi",
-              degree: "Ingegneria Informatica",
-              email: "mario.rossi@studenti.polito.it",
-            },
-          ],
         },
       ],
     },
   },
 };
 
-// Get faculty exam details example
-const _ex_getFacultyExam_resp = #{
+// List students in exam example (with attendance + extra time info)
+const _ex_listStudentsInExam_resp = #{
   returnType: #{
     statusCode: 200,
     body: #{
-      data: #{
-        id: 888122,
-        courseId: 262147,
-        courseShortcode: "02JSKOV",
-        courseName: "Human Computer Interaction",
-        teacherId: 2154,
-        type: "Esami scritti a risposta aperta o chiusa tramite PC",
-        places: #[
-          #{
-            buildingId: "TO_CIT22",
-            floorId: "XPTE",
-            name: "Aula 1P",
-            roomId: "30",
-            siteId: "TO_CIT",
-          },
-        ],
-        status: "available",
-        bookingStartsAt: utcDateTime.fromISO("2026-03-04T11:07:28.541Z"),
-        bookingEndsAt: utcDateTime.fromISO("2022-08-31T14:00:00Z"),
-        examStartsAt: utcDateTime.fromISO("2022-09-02T14:00:00Z"),
-        examEndsAt: utcDateTime.fromISO("2022-09-02T17:00:00Z"),
-        bookedCount: 42,
-        availableCount: 8,
-        question: null,
-        feedback: null,
-        isReschedulable: false,
-        notes: null,
-        moduleNumber: 1,
-        requestReason: null,
-        requestDetails: null,
-        enrolled: #[
-          #{
-            personId: "290683",
-            name: "Mario Rossi",
-            degree: "Ingegneria Informatica",
-            email: "mario.rossi@studenti.polito.it",
-          },
-          #{
-            personId: "291045",
-            name: "Laura Bianchi",
-            degree: "Ingegneria del Cinema",
-            email: "laura.bianchi@studenti.polito.it",
-          },
-        ],
-      },
+      data: #[
+        #{
+          username: "290683",
+          name: "Mario",
+          surname: "Rossi",
+          needsExtraTime: true,
+          extraTimeMinutes: 30,
+          isPresent: false,
+        },
+        #{
+          username: "291045",
+          name: "Laura",
+          surname: "Bianchi",
+          needsExtraTime: false,
+          extraTimeMinutes: null,
+          isPresent: false,
+        },
+      ],
+    },
+  },
+};
+
+// Check exam attendance example
+const _ex_checkAttendance_resp = #{
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #[
+        #{
+          username: "290683",
+          name: "Mario",
+          surname: "Rossi",
+          needsExtraTime: true,
+          extraTimeMinutes: 30,
+          isPresent: true,
+        },
+        #{
+          username: "291045",
+          name: "Laura",
+          surname: "Bianchi",
+          needsExtraTime: false,
+          extraTimeMinutes: null,
+          isPresent: true,
+        },
+      ],
     },
   },
 };
@@ -127,11 +109,15 @@ const _ex_addStudentToExam_resp = #{
     statusCode: 201,
     body: #{
       data: #{
-        personId: "292145",
-        name: "Anna Ferrari",
-        degree: "Ingegneria Informatica",
-        email: "anna.ferrari@studenti.polito.it",
+        username: "292145",
+        name: "Anna",
+        surname: "Ferrari",
       },
     },
   },
+};
+
+// Enroll / check student enrollment example (204 - no content)
+const _ex_enrollStudentToExam_resp = #{
+  returnType: #{ statusCode: 204 },
 };
