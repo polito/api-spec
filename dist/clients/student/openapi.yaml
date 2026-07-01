@@ -3634,33 +3634,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /student/tickets/{ticketId}/close:
-    put:
-      operationId: Tickets_markTicketAsClosed
-      summary: Mark a ticket as closed | Segna un ticket come chiuso
-      parameters:
-        - name: ticketId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Tickets
   /student/tickets/{ticketId}/feedback:
     post:
       operationId: Tickets_provideTicketFeedback
@@ -3842,6 +3815,33 @@ paths:
                     type: boolean
                 required:
                   - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Tickets
+  /student/tickets/{ticketId}/resolve:
+    put:
+      operationId: Tickets_markTicketAsClosed
+      summary: Mark a ticket as resolved | Segna un ticket come risolto
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:

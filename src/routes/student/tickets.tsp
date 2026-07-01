@@ -206,9 +206,9 @@ interface Tickets {
   @summary("Mark a ticket as read | Segna un ticket come letto")
   markTicketAsRead(@path ticketId: integer): NoContentResponse | BaseErrors;
 
-  @route("/{ticketId}/close")
+  @route("/{ticketId}/resolve")
   @put
-  @summary("Mark a ticket as closed | Segna un ticket come chiuso")
+  @summary("Mark a ticket as resolved | Segna un ticket come risolto")
   markTicketAsClosed(@path ticketId: integer): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/feedback")
