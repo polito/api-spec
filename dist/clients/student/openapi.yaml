@@ -3406,40 +3406,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
-  /surveys:
-    get:
-      operationId: Surveys_getSurveys
-      summary: Get surveys | Mostra survey
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Survey'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Surveys
-  /ticket-faqs:
+  /student/ticket-faqs:
     get:
       operationId: TicketFAQs_searchTicketFAQs
       summary: Search ticket FAQs | Ricerca FAQ ticket
@@ -3488,7 +3455,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /ticket-topics:
+  /student/ticket-topics:
     get:
       operationId: TicketTopics_getTicketTopics
       summary: List ticket topics | Elenca ambiti ticket
@@ -3521,7 +3488,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets:
+  /student/tickets:
     get:
       operationId: Tickets_getTickets
       summary: List tickets | Elenca ticket
@@ -3590,7 +3557,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateTicketRequest'
-  /tickets/{ticketId}:
+  /student/tickets/{ticketId}:
     get:
       operationId: Tickets_getTicket
       summary: Show a ticket | Mostra un ticket
@@ -3626,7 +3593,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/attachments/{attachmentId}:
+  /student/tickets/{ticketId}/attachments/{attachmentId}:
     get:
       operationId: Tickets_getTicketAttachment
       summary: Download ticket attachment | Scarica allegato del ticket
@@ -3667,7 +3634,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/close:
+  /student/tickets/{ticketId}/close:
     put:
       operationId: Tickets_markTicketAsClosed
       summary: Mark a ticket as closed | Segna un ticket come chiuso
@@ -3694,8 +3661,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/feedback:
-    put:
+  /student/tickets/{ticketId}/feedback:
+    post:
       operationId: Tickets_provideTicketFeedback
       summary: Provide feedback about a ticket | Fornisci feedback su un ticket
       parameters:
@@ -3736,7 +3703,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TicketFeedbackRequest'
-  /tickets/{ticketId}/read:
+  /student/tickets/{ticketId}/read:
     put:
       operationId: Tickets_markTicketAsRead
       summary: Mark a ticket as read | Segna un ticket come letto
@@ -3763,7 +3730,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/replies:
+  /student/tickets/{ticketId}/replies:
     post:
       operationId: Tickets_replyToTicket
       summary: Reply to a ticket | Rispondi ad un ticket
@@ -3796,7 +3763,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ReplyTicketRequest'
-  /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
+  /student/tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
     get:
       operationId: Tickets_getTicketReplyAttachment
       summary: Download ticket reply attachment | Scarica allegato di una risposta al ticket
@@ -3842,7 +3809,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/replies/{replyId}/feedback:
+  /student/tickets/{ticketId}/replies/{replyId}/feedback:
     put:
       operationId: Tickets_setTicketReplyFeedback
       summary: Give feedback on a ticket reply | Fornisci feedback su una risposta al ticket
@@ -3889,6 +3856,39 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
+  /surveys:
+    get:
+      operationId: Surveys_getSurveys
+      summary: Get surveys | Mostra survey
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Survey'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Surveys
   /unreadEmails:
     get:
       operationId: StudentNs_getUnreadEmailsNumber

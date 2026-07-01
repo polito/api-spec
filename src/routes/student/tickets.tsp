@@ -162,7 +162,7 @@ model TicketFeedbackRequest {
 }
 
 @tag("Tickets")
-@route("/ticket-faqs")
+@route("/student/ticket-faqs")
 interface TicketFAQs {
   @get
   @summary("Search ticket FAQs | Ricerca FAQ ticket")
@@ -175,7 +175,7 @@ interface TicketFAQs {
 }
 
 @tag("Tickets")
-@route("/ticket-topics")
+@route("/student/ticket-topics")
 interface TicketTopics {
   @get
   @summary("List ticket topics | Elenca ambiti ticket")
@@ -183,7 +183,7 @@ interface TicketTopics {
 }
 
 @tag("Tickets")
-@route("/tickets")
+@route("/student/tickets")
 interface Tickets {
   @get
   @summary("List tickets | Elenca ticket")
@@ -212,7 +212,7 @@ interface Tickets {
   markTicketAsClosed(@path ticketId: integer): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/feedback")
-  @put
+  @post
   @summary("Provide feedback about a ticket | Fornisci feedback su un ticket")
   provideTicketFeedback(
     @path ticketId: integer,
