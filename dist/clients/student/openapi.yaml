@@ -5597,6 +5597,7 @@ components:
         - title
         - eventStartsAt
         - eventEndsAt
+        - accessInfo
         - place
         - placeName
         - totalAdmissions
@@ -5622,13 +5623,16 @@ components:
           type: string
           format: date-time
           example: '2026-07-20T12:00:00Z'
+        accessInfo:
+          type: string
+          example: La invitiamo a presentarsi mezz’ora prima dell’orario previsto
         description:
           type: string
           example: Cerimonia di proclamazione e consegna dei diplomi
         place:
           type: string
           nullable: true
-          example: aula-magna
+          example: TO_CEN03_XPTE_000
         placeName:
           type: string
           nullable: true
