@@ -61,7 +61,7 @@ model TicketAttachment {
 }
 
 @example(_ex_feedback_provided)
-model FeedbackProvided {
+model ProvidedFeedback {
   @example(3)
   rating: numeric;
 
@@ -137,7 +137,7 @@ model Ticket {
   replies: TicketReply[];
   attachments: TicketAttachment[];
   needsFeedback: boolean;
-  feedbackProvided?: FeedbackProvided;
+  providedFeedback?: ProvidedFeedback;
   duplicateId: integer | null;
 }
 
