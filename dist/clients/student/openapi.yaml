@@ -3645,17 +3645,8 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: boolean
-                required:
-                  - data
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -3785,7 +3776,7 @@ paths:
   /student/tickets/{ticketId}/replies/{replyId}/feedback:
     put:
       operationId: Tickets_setTicketReplyFeedback
-      summary: Give feedback on a ticket reply | Fornisci feedback su una risposta al ticket
+      summary: Give feedback on the bot reply | Fornisci feedback sulla risposta del bot
       parameters:
         - name: ticketId
           in: path
@@ -3804,17 +3795,8 @@ paths:
             type: boolean
           explode: false
       responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: boolean
-                required:
-                  - data
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:

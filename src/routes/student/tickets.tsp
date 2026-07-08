@@ -217,7 +217,7 @@ interface Tickets {
   provideTicketFeedback(
     @path ticketId: integer,
     @body body: TicketFeedbackRequest,
-  ): OkDataResponse<boolean> | BaseErrors;
+  ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/attachments/{attachmentId}")
   @get
@@ -242,12 +242,12 @@ interface Tickets {
 
   @route("/{ticketId}/replies/{replyId}/feedback")
   @put
-  @summary("Give feedback on a ticket reply | Fornisci feedback su una risposta al ticket")
+  @summary("Give feedback on the bot reply | Fornisci feedback sulla risposta del bot")
   setTicketReplyFeedback(
     @path ticketId: integer,
     @path replyId: integer,
     @query positive: boolean,
-  ): OkDataResponse<boolean> | BaseErrors;
+  ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/replies/{replyId}/attachments/{attachmentId}")
   @get
