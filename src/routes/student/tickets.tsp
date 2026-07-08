@@ -120,6 +120,7 @@ model TicketReply {
   @example(351)
   agentId: TicketSpecialAgent | numeric | null;
 
+  /** Indicates whether the user should be prompted to provide feedback for the ticket */
   @example(false)
   needsFeedback?: boolean;
 

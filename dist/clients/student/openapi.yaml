@@ -7637,6 +7637,7 @@ components:
           example: 351
         needsFeedback:
           type: boolean
+          description: Indicates whether the user should be prompted to provide feedback for the ticket
           example: false
         isRead:
           type: boolean
