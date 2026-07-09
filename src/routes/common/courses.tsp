@@ -42,6 +42,19 @@ model CourseModule {
   @example("01NYHOV")
   shortcode: string;
 
+  /**
+   * Section number assigned to this course.
+   * Corresponds to the internal "num_cor" value.
+   */
+  @example(0)
+  courseSection: integer | null;
+
+  @example("AAA")
+  surnameRangeStart: string | null;
+
+  @example("ZZZ")
+  surnameRangeEnd: string | null;
+
   @example("System and device programming")
   name: string;
 
@@ -55,8 +68,9 @@ model CourseModule {
   @example("Mario Rossi")
   teacherName: string | null;
 
+  /** Available only for Students */
   @example(false)
-  isOverBooking: boolean;
+  isOverBooking?: boolean;
 
   /** Type of enrollment of the user for this course */
   @example(CourseEnrollmentRole.student)

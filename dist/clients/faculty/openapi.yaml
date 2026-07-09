@@ -2408,9 +2408,12 @@ paths:
                   - data
               example:
                 data:
-                  - id: null
+                  - id: 143627
                     name: System and device programming
                     shortcode: 01NYHOV
+                    courseSection: null
+                    surnameRangeStart: null
+                    surnameRangeEnd: null
                     cfu: 10
                     teachingPeriod: 2-2
                     teacherId: 2893
@@ -2423,6 +2426,9 @@ paths:
                       - id: 251008
                         name: Programming Module A
                         shortcode: 01NYHOV
+                        courseSection: 0
+                        surnameRangeStart: AAA
+                        surnameRangeEnd: ZZZ
                         teachingPeriod: 2-2
                         teacherId: 3001
                         teacherName: Mario Rossi
@@ -2435,6 +2441,9 @@ paths:
                       - id: 251009
                         name: Programming Module B
                         shortcode: 01NYHOV
+                        courseSection: 0
+                        surnameRangeStart: AAA
+                        surnameRangeEnd: ZZZ
                         teachingPeriod: 2-2
                         teacherId: 3002
                         teacherName: Giovanni Verdi
@@ -2447,6 +2456,9 @@ paths:
                   - id: 252121
                     name: Web Applications II
                     shortcode: 01TXSOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 2235
@@ -2459,6 +2471,9 @@ paths:
                   - id: 252126
                     name: Security verification and testing
                     shortcode: 01TYAOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1943
@@ -2471,6 +2486,9 @@ paths:
                   - id: 252138
                     name: Information systems security
                     shortcode: 01TYMOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 1847
@@ -2483,6 +2501,9 @@ paths:
                   - id: 252258
                     name: Cybersecurity
                     shortcode: 01UDROV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 1847
@@ -2495,6 +2516,9 @@ paths:
                   - id: 252788
                     name: Architetture dei sistemi di elaborazione
                     shortcode: 02GOLOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 10
                     teachingPeriod: 1-1
                     teacherId: 12684
@@ -2507,6 +2531,9 @@ paths:
                   - id: 252842
                     name: Human Computer Interaction
                     shortcode: 02JSKOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
                     teacherId: 25734
@@ -2519,6 +2546,9 @@ paths:
                   - id: 253378
                     name: Cryptography
                     shortcode: 03LPYOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
                     teacherId: 13461
@@ -2531,6 +2561,9 @@ paths:
                   - id: null
                     name: Tesi
                     shortcode: 29EBHOV
+                    courseSection: 0
+                    surnameRangeStart: AAA
+                    surnameRangeEnd: ZZZ
                     cfu: 30
                     teachingPeriod: 1-1
                     teacherId: null
@@ -3640,11 +3673,13 @@ components:
       required:
         - id
         - shortcode
+        - courseSection
+        - surnameRangeStart
+        - surnameRangeEnd
         - name
         - teachingPeriod
         - teacherId
         - teacherName
-        - isOverBooking
         - enrollmentRole
         - year
       properties:
@@ -3658,6 +3693,21 @@ components:
         shortcode:
           type: string
           example: 01NYHOV
+        courseSection:
+          type: integer
+          nullable: true
+          description: |-
+            Section number assigned to this course.
+            Corresponds to the internal "num_cor" value.
+          example: 0
+        surnameRangeStart:
+          type: string
+          nullable: true
+          example: AAA
+        surnameRangeEnd:
+          type: string
+          nullable: true
+          example: ZZZ
         name:
           type: string
           example: System and device programming
@@ -3675,6 +3725,7 @@ components:
           example: Mario Rossi
         isOverBooking:
           type: boolean
+          description: Available only for Students
           example: false
         enrollmentRole:
           allOf:
@@ -3689,6 +3740,9 @@ components:
         name: Programming Module A
         shortcode: ProgModA
         teachingPeriod: 2-2
+        courseSection: 0
+        surnameRangeStart: AAA
+        surnameRangeEnd: ZZZ
         teacherId: 3001
         teacherName: Mario Rossi
         isOverBooking: false
