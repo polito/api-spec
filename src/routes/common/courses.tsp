@@ -49,11 +49,8 @@ model CourseModule {
   @example(0)
   courseSection: integer | null;
 
-  @example("AAA")
-  surnameRangeStart: string | null;
-
-  @example("ZZZ")
-  surnameRangeEnd: string | null;
+  @example("AAA-ZZZ")
+  surnameRange: string | null;
 
   @example("System and device programming")
   name: string;
