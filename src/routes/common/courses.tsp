@@ -39,16 +39,26 @@ model CourseModule {
   @example(258674)
   id: integer | null;
 
+  /** Permanent module identifier within the parent course.
+   * Stable across academic years and associated with the course shortcode.
+   */
+  @example(1)
+  modulePermanentId: integer;
+
   @example("01NYHOV")
   shortcode: string;
 
   /**
-   * Section number assigned to this course.
+   * Instance number assigned to this course.
    * Corresponds to the internal "num_cor" value.
    */
   @example(0)
-  courseSection: integer | null;
+  courseInstanceId: integer | null;
 
+  /**
+   * Alphabetical surname range assigned to this course instance.
+   * Format: "<letters>-<letters>".
+   */
   @example("AAA-ZZZ")
   surnameRange: string | null;
 

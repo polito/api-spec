@@ -2411,7 +2411,8 @@ paths:
                   - id: 143627
                     name: System and device programming
                     shortcode: 01NYHOV
-                    courseSection: null
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: null
                     cfu: 10
                     teachingPeriod: 2-2
@@ -2425,7 +2426,8 @@ paths:
                       - id: 251008
                         name: Programming Module A
                         shortcode: 01NYHOV
-                        courseSection: 0
+                        courseInstanceId: 0
+                        modulePermanentId: 1
                         surnameRange: AAA-ZZZ
                         teachingPeriod: 2-2
                         teacherId: 3001
@@ -2439,7 +2441,8 @@ paths:
                       - id: 251009
                         name: Programming Module B
                         shortcode: 01NYHOV
-                        courseSection: 0
+                        courseInstanceId: 0
+                        modulePermanentId: 1
                         surnameRange: AAA-ZZZ
                         teachingPeriod: 2-2
                         teacherId: 3002
@@ -2453,7 +2456,8 @@ paths:
                   - id: 252121
                     name: Web Applications II
                     shortcode: 01TXSOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
@@ -2467,7 +2471,8 @@ paths:
                   - id: 252126
                     name: Security verification and testing
                     shortcode: 01TYAOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
@@ -2481,7 +2486,8 @@ paths:
                   - id: 252138
                     name: Information systems security
                     shortcode: 01TYMOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
@@ -2495,7 +2501,8 @@ paths:
                   - id: 252258
                     name: Cybersecurity
                     shortcode: 01UDROV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
@@ -2509,7 +2516,8 @@ paths:
                   - id: 252788
                     name: Architetture dei sistemi di elaborazione
                     shortcode: 02GOLOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 10
                     teachingPeriod: 1-1
@@ -2523,7 +2531,8 @@ paths:
                   - id: 252842
                     name: Human Computer Interaction
                     shortcode: 02JSKOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 1-1
@@ -2537,7 +2546,8 @@ paths:
                   - id: 253378
                     name: Cryptography
                     shortcode: 03LPYOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 6
                     teachingPeriod: 2-2
@@ -2551,7 +2561,8 @@ paths:
                   - id: null
                     name: Tesi
                     shortcode: 29EBHOV
-                    courseSection: 0
+                    courseInstanceId: 0
+                    modulePermanentId: 1
                     surnameRange: AAA-ZZZ
                     cfu: 30
                     teachingPeriod: 1-1
@@ -3661,8 +3672,9 @@ components:
       type: object
       required:
         - id
+        - modulePermanentId
         - shortcode
-        - courseSection
+        - courseInstanceId
         - surnameRange
         - name
         - teachingPeriod
@@ -3678,19 +3690,28 @@ components:
             The identifier for the current instance of this course.
             If null this is not a teaching (such as thesis), it won't have a course page
           example: 258674
+        modulePermanentId:
+          type: integer
+          description: |-
+            Permanent module identifier within the parent course.
+            Stable across academic years and associated with the course shortcode.
+          example: 1
         shortcode:
           type: string
           example: 01NYHOV
-        courseSection:
+        courseInstanceId:
           type: integer
           nullable: true
           description: |-
-            Section number assigned to this course.
+            Instance number assigned to this course.
             Corresponds to the internal "num_cor" value.
           example: 0
         surnameRange:
           type: string
           nullable: true
+          description: |-
+            Alphabetical surname range assigned to this course instance.
+            Format: "<letters>-<letters>".
           example: AAA-ZZZ
         name:
           type: string
@@ -3724,7 +3745,8 @@ components:
         name: Programming Module A
         shortcode: ProgModA
         teachingPeriod: 2-2
-        courseSection: 0
+        courseInstanceId: 0
+        modulePermanentId: 1
         surnameRange: AAA-ZZZ
         teacherId: 3001
         teacherName: Mario Rossi
