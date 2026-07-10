@@ -35,6 +35,7 @@ const _ex_ticket_overview = #{
   subject: "Sostituzione esame in piano carriera",
   message: "Buongiorno, vi contatto per sostituire A con B",
   status: TicketStatus.open,
+  needsFeedback: false,
   hasAttachments: true,
   isFromAgent: false,
   agentId: null,

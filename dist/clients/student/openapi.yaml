@@ -7436,6 +7436,7 @@ components:
         - message
         - status
         - hasAttachments
+        - needsFeedback
         - isFromAgent
         - agentId
         - unreadCount
@@ -7443,7 +7444,6 @@ components:
         - updatedAt
         - replies
         - attachments
-        - needsFeedback
         - duplicateId
       properties:
         id:
@@ -7458,6 +7458,9 @@ components:
         status:
           $ref: '#/components/schemas/TicketStatus'
         hasAttachments:
+          type: boolean
+          example: true
+        needsFeedback:
           type: boolean
           example: true
         isFromAgent:
@@ -7486,8 +7489,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
-        needsFeedback:
-          type: boolean
         providedFeedback:
           $ref: '#/components/schemas/ProvidedFeedback'
         duplicateId:
@@ -7557,6 +7558,7 @@ components:
         - message
         - status
         - hasAttachments
+        - needsFeedback
         - isFromAgent
         - agentId
         - unreadCount
@@ -7575,6 +7577,9 @@ components:
         status:
           $ref: '#/components/schemas/TicketStatus'
         hasAttachments:
+          type: boolean
+          example: true
+        needsFeedback:
           type: boolean
           example: true
         isFromAgent:
@@ -7600,6 +7605,7 @@ components:
         subject: Sostituzione esame in piano carriera
         message: Buongiorno, vi contatto per sostituire A con B
         status: open
+        needsFeedback: false
         hasAttachments: true
         isFromAgent: false
         agentId: null

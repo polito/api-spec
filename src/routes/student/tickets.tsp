@@ -85,6 +85,9 @@ model TicketOverview {
   @example(true)
   hasAttachments: boolean;
 
+  @example(true)
+  needsFeedback: boolean;
+
   /** If true, this ticket was opened by an agent (not by the student) */
   @example(false)
   isFromAgent: boolean;
@@ -137,7 +140,6 @@ model Ticket {
   ...TicketOverview;
   replies: TicketReply[];
   attachments: TicketAttachment[];
-  needsFeedback: boolean;
   providedFeedback?: ProvidedFeedback;
   duplicateId: integer | null;
 }
