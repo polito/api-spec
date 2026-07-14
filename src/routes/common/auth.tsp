@@ -195,10 +195,13 @@ model Event {
   @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
   eventEndsAt: utcDateTime;
 
+  @example("La invitiamo a presentarsi mezz’ora prima dell’orario previsto")
+  accessInfo: string;
+
   @example("Cerimonia di proclamazione e consegna dei diplomi")
   description?: string;
 
-  @example("aula-magna")
+  @example("TO_CEN03_XPTE_000")
   place: string | null;
 
   @example("Aula Magna")
