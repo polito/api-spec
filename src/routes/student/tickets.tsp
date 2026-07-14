@@ -36,9 +36,13 @@ model TicketTopic {
 }
 
 enum TicketStatus {
-  new: "new",
+  open: "open",
   pending: "pending",
-  closed: "closed",
+  waiting_user: "waiting_user",
+  incoming: "incoming",
+  resolved: "resolved",
+  autoresolved: "autoresolved",
+  duplicate: "duplicate",
 }
 
 @example(_ex_ticket_attachment)
@@ -56,6 +60,15 @@ model TicketAttachment {
   sizeInKiloBytes: integer;
 }
 
+@example(_ex_feedback_provided)
+model ProvidedFeedback {
+  @example(3)
+  rating: numeric;
+
+  @example(utcDateTime.fromISO("2022-08-31T14:00:00Z"))
+  createdAt: utcDateTime;
+}
+
 @example(_ex_ticket_overview)
 model TicketOverview {
   @example(1145890)
@@ -71,6 +84,9 @@ model TicketOverview {
 
   @example(true)
   hasAttachments: boolean;
+
+  @example(true)
+  needsFeedback: boolean;
 
   /** If true, this ticket was opened by an agent (not by the student) */
   @example(false)
@@ -107,6 +123,7 @@ model TicketReply {
   @example(351)
   agentId: TicketSpecialAgent | numeric | null;
 
+  /** Indicates whether the user should be prompted to provide feedback for the ticket */
   @example(false)
   needsFeedback?: boolean;
 
@@ -123,6 +140,8 @@ model Ticket {
   ...TicketOverview;
   replies: TicketReply[];
   attachments: TicketAttachment[];
+  providedFeedback?: ProvidedFeedback;
+  duplicateId: integer | null;
 }
 
 model CreateTicketRequest {
@@ -137,8 +156,16 @@ model ReplyTicketRequest {
   attachment?: HttpPart<bytes>;
 }
 
+model TicketFeedbackRequest {
+  @example(4)
+  rating: integer;
+
+  @example("La risposta è stata molto utile, grazie!")
+  comment?: string;
+}
+
 @tag("Tickets")
-@route("/ticket-faqs")
+@route("/student/ticket-faqs")
 interface TicketFAQs {
   @get
   @summary("Search ticket FAQs | Ricerca FAQ ticket")
@@ -151,7 +178,7 @@ interface TicketFAQs {
 }
 
 @tag("Tickets")
-@route("/ticket-topics")
+@route("/student/ticket-topics")
 interface TicketTopics {
   @get
   @summary("List ticket topics | Elenca ambiti ticket")
@@ -159,7 +186,7 @@ interface TicketTopics {
 }
 
 @tag("Tickets")
-@route("/tickets")
+@route("/student/tickets")
 interface Tickets {
   @get
   @summary("List tickets | Elenca ticket")
@@ -182,10 +209,18 @@ interface Tickets {
   @summary("Mark a ticket as read | Segna un ticket come letto")
   markTicketAsRead(@path ticketId: integer): NoContentResponse | BaseErrors;
 
-  @route("/{ticketId}/close")
+  @route("/{ticketId}/resolve")
   @put
-  @summary("Mark a ticket as closed | Segna un ticket come chiuso")
+  @summary("Mark a ticket as resolved | Segna un ticket come risolto")
   markTicketAsClosed(@path ticketId: integer): NoContentResponse | BaseErrors;
+
+  @route("/{ticketId}/feedback")
+  @post
+  @summary("Provide feedback about a ticket | Fornisci feedback su un ticket")
+  provideTicketFeedback(
+    @path ticketId: integer,
+    @body body: TicketFeedbackRequest,
+  ): NoContentResponse | BaseErrors;
 
   @route("/{ticketId}/attachments/{attachmentId}")
   @get
@@ -210,7 +245,7 @@ interface Tickets {
 
   @route("/{ticketId}/replies/{replyId}/feedback")
   @put
-  @summary("Give feedback on a ticket reply | Fornisci feedback su una risposta al ticket")
+  @summary("Give feedback on the bot reply | Fornisci feedback sulla risposta del bot")
   setTicketReplyFeedback(
     @path ticketId: integer,
     @path replyId: integer,

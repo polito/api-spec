@@ -25,11 +25,17 @@ const _ex_ticket_attachment = #{
   sizeInKiloBytes: 305,
 };
 
+const _ex_feedback_provided = #{
+  rating: 3,
+  createdAt: utcDateTime.fromISO("2022-08-31T14:00:00Z"),
+};
+
 const _ex_ticket_overview = #{
   id: 1145890,
   subject: "Sostituzione esame in piano carriera",
   message: "Buongiorno, vi contatto per sostituire A con B",
-  status: TicketStatus.new,
+  status: TicketStatus.open,
+  needsFeedback: false,
   hasAttachments: true,
   isFromAgent: false,
   agentId: null,

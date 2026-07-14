@@ -3406,40 +3406,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
-  /surveys:
-    get:
-      operationId: Surveys_getSurveys
-      summary: Get surveys | Mostra survey
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Survey'
-                required:
-                  - data
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Surveys
-  /ticket-faqs:
+  /student/ticket-faqs:
     get:
       operationId: TicketFAQs_searchTicketFAQs
       summary: Search ticket FAQs | Ricerca FAQ ticket
@@ -3488,7 +3455,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /ticket-topics:
+  /student/ticket-topics:
     get:
       operationId: TicketTopics_getTicketTopics
       summary: List ticket topics | Elenca ambiti ticket
@@ -3521,7 +3488,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets:
+  /student/tickets:
     get:
       operationId: Tickets_getTickets
       summary: List tickets | Elenca ticket
@@ -3590,7 +3557,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateTicketRequest'
-  /tickets/{ticketId}:
+  /student/tickets/{ticketId}:
     get:
       operationId: Tickets_getTicket
       summary: Show a ticket | Mostra un ticket
@@ -3626,7 +3593,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/attachments/{attachmentId}:
+  /student/tickets/{ticketId}/attachments/{attachmentId}:
     get:
       operationId: Tickets_getTicketAttachment
       summary: Download ticket attachment | Scarica allegato del ticket
@@ -3667,10 +3634,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/close:
-    put:
-      operationId: Tickets_markTicketAsClosed
-      summary: Mark a ticket as closed | Segna un ticket come chiuso
+  /student/tickets/{ticketId}/feedback:
+    post:
+      operationId: Tickets_provideTicketFeedback
+      summary: Provide feedback about a ticket | Fornisci feedback su un ticket
       parameters:
         - name: ticketId
           in: path
@@ -3694,7 +3661,13 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/read:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketFeedbackRequest'
+  /student/tickets/{ticketId}/read:
     put:
       operationId: Tickets_markTicketAsRead
       summary: Mark a ticket as read | Segna un ticket come letto
@@ -3721,7 +3694,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/replies:
+  /student/tickets/{ticketId}/replies:
     post:
       operationId: Tickets_replyToTicket
       summary: Reply to a ticket | Rispondi ad un ticket
@@ -3754,7 +3727,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ReplyTicketRequest'
-  /tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
+  /student/tickets/{ticketId}/replies/{replyId}/attachments/{attachmentId}:
     get:
       operationId: Tickets_getTicketReplyAttachment
       summary: Download ticket reply attachment | Scarica allegato di una risposta al ticket
@@ -3800,10 +3773,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
-  /tickets/{ticketId}/replies/{replyId}/feedback:
+  /student/tickets/{ticketId}/replies/{replyId}/feedback:
     put:
       operationId: Tickets_setTicketReplyFeedback
-      summary: Give feedback on a ticket reply | Fornisci feedback su una risposta al ticket
+      summary: Give feedback on the bot reply | Fornisci feedback sulla risposta del bot
       parameters:
         - name: ticketId
           in: path
@@ -3838,6 +3811,66 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Tickets
+  /student/tickets/{ticketId}/resolve:
+    put:
+      operationId: Tickets_markTicketAsClosed
+      summary: Mark a ticket as resolved | Segna un ticket come risolto
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Tickets
+  /surveys:
+    get:
+      operationId: Surveys_getSurveys
+      summary: Get surveys | Mostra survey
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Survey'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Surveys
   /unreadEmails:
     get:
       operationId: StudentNs_getUnreadEmailsNumber
@@ -6932,6 +6965,22 @@ components:
           type: integer
         failed:
           type: integer
+    ProvidedFeedback:
+      type: object
+      required:
+        - rating
+        - createdAt
+      properties:
+        rating:
+          type: number
+          example: 3
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-08-31T14:00:00Z'
+      example:
+        rating: 3
+        createdAt: '2022-08-31T14:00:00Z'
     ProvisionalGrade:
       type: object
       required:
@@ -7391,6 +7440,7 @@ components:
         - message
         - status
         - hasAttachments
+        - needsFeedback
         - isFromAgent
         - agentId
         - unreadCount
@@ -7398,6 +7448,7 @@ components:
         - updatedAt
         - replies
         - attachments
+        - duplicateId
       properties:
         id:
           type: number
@@ -7411,6 +7462,9 @@ components:
         status:
           $ref: '#/components/schemas/TicketStatus'
         hasAttachments:
+          type: boolean
+          example: true
+        needsFeedback:
           type: boolean
           example: true
         isFromAgent:
@@ -7439,6 +7493,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TicketAttachment'
+        providedFeedback:
+          $ref: '#/components/schemas/ProvidedFeedback'
+        duplicateId:
+          type: integer
+          nullable: true
     TicketAttachment:
       type: object
       required:
@@ -7484,6 +7543,17 @@ components:
         id: 3623
         question: Ho dimenticato il mio nome utente e/o la password e non riesco più ad accedere ad Apply@Polito. Come posso fare?
         answer: Clicca sul link &quot;<u>Codice e/o Password dimenticata</u>?&quot; presente sulla pagina di <a href="https://didattica.polito.it/pls/portal30/sviluppo.pkg_apply.login?p_lang=IT">Log-in</a>&nbsp;e segui le istruzioni.
+    TicketFeedbackRequest:
+      type: object
+      required:
+        - rating
+      properties:
+        rating:
+          type: integer
+          example: 4
+        comment:
+          type: string
+          example: La risposta è stata molto utile, grazie!
     TicketOverview:
       type: object
       required:
@@ -7492,6 +7562,7 @@ components:
         - message
         - status
         - hasAttachments
+        - needsFeedback
         - isFromAgent
         - agentId
         - unreadCount
@@ -7510,6 +7581,9 @@ components:
         status:
           $ref: '#/components/schemas/TicketStatus'
         hasAttachments:
+          type: boolean
+          example: true
+        needsFeedback:
           type: boolean
           example: true
         isFromAgent:
@@ -7534,7 +7608,8 @@ components:
         id: 1145890
         subject: Sostituzione esame in piano carriera
         message: Buongiorno, vi contatto per sostituire A con B
-        status: new
+        status: open
+        needsFeedback: false
         hasAttachments: true
         isFromAgent: false
         agentId: null
@@ -7572,6 +7647,7 @@ components:
           example: 351
         needsFeedback:
           type: boolean
+          description: Indicates whether the user should be prompted to provide feedback for the ticket
           example: false
         isRead:
           type: boolean
@@ -7599,9 +7675,13 @@ components:
     TicketStatus:
       type: string
       enum:
-        - new
+        - open
         - pending
-        - closed
+        - waiting_user
+        - incoming
+        - resolved
+        - autoresolved
+        - duplicate
     TicketSubtopic:
       type: object
       required:
