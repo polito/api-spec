@@ -1546,6 +1546,59 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /directions/{startPlaceId}/to/{endPlaceId}:
+    get:
+      operationId: Directions_getDirections
+      summary: Get directions | Ottieni indicazioni
+      parameters:
+        - name: startPlaceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: endPlaceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: avoidStairs
+          in: query
+          required: false
+          schema:
+            type: boolean
+          explode: false
+        - name: usePrivate
+          in: query
+          required: false
+          schema:
+            type: boolean
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NavigationResponse'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Places
   /event-admissions:
     get:
       operationId: EventAdmission_getEventAdmissions
@@ -3987,6 +4040,87 @@ components:
         freeTo:
           type: string
           format: date-time
+    GeoJSONFeatureGeometry:
+      type: object
+      required:
+        - type
+        - geometry
+        - properties
+      properties:
+        type:
+          type: string
+          enum:
+            - Feature
+          example: Feature
+        geometry:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - LineString
+              example: LineString
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+              example:
+                - - 7.657823
+                  - 45.064254
+                - - 7.658123
+                  - 45.064754
+          required:
+            - type
+            - coordinates
+        properties:
+          type: object
+          properties:
+            bl_id:
+              type: string
+              example: B1
+            fn_fl_id:
+              type: string
+              example: F1
+          required:
+            - bl_id
+            - fn_fl_id
+      example:
+        type: Feature
+        geometry:
+          type: LineString
+          coordinates:
+            - - 7.657823
+              - 45.064254
+            - - 7.658123
+              - 45.064754
+        properties:
+          bl_id: B1
+          fn_fl_id: F1
+    GeoJSONPoint:
+      type: object
+      required:
+        - type
+        - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+            - Point
+          example: Point
+        coordinates:
+          type: array
+          items:
+            type: number
+          example:
+            - 45.064254
+            - 7.657823
+      example:
+        type: Point
+        coordinates:
+          - 45.064254
+          - 7.657823
     GeoJsonPolygon:
       type: object
       required:
@@ -4233,6 +4367,121 @@ components:
           description: |-
             Additional information about the MFA session.
             Present only if status is `active` or `locked`
+    NavigationResponse:
+      type: object
+      required:
+        - type
+        - totDistance
+        - stairsCount
+        - elevatorsCount
+        - stepsCount
+        - features
+      properties:
+        type:
+          type: string
+          enum:
+            - FeatureCollection
+          example: FeatureCollection
+        totDistance:
+          type: number
+          example: 1240
+        stairsCount:
+          type: number
+          example: 2
+        elevatorsCount:
+          type: number
+          example: 1
+        stepsCount:
+          type: number
+          example: 18
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/NavigationResponseFeature'
+      example:
+        type: FeatureCollection
+        totDistance: 1240
+        stairsCount: 2
+        elevatorsCount: 1
+        stepsCount: 18
+        features:
+          - type: FeatureCollection
+            startPoint:
+              type: Point
+              coordinates:
+                - 45.064254
+                - 7.657823
+            endPoint:
+              type: Point
+              coordinates:
+                - 7.658123
+                - 45.064754
+            segmentId: 1
+            isPrivate: false
+            features:
+              type: Feature
+              geometry:
+                type: LineString
+                coordinates:
+                  - - 7.657823
+                    - 45.064254
+                  - - 7.658123
+                    - 45.064754
+              properties:
+                bl_id: B1
+                fn_fl_id: F1
+    NavigationResponseFeature:
+      type: object
+      required:
+        - type
+        - startPoint
+        - endPoint
+        - segmentId
+        - isPrivate
+        - features
+      properties:
+        type:
+          type: string
+          enum:
+            - FeatureCollection
+          example: FeatureCollection
+        startPoint:
+          $ref: '#/components/schemas/GeoJSONPoint'
+        endPoint:
+          $ref: '#/components/schemas/GeoJSONPoint'
+        segmentId:
+          type: integer
+          example: 1
+        isPrivate:
+          type: boolean
+        features:
+          $ref: '#/components/schemas/GeoJSONFeatureGeometry'
+      example:
+        type: FeatureCollection
+        startPoint:
+          type: Point
+          coordinates:
+            - 45.064254
+            - 7.657823
+        endPoint:
+          type: Point
+          coordinates:
+            - 7.658123
+            - 45.064754
+        segmentId: 1
+        isPrivate: false
+        features:
+          type: Feature
+          geometry:
+            type: LineString
+            coordinates:
+              - - 7.657823
+                - 45.064254
+              - - 7.658123
+                - 45.064754
+          properties:
+            bl_id: B1
+            fn_fl_id: F1
     NewsItem:
       type: object
       required:
