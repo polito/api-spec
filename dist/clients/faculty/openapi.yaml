@@ -15,6 +15,7 @@ tags:
   - name: News
   - name: People
   - name: Places
+  - name: Interdepartmental Spaces
 paths:
   /announcements:
     get:
@@ -828,6 +829,208 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateBookingRequest'
+  /bookings/interdepartmental-spaces:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaces
+      summary: Get the list of interdepartmental spaces
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InterdepartmentalSpaceFilter'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/types:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpaceTypes
+      summary: Get the list of interdepartmental space types
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Types'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/{id}:
+    get:
+      operationId: InterdepartmentalSpacesService_getInterdepartmentalSpace
+      summary: Get a specific interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InterdepartmentalSpace'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+  /bookings/interdepartmental-spaces/{id}/events:
+    post:
+      operationId: InterdepartmentalSpacesService_createSpaceEvent
+      summary: Create an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+  /bookings/interdepartmental-spaces/{id}/events/{eventId}:
+    patch:
+      operationId: InterdepartmentalSpacesService_updateSpaceEvent
+      summary: Update an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+    delete:
+      operationId: InterdepartmentalSpacesService_deleteSpaceEvent
+      summary: Delete an event in an interdepartmental space
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Interdepartmental Spaces
   /bookings/{bookingId}:
     delete:
       operationId: BookingsManagement_deleteBooking
@@ -2945,6 +3148,26 @@ components:
           example:
             - S290683
             - S213956
+    Booker:
+      type: object
+      required:
+        - username
+        - name
+        - surname
+        - email
+      properties:
+        username:
+          type: string
+          example: s290683
+        name:
+          type: string
+          example: Mario
+        surname:
+          type: string
+          example: Rossi
+        email:
+          type: string
+          example: s290683@polito.it
     Booking:
       type: object
       required:
@@ -3785,6 +4008,71 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreateSpaceEventRequest:
+      type: object
+      required:
+        - startsAt
+        - endsAt
+        - type
+        - eventDescription
+        - notes
+        - isPubliclyVisible
+      properties:
+        eventDate:
+          type: string
+          format: date
+          description: Set for a single-date event; omit when the event is recurring
+          example: '2026-02-15'
+        startsAt:
+          type: string
+          format: time
+          example: '10:00:00'
+        endsAt:
+          type: string
+          format: time
+          example: '12:00:00'
+        recurrenceStartsAt:
+          type: string
+          format: date-time
+          description: Start of the recurrence period; set together with recurrenceEndsAt for a recurring event
+          example: '2026-02-15T00:00:00Z'
+        recurrenceEndsAt:
+          type: string
+          format: date-time
+          description: End of the recurrence period; set together with recurrenceStartsAt for a recurring event
+          example: '2026-06-15T00:00:00Z'
+        recurrenceDays:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayOfWeek'
+          example:
+            - monday
+            - wednesday
+        type:
+          type: string
+          example: exam
+        eventDescription:
+          type: string
+          example: Esame di Analisi Matematica
+        seatsToAllocate:
+          type: integer
+          example: 50
+        notes:
+          type: string
+          example: Portare documento di identità
+        isPubliclyVisible:
+          type: boolean
+          example: true
+    DayOfWeek:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
     Department:
       type: object
       required:
@@ -4067,6 +4355,93 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    InterdepartmentalSpace:
+      type: object
+      required:
+        - id
+        - name
+        - numSeats
+        - type
+        - place
+        - slotsOccupied
+      properties:
+        id:
+          type: string
+          example: DAUIN-A1
+        name:
+          type: string
+          example: Aula A1
+        numSeats:
+          type: number
+          description: The number of seats in the room
+          example: 120
+        type:
+          type: string
+          description: The type of the room
+          example: classroom
+        place:
+          allOf:
+            - $ref: '#/components/schemas/PlaceRef'
+          description: The location of the room
+        slotsOccupied:
+          type: array
+          items:
+            $ref: '#/components/schemas/Slot'
+    InterdepartmentalSpaceFilter:
+      type: object
+      required:
+        - locations
+        - sites
+        - rooms
+      properties:
+        locations:
+          type: array
+          items:
+            type: string
+          example:
+            - Sede Centrale
+            - Cittadella del Design
+        sites:
+          type: array
+          items:
+            type: string
+          example:
+            - Torino
+            - Mondovì
+        rooms:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: DAUIN-A1
+              name:
+                type: string
+                example: Aula A1
+              numSeats:
+                type: number
+                description: The number of seats in the room
+                example: 120
+              type:
+                type: string
+                description: The type of the room
+                example: classroom
+              location:
+                type: string
+                description: The location of the room
+                example: Sede Centrale
+              site:
+                type: string
+                description: The site of the room
+                example: Torino
+            required:
+              - id
+              - name
+              - numSeats
+              - type
+              - location
+              - site
     Lecture:
       type: object
       required:
@@ -4783,6 +5158,43 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
+    Slot:
+      type: object
+      required:
+        - id
+        - startAt
+        - endAt
+        - idLocations
+        - bookedBy
+        - description
+        - type
+        - note
+      properties:
+        id:
+          type: string
+          example: slot-001
+        startAt:
+          type: string
+          format: date-time
+          example: '2026-02-15T10:00:00Z'
+        endAt:
+          type: string
+          format: date-time
+          example: '2026-02-15T12:00:00Z'
+        idLocations:
+          type: string
+          example: DAUIN-A1
+        bookedBy:
+          $ref: '#/components/schemas/Booker'
+        description:
+          type: string
+          example: Tesi di laurea
+        type:
+          type: string
+          example: exam
+        note:
+          type: string
+          example: Portare documento
     SwitchCareerRequest:
       type: object
       required:
@@ -4802,6 +5214,18 @@ components:
       enum:
         - card
         - event
+    Types:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          example: classroom
+        name:
+          type: string
+          example: Aula
     UpdateAssignmentRequest:
       type: object
       properties:
