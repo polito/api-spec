@@ -5666,6 +5666,24 @@ components:
           type: string
         courseName:
           type: string
+        courseInstanceId:
+          type: integer
+          nullable: true
+          description: |-
+            Instance number assigned to this course.
+            Corresponds to the internal "num_cor" value.
+          example: 0
+        surnameRange:
+          type: string
+          nullable: true
+          description: |-
+            Alphabetical surname range assigned to this course instance.
+            Format: "<letters>-<letters>".
+          example: AAA-ZZZ
+        enrollmentRole:
+          allOf:
+            - $ref: '#/components/schemas/CourseEnrollmentRole'
+          example: student
         teacherId:
           type: integer
         type:
@@ -5702,6 +5720,12 @@ components:
         moduleNumber:
           type: integer
           description: The module number, if this is a module
+        modulePermanentId:
+          type: integer
+          description: |-
+            Permanent module identifier within the parent course.
+            Stable across academic years and associated with the course shortcode.
+          example: 1
         status:
           allOf:
             - $ref: '#/components/schemas/ExamStatus'

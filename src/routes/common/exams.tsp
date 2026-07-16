@@ -22,6 +22,24 @@ model Exam {
   courseId: numeric;
   courseShortcode: string;
   courseName: string;
+
+  /**
+   * Instance number assigned to this course.
+   * Corresponds to the internal "num_cor" value.
+   */
+  @example(0)
+  courseInstanceId?: integer | null;
+
+  /**
+   * Alphabetical surname range assigned to this course instance.
+   * Format: "<letters>-<letters>".
+   */
+  @example("AAA-ZZZ")
+  surnameRange?: string | null;
+
+  @example(CourseEnrollmentRole.student)
+  enrollmentRole?: CourseEnrollmentRole;
+
   teacherId: integer;
   type: string;
   places?: PlaceRef[];
@@ -36,6 +54,13 @@ model Exam {
 
   /** The module number, if this is a module */
   moduleNumber: integer;
+
+  /**
+   * Permanent module identifier within the parent course.
+   * Stable across academic years and associated with the course shortcode.
+   */
+  @example(1)
+  modulePermanentId?: integer;
 
   /** Not returned for faculty calls */
   status?: ExamStatus;

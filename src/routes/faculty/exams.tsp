@@ -19,21 +19,21 @@ model Student {
   @example("Rossi")
   surname: string;
 
-  /** Se lo studente ha diritto a tempo aggiuntivo (DSA/BES) */
+  /** Whether the student is entitled to extra time (DSA/BES) */
   @example(true)
   needsExtraTime: boolean;
 
-  /** Se lo studente risulta presente all'esame */
+  /** Whether the student is marked as present at the exam */
   @example(false)
   isPresent: boolean;
 
-  /** Se lo studente è in procinto di laurearsi */
+  /** Whether the student is about to graduate */
   @example(false)
   isGraduating: boolean;
 }
 
 model CheckAttendanceRequest {
-  /** Matricole degli studenti risultati presenti */
+  /** Student IDs of the students marked as present */
   @example(#["290683", "291045"])
   presentUsernames: string[];
 }
