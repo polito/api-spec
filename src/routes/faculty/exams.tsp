@@ -9,29 +9,27 @@ using Http;
 
 namespace PolitoAPI;
 
-model ExamEnrollment {
+model Student {
   @example("290683")
-  username: string;
+  studentId: string;
 
   @example("Mario")
   name: string;
 
   @example("Rossi")
   surname: string;
-}
 
-model ExamAttendee extends ExamEnrollment {
   /** Se lo studente ha diritto a tempo aggiuntivo (DSA/BES) */
   @example(true)
   needsExtraTime: boolean;
 
-  /** Minuti aggiuntivi concessi, null se non applicabile */
-  @example(30)
-  extraTimeMinutes: integer | null;
-
   /** Se lo studente risulta presente all'esame */
   @example(false)
   isPresent: boolean;
+
+  /** Se lo studente è in procinto di laurearsi */
+  @example(false)
+  isGraduating: boolean;
 }
 
 model CheckAttendanceRequest {
@@ -64,19 +62,14 @@ model AcceptedData {
 
 @tag("Faculty - Exams")
 @route("/exams")
-interface FacultyExams {
-  @get
-  @summary("List exams | Elenca esami")
-  @opExample(_ex_getExams_resp)
-  getExams(): OkDataResponse<ExamBase[]> | BaseErrors;
-
+interface FacultyExams extends Exams<Exam> {
   @route("/{examId}/students")
   @get
   @summary("List students in exam | Elenca studenti nell'esame")
   @doc("Restituisce la lista degli studenti iscritti a un appello specifico.")
   @opExample(_ex_listStudentsInExam_resp)
   listStudentsInExam(@path examId: integer):
-    | OkDataResponse<ExamAttendee[]>
+    | OkDataResponse<Student[]>
     | NotAuthorized
     | NotFound
     | ServerError;
@@ -86,11 +79,8 @@ interface FacultyExams {
   @summary("Check exam attendance | Verifica presenze all'esame")
   @doc("Registra le presenze passando l'array delle matricole presenti. Restituisce lo stato aggiornato delle presenze.")
   @opExample(_ex_checkAttendance_resp)
-  checkAttendance(
-    @path examId: integer,
-    @body body: CheckAttendanceRequest,
-  ):
-    | OkDataResponse<ExamAttendee[]>
+  checkAttendance(@path examId: integer, @body body: CheckAttendanceRequest):
+    | OkDataResponse<Student[]>
     | NotAuthorized
     | NotFound
     | ServerError;
@@ -106,18 +96,6 @@ interface FacultyExams {
   ): AcceptedResponse<{
     data: AcceptedData;
   }> | NotAuthorized | BaseErrors;
-
-  @route("/{examId}/students/{studentId}")
-  @put
-  @summary("Add student to exam | Aggiungi studente all'esame")
-  @doc("Inserisce manualmente uno studente tra gli iscritti a un appello (casi eccezionali). Operazione idempotente.")
-  @opExample(_ex_addStudentToExam_resp)
-  addStudentToExam(@path examId: integer, @path studentId: integer):
-    | OkDataResponse<ExamEnrollment>
-    | OkDataCreatedResponse<ExamEnrollment>
-    | NotAuthorized
-    | NotFound
-    | ServerError;
 
   @route("/{examId}/students/{studentId}")
   @get
@@ -141,3 +119,5 @@ interface FacultyExams {
     | NotFound
     | ServerError;
 }
+
+@@opExample(FacultyExams.getExams, _ex_getExams_resp);

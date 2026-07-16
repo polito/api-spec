@@ -9,40 +9,6 @@ using Http;
 
 namespace PolitoAPI;
 
-union ExamStatus {
-  available: "available",
-  booked: "booked",
-  requestable: "requestable",
-  requested: "requested",
-  requestAccepted: "requestAccepted",
-  requestRejected: "requestRejected",
-  unavailable: "unavailable",
-}
-
-model Exam extends ExamBase {
-  teacherId: integer;
-  places?: PlaceRef[];
-  status: ExamStatus;
-  bookingStartsAt: utcDateTime | null;
-  question: {
-    id: integer;
-    statement: string;
-    options: string[];
-  } | null;
-  feedback: string | null;
-
-  /** If true, the student can ask the professor to reschedule the exam */
-  isReschedulable: boolean;
-
-  notes: string | null;
-
-  /** The module number, if this is a module */
-  moduleNumber: integer;
-
-  requestReason: string | null;
-  requestDetails: string | null;
-}
-
 model RescheduleExamRequest {
   @example("01UDROV")
   courseShortcode: string;
@@ -62,12 +28,7 @@ model BookExamRequest {
 
 @tag("Exams")
 @route("/exams")
-interface Exams {
-  @get
-  @summary("List exams | Elenca esami")
-  @opExample(_ex_getExams_resp)
-  getExams(): OkDataResponse<Exam[]> | BaseErrors;
-
+interface StudentExams extends Exams<Exam> {
   @route("/{examId}/booking")
   @delete
   @summary("Delete exam booking | Annulla prenotazione esame")
@@ -89,3 +50,5 @@ interface Exams {
     @body body: RescheduleExamRequest,
   ): NoContentResponse | BaseErrors;
 }
+
+@@opExample(StudentExams.getExams, _ex_getExams_resp);

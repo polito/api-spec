@@ -1750,7 +1750,7 @@ paths:
         - Event Admissions
   /exams:
     get:
-      operationId: Exams_getExams
+      operationId: StudentExams_getExams
       summary: List exams | Elenca esami
       parameters: []
       responses:
@@ -1827,7 +1827,7 @@ paths:
         - Exams
   /exams/{examId}/booking:
     delete:
-      operationId: Exams_deleteExamBookingById
+      operationId: StudentExams_deleteExamBookingById
       summary: Delete exam booking | Annulla prenotazione esame
       parameters:
         - name: examId
@@ -1853,7 +1853,7 @@ paths:
       tags:
         - Exams
     post:
-      operationId: Exams_bookExam
+      operationId: StudentExams_bookExam
       summary: Book exam | Prenota esame
       parameters:
         - name: examId
@@ -1886,7 +1886,7 @@ paths:
               $ref: '#/components/schemas/BookExamRequest'
   /exams/{examId}/rescheduleRequest:
     post:
-      operationId: Exams_rescheduleExam
+      operationId: StudentExams_rescheduleExam
       summary: Ask to reschedule an exam | Chiedi di spostare un esame
       parameters:
         - name: examId
@@ -5642,29 +5642,70 @@ components:
     Exam:
       type: object
       required:
+        - id
+        - courseId
+        - courseShortcode
+        - courseName
         - teacherId
-        - status
+        - type
         - bookingStartsAt
-        - question
+        - bookingEndsAt
+        - examStartsAt
+        - examEndsAt
+        - bookedCount
+        - availableCount
         - feedback
-        - isReschedulable
         - notes
         - moduleNumber
-        - requestReason
-        - requestDetails
       properties:
+        id:
+          type: integer
+        courseId:
+          type: number
+        courseShortcode:
+          type: string
+        courseName:
+          type: string
         teacherId:
           type: integer
+        type:
+          type: string
         places:
           type: array
           items:
             $ref: '#/components/schemas/PlaceRef'
-        status:
-          $ref: '#/components/schemas/ExamStatus'
         bookingStartsAt:
           type: string
           format: date-time
           nullable: true
+        bookingEndsAt:
+          type: string
+          format: date-time
+        examStartsAt:
+          type: string
+          format: date-time
+          nullable: true
+        examEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        bookedCount:
+          type: integer
+        availableCount:
+          type: integer
+        feedback:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        moduleNumber:
+          type: integer
+          description: The module number, if this is a module
+        status:
+          allOf:
+            - $ref: '#/components/schemas/ExamStatus'
+          description: Not returned for faculty calls
         question:
           type: object
           properties:
@@ -5681,69 +5722,20 @@ components:
             - statement
             - options
           nullable: true
-        feedback:
-          type: string
-          nullable: true
+          description: Not returned for faculty calls
         isReschedulable:
           type: boolean
-          description: If true, the student can ask the professor to reschedule the exam
-        notes:
-          type: string
-          nullable: true
-        moduleNumber:
-          type: integer
-          description: The module number, if this is a module
+          description: |-
+            If true, the student can ask the professor to reschedule the exam.
+            Not returned for faculty calls
         requestReason:
           type: string
           nullable: true
+          description: Not returned for faculty calls
         requestDetails:
           type: string
           nullable: true
-      allOf:
-        - $ref: '#/components/schemas/ExamBase'
-    ExamBase:
-      type: object
-      required:
-        - id
-        - courseId
-        - courseShortcode
-        - courseName
-        - type
-        - bookingEndsAt
-        - examStartsAt
-        - examEndsAt
-        - bookedCount
-        - availableCount
-      properties:
-        id:
-          type: integer
-        courseId:
-          type: number
-        courseShortcode:
-          type: string
-        courseName:
-          type: string
-        type:
-          type: string
-        places:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlaceRef'
-        bookingEndsAt:
-          type: string
-          format: date-time
-        examStartsAt:
-          type: string
-          format: date-time
-          nullable: true
-        examEndsAt:
-          type: string
-          format: date-time
-          nullable: true
-        bookedCount:
-          type: integer
-        availableCount:
-          type: integer
+          description: Not returned for faculty calls
     ExamGrade:
       type: object
       required:

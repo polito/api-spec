@@ -15,6 +15,7 @@ const _ex_getExams_resp = #{
           courseId: 262147,
           courseShortcode: "02JSKOV",
           courseName: "Human Computer Interaction",
+          teacherId: 1847,
           type: "Esami scritti a risposta aperta o chiusa tramite PC",
           places: #[
             #{
@@ -23,14 +24,18 @@ const _ex_getExams_resp = #{
               name: "Aula 1P",
               roomId: "30",
               siteId: "TO_CIT",
-            },
+            }
           ],
+          bookingStartsAt: null,
           bookingEndsAt: utcDateTime.fromISO("2026-08-31T14:00:00Z"),
           examStartsAt: utcDateTime.fromISO("2026-09-02T14:00:00Z"),
           examEndsAt: utcDateTime.fromISO("2026-09-02T17:00:00Z"),
           bookedCount: 42,
           availableCount: 8,
-        },
+          feedback: null,
+          notes: null,
+          moduleNumber: 1,
+        }
       ],
     },
   },
@@ -43,21 +48,21 @@ const _ex_listStudentsInExam_resp = #{
     body: #{
       data: #[
         #{
-          username: "290683",
+          studentId: "290683",
           name: "Mario",
           surname: "Rossi",
           needsExtraTime: true,
-          extraTimeMinutes: 30,
           isPresent: false,
+          isGraduating: false,
         },
         #{
-          username: "291045",
+          studentId: "291045",
           name: "Laura",
           surname: "Bianchi",
           needsExtraTime: false,
-          extraTimeMinutes: null,
           isPresent: false,
-        },
+          isGraduating: true,
+        }
       ],
     },
   },
@@ -70,21 +75,21 @@ const _ex_checkAttendance_resp = #{
     body: #{
       data: #[
         #{
-          username: "290683",
+          studentId: "290683",
           name: "Mario",
           surname: "Rossi",
           needsExtraTime: true,
-          extraTimeMinutes: 30,
           isPresent: true,
+          isGraduating: false,
         },
         #{
-          username: "291045",
+          studentId: "291045",
           name: "Laura",
           surname: "Bianchi",
           needsExtraTime: false,
-          extraTimeMinutes: null,
           isPresent: true,
-        },
+          isGraduating: true,
+        }
       ],
     },
   },
@@ -94,12 +99,7 @@ const _ex_checkAttendance_resp = #{
 const _ex_notifyExamSubscribers_resp = #{
   returnType: #{
     statusCode: 202,
-    body: #{
-      data: #{
-        status: "accepted",
-        trackingId: "track-abc-123",
-      },
-    },
+    body: #{ data: #{ status: "accepted", trackingId: "track-abc-123" } },
   },
 };
 
@@ -107,17 +107,9 @@ const _ex_notifyExamSubscribers_resp = #{
 const _ex_addStudentToExam_resp = #{
   returnType: #{
     statusCode: 201,
-    body: #{
-      data: #{
-        username: "292145",
-        name: "Anna",
-        surname: "Ferrari",
-      },
-    },
+    body: #{ data: #{ studentId: "292145", name: "Anna", surname: "Ferrari" } },
   },
 };
 
 // Enroll / check student enrollment example (204 - no content)
-const _ex_enrollStudentToExam_resp = #{
-  returnType: #{ statusCode: 204 },
-};
+const _ex_enrollStudentToExam_resp = #{ returnType: #{ statusCode: 204 } };

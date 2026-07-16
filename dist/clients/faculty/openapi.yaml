@@ -1596,7 +1596,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ExamBase'
+                      $ref: '#/components/schemas/Exam'
                 required:
                   - data
               example:
@@ -1605,6 +1605,7 @@ paths:
                     courseId: 262147
                     courseShortcode: 02JSKOV
                     courseName: Human Computer Interaction
+                    teacherId: 1847
                     type: Esami scritti a risposta aperta o chiusa tramite PC
                     places:
                       - buildingId: TO_CIT22
@@ -1612,11 +1613,15 @@ paths:
                         name: Aula 1P
                         roomId: '30'
                         siteId: TO_CIT
+                    bookingStartsAt: null
                     bookingEndsAt: '2026-08-31T14:00:00Z'
                     examStartsAt: '2026-09-02T14:00:00Z'
                     examEndsAt: '2026-09-02T17:00:00Z'
                     bookedCount: 42
                     availableCount: 8
+                    feedback: null
+                    notes: null
+                    moduleNumber: 1
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1653,23 +1658,23 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ExamAttendee'
+                      $ref: '#/components/schemas/Student'
                 required:
                   - data
               example:
                 data:
-                  - username: '290683'
+                  - studentId: '290683'
                     name: Mario
                     surname: Rossi
                     needsExtraTime: true
-                    extraTimeMinutes: 30
                     isPresent: true
-                  - username: '291045'
+                    isGraduating: false
+                  - studentId: '291045'
                     name: Laura
                     surname: Bianchi
                     needsExtraTime: false
-                    extraTimeMinutes: null
                     isPresent: true
+                    isGraduating: true
         '401':
           description: Access is unauthorized.
           content:
@@ -1771,23 +1776,23 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ExamAttendee'
+                      $ref: '#/components/schemas/Student'
                 required:
                   - data
               example:
                 data:
-                  - username: '290683'
+                  - studentId: '290683'
                     name: Mario
                     surname: Rossi
                     needsExtraTime: true
-                    extraTimeMinutes: 30
                     isPresent: false
-                  - username: '291045'
+                    isGraduating: false
+                  - studentId: '291045'
                     name: Laura
                     surname: Bianchi
                     needsExtraTime: false
-                    extraTimeMinutes: null
                     isPresent: false
+                    isGraduating: true
         '401':
           description: Access is unauthorized.
           content:
@@ -1809,69 +1814,6 @@ paths:
       tags:
         - Faculty - Exams
   /exams/{examId}/students/{studentId}:
-    put:
-      operationId: FacultyExams_addStudentToExam
-      summary: Add student to exam | Aggiungi studente all'esame
-      description: Inserisce manualmente uno studente tra gli iscritti a un appello (casi eccezionali). Operazione idempotente.
-      parameters:
-        - name: examId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: studentId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/ExamEnrollment'
-                required:
-                  - data
-        '201':
-          description: The request has succeeded and a new resource has been created as a result.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/ExamEnrollment'
-                required:
-                  - data
-              example:
-                data:
-                  username: '292145'
-                  name: Anna
-                  surname: Ferrari
-        '401':
-          description: Access is unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: The server cannot find the requested resource.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Faculty - Exams
     get:
       operationId: FacultyExams_checkStudentEnrollment
       summary: Check if student registration for the exam is possible | Verifica se possibile l'iscrizione studente all'esame
@@ -4334,41 +4276,24 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
-    ExamAttendee:
-      type: object
-      required:
-        - needsExtraTime
-        - extraTimeMinutes
-        - isPresent
-      properties:
-        needsExtraTime:
-          type: boolean
-          description: Se lo studente ha diritto a tempo aggiuntivo (DSA/BES)
-          example: true
-        extraTimeMinutes:
-          type: integer
-          nullable: true
-          description: Minuti aggiuntivi concessi, null se non applicabile
-          example: 30
-        isPresent:
-          type: boolean
-          description: Se lo studente risulta presente all'esame
-          example: false
-      allOf:
-        - $ref: '#/components/schemas/ExamEnrollment'
-    ExamBase:
+    Exam:
       type: object
       required:
         - id
         - courseId
         - courseShortcode
         - courseName
+        - teacherId
         - type
+        - bookingStartsAt
         - bookingEndsAt
         - examStartsAt
         - examEndsAt
         - bookedCount
         - availableCount
+        - feedback
+        - notes
+        - moduleNumber
       properties:
         id:
           type: integer
@@ -4378,12 +4303,18 @@ components:
           type: string
         courseName:
           type: string
+        teacherId:
+          type: integer
         type:
           type: string
         places:
           type: array
           items:
             $ref: '#/components/schemas/PlaceRef'
+        bookingStartsAt:
+          type: string
+          format: date-time
+          nullable: true
         bookingEndsAt:
           type: string
           format: date-time
@@ -4399,22 +4330,49 @@ components:
           type: integer
         availableCount:
           type: integer
-    ExamEnrollment:
-      type: object
-      required:
-        - username
-        - name
-        - surname
-      properties:
-        username:
+        feedback:
           type: string
-          example: '290683'
-        name:
+          nullable: true
+        notes:
           type: string
-          example: Mario
-        surname:
+          nullable: true
+        moduleNumber:
+          type: integer
+          description: The module number, if this is a module
+        status:
+          allOf:
+            - $ref: '#/components/schemas/ExamStatus'
+          description: Not returned for faculty calls
+        question:
+          type: object
+          properties:
+            id:
+              type: integer
+            statement:
+              type: string
+            options:
+              type: array
+              items:
+                type: string
+          required:
+            - id
+            - statement
+            - options
+          nullable: true
+          description: Not returned for faculty calls
+        isReschedulable:
+          type: boolean
+          description: |-
+            If true, the student can ask the professor to reschedule the exam.
+            Not returned for faculty calls
+        requestReason:
           type: string
-          example: Rossi
+          nullable: true
+          description: Not returned for faculty calls
+        requestDetails:
+          type: string
+          nullable: true
+          description: Not returned for faculty calls
     ExamNotificationRequest:
       type: object
       required:
@@ -4442,6 +4400,16 @@ components:
           example:
             - '290683'
             - '291045'
+    ExamStatus:
+      type: string
+      enum:
+        - available
+        - booked
+        - requestable
+        - requested
+        - requestAccepted
+        - requestRejected
+        - unavailable
     FcmRegistrationRequest:
       type: object
       properties:
@@ -5286,6 +5254,37 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
+    Student:
+      type: object
+      required:
+        - studentId
+        - name
+        - surname
+        - needsExtraTime
+        - isPresent
+        - isGraduating
+      properties:
+        studentId:
+          type: string
+          example: '290683'
+        name:
+          type: string
+          example: Mario
+        surname:
+          type: string
+          example: Rossi
+        needsExtraTime:
+          type: boolean
+          description: Se lo studente ha diritto a tempo aggiuntivo (DSA/BES)
+          example: true
+        isPresent:
+          type: boolean
+          description: Se lo studente risulta presente all'esame
+          example: false
+        isGraduating:
+          type: boolean
+          description: Se lo studente è in procinto di laurearsi
+          example: false
     SwitchCareerRequest:
       type: object
       required:
