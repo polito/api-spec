@@ -18,20 +18,6 @@ model CourseModuleEdition {
   id: integer;
 }
 
-enum CourseEnrollmentRole {
-  /** A student enrolled in the course, in personal study plan */
-  student: "student",
-
-  /** A user who can access the course content, not in the personal study plan */
-  viewer: "viewer",
-
-  /** A user who is the teacher of the course */
-  teacher: "teacher",
-
-  /** A user who is a collaborator in the course */
-  collaborator: "collaborator",
-}
-
 @example(_ex_course_module)
 model CourseModule {
   /** The identifier for the current instance of this course.

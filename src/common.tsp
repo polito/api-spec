@@ -11,6 +11,20 @@ model UpdatePreferencesRequest {
   language?: "it" | "en";
 }
 
+enum CourseEnrollmentRole {
+  /** A student enrolled in the course, in personal study plan */
+  student: "student",
+
+  /** A user who can access the course content, not in the personal study plan */
+  viewer: "viewer",
+
+  /** A user who is the teacher of the course */
+  teacher: "teacher",
+
+  /** A user who is a collaborator in the course */
+  collaborator: "collaborator",
+}
+
 model PlaceRef {
   buildingId: string;
   floorId: string;
@@ -85,6 +99,11 @@ alias NoContentResponse = {
   @statusCode statusCode: 204;
 };
 
+alias AcceptedResponse<T = null> = {
+  @statusCode statusCode: 202;
+  @body body: T;
+};
+
 alias RedirectResponse = {
   @statusCode statusCode: 302;
 };
@@ -96,6 +115,11 @@ alias BadRequest = {
 
 alias NotFound = {
   @statusCode statusCode: 404;
+  @body body: ErrorResponse;
+};
+
+alias NotAuthorized = {
+  @statusCode statusCode: 401;
   @body body: ErrorResponse;
 };
 
