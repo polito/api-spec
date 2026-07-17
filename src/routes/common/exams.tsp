@@ -18,8 +18,12 @@ union ExamStatus {
 }
 
 model Exam {
+  /** The exam call (appello) identifier */
   id: integer;
+
+  /** Corresponds to the internal "id_inc" value */
   courseId: numeric;
+
   courseShortcode: string;
   courseName: string;
 
@@ -37,20 +41,34 @@ model Exam {
   @example("AAA-ZZZ")
   surnameRange?: string | null;
 
+  /** Not returned for faculty calls */
   @example(CourseEnrollmentRole.student)
   enrollmentRole?: CourseEnrollmentRole;
 
+  /** The teacher's ID number (matricola) */
   teacherId: integer;
+
   type: string;
   places?: PlaceRef[];
   bookingStartsAt: utcDateTime | null;
   bookingEndsAt: utcDateTime;
   examStartsAt: utcDateTime | null;
   examEndsAt: utcDateTime | null;
+
+  /** Number of students booked for this exam call */
   bookedCount: integer;
+
+  /** Corresponds to the internal "max_pren" value */
   availableCount: integer;
-  feedback: string | null;
-  notes: string | null;
+
+  /**
+   * Message returned by the booking system about the exam status
+   * (e.g. why a booking is not possible). Not returned for faculty calls
+   */
+  feedback?: string | null;
+
+  /** Free-text notes attached to the exam call. Not returned for faculty calls */
+  notes?: string | null;
 
   /** The module number, if this is a module */
   moduleNumber: integer;

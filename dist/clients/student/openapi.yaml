@@ -5654,14 +5654,14 @@ components:
         - examEndsAt
         - bookedCount
         - availableCount
-        - feedback
-        - notes
         - moduleNumber
       properties:
         id:
           type: integer
+          description: The exam call (appello) identifier
         courseId:
           type: number
+          description: Corresponds to the internal "id_inc" value
         courseShortcode:
           type: string
         courseName:
@@ -5683,9 +5683,11 @@ components:
         enrollmentRole:
           allOf:
             - $ref: '#/components/schemas/CourseEnrollmentRole'
+          description: Not returned for faculty calls
           example: student
         teacherId:
           type: integer
+          description: The teacher's ID number (matricola)
         type:
           type: string
         places:
@@ -5709,14 +5711,20 @@ components:
           nullable: true
         bookedCount:
           type: integer
+          description: Number of students booked for this exam call
         availableCount:
           type: integer
+          description: Corresponds to the internal "max_pren" value
         feedback:
           type: string
           nullable: true
+          description: |-
+            Message returned by the booking system about the exam status
+            (e.g. why a booking is not possible). Not returned for faculty calls
         notes:
           type: string
           nullable: true
+          description: Free-text notes attached to the exam call. Not returned for faculty calls
         moduleNumber:
           type: integer
           description: The module number, if this is a module
