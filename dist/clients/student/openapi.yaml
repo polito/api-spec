@@ -5384,6 +5384,16 @@ components:
         - subject
         - message
         - subtopicId
+    DayOfWeek:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
     Deadline:
       type: object
       required:
@@ -6595,6 +6605,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OfferingClass'
+    OpeningHours:
+      type: object
+      required:
+        - days
+        - from
+        - to
+      properties:
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayOfWeek'
+        from:
+          type: string
+          example: '08:30'
+        to:
+          type: string
+          example: '20:00'
     Person:
       type: object
       required:

@@ -19,6 +19,26 @@ model PlaceRef {
   name: string;
 }
 
+enum DayOfWeek {
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday,
+}
+
+model OpeningHours {
+  days: DayOfWeek[];
+
+  @example("08:30")
+  from: string;
+
+  @example("20:00")
+  to: string;
+}
+
 model EuropeanStudentCard {
   canBeRequested: boolean;
   details: {

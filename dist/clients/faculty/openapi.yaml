@@ -3785,6 +3785,16 @@ components:
         seatId:
           type: integer
           example: 20018
+    DayOfWeek:
+      type: string
+      enum:
+        - monday
+        - tuesday
+        - wednesday
+        - thursday
+        - friday
+        - saturday
+        - sunday
     Department:
       type: object
       required:
@@ -4340,6 +4350,23 @@ components:
         eventStartTime: Dal 30 agosto 2023
         eventEndTime: Al 30 agosto 2023
         createdAt: '2022-08-31T14:00:00Z'
+    OpeningHours:
+      type: object
+      required:
+        - days
+        - from
+        - to
+      properties:
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayOfWeek'
+        from:
+          type: string
+          example: '08:30'
+        to:
+          type: string
+          example: '20:00'
     Person:
       type: object
       required:
