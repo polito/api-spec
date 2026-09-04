@@ -703,7 +703,8 @@ components:
           type: string
           example: s290683
         type:
-          type: string
+          allOf:
+            - $ref: '#/components/schemas/IdentityType'
           example: student
         clientId:
           type: string
@@ -716,6 +717,16 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    IdentityType:
+      anyOf:
+        - type: string
+          enum:
+            - student
+            - faculty
+        - type: string
+      description: |-
+        Kind of user the credentials belong to. Open union: unknown values are
+        accepted as plain strings so new user kinds don't break existing clients.
     Lecture:
       type: object
       required:
