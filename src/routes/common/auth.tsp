@@ -14,56 +14,8 @@ enum TokenType {
   event,
 }
 
-@example(_ex_identity)
-model Identity {
-  @example("s290683")
-  username: string;
-
-  @example("student")
-  type: string;
-
-  @example("5a54f626-4b7e-488e-a0e3-300f54051510")
-  clientId: string;
-
-  @example("c679fa38ff665df6a676acd833194385")
-  token: string;
-}
-
-model Device {
-  name?: string;
-  platform: string;
-  version?: string;
-  `model`?: string;
-  manufacturer?: string;
-  toothPicCompatible: boolean;
-}
-
 model UpdateInfo {
   suggestUpdate: boolean;
-}
-
-model ClientVersionRequest {
-  @example("1060200")
-  buildNumber: string;
-
-  @example("1.6.2")
-  appVersion: string;
-}
-
-model FcmRegistrationRequest {
-  @example("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4")
-  fcmRegistrationToken?: string;
-}
-
-model Client {
-  ...ClientVersionRequest;
-  ...FcmRegistrationRequest;
-
-  @example("Students app")
-  name: string;
-
-  @example("5a54f626-4b7e-488e-a0e3-300f54051510")
-  id?: string;
 }
 
 model LoginRequestBase {
@@ -97,15 +49,6 @@ model LoginCredentialsSSO extends LoginRequestBase {
 union LoginRequest {
   basic: LoginCredentialsBasic,
   sso: LoginCredentialsSSO,
-}
-
-@example(_ex_switchCareer_req)
-model SwitchCareerRequest {
-  @example("s290683")
-  username: string;
-
-  client?: Client;
-  device?: Device;
 }
 
 @example(_ex_validateMfa_req)
@@ -176,44 +119,6 @@ model AuthProfile {
   allUsernames: string[];
 }
 
-model Event {
-  @example("graduation-2026-01")
-  id: string;
-
-  @example("Lauree")
-  contextName: string;
-
-  @example("LAUREE")
-  contextId: string;
-
-  @example("Cerimonia di proclamazione")
-  title: string;
-
-  @example(utcDateTime.fromISO("2026-07-20T09:00:00Z"))
-  eventStartsAt: utcDateTime;
-
-  @example(utcDateTime.fromISO("2026-07-20T12:00:00Z"))
-  eventEndsAt: utcDateTime;
-
-  @example("La invitiamo a presentarsi mezz’ora prima dell’orario previsto")
-  accessInfo: string;
-
-  @example("Cerimonia di proclamazione e consegna dei diplomi")
-  description?: string;
-
-  @example("TO_CEN03_XPTE_000")
-  place: string | null;
-
-  @example("Aula Magna")
-  placeName: string | null;
-
-  @example(15)
-  totalAdmissions: integer;
-
-  @example(8)
-  remainingAdmissions: integer;
-}
-
 model AppInfoRequest {
   ...ClientVersionRequest;
   ...FcmRegistrationRequest;
@@ -227,13 +132,6 @@ interface Auth {
   @summary("Login")
   @useAuth(NoAuth)
   login(@body body: LoginRequest): OkDataResponse<Identity> | BaseErrors;
-
-  @post
-  @route("/switch-career")
-  @summary("Switch career | Cambia carriera")
-  switchCareer(
-    @body body: SwitchCareerRequest,
-  ): OkDataResponse<Identity> | BaseErrors;
 
   /** Invalidates the provided token */
   @delete
@@ -361,12 +259,4 @@ interface Profile {
     @query id?: string,
     @header accept: "image/svg+xml" | "text/plain",
   ): SvgResponse | AccessTokenResponse | BaseErrors;
-}
-
-@tag("Event Admissions")
-@route("/event-admissions")
-interface EventAdmission {
-  @get
-  @summary("Get upcoming events user is admitted to | Ottieni i prossimi eventi a cui l'utente è ammesso")
-  getEventAdmissions(): OkDataResponse<Event[]> | BaseErrors;
 }

@@ -4,15 +4,6 @@ using Http;
 
 namespace PolitoAPI;
 
-const _ex_identity = #{
-  username: "s290683",
-  type: "student",
-  clientId: "5a54f626-4b7e-488e-a0e3-300f54051510",
-  token: "c679fa38ff665df6a676acd833194385",
-};
-
-const _ex_switchCareer_req = #{ username: "s290683" };
-
 const _ex_enrolMfa_req = #{
   description: "some identifier you chose",
   pubkey: "dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK",
