@@ -115,7 +115,9 @@ const _ex_courses_list = #{
               teachingPeriod: "2-2",
               teacherId: 3001,
               teacherName: "Mario Rossi",
-              previousEditions: #[#{ id: 251005, year: "2024" }],
+              previousEditions: #[
+                #{ id: 251005, name: "Programming Module A", year: "2024" }
+              ],
               isOverBooking: false,
               enrollmentRole: CourseEnrollmentRole.student,
               year: "2025",
@@ -127,7 +129,9 @@ const _ex_courses_list = #{
               teachingPeriod: "2-2",
               teacherId: 3002,
               teacherName: "Giovanni Verdi",
-              previousEditions: #[#{ id: 251006, year: "2024" }],
+              previousEditions: #[
+                #{ id: 251006, name: "Programming Module B", year: "2024" }
+              ],
               isOverBooking: false,
               enrollmentRole: CourseEnrollmentRole.student,
               year: "2025",

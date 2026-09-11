@@ -14,6 +14,9 @@ model CourseModuleEdition {
   @example("2021")
   year: string;
 
+  @example("Fisica II")
+  name: string;
+
   @example(244577)
   id: integer;
 }
@@ -68,7 +71,7 @@ model CourseModule {
 
 model CourseModuleOverview extends CourseModule {
   /** Previous editions of this course that were part of the student's PSP */
-  @example(#[#{ id: 244577, year: "2021" }])
+  @example(#[#{ id: 244577, name: "Fisica I", year: "2021" }])
   previousEditions: CourseModuleEdition[];
 }
 
@@ -98,15 +101,12 @@ model Course extends CourseModule {
     id?: string;
   }[] | null;
 
-  @example(#[#{ id: 244577, year: "2021" }])
+  @example(#[#{ id: 244577, name: "Fisica I", year: "2021" }])
   vcPreviousYears: CourseModuleEdition[];
 
   /** Other editions/courses to be included in virtual classrooms */
   vcOtherCourses: {
     ...CourseModuleEdition;
-
-    @example("Fisica II")
-    name: string;
   }[];
 
   notifications: {

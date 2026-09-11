@@ -2428,6 +2428,7 @@ paths:
                         teacherName: Mario Rossi
                         previousEditions:
                           - id: 251005
+                            name: Programming Module A
                             year: '2024'
                         isOverBooking: false
                         enrollmentRole: student
@@ -2440,6 +2441,7 @@ paths:
                         teacherName: Giovanni Verdi
                         previousEditions:
                           - id: 251006
+                            name: Programming Module B
                             year: '2024'
                         isOverBooking: false
                         enrollmentRole: student
@@ -3445,6 +3447,7 @@ components:
             $ref: '#/components/schemas/CourseModuleEdition'
           example:
             - id: 244577
+              name: Fisica I
               year: '2021'
         vcOtherCourses:
           type: array
@@ -3454,16 +3457,16 @@ components:
               year:
                 type: string
                 example: '2021'
-              id:
-                type: integer
-                example: 244577
               name:
                 type: string
                 example: Fisica II
+              id:
+                type: integer
+                example: 244577
             required:
               - year
-              - id
               - name
+              - id
           description: Other editions/courses to be included in virtual classrooms
         notifications:
           type: object
@@ -3698,11 +3701,15 @@ components:
       type: object
       required:
         - year
+        - name
         - id
       properties:
         year:
           type: string
           example: '2021'
+        name:
+          type: string
+          example: Fisica II
         id:
           type: integer
           example: 244577
@@ -3718,6 +3725,7 @@ components:
           description: Previous editions of this course that were part of the student's PSP
           example:
             - id: 244577
+              name: Fisica I
               year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
