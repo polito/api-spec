@@ -61,6 +61,13 @@ model CourseModule {
   @example(false)
   isOverBooking: boolean;
 
+  /**
+   * Defines the course type and whether the course page should be opened
+   * when no instructor is assigned to the course.
+   */
+  @example("I")
+  category: string;
+
   /** Type of enrollment of the user for this course */
   @example(CourseEnrollmentRole.student)
   enrollmentRole: CourseEnrollmentRole;

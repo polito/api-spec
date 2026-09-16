@@ -3932,6 +3932,7 @@ paths:
                     teacherName: Stefano Quer
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules:
@@ -3946,6 +3947,7 @@ paths:
                             name: Programming Module A
                             year: '2024'
                         isOverBooking: false
+                        category: I
                         enrollmentRole: student
                         year: '2025'
                       - id: 251009
@@ -3959,6 +3961,7 @@ paths:
                             name: Programming Module B
                             year: '2024'
                         isOverBooking: false
+                        category: I
                         enrollmentRole: student
                         year: '2025'
                   - id: 252121
@@ -3970,6 +3973,7 @@ paths:
                     teacherName: Giovanni Malnati
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -3982,6 +3986,7 @@ paths:
                     teacherName: Riccardo Sisto
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -3994,6 +3999,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -4006,6 +4012,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -4018,6 +4025,7 @@ paths:
                     teacherName: Edgar Ernesto Sanchez Sanchez
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -4030,6 +4038,7 @@ paths:
                     teacherName: Luigi De Russis
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -4042,6 +4051,7 @@ paths:
                     teacherName: Antonio Jose Di Scala
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -4054,6 +4064,7 @@ paths:
                     teacherName: null
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -5188,6 +5199,7 @@ components:
         - teacherId
         - teacherName
         - isOverBooking
+        - category
         - enrollmentRole
         - year
       properties:
@@ -5219,6 +5231,12 @@ components:
         isOverBooking:
           type: boolean
           example: false
+        category:
+          type: string
+          description: |-
+            Defines the course type and whether the course page should be opened
+            when no instructor is assigned to the course.
+          example: I
         enrollmentRole:
           allOf:
             - $ref: '#/components/schemas/CourseEnrollmentRole'
@@ -5235,6 +5253,7 @@ components:
         teacherId: 3001
         teacherName: Mario Rossi
         isOverBooking: false
+        category: I
         enrollmentRole: student
         year: '2025'
     CourseModuleEdition:
