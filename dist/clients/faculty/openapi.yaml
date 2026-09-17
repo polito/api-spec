@@ -4824,6 +4824,26 @@ components:
           $ref: '#/components/schemas/Device'
       example:
         username: s290683
+    Symbol:
+      type: object
+      required:
+        - label
+        - color
+        - icon
+      properties:
+        label:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+      example:
+        label: null
+        color: '#000095'
+        icon: graduation-cap
     TokenType:
       type: string
       enum:

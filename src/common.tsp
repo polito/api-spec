@@ -62,6 +62,13 @@ model GuideSection {
   content: string;
 }
 
+@example(#{ label: null, color: "#000095", icon: "graduation-cap" })
+model Symbol {
+  label: string | null;
+  color: string | null;
+  icon: string | null;
+}
+
 /* UTILS */
 
 @error

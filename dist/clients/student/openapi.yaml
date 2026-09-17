@@ -4908,19 +4908,6 @@ components:
           $ref: '#/components/schemas/PlaceCategoryOverview'
         geoJson:
           $ref: '#/components/schemas/GeoJsonPolygon'
-    CareerStatus:
-      type: object
-      required:
-        - description
-        - color
-        - icon
-      properties:
-        description:
-          type: string
-        color:
-          type: string
-        icon:
-          type: string
     Client:
       type: object
       required:
@@ -7234,8 +7221,7 @@ components:
     StudentCareer:
       type: object
       required:
-        - careerStatus
-        - status
+        - state
         - degreeId
         - degreeCode
         - degreeLevel
@@ -7257,16 +7243,13 @@ components:
         - enrollmentAttendedCredits
         - enrollmentAcquiredCredits
       properties:
-        careerStatus:
+        state:
           allOf:
-            - $ref: '#/components/schemas/CareerStatus'
+            - $ref: '#/components/schemas/Symbol'
           example:
-            description: Active
-            color: '#28A745'
-            icon: check
-        status:
-          type: string
-          example: Active
+            label: Conclusa
+            color: '#007595'
+            icon: graduation-cap
         degreeId:
           type: string
           example: 81-6
@@ -7461,6 +7444,26 @@ components:
           $ref: '#/components/schemas/Device'
       example:
         username: s290683
+    Symbol:
+      type: object
+      required:
+        - label
+        - color
+        - icon
+      properties:
+        label:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+      example:
+        label: null
+        color: '#000095'
+        icon: graduation-cap
     Teacher:
       type: object
       required:

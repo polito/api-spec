@@ -218,13 +218,6 @@ model GuideField {
   value: string;
   isCopyEnabled?: boolean;
 }
-
-model CareerStatus {
-  description: string;
-  color: string;
-  icon: string;
-}
-
 model Guide {
   id: string;
   listTitle: string;
@@ -235,11 +228,8 @@ model Guide {
 }
 
 model StudentCareer {
-  @example(#{ description: "Active", color: "#28A745", icon: "check" })
-  careerStatus: CareerStatus;
-
-  @example("Active")
-  status: string;
+  @example(#{ label: "Conclusa", color: "#007595", icon: "graduation-cap" })
+  state: Symbol;
 
   @example("81-6")
   degreeId: string;
