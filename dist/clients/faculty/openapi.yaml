@@ -2417,6 +2417,7 @@ paths:
                     teacherName: Stefano Quer
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules:
@@ -2428,8 +2429,10 @@ paths:
                         teacherName: Mario Rossi
                         previousEditions:
                           - id: 251005
+                            name: Programming Module A
                             year: '2024'
                         isOverBooking: false
+                        category: I
                         enrollmentRole: student
                         year: '2025'
                       - id: 251009
@@ -2440,8 +2443,10 @@ paths:
                         teacherName: Giovanni Verdi
                         previousEditions:
                           - id: 251006
+                            name: Programming Module B
                             year: '2024'
                         isOverBooking: false
+                        category: I
                         enrollmentRole: student
                         year: '2025'
                   - id: 252121
@@ -2453,6 +2458,7 @@ paths:
                     teacherName: Giovanni Malnati
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2465,6 +2471,7 @@ paths:
                     teacherName: Riccardo Sisto
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2477,6 +2484,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2489,6 +2497,7 @@ paths:
                     teacherName: Antonio Lioy
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2501,6 +2510,7 @@ paths:
                     teacherName: Edgar Ernesto Sanchez Sanchez
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2513,6 +2523,7 @@ paths:
                     teacherName: Luigi De Russis
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2525,6 +2536,7 @@ paths:
                     teacherName: Antonio Jose Di Scala
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -2537,6 +2549,7 @@ paths:
                     teacherName: null
                     previousEditions: []
                     isOverBooking: false
+                    category: I
                     enrollmentRole: student
                     year: '2025'
                     modules: null
@@ -3445,6 +3458,7 @@ components:
             $ref: '#/components/schemas/CourseModuleEdition'
           example:
             - id: 244577
+              name: Fisica I
               year: '2021'
         vcOtherCourses:
           type: array
@@ -3454,16 +3468,16 @@ components:
               year:
                 type: string
                 example: '2021'
-              id:
-                type: integer
-                example: 244577
               name:
                 type: string
                 example: Fisica II
+              id:
+                type: integer
+                example: 244577
             required:
               - year
-              - id
               - name
+              - id
           description: Other editions/courses to be included in virtual classrooms
         notifications:
           type: object
@@ -3645,6 +3659,7 @@ components:
         - teacherId
         - teacherName
         - isOverBooking
+        - category
         - enrollmentRole
         - year
       properties:
@@ -3676,6 +3691,12 @@ components:
         isOverBooking:
           type: boolean
           example: false
+        category:
+          type: string
+          description: |-
+            Defines the course type and whether the course page should be opened
+            when no instructor is assigned to the course.
+          example: I
         enrollmentRole:
           allOf:
             - $ref: '#/components/schemas/CourseEnrollmentRole'
@@ -3692,17 +3713,22 @@ components:
         teacherId: 3001
         teacherName: Mario Rossi
         isOverBooking: false
+        category: I
         enrollmentRole: student
         year: '2025'
     CourseModuleEdition:
       type: object
       required:
         - year
+        - name
         - id
       properties:
         year:
           type: string
           example: '2021'
+        name:
+          type: string
+          example: Fisica II
         id:
           type: integer
           example: 244577
@@ -3718,6 +3744,7 @@ components:
           description: Previous editions of this course that were part of the student's PSP
           example:
             - id: 244577
+              name: Fisica I
               year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
@@ -4797,6 +4824,32 @@ components:
           $ref: '#/components/schemas/Device'
       example:
         username: s290683
+    Symbol:
+      type: object
+      properties:
+        label:
+          type: string
+        color:
+          anyOf:
+            - type: string
+            - $ref: '#/components/schemas/ThemeColors'
+        icon:
+          type: string
+      example:
+        color: '#000095'
+        icon: graduation-cap
+    ThemeColors:
+      type: object
+      required:
+        - light
+        - dark
+      properties:
+        light:
+          type: string
+          description: Color used in light mode.
+        dark:
+          type: string
+          description: Color used in dark mode.
     TokenType:
       type: string
       enum:
