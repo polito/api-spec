@@ -4826,24 +4826,30 @@ components:
         username: s290683
     Symbol:
       type: object
-      required:
-        - label
-        - color
-        - icon
       properties:
         label:
           type: string
-          nullable: true
         color:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - $ref: '#/components/schemas/ThemeColors'
         icon:
           type: string
-          nullable: true
       example:
-        label: null
         color: '#000095'
         icon: graduation-cap
+    ThemeColors:
+      type: object
+      required:
+        - light
+        - dark
+      properties:
+        light:
+          type: string
+          description: Color used in light mode.
+        dark:
+          type: string
+          description: Color used in dark mode.
     TokenType:
       type: string
       enum:

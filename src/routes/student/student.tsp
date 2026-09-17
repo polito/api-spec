@@ -228,7 +228,11 @@ model Guide {
 }
 
 model StudentCareer {
-  @example(#{ label: "Conclusa", color: "#007595", icon: "graduation-cap" })
+  @example(#{
+    label: "Conclusa",
+    color: #{ light: "#007595", dark: "#53EAFD" },
+    icon: "fas/graduation-cap",
+  })
   state: Symbol;
 
   @example("81-6")

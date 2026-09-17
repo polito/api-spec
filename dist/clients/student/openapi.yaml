@@ -7248,8 +7248,10 @@ components:
             - $ref: '#/components/schemas/Symbol'
           example:
             label: Conclusa
-            color: '#007595'
-            icon: graduation-cap
+            color:
+              light: '#007595'
+              dark: '#53EAFD'
+            icon: fas/graduation-cap
         degreeId:
           type: string
           example: 81-6
@@ -7446,22 +7448,16 @@ components:
         username: s290683
     Symbol:
       type: object
-      required:
-        - label
-        - color
-        - icon
       properties:
         label:
           type: string
-          nullable: true
         color:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - $ref: '#/components/schemas/ThemeColors'
         icon:
           type: string
-          nullable: true
       example:
-        label: null
         color: '#000095'
         icon: graduation-cap
     Teacher:
@@ -7477,6 +7473,18 @@ components:
           type: string
         lastName:
           type: string
+    ThemeColors:
+      type: object
+      required:
+        - light
+        - dark
+      properties:
+        light:
+          type: string
+          description: Color used in light mode.
+        dark:
+          type: string
+          description: Color used in dark mode.
     Ticket:
       type: object
       required:
