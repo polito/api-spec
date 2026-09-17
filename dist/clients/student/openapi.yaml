@@ -4908,6 +4908,19 @@ components:
           $ref: '#/components/schemas/PlaceCategoryOverview'
         geoJson:
           $ref: '#/components/schemas/GeoJsonPolygon'
+    CareerStatus:
+      type: object
+      required:
+        - description
+        - color
+        - icon
+      properties:
+        description:
+          type: string
+        color:
+          type: string
+        icon:
+          type: string
     Client:
       type: object
       required:
@@ -7244,14 +7257,12 @@ components:
         - enrollmentAcquiredCredits
       properties:
         status:
-          type: string
-          enum:
-            - active
-            - closed
-            - cancelled
-            - graduated
-            - career_closed
-          example: active
+          allOf:
+            - $ref: '#/components/schemas/CareerStatus'
+          example:
+            description: Active
+            color: '#28A745'
+            icon: check
         degreeId:
           type: string
           example: 81-6
