@@ -7234,6 +7234,7 @@ components:
     StudentCareer:
       type: object
       required:
+        - careerStatus
         - status
         - degreeId
         - degreeCode
@@ -7256,13 +7257,16 @@ components:
         - enrollmentAttendedCredits
         - enrollmentAcquiredCredits
       properties:
-        status:
+        careerStatus:
           allOf:
             - $ref: '#/components/schemas/CareerStatus'
           example:
             description: Active
             color: '#28A745'
             icon: check
+        status:
+          type: string
+          example: Active
         degreeId:
           type: string
           example: 81-6

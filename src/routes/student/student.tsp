@@ -236,7 +236,10 @@ model Guide {
 
 model StudentCareer {
   @example(#{ description: "Active", color: "#28A745", icon: "check" })
-  status: CareerStatus;
+  careerStatus: CareerStatus;
+
+  @example("Active")
+  status: string;
 
   @example("81-6")
   degreeId: string;
