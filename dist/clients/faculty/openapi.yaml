@@ -2786,40 +2786,6 @@ components:
           $ref: '#/components/schemas/PlaceCategoryOverview'
         geoJson:
           $ref: '#/components/schemas/GeoJsonPolygon'
-    Client:
-      type: object
-      required:
-        - buildNumber
-        - appVersion
-        - name
-      properties:
-        buildNumber:
-          type: string
-          example: '1060200'
-        appVersion:
-          type: string
-          example: 1.6.2
-        fcmRegistrationToken:
-          type: string
-          example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
-        name:
-          type: string
-          example: Students app
-        id:
-          type: string
-          example: 5a54f626-4b7e-488e-a0e3-300f54051510
-    ClientVersionRequest:
-      type: object
-      required:
-        - buildNumber
-        - appVersion
-      properties:
-        buildNumber:
-          type: string
-          example: '1060200'
-        appVersion:
-          type: string
-          example: 1.6.2
     Course:
       type: object
       required:
@@ -3219,24 +3185,6 @@ components:
           nullable: true
         type:
           type: string
-    Device:
-      type: object
-      required:
-        - platform
-        - toothPicCompatible
-      properties:
-        name:
-          type: string
-        platform:
-          type: string
-        version:
-          type: string
-        model:
-          type: string
-        manufacturer:
-          type: string
-        toothPicCompatible:
-          type: boolean
     ErrorResponse:
       type: object
       properties:
@@ -3344,12 +3292,6 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
-    FcmRegistrationRequest:
-      type: object
-      properties:
-        fcmRegistrationToken:
-          type: string
-          example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
     Floor:
       type: object
       required:
@@ -3447,42 +3389,6 @@ components:
         content:
           type: string
           example: HTML content
-    Identity:
-      type: object
-      required:
-        - username
-        - type
-        - clientId
-        - token
-      properties:
-        username:
-          type: string
-          example: s290683
-        type:
-          allOf:
-            - $ref: '#/components/schemas/IdentityType'
-          example: student
-        clientId:
-          type: string
-          example: 5a54f626-4b7e-488e-a0e3-300f54051510
-        token:
-          type: string
-          example: c679fa38ff665df6a676acd833194385
-      example:
-        username: s290683
-        type: student
-        clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
-        token: c679fa38ff665df6a676acd833194385
-    IdentityType:
-      anyOf:
-        - type: string
-          enum:
-            - student
-            - faculty
-        - type: string
-      description: |-
-        Kind of user the credentials belong to. Open union: unknown values are
-        accepted as plain strings so new user kinds don't break existing clients.
     Lecture:
       type: object
       required:
@@ -4091,15 +3997,6 @@ components:
         isLocationChecked:
           type: boolean
           example: true
-    UpdatePreferencesRequest:
-      type: object
-      properties:
-        language:
-          type: string
-          enum:
-            - it
-            - en
-          example: it
     VideoLecture:
       type: object
       required:
