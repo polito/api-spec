@@ -4,23 +4,14 @@ import "@typespec/openapi3";
 
 import "../../common.tsp";
 
-// Common routes
-import "../../routes/common/announcements.tsp";
-import "../../routes/common/bookings.tsp";
-import "../../routes/common/courses.tsp";
-import "../../routes/common/event-admissions.tsp";
-import "../../routes/common/news.tsp";
-import "../../routes/common/people.tsp";
-import "../../routes/common/places.tsp";
-
-// Faculty routes
+import "../../routes/common/auth.tsp";
 
 import "./version.tsp";
 
 using Http;
 using OpenAPI;
 
-@service(#{ title: "Polito Faculty API" })
+@service(#{ title: "Polito Auth API" })
 @info(#{
   version: version,
   license: #{

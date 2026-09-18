@@ -6,11 +6,6 @@ namespace PolitoAPI;
 
 /* MODELS */
 
-model UpdatePreferencesRequest {
-  @example("it")
-  language?: "it" | "en";
-}
-
 model PlaceRef {
   buildingId: string;
   floorId: string;

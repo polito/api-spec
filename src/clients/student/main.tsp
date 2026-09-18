@@ -6,14 +6,15 @@ import "../../common.tsp";
 
 // Common routes
 import "../../routes/common/announcements.tsp";
-import "../../routes/common/auth.tsp";
 import "../../routes/common/bookings.tsp";
 import "../../routes/common/courses.tsp";
+import "../../routes/common/event-admissions.tsp";
 import "../../routes/common/news.tsp";
 import "../../routes/common/people.tsp";
 import "../../routes/common/places.tsp";
 
 // Student routes
+import "../../routes/student/auth.tsp";
 import "../../routes/student/esc.tsp";
 import "../../routes/student/exams.tsp";
 import "../../routes/student/job-offers.tsp";
