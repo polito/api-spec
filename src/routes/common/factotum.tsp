@@ -18,12 +18,12 @@ enum IncidentStatus {
 /**
  * Intervention priority associated with an issue category.
  * Determines the urgency with which the incident is handled.
+ * `description` is localized according to the `Accept-Language` header.
  */
-enum IncidentPriority {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  urgent: "urgent",
+@example(_ex_incident_priority)
+model IncidentPriority {
+  id: integer;
+  description: string;
 }
 
 /** Related to the type of issue */
@@ -53,7 +53,10 @@ model IncidentOverview {
 model IncidentRequest {
   place: HttpPart<PlaceIds>;
   issueCategoryId: HttpPart<string>;
-  priority: HttpPart<IncidentPriority>;
+
+  /** Id of one of the priorities listed for the chosen issue category. */
+  priorityId: HttpPart<integer>;
+
   description: HttpPart<string>;
   attachment?: HttpPart<bytes>;
 }
@@ -63,13 +66,17 @@ model IncidentRequest {
 interface Factotum {
   /**
    * Lists the available issue categories. Categories are global
-   * and do not depend on the place.
+   * and do not depend on the place. The `name` and `description` fields of
+   * the categories and the `description` of their priorities are localized
+   * according to the `Accept-Language` header.
    */
   @get
   @route("/categories")
   @summary("List issue categories | Elenca categorie di problema")
   @opExample(_ex_getIssueCategories_resp)
-  getIssueCategories(): OkDataResponse<IssueCategory[]> | BaseErrors;
+  getIssueCategories(
+    @header `Accept-Language`?: "it" | "en" = "it",
+  ): OkDataResponse<IssueCategory[]> | BaseErrors;
 
   /**
    * Lists incidents in minimal view (id, date, issue category id). If the
@@ -91,7 +98,7 @@ interface Factotum {
    * Creates a new fault/anomaly incident. The request is
    * multipart/form-data to allow the optional upload of an attachment
    * (e.g. photo of the problem). The place reference, the category, the
-   * priority and the description are mandatory.
+   * priority id and the description are mandatory.
    */
   @post
   @route("/reports")

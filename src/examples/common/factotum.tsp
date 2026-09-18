@@ -4,14 +4,19 @@ using Http;
 
 namespace PolitoAPI;
 
+const _ex_incident_priority = #{
+  id: 2,
+  description: "Risposta necessaria entro 1 Settimana",
+};
+
 const _ex_issue_category = #{
   id: "IDRAULICO",
   name: "Idraulico",
   description: "Problemi idraulici: rubinetti, scarichi, perdite",
   priority: #[
-    IncidentPriority.medium,
-    IncidentPriority.high,
-    IncidentPriority.urgent
+    _ex_incident_priority,
+    #{ id: 3, description: "Completamento necessario entro 1 Mesi" },
+    #{ id: 4, description: "Flusso di lavoro" }
   ],
 };
 
@@ -27,28 +32,37 @@ const _ex_issue_categories_list = #[
     id: "ELETTRICO",
     name: "Elettrico",
     description: "Problemi elettrici",
-    priority: #[IncidentPriority.high, IncidentPriority.urgent],
+    priority: #[
+      #{ id: 3, description: "Completamento necessario entro 1 Mesi" },
+      #{ id: 4, description: "Flusso di lavoro" }
+    ],
   },
   #{
     id: "IDRAULICO",
     name: "Idraulico",
     description: "Problemi idraulici",
-    priority: #[IncidentPriority.medium, IncidentPriority.high],
+    priority: #[
+      #{ id: 2, description: "Risposta necessaria entro 1 Settimana" },
+      #{ id: 3, description: "Completamento necessario entro 1 Mesi" }
+    ],
   },
   #{
     id: "ARREDI",
     name: "Arredi",
     description: "Arredi danneggiati",
-    priority: #[IncidentPriority.low, IncidentPriority.medium],
+    priority: #[
+      #{ id: 1, description: "Nessuna procedura necessaria" },
+      #{ id: 2, description: "Risposta necessaria entro 1 Settimana" }
+    ],
   },
   #{
     id: "CLIMA",
     name: "Condizionamento e Riscaldamento",
     description: "Problemi climatizzazione",
     priority: #[
-      IncidentPriority.low,
-      IncidentPriority.medium,
-      IncidentPriority.high
+      #{ id: 1, description: "Nessuna procedura necessaria" },
+      #{ id: 2, description: "Risposta necessaria entro 1 Settimana" },
+      #{ id: 3, description: "Completamento necessario entro 1 Mesi" }
     ],
   }
 ];

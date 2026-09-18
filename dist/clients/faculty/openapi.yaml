@@ -1413,8 +1413,19 @@ paths:
       summary: List issue categories | Elenca categorie di problema
       description: |-
         Lists the available issue categories. Categories are global
-        and do not depend on the place.
-      parameters: []
+        and do not depend on the place. The `name` and `description` fields of
+        the categories and the `description` of their priorities are localized
+        according to the `Accept-Language` header.
+      parameters:
+        - name: accept-language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - it
+              - en
+            default: it
       responses:
         '200':
           description: The request has succeeded.
@@ -1435,27 +1446,36 @@ paths:
                     name: Elettrico
                     description: Problemi elettrici
                     priority:
-                      - high
-                      - urgent
+                      - id: 3
+                        description: Completamento necessario entro 1 Mesi
+                      - id: 4
+                        description: Flusso di lavoro
                   - id: IDRAULICO
                     name: Idraulico
                     description: Problemi idraulici
                     priority:
-                      - medium
-                      - high
+                      - id: 2
+                        description: Risposta necessaria entro 1 Settimana
+                      - id: 3
+                        description: Completamento necessario entro 1 Mesi
                   - id: ARREDI
                     name: Arredi
                     description: Arredi danneggiati
                     priority:
-                      - low
-                      - medium
+                      - id: 1
+                        description: Nessuna procedura necessaria
+                      - id: 2
+                        description: Risposta necessaria entro 1 Settimana
                   - id: CLIMA
                     name: Condizionamento e Riscaldamento
                     description: Problemi climatizzazione
                     priority:
-                      - low
-                      - medium
-                      - high
+                      - id: 1
+                        description: Nessuna procedura necessaria
+                      - id: 2
+                        description: Risposta necessaria entro 1 Settimana
+                      - id: 3
+                        description: Completamento necessario entro 1 Mesi
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1551,7 +1571,7 @@ paths:
         Creates a new fault/anomaly incident. The request is
         multipart/form-data to allow the optional upload of an attachment
         (e.g. photo of the problem). The place reference, the category, the
-        priority and the description are mandatory.
+        priority id and the description are mandatory.
       parameters: []
       responses:
         '200':
@@ -1593,8 +1613,8 @@ paths:
             encoding:
               place:
                 contentType: application/json
-              priority:
-                contentType: application/json
+              priorityId:
+                contentType: text/plain
   /incidents/reports/{incidentId}:
     get:
       operationId: FacultyFactotum_getIncident
@@ -4228,15 +4248,22 @@ components:
           floorId: XP02
           roomId: '017'
     IncidentPriority:
-      type: string
-      enum:
-        - low
-        - medium
-        - high
-        - urgent
+      type: object
+      required:
+        - id
+        - description
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
       description: |-
         Intervention priority associated with an issue category.
         Determines the urgency with which the incident is handled.
+        `description` is localized according to the `Accept-Language` header.
+      example:
+        id: 2
+        description: Risposta necessaria entro 1 Settimana
     IncidentRequest:
       type: object
       properties:
@@ -4244,8 +4271,9 @@ components:
           $ref: '#/components/schemas/PlaceIds'
         issueCategoryId:
           type: string
-        priority:
-          $ref: '#/components/schemas/IncidentPriority'
+        priorityId:
+          type: integer
+          description: Id of one of the priorities listed for the chosen issue category.
         description:
           type: string
         attachment:
@@ -4254,7 +4282,7 @@ components:
       required:
         - place
         - issueCategoryId
-        - priority
+        - priorityId
         - description
     IncidentStatus:
       type: string
@@ -4288,9 +4316,12 @@ components:
         name: Idraulico
         description: 'Problemi idraulici: rubinetti, scarichi, perdite'
         priority:
-          - medium
-          - high
-          - urgent
+          - id: 2
+            description: Risposta necessaria entro 1 Settimana
+          - id: 3
+            description: Completamento necessario entro 1 Mesi
+          - id: 4
+            description: Flusso di lavoro
     Lecture:
       type: object
       required:
