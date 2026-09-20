@@ -679,18 +679,6 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
-    GuideSection:
-      type: object
-      required:
-        - title
-        - content
-      properties:
-        title:
-          type: string
-          example: Title
-        content:
-          type: string
-          example: HTML content
     Identity:
       type: object
       required:
@@ -727,46 +715,6 @@ components:
       description: |-
         Kind of user the credentials belong to. Open union: unknown values are
         accepted as plain strings so new user kinds don't break existing clients.
-    Lecture:
-      type: object
-      required:
-        - id
-        - startsAt
-        - endsAt
-        - type
-        - virtualClassrooms
-        - description
-        - courseId
-        - courseName
-        - teacherId
-        - place
-      properties:
-        id:
-          type: number
-        startsAt:
-          type: string
-          format: date-time
-        endsAt:
-          type: string
-          format: date-time
-        type:
-          type: string
-        virtualClassrooms:
-          type: array
-          items:
-            $ref: '#/components/schemas/RelatedVirtualClassroom'
-        description:
-          type: string
-          nullable: true
-        courseId:
-          type: integer
-        courseName:
-          type: string
-        teacherId:
-          type: integer
-          example: 150157
-        place:
-          $ref: '#/components/schemas/PlaceRef'
     LinkToService:
       type: object
       required:
@@ -893,37 +841,6 @@ components:
           description: |-
             Additional information about the MFA session.
             Present only if status is `active` or `locked`
-    PlaceRef:
-      type: object
-      required:
-        - buildingId
-        - floorId
-        - roomId
-        - siteId
-        - name
-      properties:
-        buildingId:
-          type: string
-        floorId:
-          type: string
-        roomId:
-          type: string
-        siteId:
-          type: string
-        name:
-          type: string
-    RelatedVirtualClassroom:
-      type: object
-      required:
-        - id
-        - title
-      properties:
-        id:
-          type: integer
-          example: 150157
-        title:
-          type: string
-          example: Lecture 1
     TokenType:
       type: string
       enum:

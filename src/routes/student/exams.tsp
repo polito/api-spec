@@ -2,6 +2,7 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../../models/places.tsp";
 import "../../examples/student/exams.tsp";
 
 using Http;
