@@ -11,6 +11,7 @@ on:
           - student
           - faculty
           - auth
+          - places
       version:
         description: "Version (e.g. 1.0.0 or 1.0.0-ALPHA.1)"
         required: true

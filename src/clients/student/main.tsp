@@ -11,7 +11,6 @@ import "../../routes/common/courses.tsp";
 import "../../routes/common/event-admissions.tsp";
 import "../../routes/common/news.tsp";
 import "../../routes/common/people.tsp";
-import "../../routes/common/places.tsp";
 
 // Student routes
 import "../../routes/student/auth.tsp";
