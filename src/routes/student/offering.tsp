@@ -2,6 +2,7 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../../models/courses.tsp";
 import "../../examples/student/offering.tsp";
 
 namespace PolitoAPI;

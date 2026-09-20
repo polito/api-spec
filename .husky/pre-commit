@@ -1,6 +1,6 @@
 npm run compile all
 
-CLIENT_DIFFS=$(git status dist/clients --porcelain)
+CLIENT_DIFFS=$(git diff --name-only dist/clients)
 if [[ $CLIENT_DIFFS ]]; then
   echo "OpenAPI spec is out of date. Add your OpenAPI file(s) to the commit:"
   echo "$CLIENT_DIFFS" 

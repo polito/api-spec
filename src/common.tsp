@@ -6,19 +6,6 @@ namespace PolitoAPI;
 
 /* MODELS */
 
-model UpdatePreferencesRequest {
-  @example("it")
-  language?: "it" | "en";
-}
-
-model PlaceRef {
-  buildingId: string;
-  floorId: string;
-  roomId: string;
-  siteId: string;
-  name: string;
-}
-
 model EuropeanStudentCard {
   canBeRequested: boolean;
   details: {
@@ -28,38 +15,6 @@ model EuropeanStudentCard {
     expiresAt: string;
     qrCode: string;
   } | null;
-}
-
-model RelatedVirtualClassroom {
-  @example(150157)
-  id: integer;
-
-  @example("Lecture 1")
-  title: string;
-}
-
-model Lecture {
-  id: numeric;
-  startsAt: utcDateTime;
-  endsAt: utcDateTime;
-  type: string;
-  virtualClassrooms: RelatedVirtualClassroom[];
-  description: string | null;
-  courseId: integer;
-  courseName: string;
-
-  @example(150157)
-  teacherId: integer;
-
-  place: PlaceRef;
-}
-
-model GuideSection {
-  @example("Title")
-  title: string;
-
-  @example("HTML content")
-  content: string;
 }
 
 /* UTILS */
