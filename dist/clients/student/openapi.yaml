@@ -1038,6 +1038,7 @@ paths:
     patch:
       operationId: Courses_updateAssignment
       summary: Update assignment | Aggiorna elaborato
+      description: Deletes the assignment if `deletedAt` is provided, otherwise withdraws it.
       parameters:
         - name: courseId
           in: path
@@ -7807,14 +7808,15 @@ components:
             group: Insegnamento a scelta 1
     UpdateAssignmentRequest:
       type: object
+      required:
+        - deletedAt
       properties:
-        delivery:
-          type: boolean
-        state:
+        deletedAt:
           type: string
-          enum:
-            - submitted
-            - uploaded
+          format: date-time
+          nullable: true
+          description: If provided, the assignment is deleted; otherwise it is withdrawn
+          example: '2022-09-03T10:00:00Z'
     UpdateBookingRequest:
       type: object
       required:

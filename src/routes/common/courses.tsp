@@ -277,8 +277,9 @@ model CoursePreferencesRequest {
 }
 
 model UpdateAssignmentRequest {
-  delivery?: boolean;
-  state?: "submitted" | "uploaded";
+  /** If provided, the assignment is deleted; otherwise it is withdrawn */
+  @example(utcDateTime.fromISO("2022-09-03T10:00:00Z"))
+  deletedAt: utcDateTime | null;
 }
 
 @tag("Courses")
@@ -323,6 +324,9 @@ interface Courses {
     @multipartBody body: CourseAssignmentUpload,
   ): NoContentResponse | BaseErrors;
 
+  /**
+   * Deletes the assignment if `deletedAt` is provided, otherwise withdraws it.
+   */
   @route("/{courseId}/assignments/{assignmentId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update assignment | Aggiorna elaborato")
