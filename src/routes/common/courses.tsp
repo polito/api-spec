@@ -277,7 +277,7 @@ model CoursePreferencesRequest {
 }
 
 model UpdateAssignmentRequest {
-  /** If provided, the assignment is deleted; otherwise it is withdrawn */
+  /** Set to a date to withdraw the assignment, `null` to restore it */
   @example(utcDateTime.fromISO("2022-09-03T10:00:00Z"))
   deletedAt: utcDateTime | null;
 }
@@ -325,7 +325,7 @@ interface Courses {
   ): NoContentResponse | BaseErrors;
 
   /**
-   * Deletes the assignment if `deletedAt` is provided, otherwise withdraws it.
+   * Withdraws the assignment if `deletedAt` is set to a date, restores it if `deletedAt` is `null`.
    */
   @route("/{courseId}/assignments/{assignmentId}")
   @patch(#{ implicitOptionality: false })
