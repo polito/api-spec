@@ -50,6 +50,71 @@ model GeoJsonPolygon {
   };
 }
 
+@example(_ex_geo_json_point)
+model GeoJSONPoint {
+  @example("Point")
+  type: "Point";
+
+  @example(#[45.064254, 7.657823])
+  coordinates: numeric[];
+}
+
+@example(_ex_geo_json_feature_geometry)
+model GeoJSONFeatureGeometry {
+  @example("Feature")
+  type: "Feature";
+
+  geometry: {
+    @example("LineString")
+    type: "LineString";
+
+    @example(#[#[7.657823, 45.064254], #[7.658123, 45.064754]])
+    coordinates: numeric[][];
+  };
+  properties: {
+    @example("B1")
+    bl_id: string;
+
+    @example("F1")
+    fn_fl_id: string;
+  };
+}
+
+@example(_ex_navigation_response_feature)
+model NavigationResponseFeature {
+  @example("FeatureCollection")
+  type: "FeatureCollection";
+
+  startPoint: GeoJSONPoint;
+  endPoint: GeoJSONPoint;
+
+  @example(1)
+  segmentId: integer;
+
+  isPrivate: boolean;
+  features: GeoJSONFeatureGeometry;
+}
+
+@example(_ex_navigation_response)
+model NavigationResponse {
+  @example("FeatureCollection")
+  type: "FeatureCollection";
+
+  @example(1240)
+  totDistance: numeric;
+
+  @example(2)
+  stairsCount: numeric;
+
+  @example(1)
+  elevatorsCount: numeric;
+
+  @example(18)
+  stepsCount: numeric;
+
+  features: NavigationResponseFeature[];
+}
+
 @example(_ex_geo_location)
 model GeoLocation {
   @example(45.064254)
@@ -221,4 +286,17 @@ interface Departments {
     @query siteId?: string,
     @query departmentType?: string,
   ): OkDataResponse<Department[]> | BaseErrors;
+}
+
+@tag("Places")
+@route("/directions/{startPlaceId}/to/{endPlaceId}")
+interface Directions {
+  @get
+  @summary("Get directions | Ottieni indicazioni")
+  getDirections(
+    @path startPlaceId: string,
+    @path endPlaceId: string,
+    @query avoidStairs?: boolean,
+    @query usePrivate?: boolean,
+  ): OkDataResponse<NavigationResponse> | BaseErrors;
 }
