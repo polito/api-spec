@@ -171,3 +171,10 @@ const _ex_updateSpaceRecurrence_req = #{
     },
   },
 };
+
+const _ex_updateSpaceRecurrence_partial_resp = #{
+  returnType: #{
+    statusCode: 200,
+    body: #{ data: #{ failedDates: #[plainDate.fromISO("2026-10-22")] } },
+  },
+};

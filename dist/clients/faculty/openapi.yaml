@@ -1162,7 +1162,7 @@ paths:
     post:
       operationId: DepartmentalSpacesService_createSpaceRecurrence
       summary: Create a recurrence | Crea una ricorrenza
-      description: Creates events on the requested weekdays within the date range. Occupied dates are skipped and returned in failedDates; partial success is a 200 response. If no occurrences can be created, the upstream service returns 500.
+      description: Creates events on the requested weekdays within the date range. Returns 204 without a body when all occurrences are created. Returns 200 with the recurrence ID and a non-empty failedDates array on partial success. If no occurrences can be created, returns 500. The frontend refreshes the calendar after either success response and displays failed dates on partial success.
       parameters: []
       responses:
         '200':
@@ -1181,6 +1181,8 @@ paths:
                   id: 12960
                   failedDates:
                     - '2026-10-22'
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1211,7 +1213,7 @@ paths:
     patch:
       operationId: DepartmentalSpacesService_updateSpaceRecurrence
       summary: Update a recurrence | Modifica una ricorrenza
-      description: Updates the requester, type, description, notes and visibility of a recurrence. The upstream operation does not change dates, times, space or seat count. Requires creation through the departmental application and the appropriate user permission level.
+      description: Updates the requester, type, description, notes and visibility of a recurrence. Returns 204 without a body when all occurrences are updated, or 200 with a non-empty failedDates array on partial success. Requires creation through the departmental application and the appropriate user permission level. Dates, times, space and seat count are not changed by this operation.
       parameters:
         - name: recurrenceId
           in: path
@@ -1219,6 +1221,21 @@ paths:
           schema:
             type: integer
       responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UpdateSpaceRecurrenceResult'
+                required:
+                  - data
+              example:
+                data:
+                  failedDates:
+                    - '2026-10-22'
         '204':
           description: 'There is no content to send for this request, but the headers may be useful. '
         '400':
@@ -4361,10 +4378,11 @@ components:
           items:
             type: string
             format: date
+          minItems: 1
           description: |-
             Dates on which creation failed, including occupied dates.
-            An empty array means all occurrences were created.
-            Middleware converts upstream DD/MM/YYYY strings to ISO dates.
+            Present in the 200 response for partial success and always non-empty.
+            The webservice must return ISO dates (YYYY-MM-DD).
           example:
             - '2026-10-22'
     DayOfWeek:
@@ -5768,6 +5786,20 @@ components:
           type: boolean
           example: false
       description: Fields that can be updated on both a single event and a recurrence.
+    UpdateSpaceRecurrenceResult:
+      type: object
+      required:
+        - failedDates
+      properties:
+        failedDates:
+          type: array
+          items:
+            type: string
+            format: date
+          minItems: 1
+          description: Dates on which the update failed. Present only on partial success.
+          example:
+            - '2026-10-22'
     ValidateMfaRequest:
       type: object
       required:

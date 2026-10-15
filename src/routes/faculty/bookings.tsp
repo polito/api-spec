@@ -221,8 +221,8 @@ enum DayOfWeek {
 }
 
 /** Fields that can be updated on both a single event and a recurrence. */
-// TODO: comunicare al fornitore che nei payload i campi facoltativi non valorizzati
-// vengono omessi, senza inviare null o stringhe vuote (es. requestedById).
+// TODO: verificare il supporto all'omissione dei campi facoltativi non valorizzati
+// nei payload, senza inviare null o stringhe vuote (es. requestedById).
 // Verificare insieme l'elenco completo dei campi facoltativi e la loro obbligatorietà
 // per ciascuna operazione, inclusa la semantica dell'omissione negli aggiornamenti.
 model UpdateSpaceRecurrenceRequest {
@@ -247,7 +247,7 @@ model UpdateSpaceRecurrenceRequest {
 
   @example(false)
   isPubliclyVisible: boolean;
-  // TODO: richiedere al fornitore la visibilità anche nella lettura del calendario,
+  // TODO: verificare la possibilità di includere la visibilità nella lettura del calendario,
   // oppure chiarire come recuperarla per compilare il payload di aggiornamento.
 }
 
@@ -309,15 +309,23 @@ model CreateSpaceRecurrenceRequest extends UpdateSpaceRecurrenceRequest {
   // TODO: clarify whether occurrences may cross midnight and how they are represented.
 }
 
+model UpdateSpaceRecurrenceResult {
+  /** Dates on which the update failed. Present only on partial success. */
+  @minItems(1)
+  @example(#[plainDate.fromISO("2026-10-22")])
+  failedDates: plainDate[];
+}
+
 model CreateSpaceRecurrenceResult {
   /** Identifier of the newly created recurrence. */
   @example(12960)
   id: integer;
 
   /** Dates on which creation failed, including occupied dates.
-   * An empty array means all occurrences were created.
-   * Middleware converts upstream DD/MM/YYYY strings to ISO dates.
+   * Present in the 200 response for partial success and always non-empty.
+   * The webservice must return ISO dates (YYYY-MM-DD).
    */
+  @minItems(1)
   @example(#[plainDate.fromISO("2026-10-22")])
   failedDates: plainDate[];
 }
@@ -339,7 +347,7 @@ alias DepartmentalSpaceUnauthorized = {
   @body body: ErrorResponse;
 };
 
-// TODO: concordare con il fornitore codici applicativi stabili per i diversi errori
+// TODO: definire codici applicativi stabili per i diversi errori
 // e la relativa corrispondenza con status HTTP e messaggi, senza interpretare il testo.
 // Il webservice mostra messaggi testuali; la nostra API usa ErrorResponse { code, message }.
 // Verificare quando code e message debbano essere obbligatori: oggi sono entrambi opzionali.
@@ -372,7 +380,7 @@ interface DepartmentalSpacesService {
 
   @route("/events")
   @post
-  // TODO: comunicare al fornitore anche la creazione del singolo evento con 204
+  // TODO: verificare il supporto alla creazione del singolo evento con risposta 204
   // senza body. Il frontend invalida la query del calendario per rileggere gli eventi.
   @summary("Create an event in a departmental space | Crea un evento in uno spazio dipartimentale")
   @doc("Creates a single event. The body field spaceId corresponds to NomeSpazio; caller identity and application are supplied by middleware.")
@@ -380,9 +388,8 @@ interface DepartmentalSpacesService {
     @body body: CreateSpaceEventRequest,
   ): NoContentResponse | DepartmentalSpaceErrors;
 
-  // TODO: comunicare al fornitore dei webservice che modifica ed eliminazione
-  // di eventi e ricorrenze restituiscono 204 senza body nella nostra API,
-  // anziché 200 con un messaggio di successo.
+  // TODO: verificare il supporto alla risposta 204 senza body per modifica ed eliminazione
+  // di eventi e ricorrenze, anziché 200 con un messaggio di successo.
   @route("/events/{eventId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update an event in a departmental space | Modifica un evento in uno spazio dipartimentale")
@@ -404,21 +411,28 @@ interface DepartmentalSpacesService {
   @route("/recurrences")
   @post
   @summary("Create a recurrence | Crea una ricorrenza")
-  @doc("Creates events on the requested weekdays within the date range. Occupied dates are skipped and returned in failedDates; partial success is a 200 response. If no occurrences can be created, the upstream service returns 500.")
+  @doc("Creates events on the requested weekdays within the date range. Returns 204 without a body when all occurrences are created. Returns 200 with the recurrence ID and a non-empty failedDates array on partial success. If no occurrences can be created, returns 500. The frontend refreshes the calendar after either success response and displays failed dates on partial success.")
+  // TODO: verificare il supporto alla risposta 204 senza body per il successo completo
+  // e 200 con le date fallite per il successo parziale della creazione ricorrenza.
+  @opExample(#{ returnType: #{ statusCode: 204 } })
   @opExample(_ex_createSpaceRecurrence_resp)
   createSpaceRecurrence(
     @body body: CreateSpaceRecurrenceRequest,
-  ): OkDataResponse<CreateSpaceRecurrenceResult> | DepartmentalSpaceErrors;
+  ): NoContentResponse | OkDataResponse<CreateSpaceRecurrenceResult> | DepartmentalSpaceErrors;
 
   @route("/recurrences/{recurrenceId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update a recurrence | Modifica una ricorrenza")
-  @doc("Updates the requester, type, description, notes and visibility of a recurrence. The upstream operation does not change dates, times, space or seat count. Requires creation through the departmental application and the appropriate user permission level.")
+  @doc("Updates the requester, type, description, notes and visibility of a recurrence. Returns 204 without a body when all occurrences are updated, or 200 with a non-empty failedDates array on partial success. Requires creation through the departmental application and the appropriate user permission level. Dates, times, space and seat count are not changed by this operation.")
+  // TODO: verificare il supporto all'aggiornamento parziale della ricorrenza:
+  // 204 senza body per il successo completo, 200 con le date fallite per quello parziale.
+  @opExample(#{ returnType: #{ statusCode: 204 } })
+  @opExample(_ex_updateSpaceRecurrence_partial_resp)
   @opExample(_ex_updateSpaceRecurrence_req)
   updateSpaceRecurrence(
     @path recurrenceId: integer,
     @body body: UpdateSpaceRecurrenceRequest,
-  ): NoContentResponse | DepartmentalSpaceErrors;
+  ): NoContentResponse | OkDataResponse<UpdateSpaceRecurrenceResult> | DepartmentalSpaceErrors;
 
   @route("/recurrences/{recurrenceId}")
   @delete
