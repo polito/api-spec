@@ -108,6 +108,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#2563EB", icon: "faCode", label: "SDP" },
           modules: #[
             #{
               id: 251008,
@@ -123,6 +124,7 @@ const _ex_courses_list = #{
               category: "I",
               enrollmentRole: CourseEnrollmentRole.student,
               year: "2025",
+              style: #{ color: "#4F46E5", icon: "faCode", label: "SDP-A" },
             },
             #{
               id: 251009,
@@ -138,6 +140,7 @@ const _ex_courses_list = #{
               category: "I",
               enrollmentRole: CourseEnrollmentRole.student,
               year: "2025",
+              style: #{ color: "#7C3AED", icon: "faCode", label: "SDP-B" },
             }
           ],
         },
@@ -154,6 +157,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#0891B2", icon: "faGlobe", label: "WA2" },
           modules: null,
         },
         #{
@@ -169,6 +173,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#16A34A", icon: "faShieldHalved", label: "SVT" },
           modules: null,
         },
         #{
@@ -184,6 +189,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#DC2626", icon: "faServer", label: "ISS" },
           modules: null,
         },
         #{
@@ -199,6 +205,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#EA580C", icon: "faNetworkWired", label: "CYB" },
           modules: null,
         },
         #{
@@ -214,6 +221,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#D97706", icon: "faMicrochip", label: "ASE" },
           modules: null,
         },
         #{
@@ -229,6 +237,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#DB2777", icon: "faComputer", label: "HCI" },
           modules: null,
         },
         #{
@@ -244,6 +253,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: #{ color: "#0D9488", icon: "faKey", label: "CRY" },
           modules: null,
         },
         #{
@@ -259,6 +269,7 @@ const _ex_courses_list = #{
           category: "I",
           enrollmentRole: CourseEnrollmentRole.student,
           year: "2025",
+          style: null,
           modules: null,
         }
       ],
@@ -1217,6 +1228,7 @@ const _ex_course_module = #{
   category: "I",
   enrollmentRole: CourseEnrollmentRole.student,
   year: "2025",
+  style: #{ color: "#4F46E5", icon: "faCode", label: "PMA" },
 };
 
 const _ex_getCourseGuide_resp = #{
