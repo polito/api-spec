@@ -23,13 +23,6 @@ model DepartmentalSpaceRef {
   description: string;
 }
 
-/** Physical room identifiers. buildingId already identifies the site. */
-model RoomRef {
-  buildingId: string;
-  floorId: string;
-  roomId: string;
-}
-
 model DepartmentalSpace extends DepartmentalSpaceRef {
   @example(120)
   numSeats: integer;
@@ -40,10 +33,11 @@ model DepartmentalSpace extends DepartmentalSpaceRef {
   @example("L")
   size: string;
 
-  /** The location of the room. Upstream Locale maps to place.roomId,
-   * Fabbricato to place.buildingId, and Piano to place.floorId.
+  /** Place identifier used by /v2/places/{placeId}.
+   * Format: buildingId_floorId_roomId (Fabbricato_Piano_Locale).
    */
-  place: RoomRef;
+  @example("TO_CIT11_XP01_03XC")
+  placeId: string;
 
   /** User permission level | Livello di abilitazione dell'utente:
    * - 1: view the calendar | visualizzazione del calendario
@@ -56,11 +50,21 @@ model DepartmentalSpace extends DepartmentalSpaceRef {
   permissionLevel: 1 | 2 | 3;
 }
 
-/** Maps site names (e.g. Sede Centrale) to their rooms. */
-model DepartmentalSpaceSites is Record<DepartmentalSpace[]>;
+/** Departmental spaces grouped under a named site. */
+model DepartmentalSpaceSite {
+  @example("Sede Centrale")
+  name: string;
 
-/** Maps city names (e.g. Torino, Mondovì) to site maps. */
-model DepartmentalSpaceFilter is Record<DepartmentalSpaceSites>;
+  spaces: DepartmentalSpace[];
+}
+
+/** Sites grouped under a named city. */
+model DepartmentalSpaceCity {
+  @example("Torino")
+  name: string;
+
+  sites: DepartmentalSpaceSite[];
+}
 
 model DepartmentalSpaceEventBase {
   /** Calendar event identifier; corresponds to IdEventoCalendario. */
@@ -74,26 +78,27 @@ model DepartmentalSpaceEventBase {
   @example(true)
   isCreatedByDepartment: boolean;
 
+  /** Whether the event is publicly visible. | Indica se l'evento è visibile pubblicamente. */
+  // DIFFERENZA: richiedere isPubliclyVisible nella risposta del calendario.
+  @example(false)
+  isPubliclyVisible: boolean;
+
   /** Bookable space; NomeSpazio maps to space.id and DescSpazio to space.description. */
   space: DepartmentalSpaceRef;
 
-  /** Physical location: Fabbricato, Piano and Locale. */
-  place: RoomRef;
+  /** Place identifier used by /v2/places/{placeId}.
+   * Format: buildingId_floorId_roomId (Fabbricato_Piano_Locale).
+   */
+  @example("TO_CIT11_XP01_03XC")
+  placeId: string;
 
   /** Number of occupied seats; corresponds to NumPostiOccupati. */
   @example(10)
   seatsOccupied: integer;
 
-  /** TODO: verify whether a description is returned for teaching events too.
-   * If it is only returned for department events, move this field to
-   * DepartmentalSpaceDepartmentEventDetails.
-   */
-  @example("Riunione di dipartimento")
-  description: string;
-
   /** Event type identifier and display name (DescTipologiaEvento). */
   // TODO: the supplied calendar payload only includes the type description.
-  // Confirm how the upstream service or middleware supplies its identifier.
+  // Request that the webservice supplies its identifier alongside the label.
   // Example ID 1 is fictitious; the actual code for Riunione is not yet known.
   @example(#{ id: 1, label: "Riunione" })
   type: IdLabel<integer>;
@@ -101,17 +106,17 @@ model DepartmentalSpaceEventBase {
   @example("Prepararsi in anticipo secondo documentazione inviata")
   note: string;
 
-  /** Identifier of the recurrence series; present only for recurring events.
-   * Middleware omits the field when upstream IdRicorrenza is empty.
+  /** Identifier of the recurrence series. Always present; null for non-recurring events.
    */
   @example(456)
-  recurrenceId?: integer;
+  recurrenceId: integer | null;
 
-  // TODO: upstream timestamps are Italian local times (Europe/Rome).
-  // Verify middleware conversion to/from UTC, including daylight-saving transitions.
+  // DIFFERENZA: richiedere datetime UTC al webservice, con conversione da Europe/Rome.
+  /** Event start in UTC. | Inizio dell'evento in UTC. */
   @example(utcDateTime.fromISO("2026-02-15T10:00:00Z"))
   startsAt: utcDateTime;
 
+  /** Event end in UTC. | Fine dell'evento in UTC. */
   @example(utcDateTime.fromISO("2026-02-15T12:00:00Z"))
   endsAt: utcDateTime;
 }
@@ -134,6 +139,7 @@ model DepartmentalSpaceTeachingEventDetails {
   @example("AAA-ZZZ")
   surnameRange: string;
 
+  /** Corresponds to TitoloMateria. */
   @example("System and device programming")
   courseName: string;
 
@@ -155,24 +161,21 @@ model DepartmentalSpaceTeachingEventDetails {
   // type and whether it should remain exposed. The supplied payload shows a string.
   idImt: string;
 
-  // TODO: verificare la disponibilità e i valori vuoti/null dei dati didattici,
-  // inclusi docente in aula, modulo, fascia alfabetica e courseId (id_inc non documentato).
-
   /** Corresponds to CodIns. */
   @example("01NYHOV")
-  courseShortcode?: string;
+  courseShortcode: string;
 
-  /** Corresponds to the internal "id_inc" value. */
-  @example(258674)
-  courseId?: numeric;
-
-  /** Course instance identifier; corresponds to the internal "num_cor" value. */
+  /** Course instance identifier; corresponds to NumCor. */
   @example(0)
   courseInstanceId: integer;
 }
 
 /** Department event details (FlagDidattico = false). */
 model DepartmentalSpaceDepartmentEventDetails {
+  /** Department event description; corresponds to DescEvento. | Descrizione dell'evento dipartimentale. */
+  @example("Riunione di dipartimento")
+  description: string;
+
   /** Person for whom the booking is made; also used for permission level 2 checks. */
   requestedBy: {
     /** Requester's ID (matricola), without the user-type prefix. */
@@ -247,8 +250,6 @@ model UpdateSpaceRecurrenceRequest {
 
   @example(false)
   isPubliclyVisible: boolean;
-  // TODO: verificare la possibilità di includere la visibilità nella lettura del calendario,
-  // oppure chiarire come recuperarla per compilare il payload di aggiornamento.
 }
 
 @example(_ex_createSpaceEvent_req_body)
@@ -257,11 +258,12 @@ model CreateSpaceEventRequest extends UpdateSpaceRecurrenceRequest {
   @example("sala riunioni ISAD")
   spaceId: string;
 
-  // TODO: upstream dates/times are local to Europe/Rome. Verify middleware
-  // conversion to/from UTC, including daylight-saving transitions.
+  // DIFFERENZA: inviare al webservice datetime UTC, non data e orari locali separati.
+  /** Event start in UTC. | Inizio dell'evento in UTC. */
   @example(utcDateTime.fromISO("2026-10-20T08:00:00Z"))
   startsAt: utcDateTime;
 
+  /** Event end in UTC. | Fine dell'evento in UTC. */
   @example(utcDateTime.fromISO("2026-10-20T09:30:00Z"))
   endsAt: utcDateTime;
 
@@ -306,28 +308,25 @@ model CreateSpaceRecurrenceRequest extends UpdateSpaceRecurrenceRequest {
   recurrenceDays: DayOfWeek[];
 
   // TODO: verify whether the upstream recurrence end date is inclusive.
-  // TODO: clarify whether occurrences may cross midnight and how they are represented.
 }
 
-model UpdateSpaceRecurrenceResult {
-  /** Dates on which the update failed. Present only on partial success. */
-  @minItems(1)
-  @example(#[plainDate.fromISO("2026-10-22")])
-  failedDates: plainDate[];
+model SpaceEventResult {
+  /** Identifier of the created or updated event. */
+  @example(9183888)
+  id: integer;
 }
 
-model CreateSpaceRecurrenceResult {
-  /** Identifier of the newly created recurrence. */
+model SpaceRecurrenceResult {
+  /** Identifier of the created or updated recurrence. */
   @example(12960)
   id: integer;
 
-  /** Dates on which creation failed, including occupied dates.
-   * Present in the 200 response for partial success and always non-empty.
-   * The webservice must return ISO dates (YYYY-MM-DD).
+  /** Dates on which the operation failed, including occupied dates.
+   * Always present: empty on complete success, non-empty on partial success.
+   * Dates use ISO format (YYYY-MM-DD).
    */
-  @minItems(1)
-  @example(#[plainDate.fromISO("2026-10-22")])
-  failedDates: plainDate[];
+  @example(#[])
+  failed_dates: plainDate[];
 }
 
 model DepartmentalSpaceCalendarRequest {
@@ -342,103 +341,187 @@ model DepartmentalSpaceCalendarRequest {
   toDate: plainDate;
 }
 
-alias DepartmentalSpaceUnauthorized = {
-  @statusCode statusCode: 401;
-  @body body: ErrorResponse;
-};
+@error
+model DepartmentalSpaceErrorResponse {
+  message: string;
+}
 
-// TODO: definire codici applicativi stabili per i diversi errori
-// e la relativa corrispondenza con status HTTP e messaggi, senza interpretare il testo.
-// Il webservice mostra messaggi testuali; la nostra API usa ErrorResponse { code, message }.
-// Verificare quando code e message debbano essere obbligatori: oggi sono entrambi opzionali.
-// Includere spazio occupato, richiedente inesistente, evento/ricorrenza inesistente,
-// permessi insufficienti e fallimento totale della creazione di una ricorrenza.
-alias DepartmentalSpaceErrors = BaseErrors | DepartmentalSpaceUnauthorized;
+@doc(TDescription)
+model DepartmentalSpaceError<
+  TStatus extends integer,
+  TDescription extends valueof string
+> {
+  @statusCode statusCode: TStatus;
+  @body body: DepartmentalSpaceErrorResponse;
+}
+
+// DIFFERENZA da richiedere al webservice: 403 invece di 401 per permessi insufficienti;
+// 409 invece di 500 per spazio occupato; 404 invece di 400 per evento/ricorrenza inesistente.
+// TODO: il documento mostra messaggi come stringhe JSON; verificare il supporto
+// alla struttura { message } adottata dalla specifica.
+alias DepartmentalSpaceBaseErrors = DepartmentalSpaceError<
+  400,
+  "Invalid input. | Dati di input non validi."
+> | DepartmentalSpaceError<
+  500,
+  "The operation failed because of an internal error. | Operazione fallita per un errore interno."
+>;
+
+alias DepartmentalSpaceErrors = DepartmentalSpaceBaseErrors | DepartmentalSpaceError<
+  403,
+  "Insufficient permissions for this operation. | Permessi insufficienti per questa operazione."
+>;
+
+alias DepartmentalSpaceModificationErrors = DepartmentalSpaceBaseErrors | DepartmentalSpaceError<
+  403,
+  "The user lacks the required permission level, or the event was not created through the departmental application. | Il livello di abilitazione dell'utente è insufficiente oppure l'evento non è stato creato tramite l'applicazione degli spazi dipartimentali."
+>;
+
+alias DepartmentalSpaceEventNotFound = DepartmentalSpaceError<
+  404,
+  "The event does not exist. | L'evento non esiste."
+>;
+alias DepartmentalSpaceRecurrenceNotFound = DepartmentalSpaceError<
+  404,
+  "The recurrence does not exist. | La ricorrenza non esiste."
+>;
+alias DepartmentalSpaceOccupied = DepartmentalSpaceError<
+  409,
+  "The space is already occupied in the requested interval. | Lo spazio è già occupato nell'intervallo richiesto."
+>;
+alias DepartmentalSpaceRecurrenceConflict = DepartmentalSpaceError<
+  409,
+  "No occurrences were created because the space is occupied on all requested dates. | Nessuna occorrenza creata perché lo spazio è occupato in tutte le date richieste."
+>;
+
+@doc(TDescription)
+model DepartmentalSpaceDataResponse<T, TDescription extends valueof string> {
+  @statusCode statusCode: 200;
+  @body body: {
+    data: T;
+  };
+}
+
+alias DepartmentalSpaceEventResponse = DepartmentalSpaceDataResponse<
+  SpaceEventResult,
+  "Operation completed; returns the event identifier. | Operazione completata; restituisce l'identificativo dell'evento."
+>;
+alias DepartmentalSpaceRecurrenceResponse = DepartmentalSpaceDataResponse<
+  SpaceRecurrenceResult,
+  "Complete or partial success. Returns the recurrence identifier and failed_dates, always present and empty on complete success. | Successo completo o parziale. Restituisce l'identificativo della ricorrenza e failed_dates, sempre presente e vuoto in caso di successo completo."
+>;
+
+@doc("Deletion completed; no response body. | Eliminazione completata; nessun body di risposta.")
+model DepartmentalSpaceDeletedResponse {
+  @statusCode statusCode: 204;
+}
 
 @tag("Departmental Spaces")
 @route("/bookings/departmental-spaces")
 interface DepartmentalSpacesService {
   @get
-  @summary("Get the list of departmental spaces")
+  @summary("List departmental spaces | Elenca gli spazi dipartimentali")
   @opExample(_ex_getDepartmentalSpaces_resp)
-  getDepartmentalSpaces(): OkDataResponse<DepartmentalSpaceFilter> | BaseErrors;
+  @doc("List departmental spaces grouped by city and site. | Elenca gli spazi dipartimentali raggruppati per città e sede.")
+  getDepartmentalSpaces(): OkDataResponse<DepartmentalSpaceCity[]> | BaseErrors;
 
+  // TODO REST: GET con body non ha semantica generalmente definita e può essere
+  // ignorato o rifiutato dai client/intermediari; valutare query string o POST di ricerca.
   @route("/events")
   @get
   @summary("List events for a departmental space in a date range | Elenca gli eventi di uno spazio dipartimentale in un intervallo di date")
   @opExample(_ex_getDepartmentalSpaceEvents_resp)
+  @opExample(_ex_getDepartmentalSpaceEvents_403_resp)
+  @doc("List calendar events for a space in a date range. | Elenca gli eventi del calendario di uno spazio in un intervallo di date.")
   getDepartmentalSpaceEvents(
     @body body: DepartmentalSpaceCalendarRequest,
-  ): OkDataResponse<DepartmentalSpaceEvent[]> | DepartmentalSpaceErrors;
+  ): OkDataResponse<DepartmentalSpaceEvent[]> | BaseErrors | DepartmentalSpaceError<
+    403,
+    "The user is not enabled for the requested space. | L’utente non è abilitato sullo spazio richiesto."
+  >;
 
   @route("/event-types")
   @get
   @summary("List event types | Elenca le tipologie di evento")
   @opExample(_ex_getDepartmentalSpaceEventTypes_resp)
+  @doc("List event types. | Elenca le tipologie di evento.")
   getDepartmentalSpaceEventTypes(
   ): OkDataResponse<IdLabel<integer>[]> | BaseErrors;
 
   @route("/events")
   @post
-  // TODO: verificare il supporto alla creazione del singolo evento con risposta 204
-  // senza body. Il frontend invalida la query del calendario per rileggere gli eventi.
   @summary("Create an event in a departmental space | Crea un evento in uno spazio dipartimentale")
-  @doc("Creates a single event. The body field spaceId corresponds to NomeSpazio; caller identity and application are supplied by middleware.")
+  @opExample(_ex_createSpaceEvent_resp)
+  @opExample(_ex_createSpaceEvent_400_resp)
+  @opExample(_ex_createSpaceEvent_403_resp)
+  @opExample(_ex_createSpaceEvent_409_resp)
+  @doc("Create a single event in a departmental space. | Crea un evento singolo in uno spazio dipartimentale.")
   createSpaceEvent(
     @body body: CreateSpaceEventRequest,
-  ): NoContentResponse | DepartmentalSpaceErrors;
-
-  // TODO: verificare il supporto alla risposta 204 senza body per modifica ed eliminazione
-  // di eventi e ricorrenze, anziché 200 con un messaggio di successo.
+  ): DepartmentalSpaceEventResponse | DepartmentalSpaceErrors | DepartmentalSpaceOccupied;
   @route("/events/{eventId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update an event in a departmental space | Modifica un evento in uno spazio dipartimentale")
-  @doc("Updates a single event. Modification requires isCreatedByDepartment = true and the appropriate user permission level.")
   @opExample(_ex_updateSpaceEvent_req)
+  @opExample(_ex_updateSpaceEvent_resp)
+  @opExample(_ex_updateSpaceEvent_403_resp)
+  @doc("Update a single event in a departmental space. | Modifica un evento singolo in uno spazio dipartimentale.")
   updateSpaceEvent(
     @path eventId: integer,
     @body body: CreateSpaceEventRequest,
-  ): NoContentResponse | DepartmentalSpaceErrors;
+  ):
+    | DepartmentalSpaceEventResponse
+    | DepartmentalSpaceModificationErrors
+    | DepartmentalSpaceEventNotFound
+    | DepartmentalSpaceOccupied;
 
+  // TODO: verificare il supporto alla risposta 204 senza body per le eliminazioni.
   @route("/events/{eventId}")
   @delete
   @summary("Delete an event in a departmental space | Elimina un evento da uno spazio dipartimentale")
-  @doc("Deletes a single event. Deletion requires isCreatedByDepartment = true and the appropriate user permission level.")
+  @opExample(_ex_deleteSpaceEvent_404_resp)
+  @opExample(_ex_deleteSpaceEvent_403_resp)
+  @doc("Delete a single event from a departmental space. | Elimina un evento singolo da uno spazio dipartimentale.")
   deleteSpaceEvent(
     @path eventId: integer,
-  ): NoContentResponse | DepartmentalSpaceErrors;
+  ): DepartmentalSpaceDeletedResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceEventNotFound;
 
   @route("/recurrences")
   @post
   @summary("Create a recurrence | Crea una ricorrenza")
-  @doc("Creates events on the requested weekdays within the date range. Returns 204 without a body when all occurrences are created. Returns 200 with the recurrence ID and a non-empty failedDates array on partial success. If no occurrences can be created, returns 500. The frontend refreshes the calendar after either success response and displays failed dates on partial success.")
-  // TODO: verificare il supporto alla risposta 204 senza body per il successo completo
-  // e 200 con le date fallite per il successo parziale della creazione ricorrenza.
-  @opExample(#{ returnType: #{ statusCode: 204 } })
+  @opExample(_ex_createSpaceRecurrence_full_resp)
   @opExample(_ex_createSpaceRecurrence_resp)
+  @opExample(_ex_createSpaceRecurrence_403_resp)
+  @opExample(_ex_createSpaceRecurrence_409_resp)
+  @doc("Create a recurrence on the selected weekdays within a date range. | Crea una ricorrenza nei giorni della settimana selezionati in un intervallo di date.")
   createSpaceRecurrence(
     @body body: CreateSpaceRecurrenceRequest,
-  ): NoContentResponse | OkDataResponse<CreateSpaceRecurrenceResult> | DepartmentalSpaceErrors;
+  ): DepartmentalSpaceRecurrenceResponse | DepartmentalSpaceErrors | DepartmentalSpaceRecurrenceConflict;
 
   @route("/recurrences/{recurrenceId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update a recurrence | Modifica una ricorrenza")
-  @doc("Updates the requester, type, description, notes and visibility of a recurrence. Returns 204 without a body when all occurrences are updated, or 200 with a non-empty failedDates array on partial success. Requires creation through the departmental application and the appropriate user permission level. Dates, times, space and seat count are not changed by this operation.")
-  // TODO: verificare il supporto all'aggiornamento parziale della ricorrenza:
-  // 204 senza body per il successo completo, 200 con le date fallite per quello parziale.
-  @opExample(#{ returnType: #{ statusCode: 204 } })
+  // TODO REST: se più occorrenze costituiscono un'unica risorsa ricorrenza,
+  // il successo parziale di PATCH richiede una revisione rispetto all'atomicità (RFC 5789).
+  // TODO: verificare il supporto all'aggiornamento parziale della ricorrenza
+  // con risposta 200 contenente id e failed_dates, obbligatorio anche se vuoto.
+  @opExample(_ex_updateSpaceRecurrence_full_resp)
   @opExample(_ex_updateSpaceRecurrence_partial_resp)
   @opExample(_ex_updateSpaceRecurrence_req)
+  @opExample(_ex_updateSpaceRecurrence_403_resp)
+  @doc("Update the requester, type, description, notes and visibility of a recurrence. | Modifica richiedente, tipologia, descrizione, note e visibilità di una ricorrenza.")
   updateSpaceRecurrence(
     @path recurrenceId: integer,
     @body body: UpdateSpaceRecurrenceRequest,
-  ): NoContentResponse | OkDataResponse<UpdateSpaceRecurrenceResult> | DepartmentalSpaceErrors;
+  ): DepartmentalSpaceRecurrenceResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceRecurrenceNotFound;
 
   @route("/recurrences/{recurrenceId}")
   @delete
   @summary("Delete a recurrence | Elimina una ricorrenza")
-  @doc("Deletes the recurrence. Requires creation through the departmental application and the appropriate user permission level.")
+  @opExample(_ex_deleteSpaceRecurrence_404_resp)
+  @opExample(_ex_deleteSpaceRecurrence_403_resp)
+  @doc("Delete a recurrence. | Elimina una ricorrenza.")
   deleteSpaceRecurrence(
     @path recurrenceId: integer,
-  ): NoContentResponse | DepartmentalSpaceErrors;
+  ): DepartmentalSpaceDeletedResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceRecurrenceNotFound;
 }
