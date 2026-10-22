@@ -6,6 +6,11 @@ namespace PolitoAPI;
 
 /* MODELS */
 
+model IdLabel<TId extends string | numeric = string | numeric> {
+  id: TId;
+  label: string;
+}
+
 model UpdatePreferencesRequest {
   @example("it")
   language?: "it" | "en";
