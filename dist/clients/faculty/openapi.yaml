@@ -869,12 +869,6 @@ paths:
                         spaces: []
                   - name: Mondovì
                     sites: []
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Server error
           content:
@@ -927,12 +921,6 @@ paths:
                     label: Seminario
                   - id: 12
                     label: Corsi Esterni
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Server error
           content:
@@ -1017,12 +1005,6 @@ paths:
                       idImt: ''
                       courseShortcode: 01NYHOV
                       courseInstanceId: 0
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
         '403':
           description: The user is not enabled for the requested space. | L’utente non è abilitato sullo spazio richiesto.
           content:
@@ -1145,12 +1127,6 @@ paths:
                 message: L'utente non ha i permessi necessari per modificare l'evento
         '404':
           description: The event does not exist. | L'evento non esiste.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
-        '409':
-          description: The space is already occupied in the requested interval. | Lo spazio è già occupato nell'intervallo richiesto.
           content:
             application/json:
               schema:

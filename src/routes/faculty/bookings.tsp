@@ -355,6 +355,7 @@ model DepartmentalSpaceError<
   @body body: DepartmentalSpaceErrorResponse;
 }
 
+// Errori documentati e integrazioni approvate: 500 su tutte le operazioni, 404 anche nelle modifiche.
 // DIFFERENZA da richiedere al webservice: 403 invece di 401 per permessi insufficienti;
 // 409 invece di 500 per spazio occupato; 404 invece di 400 per evento/ricorrenza inesistente.
 // TODO: il documento mostra messaggi come stringhe JSON; verificare il supporto
@@ -423,7 +424,8 @@ interface DepartmentalSpacesService {
   @summary("List departmental spaces | Elenca gli spazi dipartimentali")
   @opExample(_ex_getDepartmentalSpaces_resp)
   @doc("List departmental spaces grouped by city and site. | Elenca gli spazi dipartimentali raggruppati per città e sede.")
-  getDepartmentalSpaces(): OkDataResponse<DepartmentalSpaceCity[]> | BaseErrors;
+  getDepartmentalSpaces(
+  ): OkDataResponse<DepartmentalSpaceCity[]> | ServerError;
 
   // TODO REST: GET con body non ha semantica generalmente definita e può essere
   // ignorato o rifiutato dai client/intermediari; valutare query string o POST di ricerca.
@@ -435,7 +437,7 @@ interface DepartmentalSpacesService {
   @doc("List calendar events for a space in a date range. | Elenca gli eventi del calendario di uno spazio in un intervallo di date.")
   getDepartmentalSpaceEvents(
     @body body: DepartmentalSpaceCalendarRequest,
-  ): OkDataResponse<DepartmentalSpaceEvent[]> | BaseErrors | DepartmentalSpaceError<
+  ): OkDataResponse<DepartmentalSpaceEvent[]> | ServerError | DepartmentalSpaceError<
     403,
     "The user is not enabled for the requested space. | L’utente non è abilitato sullo spazio richiesto."
   >;
@@ -446,7 +448,7 @@ interface DepartmentalSpacesService {
   @opExample(_ex_getDepartmentalSpaceEventTypes_resp)
   @doc("List event types. | Elenca le tipologie di evento.")
   getDepartmentalSpaceEventTypes(
-  ): OkDataResponse<IdLabel<integer>[]> | BaseErrors;
+  ): OkDataResponse<IdLabel<integer>[]> | ServerError;
 
   @route("/events")
   @post
@@ -469,11 +471,7 @@ interface DepartmentalSpacesService {
   updateSpaceEvent(
     @path eventId: integer,
     @body body: CreateSpaceEventRequest,
-  ):
-    | DepartmentalSpaceEventResponse
-    | DepartmentalSpaceModificationErrors
-    | DepartmentalSpaceEventNotFound
-    | DepartmentalSpaceOccupied;
+  ): DepartmentalSpaceEventResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceEventNotFound;
 
   // TODO: verificare il supporto alla risposta 204 senza body per le eliminazioni.
   @route("/events/{eventId}")
