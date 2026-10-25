@@ -894,6 +894,227 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /v2/courses:
+    get:
+      operationId: CoursesV2_getCourses
+      summary: List courses | Elenca corsi
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: null
+                    name: System and device programming
+                    shortcode: 01NYHOV
+                    cfu: 10
+                    teachingPeriod: 2-2
+                    teacherId: 2893
+                    teacherName: Stefano Quer
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#2563EB'
+                      icon: faCode
+                      label: SDP
+                    modules:
+                      - id: 251008
+                        name: Programming Module A
+                        shortcode: 01NYHOV
+                        teachingPeriod: 2-2
+                        teacherId: 3001
+                        teacherName: Mario Rossi
+                        previousEditions:
+                          - id: 251005
+                            name: Programming Module A
+                            year: '2024'
+                        isOverBooking: false
+                        category: I
+                        enrollmentRole: student
+                        year: '2025'
+                        style:
+                          color: '#4F46E5'
+                          icon: faCode
+                          label: SDP-A
+                      - id: 251009
+                        name: Programming Module B
+                        shortcode: 01NYHOV
+                        teachingPeriod: 2-2
+                        teacherId: 3002
+                        teacherName: Giovanni Verdi
+                        previousEditions:
+                          - id: 251006
+                            name: Programming Module B
+                            year: '2024'
+                        isOverBooking: false
+                        category: I
+                        enrollmentRole: student
+                        year: '2025'
+                        style:
+                          color: '#7C3AED'
+                          icon: faCode
+                          label: SDP-B
+                  - id: 252121
+                    name: Web Applications II
+                    shortcode: 01TXSOV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 2235
+                    teacherName: Giovanni Malnati
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#0891B2'
+                      icon: faGlobe
+                      label: WA2
+                    modules: null
+                  - id: 252126
+                    name: Security verification and testing
+                    shortcode: 01TYAOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 1943
+                    teacherName: Riccardo Sisto
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#16A34A'
+                      icon: faShieldHalved
+                      label: SVT
+                    modules: null
+                  - id: 252138
+                    name: Information systems security
+                    shortcode: 01TYMOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 1847
+                    teacherName: Antonio Lioy
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#DC2626'
+                      icon: faServer
+                      label: ISS
+                    modules: null
+                  - id: 252258
+                    name: Cybersecurity
+                    shortcode: 01UDROV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 1847
+                    teacherName: Antonio Lioy
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#EA580C'
+                      icon: faNetworkWired
+                      label: CYB
+                    modules: null
+                  - id: 252788
+                    name: Architetture dei sistemi di elaborazione
+                    shortcode: 02GOLOV
+                    cfu: 10
+                    teachingPeriod: 1-1
+                    teacherId: 12684
+                    teacherName: Edgar Ernesto Sanchez Sanchez
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#D97706'
+                      icon: faMicrochip
+                      label: ASE
+                    modules: null
+                  - id: 252842
+                    name: Human Computer Interaction
+                    shortcode: 02JSKOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 25734
+                    teacherName: Luigi De Russis
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#DB2777'
+                      icon: faComputer
+                      label: HCI
+                    modules: null
+                  - id: 253378
+                    name: Cryptography
+                    shortcode: 03LPYOV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 13461
+                    teacherName: Antonio Jose Di Scala
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#0D9488'
+                      icon: faKey
+                      label: CRY
+                    modules: null
+                  - id: null
+                    name: Tesi
+                    shortcode: 29EBHOV
+                    cfu: 30
+                    teachingPeriod: 1-1
+                    teacherId: null
+                    teacherName: null
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style: null
+                    modules: null
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -3937,227 +4158,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
-  /v2/courses:
-    get:
-      operationId: CoursesV2_getCourses
-      summary: List courses | Elenca corsi
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/CourseOverview'
-                required:
-                  - data
-              example:
-                data:
-                  - id: null
-                    name: System and device programming
-                    shortcode: 01NYHOV
-                    cfu: 10
-                    teachingPeriod: 2-2
-                    teacherId: 2893
-                    teacherName: Stefano Quer
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#2563EB'
-                      icon: faCode
-                      label: SDP
-                    modules:
-                      - id: 251008
-                        name: Programming Module A
-                        shortcode: 01NYHOV
-                        teachingPeriod: 2-2
-                        teacherId: 3001
-                        teacherName: Mario Rossi
-                        previousEditions:
-                          - id: 251005
-                            name: Programming Module A
-                            year: '2024'
-                        isOverBooking: false
-                        category: I
-                        enrollmentRole: student
-                        year: '2025'
-                        style:
-                          color: '#4F46E5'
-                          icon: faCode
-                          label: SDP-A
-                      - id: 251009
-                        name: Programming Module B
-                        shortcode: 01NYHOV
-                        teachingPeriod: 2-2
-                        teacherId: 3002
-                        teacherName: Giovanni Verdi
-                        previousEditions:
-                          - id: 251006
-                            name: Programming Module B
-                            year: '2024'
-                        isOverBooking: false
-                        category: I
-                        enrollmentRole: student
-                        year: '2025'
-                        style:
-                          color: '#7C3AED'
-                          icon: faCode
-                          label: SDP-B
-                  - id: 252121
-                    name: Web Applications II
-                    shortcode: 01TXSOV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 2235
-                    teacherName: Giovanni Malnati
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#0891B2'
-                      icon: faGlobe
-                      label: WA2
-                    modules: null
-                  - id: 252126
-                    name: Security verification and testing
-                    shortcode: 01TYAOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 1943
-                    teacherName: Riccardo Sisto
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#16A34A'
-                      icon: faShieldHalved
-                      label: SVT
-                    modules: null
-                  - id: 252138
-                    name: Information systems security
-                    shortcode: 01TYMOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 1847
-                    teacherName: Antonio Lioy
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#DC2626'
-                      icon: faServer
-                      label: ISS
-                    modules: null
-                  - id: 252258
-                    name: Cybersecurity
-                    shortcode: 01UDROV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 1847
-                    teacherName: Antonio Lioy
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#EA580C'
-                      icon: faNetworkWired
-                      label: CYB
-                    modules: null
-                  - id: 252788
-                    name: Architetture dei sistemi di elaborazione
-                    shortcode: 02GOLOV
-                    cfu: 10
-                    teachingPeriod: 1-1
-                    teacherId: 12684
-                    teacherName: Edgar Ernesto Sanchez Sanchez
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#D97706'
-                      icon: faMicrochip
-                      label: ASE
-                    modules: null
-                  - id: 252842
-                    name: Human Computer Interaction
-                    shortcode: 02JSKOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 25734
-                    teacherName: Luigi De Russis
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#DB2777'
-                      icon: faComputer
-                      label: HCI
-                    modules: null
-                  - id: 253378
-                    name: Cryptography
-                    shortcode: 03LPYOV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 13461
-                    teacherName: Antonio Jose Di Scala
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#0D9488'
-                      icon: faKey
-                      label: CRY
-                    modules: null
-                  - id: null
-                    name: Tesi
-                    shortcode: 29EBHOV
-                    cfu: 30
-                    teachingPeriod: 1-1
-                    teacherId: null
-                    teacherName: null
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style: null
-                    modules: null
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Courses
   /v2/place-categories:
     get:
       operationId: PlaceCategories_getPlaceCategories
