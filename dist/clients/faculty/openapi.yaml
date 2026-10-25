@@ -887,6 +887,227 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /v2/courses:
+    get:
+      operationId: CoursesV2_getCourses
+      summary: List courses | Elenca corsi
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CourseOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: null
+                    name: System and device programming
+                    shortcode: 01NYHOV
+                    cfu: 10
+                    teachingPeriod: 2-2
+                    teacherId: 2893
+                    teacherName: Stefano Quer
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#2563EB'
+                      icon: faCode
+                      label: SDP
+                    modules:
+                      - id: 251008
+                        name: Programming Module A
+                        shortcode: 01NYHOV
+                        teachingPeriod: 2-2
+                        teacherId: 3001
+                        teacherName: Mario Rossi
+                        previousEditions:
+                          - id: 251005
+                            name: Programming Module A
+                            year: '2024'
+                        isOverBooking: false
+                        category: I
+                        enrollmentRole: student
+                        year: '2025'
+                        style:
+                          color: '#4F46E5'
+                          icon: faCode
+                          label: SDP-A
+                      - id: 251009
+                        name: Programming Module B
+                        shortcode: 01NYHOV
+                        teachingPeriod: 2-2
+                        teacherId: 3002
+                        teacherName: Giovanni Verdi
+                        previousEditions:
+                          - id: 251006
+                            name: Programming Module B
+                            year: '2024'
+                        isOverBooking: false
+                        category: I
+                        enrollmentRole: student
+                        year: '2025'
+                        style:
+                          color: '#7C3AED'
+                          icon: faCode
+                          label: SDP-B
+                  - id: 252121
+                    name: Web Applications II
+                    shortcode: 01TXSOV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 2235
+                    teacherName: Giovanni Malnati
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#0891B2'
+                      icon: faGlobe
+                      label: WA2
+                    modules: null
+                  - id: 252126
+                    name: Security verification and testing
+                    shortcode: 01TYAOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 1943
+                    teacherName: Riccardo Sisto
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#16A34A'
+                      icon: faShieldHalved
+                      label: SVT
+                    modules: null
+                  - id: 252138
+                    name: Information systems security
+                    shortcode: 01TYMOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 1847
+                    teacherName: Antonio Lioy
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#DC2626'
+                      icon: faServer
+                      label: ISS
+                    modules: null
+                  - id: 252258
+                    name: Cybersecurity
+                    shortcode: 01UDROV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 1847
+                    teacherName: Antonio Lioy
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#EA580C'
+                      icon: faNetworkWired
+                      label: CYB
+                    modules: null
+                  - id: 252788
+                    name: Architetture dei sistemi di elaborazione
+                    shortcode: 02GOLOV
+                    cfu: 10
+                    teachingPeriod: 1-1
+                    teacherId: 12684
+                    teacherName: Edgar Ernesto Sanchez Sanchez
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#D97706'
+                      icon: faMicrochip
+                      label: ASE
+                    modules: null
+                  - id: 252842
+                    name: Human Computer Interaction
+                    shortcode: 02JSKOV
+                    cfu: 6
+                    teachingPeriod: 1-1
+                    teacherId: 25734
+                    teacherName: Luigi De Russis
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#DB2777'
+                      icon: faComputer
+                      label: HCI
+                    modules: null
+                  - id: 253378
+                    name: Cryptography
+                    shortcode: 03LPYOV
+                    cfu: 6
+                    teachingPeriod: 2-2
+                    teacherId: 13461
+                    teacherName: Antonio Jose Di Scala
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style:
+                      color: '#0D9488'
+                      icon: faKey
+                      label: CRY
+                    modules: null
+                  - id: null
+                    name: Tesi
+                    shortcode: 29EBHOV
+                    cfu: 30
+                    teachingPeriod: 1-1
+                    teacherId: null
+                    teacherName: null
+                    previousEditions: []
+                    isOverBooking: false
+                    category: I
+                    enrollmentRole: student
+                    year: '2025'
+                    style: null
+                    modules: null
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -923,149 +1144,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Courses
-  /courses/{courseId}/assignments:
-    get:
-      operationId: Courses_getCourseAssignments
-      summary: List assignments | Elenca elaborati
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/CourseAssignment'
-                required:
-                  - data
-              example:
-                data:
-                  - id: 1003948
-                    description: extrapoints2
-                    mimeType: application/x-zip-compressed
-                    filename: extrapoints2.zip
-                    uploadedAt: '2022-01-21T14:38:00Z'
-                    deletedAt: null
-                    url: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6
-                    sizeInKiloBytes: 195
-                  - id: 993784
-                    description: extrapoints1
-                    mimeType: application/x-zip-compressed
-                    filename: extrapoints1.zip
-                    uploadedAt: '2022-01-10T18:53:00Z'
-                    deletedAt: null
-                    url: https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6
-                    sizeInKiloBytes: 401
-                  - id: 982517
-                    description: lab_09
-                    mimeType: application/zip
-                    filename: lab_09.zip
-                    uploadedAt: '2021-12-16T22:48:00Z'
-                    deletedAt: null
-                    url: https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6
-                    sizeInKiloBytes: 126
-                  - id: 934034
-                    description: lab_01
-                    mimeType: application/x-zip-compressed
-                    filename: lab_01.zip
-                    uploadedAt: '2021-10-13T11:20:00Z'
-                    deletedAt: null
-                    url: https://file.didattica.polito.it/down/ELABORATI_PRE/934034/S290683/fd675d8a411d0747885b24e473a5d683/6305eae6
-                    sizeInKiloBytes: 144
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Courses
-    post:
-      operationId: Courses_uploadCourseAssignment
-      summary: Upload assignment | Carica elaborato
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Courses
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CourseAssignmentUpload'
-  /courses/{courseId}/assignments/{assignmentId}:
-    patch:
-      operationId: Courses_updateAssignment
-      summary: Update assignment | Aggiorna elaborato
-      description: Withdraws the assignment if `deletedAt` is set to a date, restores it if `deletedAt` is `null`.
-      parameters:
-        - name: courseId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: assignmentId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Courses
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateAssignmentRequest'
   /courses/{courseId}/files:
     get:
       operationId: Courses_getCourseFiles
@@ -1329,15 +1407,16 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CourseNotices'
+                      $ref: '#/components/schemas/CourseNotice'
                 required:
                   - data
               example:
                 data:
                   - id: 332559
                     publishedAt: '2021-09-22T14:00:00Z'
-                    expiresAt: null
+                    visibleUntil: null
                     content: "<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r"
+                    status: visible
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1580,6 +1659,1161 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Event Admissions
+  /faculty/courses/{courseId}/assignments:
+    get:
+      operationId: FacultyCourseAssignments_listFacultyCourseAssignments
+      summary: List assignments | Elenca elaborati
+      description: Returns the assignments submitted by students for the course. | Restituisce gli elaborati consegnati dagli studenti per il corso.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FacultyCourseAssignmentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: 947503
+                    filename: PresentationGroup03.zip
+                    student:
+                      id: 348759
+                      firstName: Giuliana
+                      lastName: Annone
+                    status: new
+                    isRemovalRequested: false
+                  - id: 947502
+                    filename: PresentationGroup02.zip
+                    student:
+                      id: 345658
+                      firstName: Lorenzo
+                      lastName: Ciovenco
+                    status: seen
+                    isRemovalRequested: false
+                  - id: 947501
+                    filename: PresentationGroup01.zip
+                    student:
+                      id: 345600
+                      firstName: Marco
+                      lastName: Bruno
+                    status: new
+                    isRemovalRequested: true
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/assignments/{assignmentId}:
+    get:
+      operationId: FacultyCourseAssignments_getFacultyCourseAssignment
+      summary: Show assignment | Mostra elaborato
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyCourseAssignmentDetail'
+                required:
+                  - data
+              example:
+                data:
+                  id: 947503
+                  description: A presentation on advanced robotics and automation. Group 03.
+                  mimeType: application/x-zip-compressed
+                  filename: PresentationGroup03.zip
+                  uploadedAt: '2025-11-17T14:00:00Z'
+                  deletedAt: null
+                  url: https://file.didattica.polito.it/down/ELABORATI_PRE/947503/S348759/6791f0016c78599138828211522fa84d/62cebc94
+                  sizeInKiloBytes: 305
+                  student:
+                    id: 348759
+                    firstName: Giuliana
+                    lastName: Annone
+                  status: new
+                  isRemovalRequested: false
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+    delete:
+      operationId: FacultyCourseAssignments_deleteCourseAssignment
+      summary: Delete assignment | Elimina elaborato
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/assignments/{assignmentId}/answer:
+    post:
+      operationId: FacultyCourseAssignments_answerCourseAssignment
+      summary: Answer assignment | Rispondi all'elaborato
+      description: Sends a reply to the student about their assignment. | Invia una risposta allo studente riguardo al suo elaborato.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Answer accepted
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentAnswerRequest'
+            example:
+              message: Dear student, I cannot open the file you uploaded. Please try again to upload the folder in another format. Thank you!
+  /faculty/courses/{courseId}/files:
+    post:
+      operationId: FacultyCourseFiles_uploadCourseFiles
+      summary: Upload files | Carica file
+      description: Uploads one or more files to the course using a multipart/form-data request. | Carica uno o più file nel corso. La richiesta è multipart/form-data e accetta più file contemporaneamente.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseFileUpload'
+  /faculty/courses/{courseId}/files/folders:
+    post:
+      operationId: FacultyCourseFiles_createCourseFolder
+      summary: Create folder | Crea cartella
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCourseFolderRequest'
+            example:
+              name: Laboratori
+              parentId: null
+  /faculty/courses/{courseId}/files/folders/{folderId}:
+    patch:
+      operationId: FacultyCourseFiles_updateCourseFolder
+      summary: Update folder | Modifica cartella
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCourseFolderRequest'
+            example:
+              name: videolectures 2026
+    delete:
+      operationId: FacultyCourseFiles_deleteCourseFolder
+      summary: Delete folder | Elimina cartella
+      description: Deletes the folder and all its contents recursively. | Elimina la cartella e ricorsivamente tutto il suo contenuto.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/files/move:
+    post:
+      operationId: FacultyCourseFiles_moveCourseItems
+      summary: Move files | Sposta file
+      description: Moves one or more files or folders to a destination folder. | Sposta uno o più file e/o cartelle in una cartella di destinazione.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveCourseItemsRequest'
+            example:
+              itemIds:
+                - '33248890'
+                - '33251708'
+              destinationFolderId: null
+  /faculty/courses/{courseId}/files/{fileId}:
+    patch:
+      operationId: FacultyCourseFiles_updateCourseFile
+      summary: Update file | Modifica file
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCourseFileRequest'
+            example:
+              name: HCI2021-L01_rev.m4v
+              parentId: '33248655'
+    delete:
+      operationId: FacultyCourseFiles_deleteCourseFile
+      summary: Delete file | Elimina file
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/notices:
+    post:
+      operationId: FacultyCourses_createCourseNotice
+      summary: Create notice | Crea avviso
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCourseNoticeRequest'
+            example:
+              isDraft: false
+              content: <p>Lezione di domani spostata in aula 7T.</p>
+              visibleFrom: '2025-10-14T09:00:00Z'
+              visibleUntil: '2025-10-20T23:59:59Z'
+  /faculty/courses/{courseId}/notices/{noticeId}:
+    put:
+      operationId: FacultyCourses_updateCourseNotice
+      summary: Update notice | Modifica avviso
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: noticeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseNoticeRequest'
+            example:
+              content: '<p>Aggiornamento: lezione spostata in aula 10T.</p>'
+              visibleFrom: '2025-10-14T09:00:00Z'
+              visibleUntil: '2025-10-22T23:59:59Z'
+    delete:
+      operationId: FacultyCourses_deleteCourseNotice
+      summary: Delete notice | Elimina avviso
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: noticeId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/students:
+    get:
+      operationId: FacultyCourseStudents_listFacultyCourseStudents
+      summary: List students | Elenca studenti iscritti al corso
+      description: Returns an overview of students enrolled in the course. | Restituisce la vista overview degli studenti iscritti al corso.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FacultyCourseStudentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: 123456
+                    firstName: Stefania
+                    lastName: Sassi
+                    username: s123456
+                    email: s123456@studenti.polito.it
+                    picture:
+                      url: https://didattica.polito.it/photos/s123456.jpg
+                  - id: 234567
+                    firstName: Luigi
+                    lastName: Verdi
+                    username: s234567
+                    email: s234567@studenti.polito.it
+                    picture:
+                      url: https://didattica.polito.it/photos/s234567.jpg
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+    post:
+      operationId: FacultyCourseStudents_enrollStudentsInCourse
+      summary: Add students | Aggiungi studenti al corso
+      description: Enrolls one or more students in the course. The operation is idempotent. | Iscrive uno o più studenti al corso. Operazione idempotente.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollStudentsRequest'
+            example:
+              studentIds:
+                - 345670
+                - 345672
+  /faculty/courses/{courseId}/students/messages:
+    post:
+      operationId: FacultyCourseStudents_sendStudentsMessage
+      summary: Send message to students | Invia messaggio agli studenti
+      description: Sends a message to selected students by email or in-app notification. For the `notify` channel, students who have not installed the app receive an SMS. | Invia un messaggio agli studenti selezionati via email o notifica in-app. Per il canale `notify`, agli studenti che non hanno installato l'app viene inviato un SMS.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: The request has been accepted for processing, but processing has not yet completed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Message accepted
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/ErrorResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentsMessageRequest'
+            example:
+              studentIds:
+                - 123456
+                - 234567
+                - 345670
+              channel: email
+              title: Lezione di recupero
+              message: Si avvisano gli studenti che la lezione di recupero si terrà venerdì alle 14:00 in aula 7T.
+  /faculty/courses/{courseId}/students/search:
+    get:
+      operationId: FacultyCourseStudents_searchEnrollableStudents
+      summary: Search enrollable students | Cerca studenti da iscrivere
+      description: Searches for students to enroll by first name, last name or student number. | Cerca studenti da iscrivere al corso per nome, cognome o matricola.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: search
+          in: query
+          required: true
+          description: Filter students by name, surname or student number.
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FacultyCourseStudentOverview'
+                required:
+                  - data
+              example:
+                data:
+                  - id: 345670
+                    firstName: Federica
+                    lastName: Bianchi
+                    username: s345670
+                    email: s345670@studenti.polito.it
+                    picture:
+                      url: https://didattica.polito.it/photos/s345670.jpg
+                  - id: 345671
+                    firstName: Federica
+                    lastName: Rossi
+                    username: s345671
+                    email: s345671@studenti.polito.it
+                    picture:
+                      url: https://didattica.polito.it/photos/s345671.jpg
+                  - id: 345672
+                    firstName: Federica
+                    lastName: Verdi
+                    username: s345672
+                    email: s345672@studenti.polito.it
+                    picture:
+                      url: https://didattica.polito.it/photos/s345672.jpg
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/students/stats:
+    get:
+      operationId: FacultyCourseStudents_getCourseStudentsStats
+      summary: Students stats | Statistiche studenti
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyCourseStudentsStats'
+                required:
+                  - data
+              example:
+                data:
+                  totalEnrolled: 204
+                  withAttendanceIssues: 10
+                  tookExam: 0
+                  withExamDebts: 42
+                  eligibleForExam: 194
+                  firstTimeInAcademicYear: 152
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/students/{studentId}:
+    get:
+      operationId: FacultyCourseStudents_getFacultyCourseStudent
+      summary: Show student | Mostra studente
+      description: Returns all details of a student enrolled in the course. | Restituisce tutte le informazioni di un singolo studente iscritto al corso.
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyCourseStudentDetail'
+                required:
+                  - data
+              example:
+                data:
+                  id: 123456
+                  firstName: Stefania
+                  lastName: Sassi
+                  username: s123456
+                  email: s123456@studenti.polito.it
+                  picture:
+                    url: https://didattica.polito.it/photos/s123456.jpg
+                  course:
+                    shortcode: 02JSKPD
+                    cfu: 6
+                  degreeCode: CINZT3
+                  degreeName: COMPUTER ENGINEERING
+                  examResult:
+                    date: '2026-02-23'
+                    grade: 30L
+                  subscription: 2025/2026
+                  citizenship: Italian
+                  hasSpecialNeeds: true
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
+  /faculty/courses/{courseId}/students/{studentId}/special-needs:
+    get:
+      operationId: FacultyCourseStudents_getCourseStudentSpecialNeeds
+      summary: Student compensative measures | Misure compensative studente
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CompensativeMeasures'
+                required:
+                  - data
+              example:
+                data:
+                  content: <p>List of compensatory measures granted to Stefania Sassi</p><ul><li><b>Calculator</b> allowed</li><li><b>Readability criteria</b> (Arial, 12-point font, 1.5 line spacing, non-justified text, expanded spacing)</li><li><b>Cheat sheet for formulas</b> for written and oral exams</li><li><b>30% additional time for completing exams</b></li><li><b>Assessment of content vs. form</b></li></ul>
+                  moreDetailsUrl: https://didattica.polito.it/special-needs/requests?courseId=251007
+                  handbook:
+                    name: Reporting procedure handbook
+                    url: https://didattica.polito.it/docs/reporting-procedure-handbook.pdf
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Courses
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -2388,227 +3622,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - People
-  /v2/courses:
-    get:
-      operationId: CoursesV2_getCourses
-      summary: List courses | Elenca corsi
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/CourseOverview'
-                required:
-                  - data
-              example:
-                data:
-                  - id: null
-                    name: System and device programming
-                    shortcode: 01NYHOV
-                    cfu: 10
-                    teachingPeriod: 2-2
-                    teacherId: 2893
-                    teacherName: Stefano Quer
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#2563EB'
-                      icon: faCode
-                      label: SDP
-                    modules:
-                      - id: 251008
-                        name: Programming Module A
-                        shortcode: 01NYHOV
-                        teachingPeriod: 2-2
-                        teacherId: 3001
-                        teacherName: Mario Rossi
-                        previousEditions:
-                          - id: 251005
-                            name: Programming Module A
-                            year: '2024'
-                        isOverBooking: false
-                        category: I
-                        enrollmentRole: student
-                        year: '2025'
-                        style:
-                          color: '#4F46E5'
-                          icon: faCode
-                          label: SDP-A
-                      - id: 251009
-                        name: Programming Module B
-                        shortcode: 01NYHOV
-                        teachingPeriod: 2-2
-                        teacherId: 3002
-                        teacherName: Giovanni Verdi
-                        previousEditions:
-                          - id: 251006
-                            name: Programming Module B
-                            year: '2024'
-                        isOverBooking: false
-                        category: I
-                        enrollmentRole: student
-                        year: '2025'
-                        style:
-                          color: '#7C3AED'
-                          icon: faCode
-                          label: SDP-B
-                  - id: 252121
-                    name: Web Applications II
-                    shortcode: 01TXSOV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 2235
-                    teacherName: Giovanni Malnati
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#0891B2'
-                      icon: faGlobe
-                      label: WA2
-                    modules: null
-                  - id: 252126
-                    name: Security verification and testing
-                    shortcode: 01TYAOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 1943
-                    teacherName: Riccardo Sisto
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#16A34A'
-                      icon: faShieldHalved
-                      label: SVT
-                    modules: null
-                  - id: 252138
-                    name: Information systems security
-                    shortcode: 01TYMOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 1847
-                    teacherName: Antonio Lioy
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#DC2626'
-                      icon: faServer
-                      label: ISS
-                    modules: null
-                  - id: 252258
-                    name: Cybersecurity
-                    shortcode: 01UDROV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 1847
-                    teacherName: Antonio Lioy
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#EA580C'
-                      icon: faNetworkWired
-                      label: CYB
-                    modules: null
-                  - id: 252788
-                    name: Architetture dei sistemi di elaborazione
-                    shortcode: 02GOLOV
-                    cfu: 10
-                    teachingPeriod: 1-1
-                    teacherId: 12684
-                    teacherName: Edgar Ernesto Sanchez Sanchez
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#D97706'
-                      icon: faMicrochip
-                      label: ASE
-                    modules: null
-                  - id: 252842
-                    name: Human Computer Interaction
-                    shortcode: 02JSKOV
-                    cfu: 6
-                    teachingPeriod: 1-1
-                    teacherId: 25734
-                    teacherName: Luigi De Russis
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#DB2777'
-                      icon: faComputer
-                      label: HCI
-                    modules: null
-                  - id: 253378
-                    name: Cryptography
-                    shortcode: 03LPYOV
-                    cfu: 6
-                    teachingPeriod: 2-2
-                    teacherId: 13461
-                    teacherName: Antonio Jose Di Scala
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style:
-                      color: '#0D9488'
-                      icon: faKey
-                      label: CRY
-                    modules: null
-                  - id: null
-                    name: Tesi
-                    shortcode: 29EBHOV
-                    cfu: 30
-                    teachingPeriod: 1-1
-                    teacherId: null
-                    teacherName: null
-                    previousEditions: []
-                    isOverBooking: false
-                    category: I
-                    enrollmentRole: student
-                    year: '2025'
-                    style: null
-                    modules: null
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      tags:
-        - Courses
   /v2/place-categories:
     get:
       operationId: PlaceCategories_getPlaceCategories
@@ -2976,6 +3989,15 @@ components:
         fcmRegistrationToken:
           type: string
           example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+    AssignmentAnswerRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          maxLength: 4000
+          example: Dear student, I cannot open the file you uploaded. Please try again to upload the folder in another format. Thank you!
     AuthProfile:
       type: object
       required:
@@ -3455,6 +4477,39 @@ components:
         appVersion:
           type: string
           example: 1.6.2
+    CompensativeMeasures:
+      type: object
+      required:
+        - content
+        - moreDetailsUrl
+        - handbook
+      properties:
+        content:
+          type: string
+          description: HTML describing the compensatory measures granted to the student.
+          example: <p>List of compensatory measures granted to Stefania Sassi</p><ul><li><b>Calculator</b> allowed</li></ul>
+        moreDetailsUrl:
+          type: string
+          format: uri
+          description: Link to the full list of requests for this course.
+          example: https://didattica.polito.it/special-needs/requests
+        handbook:
+          allOf:
+            - $ref: '#/components/schemas/CompensativeMeasuresDocument'
+          description: Reporting procedure handbook document.
+    CompensativeMeasuresDocument:
+      type: object
+      required:
+        - name
+        - url
+      properties:
+        name:
+          type: string
+          example: Reporting procedure handbook
+        url:
+          type: string
+          format: uri
+          example: https://didattica.polito.it/docs/handbook.pdf
     Course:
       type: object
       required:
@@ -3590,17 +4645,6 @@ components:
         sizeInKiloBytes:
           type: integer
           example: 305
-    CourseAssignmentUpload:
-      type: object
-      properties:
-        description:
-          type: string
-        file:
-          type: string
-          format: binary
-      required:
-        - description
-        - file
     CourseDirectory:
       type: object
       required:
@@ -3691,6 +4735,19 @@ components:
         mimeType: application/pdf
         createdAt: '2024-06-01T10:00:00Z'
         checksum: deadbeefcafebabe0000000000000000
+    CourseFileUpload:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+        parentId:
+          type: string
+          description: Destination folder. If omitted, files are uploaded to the root.
+      required:
+        - files
     CourseModule:
       type: object
       required:
@@ -3805,13 +4862,14 @@ components:
               year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
-    CourseNotices:
+    CourseNotice:
       type: object
       required:
         - id
         - publishedAt
-        - expiresAt
+        - visibleUntil
         - content
+        - status
       properties:
         id:
           type: integer
@@ -3819,14 +4877,54 @@ components:
         publishedAt:
           type: string
           format: date-time
+          description: |-
+            Publication date displayed to the user, supplied by the server:
+            visibleFrom when set, otherwise the notice creation timestamp.
+            Data di pubblicazione mostrata all'utente, fornita dal server:
+            visibleFrom se valorizzato, altrimenti il timestamp di creazione dell'avviso.
           example: '2022-07-03T14:00:00Z'
-        expiresAt:
+        visibleUntil:
           type: string
           format: date-time
           nullable: true
+          description: End of visibility in UTC; null means no upper bound. | Fine della visibilità in UTC; null indica nessun limite superiore.
         content:
           type: string
           example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
+        status:
+          allOf:
+            - $ref: '#/components/schemas/CourseNoticeStatus'
+          example: visible
+    CourseNoticeRequest:
+      type: object
+      required:
+        - content
+        - visibleFrom
+        - visibleUntil
+      properties:
+        content:
+          type: string
+          example: Contenuto dell'avviso
+        visibleFrom:
+          type: string
+          format: date-time
+          nullable: true
+          description: Start of visibility in UTC; null means no lower bound. | Inizio della visibilità in UTC; null indica nessun limite inferiore.
+          example: '2022-07-03T14:00:00Z'
+        visibleUntil:
+          type: string
+          format: date-time
+          nullable: true
+          description: End of visibility in UTC; null means no upper bound. | Fine della visibilità in UTC; null indica nessun limite superiore.
+      description: |-
+        Visibility limits are independent; both null means no time restriction.
+        I limiti di visibilità sono indipendenti; entrambi null indicano nessuna restrizione temporale.
+    CourseNoticeStatus:
+      type: string
+      enum:
+        - visible
+        - draft
+        - expired
     CourseOverview:
       type: object
       required:
@@ -3879,6 +4977,29 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreateCourseFolderRequest:
+      type: object
+      required:
+        - name
+        - parentId
+      properties:
+        name:
+          type: string
+          example: Laboratori
+        parentId:
+          type: string
+          nullable: true
+          description: Parent folder ID; null means the root. | ID della cartella padre; null indica la radice.
+    CreateCourseNoticeRequest:
+      type: object
+      required:
+        - isDraft
+      properties:
+        isDraft:
+          type: boolean
+          example: false
+      allOf:
+        - $ref: '#/components/schemas/CourseNoticeRequest'
     Department:
       type: object
       required:
@@ -3926,6 +5047,18 @@ components:
       example:
         description: some identifier you chose
         pubkey: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
+    EnrollStudentsRequest:
+      type: object
+      required:
+        - studentIds
+      properties:
+        studentIds:
+          type: array
+          items:
+            type: integer
+          example:
+            - 123456
+            - 234567
     ErrorResponse:
       type: object
       properties:
@@ -4033,6 +5166,245 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
+    FacultyAssignmentAuthor:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          example: 348759
+        firstName:
+          type: string
+          example: Giuliana
+        lastName:
+          type: string
+          example: Annone
+    FacultyAssignmentStatus:
+      type: string
+      enum:
+        - new
+        - seen
+    FacultyCourseAssignmentDetail:
+      type: object
+      required:
+        - id
+        - description
+        - mimeType
+        - filename
+        - uploadedAt
+        - deletedAt
+        - url
+        - sizeInKiloBytes
+        - student
+        - status
+        - isRemovalRequested
+      properties:
+        id:
+          type: integer
+          example: 947503
+        description:
+          type: string
+          example: laboratorio 3
+        mimeType:
+          type: string
+          example: application/x-zip-compressed
+        filename:
+          type: string
+          example: lab_03.zip
+        uploadedAt:
+          type: string
+          format: date-time
+          example: '2022-09-02T14:00:00Z'
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+        url:
+          type: string
+          example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
+        sizeInKiloBytes:
+          type: integer
+          example: 305
+        student:
+          $ref: '#/components/schemas/FacultyAssignmentAuthor'
+        status:
+          $ref: '#/components/schemas/FacultyAssignmentStatus'
+        isRemovalRequested:
+          type: boolean
+          description: Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato.
+    FacultyCourseAssignmentOverview:
+      type: object
+      required:
+        - id
+        - filename
+        - student
+        - status
+        - isRemovalRequested
+      properties:
+        id:
+          type: integer
+          example: 947503
+        filename:
+          type: string
+          example: PresentationGroup03.zip
+        student:
+          $ref: '#/components/schemas/FacultyAssignmentAuthor'
+        status:
+          $ref: '#/components/schemas/FacultyAssignmentStatus'
+        isRemovalRequested:
+          type: boolean
+          description: Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato.
+    FacultyCourseExamResult:
+      type: object
+      required:
+        - date
+        - grade
+      properties:
+        date:
+          type: string
+          format: date
+          example: '2026-02-23'
+        grade:
+          type: string
+          description: Grade obtained (e.g. "30L", "28", "passed").
+          example: 30L
+    FacultyCourseStudentDetail:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - username
+        - email
+        - course
+        - degreeCode
+        - degreeName
+        - examResult
+        - subscription
+        - citizenship
+        - hasSpecialNeeds
+      properties:
+        id:
+          type: integer
+          example: 123456
+        firstName:
+          type: string
+          example: Stefania
+        lastName:
+          type: string
+          example: Sassi
+        username:
+          type: string
+          example: s123456
+        email:
+          type: string
+          example: s123456@studenti.polito.it
+        picture:
+          type: object
+          properties:
+            url:
+              type: string
+              format: uri
+              example: https://example.com/picture.jpg
+          required:
+            - url
+        course:
+          type: object
+          properties:
+            shortcode:
+              type: string
+              example: 02JSKPD
+            cfu:
+              type: integer
+              example: 6
+          required:
+            - shortcode
+            - cfu
+        degreeCode:
+          type: string
+          example: CINZT3
+        degreeName:
+          type: string
+          example: COMPUTER ENGINEERING
+        examResult:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FacultyCourseExamResult'
+          nullable: true
+        subscription:
+          type: string
+          description: Academic year of subscription.
+          example: 2025/2026
+        citizenship:
+          type: string
+          example: Italian
+        hasSpecialNeeds:
+          type: boolean
+          example: true
+    FacultyCourseStudentOverview:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - username
+        - email
+      properties:
+        id:
+          type: integer
+          example: 123456
+        firstName:
+          type: string
+          example: Stefania
+        lastName:
+          type: string
+          example: Sassi
+        username:
+          type: string
+          example: s123456
+        email:
+          type: string
+          example: s123456@studenti.polito.it
+        picture:
+          type: object
+          properties:
+            url:
+              type: string
+              format: uri
+              example: https://example.com/picture.jpg
+          required:
+            - url
+    FacultyCourseStudentsStats:
+      type: object
+      required:
+        - totalEnrolled
+        - withAttendanceIssues
+        - tookExam
+        - withExamDebts
+        - eligibleForExam
+        - firstTimeInAcademicYear
+      properties:
+        totalEnrolled:
+          type: integer
+          example: 204
+        withAttendanceIssues:
+          type: integer
+          example: 10
+        tookExam:
+          type: integer
+          example: 0
+        withExamDebts:
+          type: integer
+          example: 42
+        eligibleForExam:
+          type: integer
+          example: 194
+        firstTimeInAcademicYear:
+          type: integer
+          example: 152
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4267,6 +5639,11 @@ components:
           $ref: '#/components/schemas/Device'
         preferences:
           $ref: '#/components/schemas/UpdatePreferencesRequest'
+    MessageChannel:
+      type: string
+      enum:
+        - email
+        - notify
     MfaChallenge:
       type: object
       required:
@@ -4327,6 +5704,22 @@ components:
           description: |-
             Additional information about the MFA session.
             Present only if status is `active` or `locked`
+    MoveCourseItemsRequest:
+      type: object
+      required:
+        - itemIds
+        - destinationFolderId
+      properties:
+        itemIds:
+          type: array
+          items:
+            type: string
+          example:
+            - '2'
+            - '33352562'
+        destinationFolderId:
+          type: string
+          nullable: true
     NewsItem:
       type: object
       required:
@@ -4877,6 +6270,29 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
+    StudentsMessageRequest:
+      type: object
+      required:
+        - studentIds
+        - channel
+        - message
+      properties:
+        studentIds:
+          type: array
+          items:
+            type: integer
+          example:
+            - 123456
+            - 234567
+        channel:
+          $ref: '#/components/schemas/MessageChannel'
+        title:
+          type: string
+          example: Lezione di recupero
+        message:
+          type: string
+          maxLength: 4000
+          example: Si avvisano gli studenti che...
     SwitchCareerRequest:
       type: object
       required:
@@ -4922,17 +6338,6 @@ components:
       enum:
         - card
         - event
-    UpdateAssignmentRequest:
-      type: object
-      required:
-        - deletedAt
-      properties:
-        deletedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: Set to a date to withdraw the assignment, `null` to restore it
-          example: '2022-09-03T10:00:00Z'
     UpdateBookingRequest:
       type: object
       required:
@@ -4941,6 +6346,34 @@ components:
         isLocationChecked:
           type: boolean
           example: true
+    UpdateCourseFileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Lecture1.pdf
+        parentId:
+          type: string
+          nullable: true
+          description: |-
+            Destination folder ID: omitted keeps the current parent, null moves to the root,
+            and a folder ID moves to that folder.
+            ID della cartella di destinazione: omesso mantiene la cartella padre attuale,
+            null sposta in radice, un ID sposta nella cartella indicata.
+    UpdateCourseFolderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Laboratori 2024
+        parentId:
+          type: string
+          nullable: true
+          description: |-
+            Destination folder ID: omitted keeps the current parent, null moves to the root,
+            and a folder ID moves to that folder.
+            ID della cartella di destinazione: omesso mantiene la cartella padre attuale,
+            null sposta in radice, un ID sposta nella cartella indicata.
     UpdateInfo:
       type: object
       required:
