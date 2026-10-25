@@ -277,56 +277,6 @@ const _ex_courses_list = #{
   },
 };
 
-const _ex_getCourseAssignments_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{
-      data: #[
-        #{
-          id: 1003948,
-          description: "extrapoints2",
-          mimeType: "application/x-zip-compressed",
-          filename: "extrapoints2.zip",
-          uploadedAt: utcDateTime.fromISO("2022-01-21T14:38:00Z"),
-          deletedAt: null,
-          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6",
-          sizeInKiloBytes: 195,
-        },
-        #{
-          id: 993784,
-          description: "extrapoints1",
-          mimeType: "application/x-zip-compressed",
-          filename: "extrapoints1.zip",
-          uploadedAt: utcDateTime.fromISO("2022-01-10T18:53:00Z"),
-          deletedAt: null,
-          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6",
-          sizeInKiloBytes: 401,
-        },
-        #{
-          id: 982517,
-          description: "lab_09",
-          mimeType: "application/zip",
-          filename: "lab_09.zip",
-          uploadedAt: utcDateTime.fromISO("2021-12-16T22:48:00Z"),
-          deletedAt: null,
-          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6",
-          sizeInKiloBytes: 126,
-        },
-        #{
-          id: 934034,
-          description: "lab_01",
-          mimeType: "application/x-zip-compressed",
-          filename: "lab_01.zip",
-          uploadedAt: utcDateTime.fromISO("2021-10-13T11:20:00Z"),
-          deletedAt: null,
-          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/934034/S290683/fd675d8a411d0747885b24e473a5d683/6305eae6",
-          sizeInKiloBytes: 144,
-        }
-      ],
-    },
-  },
-};
-
 const _ex_getLectures_resp = #{
   returnType: #{
     statusCode: 200,
@@ -1142,81 +1092,6 @@ const _ex_course_directory_content = #{
   ],
 };
 
-const _ex_course_assignments = #{
-  data: #[
-    #{
-      id: 1003948,
-      description: "extrapoints2",
-      mimeType: "application/x-zip-compressed",
-      filename: "extrapoints2.zip",
-      uploadedAt: utcDateTime.fromISO("2022-01-21T14:38:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6",
-      sizeInKiloBytes: 195,
-    },
-    #{
-      id: 993784,
-      description: "extrapoints1",
-      mimeType: "application/x-zip-compressed",
-      filename: "extrapoints1.zip",
-      uploadedAt: utcDateTime.fromISO("2022-01-10T18:53:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6",
-      sizeInKiloBytes: 401,
-    },
-    #{
-      id: 982517,
-      description: "lab_09",
-      mimeType: "application/zip",
-      filename: "lab_09.zip",
-      uploadedAt: utcDateTime.fromISO("2021-12-16T22:48:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6",
-      sizeInKiloBytes: 126,
-    },
-    #{
-      id: 979076,
-      description: "lab_08",
-      mimeType: "application/x-zip-compressed",
-      filename: "lab8.zip",
-      uploadedAt: utcDateTime.fromISO("2021-12-10T20:13:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/979076/S290683/3fecdf972707d6cbc439ed0fbbbe726a/6305eae6",
-      sizeInKiloBytes: 136,
-    },
-    #{
-      id: 970722,
-      description: "lab_06",
-      mimeType: "application/x-zip-compressed",
-      filename: "lab_06.zip",
-      uploadedAt: utcDateTime.fromISO("2021-11-26T12:11:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/970722/S290683/bc51c37cf1368917a24de8d571b069bd/6305eae6",
-      sizeInKiloBytes: 169,
-    },
-    #{
-      id: 948012,
-      description: "lab_04",
-      mimeType: "application/zip",
-      filename: "lab_04.zip",
-      uploadedAt: utcDateTime.fromISO("2021-10-30T17:26:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/948012/S290683/ca52325301df0130d718c7a0525df288/6305eae6",
-      sizeInKiloBytes: 259,
-    },
-    #{
-      id: 947503,
-      description: "lab_03",
-      mimeType: "application/x-zip-compressed",
-      filename: "lab_03.zip",
-      uploadedAt: utcDateTime.fromISO("2021-10-29T10:59:00Z"),
-      deletedAt: null,
-      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/947503/S290683/050d6985107364d73d9ea3a387813882/6305eae6",
-      sizeInKiloBytes: 305,
-    }
-  ],
-};
-
 const _ex_course_module = #{
   id: 251008,
   name: "Programming Module A",
@@ -1285,7 +1160,7 @@ const _ex_getCourseNotices_resp = #{
         #{
           id: 332559,
           publishedAt: utcDateTime.fromISO("2021-09-22T14:00:00Z"),
-          expiresAt: null,
+          visibleUntil: null,
           content: "<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r",
           status: CourseNoticeStatus.visible,
         }

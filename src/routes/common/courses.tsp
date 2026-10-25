@@ -230,11 +230,6 @@ interface CoursesV2 {
   getCourses(): OkDataResponse<CourseOverview[]> | BaseErrors;
 }
 
-model CourseAssignmentUpload {
-  description: HttpPart<string>;
-  file: HttpPart<bytes>;
-}
-
 model CourseAssignment {
   @example(947503)
   id: integer;
@@ -260,14 +255,20 @@ model CourseAssignment {
   sizeInKiloBytes: integer;
 }
 
-model CourseNotices {
+model CourseNotice {
   @example(360724)
   id: integer;
 
+  /** Publication date displayed to the user, supplied by the server:
+   * visibleFrom when set, otherwise the notice creation timestamp.
+   * Data di pubblicazione mostrata all'utente, fornita dal server:
+   * visibleFrom se valorizzato, altrimenti il timestamp di creazione dell'avviso.
+   */
   @example(utcDateTime.fromISO("2022-07-03T14:00:00Z"))
   publishedAt: utcDateTime;
 
-  expiresAt: utcDateTime | null;
+  /** End of visibility in UTC; null means no upper bound. | Fine della visibilità in UTC; null indica nessun limite superiore. */
+  visibleUntil: utcDateTime | null;
 
   @example("<p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>")
   content: string;
@@ -291,12 +292,6 @@ model CoursePreferencesRequest {
   /** Custom icon, color and label (acronym) for the course, `null` to reset it */
   @example(#{ color: "#2563EB", icon: "faCode", label: "SDP" })
   style?: Symbol | null;
-}
-
-model UpdateAssignmentRequest {
-  /** Set to a date to withdraw the assignment, `null` to restore it */
-  @example(utcDateTime.fromISO("2022-09-03T10:00:00Z"))
-  deletedAt: utcDateTime | null;
 }
 
 @tag("Courses")
@@ -324,44 +319,6 @@ interface Courses {
     | NotFoundResponse
     | BaseErrors;
 
-  @route("/{courseId}/assignments")
-  @get
-  @summary("List assignments | Elenca elaborati")
-  @opExample(_ex_getCourseAssignments_resp)
-  getCourseAssignments(
-    @path courseId: integer,
-  ): OkDataResponse<CourseAssignment[]> | BaseErrors;
-
-  @route("/{courseId}/assignments")
-  @post
-  @summary("Upload assignment | Carica elaborato")
-  uploadCourseAssignment(
-    @path courseId: integer,
-    @header contentType: "multipart/form-data",
-    @multipartBody body: CourseAssignmentUpload,
-  ): NoContentResponse | BaseErrors;
-
-  /**
-   * Withdraws the assignment if `deletedAt` is set to a date, restores it if `deletedAt` is `null`.
-   */
-  @route("/{courseId}/assignments/{assignmentId}")
-  @patch(#{ implicitOptionality: false })
-  @summary("Update assignment | Aggiorna elaborato")
-  updateAssignment(
-    @path courseId: integer,
-    @path assignmentId: integer,
-    @body body: UpdateAssignmentRequest,
-  ): NoContentResponse | BaseErrors;
-
-  @route("/{courseId}/assignments/{assignmentId}/removal-request")
-  @post
-  @summary("Request assignment removal | Richiedi rimozione elaborato")
-  @doc("Lo studente richiede al docente la rimozione del proprio elaborato.")
-  requestAssignmentRemoval(
-    @path courseId: integer,
-    @path assignmentId: integer,
-  ): NoContentResponse | BaseErrors;
-
   @route("/{courseId}/guide")
   @get
   @summary("Show guide | Mostra guida")
@@ -376,7 +333,7 @@ interface Courses {
   @opExample(_ex_getCourseNotices_resp)
   getCourseNotices(
     @path courseId: integer,
-  ): OkDataResponse<CourseNotices[]> | BaseErrors;
+  ): OkDataResponse<CourseNotice[]> | BaseErrors;
 
   @route("/{courseId}/virtual-classrooms")
   @get

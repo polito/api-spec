@@ -1038,7 +1038,7 @@ paths:
     patch:
       operationId: Courses_updateAssignment
       summary: Update assignment | Aggiorna elaborato
-      description: Withdraws the assignment if `deletedAt` is set to a date, restores it if `deletedAt` is `null`.
+      description: Withdraws the assignment when deletedAt is set to a date; restores it when null. | Ritira l’elaborato se deletedAt è una data; lo ripristina se null.
       parameters:
         - name: courseId
           in: path
@@ -1077,7 +1077,7 @@ paths:
     post:
       operationId: Courses_requestAssignmentRemoval
       summary: Request assignment removal | Richiedi rimozione elaborato
-      description: Lo studente richiede al docente la rimozione del proprio elaborato.
+      description: The student asks the teacher to remove their assignment. | Lo studente richiede al docente la rimozione del proprio elaborato.
       parameters:
         - name: courseId
           in: path
@@ -1369,14 +1369,14 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CourseNotices'
+                      $ref: '#/components/schemas/CourseNotice'
                 required:
                   - data
               example:
                 data:
                   - id: 332559
                     publishedAt: '2021-09-22T14:00:00Z'
-                    expiresAt: null
+                    visibleUntil: null
                     content: "<p>Dear students,</p>\r\r<p>welcome to the 2021 edition of the Human Computer Interaction course (<strong>HCI</strong>, for short)!</p>\r\r<p>Some useful information to get started...</p>\r\r<p>The <strong>first class</strong> will be on Tuesday, September 28, in Room 7T, from 13:00 to 14:30.<br />\rDon&#39;t forget to <em>book</em> a spot in the room, starting from tomorrow, on the Portale della Didattica: the rooms given to this course are currently bigger than the number of enrolled students, so there should be space for everybody!</p>\r\r<p>All teaching <strong>material</strong>, information, and course schedule will be posted on the page: <a href=\"http://bit.ly/polito-hci\">http://bit.ly/polito-hci</a> (we will <u>not</u>&nbsp;use the Portale della Didattica).</p>\r\r<p>All messages and communications with the teachers, and among students, will be on <strong>Slack</strong>. We will <u>completely</u>&nbsp;avoid email communications.<br />\rPlease, join the <em>HCI Slack workspace</em> at the address:<br />\r&nbsp; <a href=\"https://join.slack.com/t/polito-hci-2021/signup\">https://join.slack.com/t/polito-hci-2021/signup</a><br />\rPlease note: to have access to the workspace, you must use your<em> @studenti.polito.it </em>email address. You are free to choose your nickname as you prefer.&nbsp;</p>\r\r<p>Finally, all lectures &mdash; not labs &mdash; will be <strong>video-recorded</strong> and made available both on YouTube and on the Portale della Didattica. The YouTube playlist is:<br />\r&nbsp; <a href=\"https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-\">https://www.youtube.com/playlist?list=PLs7DWGc_wmwT-1N2vbRkLWrM6LIker9A-</a></p>\r\r<p>See you on Tuesday!</p>\r\r<p>Thanks,</p>\r\r<p>Luigi and Fulvio</p>\r"
                     status: visible
         '400':
@@ -5379,18 +5379,12 @@ components:
               year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
-    CourseNoticeStatus:
-      type: string
-      enum:
-        - visible
-        - draft
-        - expired
-    CourseNotices:
+    CourseNotice:
       type: object
       required:
         - id
         - publishedAt
-        - expiresAt
+        - visibleUntil
         - content
         - status
       properties:
@@ -5400,11 +5394,17 @@ components:
         publishedAt:
           type: string
           format: date-time
+          description: |-
+            Publication date displayed to the user, supplied by the server:
+            visibleFrom when set, otherwise the notice creation timestamp.
+            Data di pubblicazione mostrata all'utente, fornita dal server:
+            visibleFrom se valorizzato, altrimenti il timestamp di creazione dell'avviso.
           example: '2022-07-03T14:00:00Z'
-        expiresAt:
+        visibleUntil:
           type: string
           format: date-time
           nullable: true
+          description: End of visibility in UTC; null means no upper bound. | Fine della visibilità in UTC; null indica nessun limite superiore.
         content:
           type: string
           example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
@@ -5412,6 +5412,12 @@ components:
           allOf:
             - $ref: '#/components/schemas/CourseNoticeStatus'
           example: visible
+    CourseNoticeStatus:
+      type: string
+      enum:
+        - visible
+        - draft
+        - expired
     CourseOverview:
       type: object
       required:
@@ -7926,7 +7932,7 @@ components:
           type: string
           format: date-time
           nullable: true
-          description: Set to a date to withdraw the assignment, `null` to restore it
+          description: Set to a date to withdraw the assignment, null to restore it. | Impostare una data per ritirare l'elaborato, null per ripristinarlo.
           example: '2022-09-03T10:00:00Z'
     UpdateBookingRequest:
       type: object

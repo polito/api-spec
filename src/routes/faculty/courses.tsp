@@ -12,13 +12,13 @@ namespace PolitoAPI;
 // Models
 
 model FacultyCourseStudentOverview {
-  @example("s123456")
-  id: string;
+  @example(123456)
+  id: integer;
 
-  @example("Mario")
+  @example("Stefania")
   firstName: string;
 
-  @example("Rossi")
+  @example("Sassi")
   lastName: string;
 
   @example("s123456")
@@ -54,7 +54,7 @@ model FacultyCourseStudentsStats {
 }
 
 model FacultyCourseExamResult {
-  @example(plainDate.fromISO("2025-02-23"))
+  @example(plainDate.fromISO("2026-02-23"))
   date: plainDate;
 
   /** Grade obtained (e.g. "30L", "28", "passed"). */
@@ -112,17 +112,24 @@ model CompensativeMeasures {
   handbook: CompensativeMeasuresDocument;
 }
 
+/** Visibility limits are independent; both null means no time restriction.
+ * I limiti di visibilità sono indipendenti; entrambi null indicano nessuna restrizione temporale.
+ */
 model CourseNoticeRequest {
   @example("Contenuto dell'avviso")
   content: string;
 
+  /** Start of visibility in UTC; null means no lower bound. | Inizio della visibilità in UTC; null indica nessun limite inferiore. */
   @example(utcDateTime.fromISO("2022-07-03T14:00:00Z"))
-  publishedDate: utcDateTime;
+  visibleFrom: utcDateTime | null;
 
-  expiresAt: utcDateTime | null;
+  /** End of visibility in UTC; null means no upper bound. | Fine della visibilità in UTC; null indica nessun limite superiore. */
+  visibleUntil: utcDateTime | null;
+}
 
-  @example(true)
-  isAlwaysVisible: boolean;
+model CreateCourseNoticeRequest extends CourseNoticeRequest {
+  @example(false)
+  isDraft: boolean;
 }
 
 // File and folder management requests
@@ -131,15 +138,19 @@ model CreateCourseFolderRequest {
   @example("Laboratori")
   name: string;
 
-  /** Parent folder. If omitted, the folder is created in the root. */
-  parentId?: string | null;
+  /** Parent folder ID; null means the root. | ID della cartella padre; null indica la radice. */
+  parentId: string | null;
 }
 
 model UpdateCourseFolderRequest {
   @example("Laboratori 2024")
   name?: string;
 
-  /** New parent folder to move the folder to. */
+  /** Destination folder ID: omitted keeps the current parent, null moves to the root,
+   * and a folder ID moves to that folder.
+   * ID della cartella di destinazione: omesso mantiene la cartella padre attuale,
+   * null sposta in radice, un ID sposta nella cartella indicata.
+   */
   parentId?: string | null;
 }
 
@@ -154,7 +165,11 @@ model UpdateCourseFileRequest {
   @example("Lecture1.pdf")
   name?: string;
 
-  /** New parent folder to move the file to. */
+  /** Destination folder ID: omitted keeps the current parent, null moves to the root,
+   * and a folder ID moves to that folder.
+   * ID della cartella di destinazione: omesso mantiene la cartella padre attuale,
+   * null sposta in radice, un ID sposta nella cartella indicata.
+   */
   parentId?: string | null;
 }
 
@@ -166,8 +181,8 @@ model MoveCourseItemsRequest {
 }
 
 model EnrollStudentsRequest {
-  @example(#["s123456", "s234567"])
-  studentIds: string[];
+  @example(#[123456, 234567])
+  studentIds: integer[];
 }
 
 enum MessageChannel {
@@ -176,8 +191,8 @@ enum MessageChannel {
 }
 
 model StudentsMessageRequest {
-  @example(#["s123456", "s234567"])
-  studentIds: string[];
+  @example(#[123456, 234567])
+  studentIds: integer[];
 
   channel: MessageChannel;
 
@@ -191,15 +206,17 @@ model StudentsMessageRequest {
 
 // Assignment management (faculty)
 
+// TODO: verificare sul mockup la distinzione nuovo/letto e la possibilità di
+// registrarla e aggiornarla sul server. Se non supportata, eliminare status
+// e l'enum, mantenendo solo isRemovalRequested per la richiesta di rimozione.
 enum FacultyAssignmentStatus {
   new: "new",
   seen: "seen",
-  removalRequested: "removalRequested",
 }
 
 model FacultyAssignmentAuthor {
-  @example("s348759")
-  id: string;
+  @example(348759)
+  id: integer;
 
   @example("Giuliana")
   firstName: string;
@@ -217,12 +234,18 @@ model FacultyCourseAssignmentOverview {
 
   student: FacultyAssignmentAuthor;
   status: FacultyAssignmentStatus;
+
+  /** Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato. */
+  isRemovalRequested: boolean;
 }
 
 model FacultyCourseAssignmentDetail {
   ...CourseAssignment;
   student: FacultyAssignmentAuthor;
   status: FacultyAssignmentStatus;
+
+  /** Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato. */
+  isRemovalRequested: boolean;
 }
 
 model AssignmentAnswerRequest {
@@ -231,16 +254,15 @@ model AssignmentAnswerRequest {
   message: string;
 }
 
-@tag("Faculty - Courses")
+@tag("Courses")
 @route("/faculty/courses/{courseId}/notices")
 interface FacultyCourses {
   @post
-  @summary("Publish notices | Pubblica avvisi")
-  @opExample(_ex_publishCourseNotice_req)
-  publishCourseNotice(
+  @summary("Create notice | Crea avviso")
+  @opExample(_ex_createCourseNotice_req)
+  createCourseNotice(
     @path courseId: integer,
-    @path isDraft: boolean,
-    @body body: CourseNoticeRequest,
+    @body body: CreateCourseNoticeRequest,
   ): NoContentResponse | BaseErrors;
 
   @put
@@ -263,12 +285,12 @@ interface FacultyCourses {
   ): NoContentResponse | BaseErrors;
 }
 
-@tag("Faculty - Course Students")
+@tag("Courses")
 @route("/faculty/courses/{courseId}/students")
 interface FacultyCourseStudents {
   @get
   @summary("List students | Elenca studenti iscritti al corso")
-  @doc("Restituisce la vista overview degli studenti iscritti al corso.")
+  @doc("Returns an overview of students enrolled in the course. | Restituisce la vista overview degli studenti iscritti al corso.")
   @opExample(_ex_listFacultyCourseStudents_resp)
   listFacultyCourseStudents(@path courseId: integer):
     | OkDataResponse<FacultyCourseStudentOverview[]>
@@ -289,7 +311,7 @@ interface FacultyCourseStudents {
   @get
   @route("/search")
   @summary("Search enrollable students | Cerca studenti da iscrivere")
-  @doc("Cerca studenti da iscrivere al corso per nome, cognome o matricola.")
+  @doc("Searches for students to enroll by first name, last name or student number. | Cerca studenti da iscrivere al corso per nome, cognome o matricola.")
   @opExample(_ex_searchEnrollableStudents_resp)
   searchEnrollableStudents(
     @path courseId: integer,
@@ -305,9 +327,9 @@ interface FacultyCourseStudents {
   @get
   @route("/{studentId}")
   @summary("Show student | Mostra studente")
-  @doc("Restituisce tutte le informazioni di un singolo studente iscritto al corso.")
+  @doc("Returns all details of a student enrolled in the course. | Restituisce tutte le informazioni di un singolo studente iscritto al corso.")
   @opExample(_ex_getFacultyCourseStudent_resp)
-  getFacultyCourseStudent(@path courseId: integer, @path studentId: string):
+  getFacultyCourseStudent(@path courseId: integer, @path studentId: integer):
     | OkDataResponse<FacultyCourseStudentDetail>
     | NotAuthorized
     | NotFound
@@ -319,7 +341,7 @@ interface FacultyCourseStudents {
   @opExample(_ex_getCourseStudentSpecialNeeds_resp)
   getCourseStudentSpecialNeeds(
     @path courseId: integer,
-    @path studentId: string,
+    @path studentId: integer,
   ):
     | OkDataResponse<CompensativeMeasures>
     | NotAuthorized
@@ -328,7 +350,7 @@ interface FacultyCourseStudents {
 
   @post
   @summary("Add students | Aggiungi studenti al corso")
-  @doc("Iscrive uno o più studenti al corso. Operazione idempotente.")
+  @doc("Enrolls one or more students in the course. The operation is idempotent. | Iscrive uno o più studenti al corso. Operazione idempotente.")
   @opExample(_ex_enrollStudents_resp)
   enrollStudentsInCourse(
     @path courseId: integer,
@@ -338,7 +360,7 @@ interface FacultyCourseStudents {
   @post
   @route("/messages")
   @summary("Send message to students | Invia messaggio agli studenti")
-  @doc("Invia un messaggio agli studenti selezionati via email o notifica in-app. Per il canale `notify`, agli studenti che non hanno installato l'app viene inviato un SMS.")
+  @doc("Sends a message to selected students by email or in-app notification. For the `notify` channel, students who have not installed the app receive an SMS. | Invia un messaggio agli studenti selezionati via email o notifica in-app. Per il canale `notify`, agli studenti che non hanno installato l'app viene inviato un SMS.")
   @opExample(_ex_sendStudentsMessage_resp)
   sendStudentsMessage(
     @path courseId: integer,
@@ -346,7 +368,7 @@ interface FacultyCourseStudents {
   ): AcceptedResponse | NotAuthorized | BadRequest | NotFound | BaseErrors;
 }
 
-@tag("Faculty - Course Files")
+@tag("Courses")
 @route("/faculty/courses/{courseId}/files")
 interface FacultyCourseFiles {
   @post
@@ -371,7 +393,7 @@ interface FacultyCourseFiles {
   @delete
   @route("/folders/{folderId}")
   @summary("Delete folder | Elimina cartella")
-  @doc("Elimina la cartella e ricorsivamente tutto il suo contenuto.")
+  @doc("Deletes the folder and all its contents recursively. | Elimina la cartella e ricorsivamente tutto il suo contenuto.")
   deleteCourseFolder(@path courseId: integer, @path folderId: string):
     | NoContentResponse
     | NotAuthorized
@@ -380,7 +402,7 @@ interface FacultyCourseFiles {
 
   @post
   @summary("Upload files | Carica file")
-  @doc("Carica uno o più file nel corso. La richiesta è multipart/form-data e accetta più file contemporaneamente.")
+  @doc("Uploads one or more files to the course using a multipart/form-data request. | Carica uno o più file nel corso. La richiesta è multipart/form-data e accetta più file contemporaneamente.")
   uploadCourseFiles(
     @path courseId: integer,
     @header contentType: "multipart/form-data",
@@ -390,7 +412,7 @@ interface FacultyCourseFiles {
   @post
   @route("/move")
   @summary("Move files | Sposta file")
-  @doc("Sposta uno o più file e/o cartelle in una cartella di destinazione.")
+  @doc("Moves one or more files or folders to a destination folder. | Sposta uno o più file e/o cartelle in una cartella di destinazione.")
   @opExample(_ex_moveCourseItems_resp)
   moveCourseItems(@path courseId: integer, @body body: MoveCourseItemsRequest):
     | NoContentResponse
@@ -418,12 +440,12 @@ interface FacultyCourseFiles {
     | BaseErrors;
 }
 
-@tag("Faculty - Course Assignments")
+@tag("Courses")
 @route("/faculty/courses/{courseId}/assignments")
 interface FacultyCourseAssignments {
   @get
   @summary("List assignments | Elenca elaborati")
-  @doc("Restituisce gli elaborati consegnati dagli studenti per il corso.")
+  @doc("Returns the assignments submitted by students for the course. | Restituisce gli elaborati consegnati dagli studenti per il corso.")
   @opExample(_ex_listFacultyCourseAssignments_resp)
   listFacultyCourseAssignments(@path courseId: integer):
     | OkDataResponse<FacultyCourseAssignmentOverview[]>
@@ -456,7 +478,7 @@ interface FacultyCourseAssignments {
   @post
   @route("/{assignmentId}/answer")
   @summary("Answer assignment | Rispondi all'elaborato")
-  @doc("Invia una risposta allo studente riguardo al suo elaborato.")
+  @doc("Sends a reply to the student about their assignment. | Invia una risposta allo studente riguardo al suo elaborato.")
   @opExample(_ex_answerCourseAssignment_resp)
   answerCourseAssignment(
     @path courseId: integer,
