@@ -74,6 +74,10 @@ model CourseModule {
 
   @example("2022")
   year: string;
+
+  /** Custom icon, color and label (acronym) chosen by the user for this course. `null` if never set */
+  @example(#{ color: "#2563EB", icon: "faCode", label: "SDP" })
+  style: Symbol | null;
 }
 
 model CourseModuleOverview extends CourseModule {
@@ -274,6 +278,10 @@ model CoursePreferencesRequest {
     @example(true)
     lectures?: boolean;
   };
+
+  /** Custom icon, color and label (acronym) for the course, `null` to reset it */
+  @example(#{ color: "#2563EB", icon: "faCode", label: "SDP" })
+  style?: Symbol | null;
 }
 
 model UpdateAssignmentRequest {

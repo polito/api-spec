@@ -2421,6 +2421,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#2563EB'
+                      icon: faCode
+                      label: SDP
                     modules:
                       - id: 251008
                         name: Programming Module A
@@ -2436,6 +2440,10 @@ paths:
                         category: I
                         enrollmentRole: student
                         year: '2025'
+                        style:
+                          color: '#4F46E5'
+                          icon: faCode
+                          label: SDP-A
                       - id: 251009
                         name: Programming Module B
                         shortcode: 01NYHOV
@@ -2450,6 +2458,10 @@ paths:
                         category: I
                         enrollmentRole: student
                         year: '2025'
+                        style:
+                          color: '#7C3AED'
+                          icon: faCode
+                          label: SDP-B
                   - id: 252121
                     name: Web Applications II
                     shortcode: 01TXSOV
@@ -2462,6 +2474,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#0891B2'
+                      icon: faGlobe
+                      label: WA2
                     modules: null
                   - id: 252126
                     name: Security verification and testing
@@ -2475,6 +2491,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#16A34A'
+                      icon: faShieldHalved
+                      label: SVT
                     modules: null
                   - id: 252138
                     name: Information systems security
@@ -2488,6 +2508,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#DC2626'
+                      icon: faServer
+                      label: ISS
                     modules: null
                   - id: 252258
                     name: Cybersecurity
@@ -2501,6 +2525,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#EA580C'
+                      icon: faNetworkWired
+                      label: CYB
                     modules: null
                   - id: 252788
                     name: Architetture dei sistemi di elaborazione
@@ -2514,6 +2542,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#D97706'
+                      icon: faMicrochip
+                      label: ASE
                     modules: null
                   - id: 252842
                     name: Human Computer Interaction
@@ -2527,6 +2559,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#DB2777'
+                      icon: faComputer
+                      label: HCI
                     modules: null
                   - id: 253378
                     name: Cryptography
@@ -2540,6 +2576,10 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style:
+                      color: '#0D9488'
+                      icon: faKey
+                      label: CRY
                     modules: null
                   - id: null
                     name: Tesi
@@ -2553,6 +2593,7 @@ paths:
                     category: I
                     enrollmentRole: student
                     year: '2025'
+                    style: null
                     modules: null
         '400':
           description: The server could not understand the request due to invalid syntax.
@@ -3663,6 +3704,7 @@ components:
         - category
         - enrollmentRole
         - year
+        - style
       properties:
         id:
           type: integer
@@ -3706,6 +3748,16 @@ components:
         year:
           type: string
           example: '2022'
+        style:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Symbol'
+          nullable: true
+          description: Custom icon, color and label (acronym) chosen by the user for this course. `null` if never set
+          example:
+            color: '#2563EB'
+            icon: faCode
+            label: SDP
       example:
         id: 251008
         name: Programming Module A
@@ -3717,6 +3769,10 @@ components:
         category: I
         enrollmentRole: student
         year: '2025'
+        style:
+          color: '#4F46E5'
+          icon: faCode
+          label: PMA
     CourseModuleEdition:
       type: object
       required:
@@ -3802,6 +3858,16 @@ components:
             lectures:
               type: boolean
               example: true
+        style:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Symbol'
+          nullable: true
+          description: Custom icon, color and label (acronym) for the course, `null` to reset it
+          example:
+            color: '#2563EB'
+            icon: faCode
+            label: SDP
     CreateBookingRequest:
       type: object
       required:
