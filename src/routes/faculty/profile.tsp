@@ -59,6 +59,11 @@ model ProfileContact {
   value: string;
 }
 
+@example(#{
+  label: "email",
+  value: "mario.rossi@polito.it",
+  isVisibleInDirectory: true,
+})
 model InstitutionalProfileContact extends ProfileContact {
   /** Directory visibility, provided only for institutional contacts. | Visibilità in rubrica, fornita solo per i contatti istituzionali. */
   @example(true)
@@ -101,7 +106,7 @@ model FacultyTaxData {
 
 model FacultyPersonalContacts {
   /** Correspondence address. | Indirizzo di recapito. */
-  address: ProfileAddress;
+  contactAddress: ProfileAddress;
 
   /** Personal email addresses and phone numbers. | Indirizzi email e numeri di telefono personali. */
   contacts: ProfileContact[];
@@ -119,10 +124,6 @@ model FacultyProfile {
   personalContacts: FacultyPersonalContacts;
   institutionalContacts: InstitutionalProfileContact[];
   publicData: FacultyPublicData;
-
-  /** TODO: Verify the department data structure and its placement in the profile; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento e la collocazione nel profilo: probabilmente sarà disponibile anche l’acronimo. */
-  @example("Dipartimento di Automatica e Informatica")
-  departmentName: string;
 }
 
 model PaginatedFacultyPublicationList {
@@ -151,7 +152,7 @@ model FacultyTaxDataUpdateRequest {
 }
 
 model FacultyPersonalContactsUpdateRequest {
-  address?: ProfileAddress;
+  contactAddress?: ProfileAddress;
 
   /** TODO: Confirm whether updating contacts replaces the whole list or addresses individual contacts. | Confermare se l'aggiornamento dei contatti sostituisce l'intero elenco o riguarda singoli contatti. */
   contacts?: ProfileContact[];

@@ -22,7 +22,7 @@ const _ex_getFacultyProfile_resp = #{
         },
         taxData: #{ iban: "XK238804602955671016", taxDomicileAddress: #{} },
         personalContacts: #{
-          address: #{},
+          contactAddress: #{},
           contacts: #[
             #{ label: "Email personale", value: "mario.rossi@example.com" },
             #{ label: "Cellulare personale", value: "+39 333 7654321" }
@@ -30,7 +30,7 @@ const _ex_getFacultyProfile_resp = #{
         },
         institutionalContacts: #[
           #{
-            label: "Email istituzionale",
+            label: "email",
             value: "mario.rossi@polito.it",
             isVisibleInDirectory: true,
           },
@@ -41,7 +41,6 @@ const _ex_getFacultyProfile_resp = #{
           }
         ],
         publicData: #{ personalWebsiteUrl: "https://example.com/mario-rossi" },
-        departmentName: "Dipartimento di Automatica e Informatica",
       },
     },
   },
@@ -65,7 +64,7 @@ const _ex_updateFacultyProfile_resp = #{
         },
         taxData: #{ iban: "XK238804602955671016", taxDomicileAddress: #{} },
         personalContacts: #{
-          address: #{},
+          contactAddress: #{},
           contacts: #[
             #{ label: "Email personale", value: "mario.rossi@example.com" },
             #{ label: "Cellulare personale", value: "+39 333 1234567" }
@@ -73,7 +72,7 @@ const _ex_updateFacultyProfile_resp = #{
         },
         institutionalContacts: #[
           #{
-            label: "Email istituzionale",
+            label: "email",
             value: "mario.rossi@polito.it",
             isVisibleInDirectory: true,
           },
@@ -84,7 +83,6 @@ const _ex_updateFacultyProfile_resp = #{
           }
         ],
         publicData: #{ personalWebsiteUrl: "https://example.com/mario-rossi" },
-        departmentName: "Dipartimento di Automatica e Informatica",
       },
     },
   },
