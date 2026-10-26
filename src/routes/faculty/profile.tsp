@@ -48,7 +48,24 @@ model AssignedCourse {
   enrolledStudentCount: integer;
 }
 
-model FacultyProfile {
+/** TODO: Define the address fields. This object is provisional. | Definire i campi dell'indirizzo. L'oggetto è provvisorio. */
+model ProfileAddress {}
+
+model ProfileContact {
+  @example("Email personale")
+  label: string;
+
+  @example("mario.rossi@example.com")
+  value: string;
+}
+
+model InstitutionalProfileContact extends ProfileContact {
+  /** Directory visibility, provided only for institutional contacts. | Visibilità in rubrica, fornita solo per i contatti istituzionali. */
+  @example(true)
+  isVisibleInDirectory?: boolean;
+}
+
+model FacultyPersonalData {
   @example(2154)
   id: integer;
 
@@ -58,26 +75,52 @@ model FacultyProfile {
   @example("Rossi")
   lastName: string;
 
-  @example("mario.rossi@example.com")
-  personalEmail: string;
+  @example("RSSMRA80A01L219K")
+  fiscalCode: string;
 
-  @example("mario.rossi@polito.it")
-  academicEmail: string;
+  @example("Torino")
+  birthPlace: string;
 
-  @example("+39 011 090 7654")
-  phone: string;
+  @example(plainDate.fromISO("1980-01-01"))
+  birthDate: plainDate;
 
-  @example("Torino, Via Roma 1")
-  residenceAddress: string;
+  /** TODO: Verify the available values and their representation. | Verificare i valori disponibili e la loro rappresentazione. */
+  @example("Coniugato/a")
+  maritalStatus: string;
 
-  /** TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione. */
-  @example("Torino, Via Roma 1")
-  fiscalResidence: string;
+  residenceAddress: ProfileAddress;
+}
 
+model FacultyTaxData {
   @example("XK238804602955671016")
   iban: string;
 
-  /** TODO: Verify the department data structure; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento: probabilmente sarà disponibile anche l’acronimo. */
+  /** Tax domicile address. | Indirizzo del domicilio fiscale. */
+  taxDomicileAddress: ProfileAddress;
+}
+
+model FacultyPersonalContacts {
+  /** Correspondence address. | Indirizzo di recapito. */
+  address: ProfileAddress;
+
+  /** Personal email addresses and phone numbers. | Indirizzi email e numeri di telefono personali. */
+  contacts: ProfileContact[];
+}
+
+/** TODO: Add the CV once its representation and upload/update mechanism have been defined. Both the CV and the personal website are editable. | Aggiungere il CV dopo averne definito la rappresentazione e il caricamento/aggiornamento. Sia il CV sia la pagina web personale sono modificabili. */
+model FacultyPublicData {
+  @example("https://example.com/mario-rossi")
+  personalWebsiteUrl: string;
+}
+
+model FacultyProfile {
+  personalData: FacultyPersonalData;
+  taxData: FacultyTaxData;
+  personalContacts: FacultyPersonalContacts;
+  institutionalContacts: InstitutionalProfileContact[];
+  publicData: FacultyPublicData;
+
+  /** TODO: Verify the department data structure and its placement in the profile; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento e la collocazione nel profilo: probabilmente sarà disponibile anche l’acronimo. */
   @example("Dipartimento di Automatica e Informatica")
   departmentName: string;
 }
@@ -95,22 +138,37 @@ model PaginatedFacultyPublicationList {
   total: integer;
 }
 
+/** Only the residence address can be updated. | È modificabile solo l'indirizzo di residenza. */
+model FacultyPersonalDataUpdateRequest {
+  residenceAddress?: ProfileAddress;
+}
+
+model FacultyTaxDataUpdateRequest {
+  @example("IT60X0542811101000000123456")
+  iban?: string;
+
+  taxDomicileAddress?: ProfileAddress;
+}
+
+model FacultyPersonalContactsUpdateRequest {
+  address?: ProfileAddress;
+
+  /** TODO: Confirm whether updating contacts replaces the whole list or addresses individual contacts. | Confermare se l'aggiornamento dei contatti sostituisce l'intero elenco o riguarda singoli contatti. */
+  contacts?: ProfileContact[];
+}
+
+/** TODO: Define CV updates, possibly through a dedicated upload endpoint. | Definire l'aggiornamento del CV, eventualmente tramite un endpoint di caricamento dedicato. */
+model FacultyPublicDataUpdateRequest {
+  @example("https://example.com/mario-rossi")
+  personalWebsiteUrl?: string;
+}
+
+/** Omitted sections and fields are left unchanged. Institutional contacts cannot be updated. | Le sezioni e i campi omessi restano invariati. I contatti istituzionali non sono modificabili. */
 model FacultyProfileUpdateRequest {
-  @example("Torino, Via Garibaldi 10")
-  residenceAddress?: string;
-
-  /** TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione. */
-  @example("Torino, Via Garibaldi 10")
-  fiscalResidence?: string;
-
-  @example("+39 011 090 1234")
-  phone?: string;
-
-  @example("mario.rossi@example.com")
-  personalEmail?: string;
-
-  @example("mario.rossi@polito.it")
-  academicEmail?: string;
+  personalData?: FacultyPersonalDataUpdateRequest;
+  taxData?: FacultyTaxDataUpdateRequest;
+  personalContacts?: FacultyPersonalContactsUpdateRequest;
+  publicData?: FacultyPublicDataUpdateRequest;
 }
 
 @tag("Faculty - Profile")
@@ -122,13 +180,6 @@ interface FacultyProfile_Routes {
   @opExample(_ex_getFacultyProfile_resp)
   getFacultyProfile(
   ): OkDataResponse<FacultyProfile> | NotAuthorized | ServerError;
-
-  @patch(#{ implicitOptionality: true })
-  @summary("Update faculty profile | Aggiorna dati anagrafici del docente")
-  @opExample(_ex_updateFacultyProfile_resp)
-  updateFacultyProfile(
-    @body body: FacultyProfileUpdateRequest,
-  ): OkDataResponse<FacultyProfile> | NotAuthorized | BaseErrors;
 
   @route("/publications")
   @get
@@ -159,4 +210,11 @@ interface FacultyProfile_Routes {
     | NotAuthorized
     | NotFound
     | ServerError;
+
+  @patch(#{ implicitOptionality: true })
+  @summary("Update faculty profile | Aggiorna dati anagrafici del docente")
+  @opExample(_ex_updateFacultyProfile_resp)
+  updateFacultyProfile(
+    @body body: FacultyProfileUpdateRequest,
+  ): OkDataResponse<FacultyProfile> | NotAuthorized | BaseErrors;
 }

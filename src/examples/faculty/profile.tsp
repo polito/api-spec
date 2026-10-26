@@ -10,15 +10,37 @@ const _ex_getFacultyProfile_resp = #{
     statusCode: 200,
     body: #{
       data: #{
-        id: 2154,
-        firstName: "Mario",
-        lastName: "Rossi",
-        personalEmail: "mario.rossi@example.com",
-        academicEmail: "mario.rossi@polito.it",
-        phone: "+39 011 090 7654",
-        residenceAddress: "Torino, Via Roma 1",
-        fiscalResidence: "Torino, Via Roma 1",
-        iban: "XK238804602955671016",
+        personalData: #{
+          id: 2154,
+          firstName: "Mario",
+          lastName: "Rossi",
+          fiscalCode: "RSSMRA80A01L219K",
+          birthPlace: "Torino",
+          birthDate: plainDate.fromISO("1980-01-01"),
+          maritalStatus: "Coniugato/a",
+          residenceAddress: #{},
+        },
+        taxData: #{ iban: "XK238804602955671016", taxDomicileAddress: #{} },
+        personalContacts: #{
+          address: #{},
+          contacts: #[
+            #{ label: "Email personale", value: "mario.rossi@example.com" },
+            #{ label: "Cellulare personale", value: "+39 333 7654321" }
+          ],
+        },
+        institutionalContacts: #[
+          #{
+            label: "Email istituzionale",
+            value: "mario.rossi@polito.it",
+            isVisibleInDirectory: true,
+          },
+          #{
+            label: "Telefono ufficio",
+            value: "+39 011 090 7654",
+            isVisibleInDirectory: false,
+          }
+        ],
+        publicData: #{ personalWebsiteUrl: "https://example.com/mario-rossi" },
         departmentName: "Dipartimento di Automatica e Informatica",
       },
     },
@@ -31,15 +53,37 @@ const _ex_updateFacultyProfile_resp = #{
     statusCode: 200,
     body: #{
       data: #{
-        id: 2154,
-        firstName: "Mario",
-        lastName: "Rossi",
-        personalEmail: "mario.rossi@example.com",
-        academicEmail: "mario.rossi@polito.it",
-        phone: "+39 011 090 1234",
-        residenceAddress: "Torino, Via Garibaldi 10",
-        fiscalResidence: "Torino, Via Garibaldi 10",
-        iban: "IT60X0542811101000000123456",
+        personalData: #{
+          id: 2154,
+          firstName: "Mario",
+          lastName: "Rossi",
+          fiscalCode: "RSSMRA80A01L219K",
+          birthPlace: "Torino",
+          birthDate: plainDate.fromISO("1980-01-01"),
+          maritalStatus: "Coniugato/a",
+          residenceAddress: #{},
+        },
+        taxData: #{ iban: "XK238804602955671016", taxDomicileAddress: #{} },
+        personalContacts: #{
+          address: #{},
+          contacts: #[
+            #{ label: "Email personale", value: "mario.rossi@example.com" },
+            #{ label: "Cellulare personale", value: "+39 333 1234567" }
+          ],
+        },
+        institutionalContacts: #[
+          #{
+            label: "Email istituzionale",
+            value: "mario.rossi@polito.it",
+            isVisibleInDirectory: true,
+          },
+          #{
+            label: "Telefono ufficio",
+            value: "+39 011 090 7654",
+            isVisibleInDirectory: false,
+          }
+        ],
+        publicData: #{ personalWebsiteUrl: "https://example.com/mario-rossi" },
         departmentName: "Dipartimento di Automatica e Informatica",
       },
     },

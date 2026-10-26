@@ -12,6 +12,7 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Geography
   - name: News
   - name: People
   - name: Places
@@ -888,6 +889,46 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /countries:
+    get:
+      operationId: Countries_getCountries
+      summary: List countries | Elenca Stati
+      description: Returns the countries available for residence, correspondence and tax domicile addresses. | Restituisce gli Stati selezionabili per gli indirizzi di residenza, recapito e domicilio fiscale.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+                required:
+                  - data
+              example:
+                data:
+                  - id: IT
+                    name: Italia
+                  - id: FR
+                    name: Francia
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -1601,15 +1642,34 @@ paths:
                   - data
               example:
                 data:
-                  id: 2154
-                  firstName: Mario
-                  lastName: Rossi
-                  personalEmail: mario.rossi@example.com
-                  academicEmail: mario.rossi@polito.it
-                  phone: +39 011 090 7654
-                  residenceAddress: Torino, Via Roma 1
-                  fiscalResidence: Torino, Via Roma 1
-                  iban: XK238804602955671016
+                  personalData:
+                    id: 2154
+                    firstName: Mario
+                    lastName: Rossi
+                    fiscalCode: RSSMRA80A01L219K
+                    birthPlace: Torino
+                    birthDate: '1980-01-01'
+                    maritalStatus: Coniugato/a
+                    residenceAddress: {}
+                  taxData:
+                    iban: XK238804602955671016
+                    taxDomicileAddress: {}
+                  personalContacts:
+                    address: {}
+                    contacts:
+                      - label: Email personale
+                        value: mario.rossi@example.com
+                      - label: Cellulare personale
+                        value: +39 333 7654321
+                  institutionalContacts:
+                    - label: Email istituzionale
+                      value: mario.rossi@polito.it
+                      isVisibleInDirectory: true
+                    - label: Telefono ufficio
+                      value: +39 011 090 7654
+                      isVisibleInDirectory: false
+                  publicData:
+                    personalWebsiteUrl: https://example.com/mario-rossi
                   departmentName: Dipartimento di Automatica e Informatica
         '401':
           description: Access is unauthorized.
@@ -1643,15 +1703,34 @@ paths:
                   - data
               example:
                 data:
-                  id: 2154
-                  firstName: Mario
-                  lastName: Rossi
-                  personalEmail: mario.rossi@example.com
-                  academicEmail: mario.rossi@polito.it
-                  phone: +39 011 090 1234
-                  residenceAddress: Torino, Via Garibaldi 10
-                  fiscalResidence: Torino, Via Garibaldi 10
-                  iban: IT60X0542811101000000123456
+                  personalData:
+                    id: 2154
+                    firstName: Mario
+                    lastName: Rossi
+                    fiscalCode: RSSMRA80A01L219K
+                    birthPlace: Torino
+                    birthDate: '1980-01-01'
+                    maritalStatus: Coniugato/a
+                    residenceAddress: {}
+                  taxData:
+                    iban: XK238804602955671016
+                    taxDomicileAddress: {}
+                  personalContacts:
+                    address: {}
+                    contacts:
+                      - label: Email personale
+                        value: mario.rossi@example.com
+                      - label: Cellulare personale
+                        value: +39 333 1234567
+                  institutionalContacts:
+                    - label: Email istituzionale
+                      value: mario.rossi@polito.it
+                      isVisibleInDirectory: true
+                    - label: Telefono ufficio
+                      value: +39 011 090 7654
+                      isVisibleInDirectory: false
+                  publicData:
+                    personalWebsiteUrl: https://example.com/mario-rossi
                   departmentName: Dipartimento di Automatica e Informatica
         '400':
           description: The server could not understand the request due to invalid syntax.
@@ -1808,6 +1887,47 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Faculty - Profile
+  /italian-municipalities:
+    get:
+      operationId: ItalianMunicipalities_getItalianMunicipalities
+      summary: List Italian municipalities | Elenca comuni italiani
+      description: Returns Italian municipalities with their associated provinces. | Restituisce i comuni italiani con le rispettive province.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItalianMunicipality'
+                required:
+                  - data
+              example:
+                data:
+                  - id: '004130'
+                    name: Mondovì
+                    province:
+                      id: CN
+                      name: Cuneo
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -3708,6 +3828,19 @@ components:
         appVersion:
           type: string
           example: 1.6.2
+    Country:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the country identifier coding with the webservice; the example uses an ISO alpha-2 code. | Confermare la codifica dell'identificativo dello Stato con il webservice; l'esempio usa un codice ISO alpha-2."
+          example: IT
+        name:
+          type: string
+          example: Italia
     Course:
       type: object
       required:
@@ -4286,19 +4419,42 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
-    FacultyProfile:
+    FacultyPersonalContacts:
+      type: object
+      required:
+        - address
+        - contacts
+      properties:
+        address:
+          allOf:
+            - $ref: '#/components/schemas/ProfileAddress'
+          description: Correspondence address. | Indirizzo di recapito.
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileContact'
+          description: Personal email addresses and phone numbers. | Indirizzi email e numeri di telefono personali.
+    FacultyPersonalContactsUpdateRequest:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/ProfileAddress'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileContact'
+          description: "TODO: Confirm whether updating contacts replaces the whole list or addresses individual contacts. | Confermare se l'aggiornamento dei contatti sostituisce l'intero elenco o riguarda singoli contatti."
+    FacultyPersonalData:
       type: object
       required:
         - id
         - firstName
         - lastName
-        - personalEmail
-        - academicEmail
-        - phone
+        - fiscalCode
+        - birthPlace
+        - birthDate
+        - maritalStatus
         - residenceAddress
-        - fiscalResidence
-        - iban
-        - departmentName
       properties:
         id:
           type: integer
@@ -4309,48 +4465,82 @@ components:
         lastName:
           type: string
           example: Rossi
-        personalEmail:
+        fiscalCode:
           type: string
-          example: mario.rossi@example.com
-        academicEmail:
+          example: RSSMRA80A01L219K
+        birthPlace:
           type: string
-          example: mario.rossi@polito.it
-        phone:
+          example: Torino
+        birthDate:
           type: string
-          example: +39 011 090 7654
+          format: date
+          example: '1980-01-01'
+        maritalStatus:
+          type: string
+          description: 'TODO: Verify the available values and their representation. | Verificare i valori disponibili e la loro rappresentazione.'
+          example: Coniugato/a
         residenceAddress:
-          type: string
-          example: Torino, Via Roma 1
-        fiscalResidence:
-          type: string
-          description: 'TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione.'
-          example: Torino, Via Roma 1
-        iban:
-          type: string
-          example: XK238804602955671016
+          $ref: '#/components/schemas/ProfileAddress'
+    FacultyPersonalDataUpdateRequest:
+      type: object
+      properties:
+        residenceAddress:
+          $ref: '#/components/schemas/ProfileAddress'
+      description: Only the residence address can be updated. | È modificabile solo l'indirizzo di residenza.
+    FacultyProfile:
+      type: object
+      required:
+        - personalData
+        - taxData
+        - personalContacts
+        - institutionalContacts
+        - publicData
+        - departmentName
+      properties:
+        personalData:
+          $ref: '#/components/schemas/FacultyPersonalData'
+        taxData:
+          $ref: '#/components/schemas/FacultyTaxData'
+        personalContacts:
+          $ref: '#/components/schemas/FacultyPersonalContacts'
+        institutionalContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstitutionalProfileContact'
+        publicData:
+          $ref: '#/components/schemas/FacultyPublicData'
         departmentName:
           type: string
-          description: 'TODO: Verify the department data structure; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento: probabilmente sarà disponibile anche l’acronimo.'
+          description: 'TODO: Verify the department data structure and its placement in the profile; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento e la collocazione nel profilo: probabilmente sarà disponibile anche l’acronimo.'
           example: Dipartimento di Automatica e Informatica
     FacultyProfileUpdateRequest:
       type: object
       properties:
-        residenceAddress:
+        personalData:
+          $ref: '#/components/schemas/FacultyPersonalDataUpdateRequest'
+        taxData:
+          $ref: '#/components/schemas/FacultyTaxDataUpdateRequest'
+        personalContacts:
+          $ref: '#/components/schemas/FacultyPersonalContactsUpdateRequest'
+        publicData:
+          $ref: '#/components/schemas/FacultyPublicDataUpdateRequest'
+      description: Omitted sections and fields are left unchanged. Institutional contacts cannot be updated. | Le sezioni e i campi omessi restano invariati. I contatti istituzionali non sono modificabili.
+    FacultyPublicData:
+      type: object
+      required:
+        - personalWebsiteUrl
+      properties:
+        personalWebsiteUrl:
           type: string
-          example: Torino, Via Garibaldi 10
-        fiscalResidence:
+          example: https://example.com/mario-rossi
+      description: 'TODO: Add the CV once its representation and upload/update mechanism have been defined. Both the CV and the personal website are editable. | Aggiungere il CV dopo averne definito la rappresentazione e il caricamento/aggiornamento. Sia il CV sia la pagina web personale sono modificabili.'
+    FacultyPublicDataUpdateRequest:
+      type: object
+      properties:
+        personalWebsiteUrl:
           type: string
-          description: 'TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione.'
-          example: Torino, Via Garibaldi 10
-        phone:
-          type: string
-          example: +39 011 090 1234
-        personalEmail:
-          type: string
-          example: mario.rossi@example.com
-        academicEmail:
-          type: string
-          example: mario.rossi@polito.it
+          example: https://example.com/mario-rossi
+      description: "TODO: Define CV updates, possibly through a dedicated upload endpoint. | Definire l'aggiornamento del CV, eventualmente tramite un endpoint di caricamento dedicato."
     FacultyPublication:
       type: object
       required:
@@ -4382,6 +4572,27 @@ components:
           type: string
           description: 'TODO: Verify whether publications can be downloaded through this URL by checking how the web directory behaves. | Verificare se sia possibile scaricare la pubblicazione da questo URL, controllando il comportamento della rubrica web.'
           example: https://example.com/download/pub-001
+    FacultyTaxData:
+      type: object
+      required:
+        - iban
+        - taxDomicileAddress
+      properties:
+        iban:
+          type: string
+          example: XK238804602955671016
+        taxDomicileAddress:
+          allOf:
+            - $ref: '#/components/schemas/ProfileAddress'
+          description: Tax domicile address. | Indirizzo del domicilio fiscale.
+    FacultyTaxDataUpdateRequest:
+      type: object
+      properties:
+        iban:
+          type: string
+          example: IT60X0542811101000000123456
+        taxDomicileAddress:
+          $ref: '#/components/schemas/ProfileAddress'
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4510,6 +4721,33 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    InstitutionalProfileContact:
+      type: object
+      properties:
+        isVisibleInDirectory:
+          type: boolean
+          description: Directory visibility, provided only for institutional contacts. | Visibilità in rubrica, fornita solo per i contatti istituzionali.
+          example: true
+      allOf:
+        - $ref: '#/components/schemas/ProfileContact'
+    ItalianMunicipality:
+      type: object
+      required:
+        - id
+        - name
+        - province
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the municipality identifier coding with the webservice; the example uses an ISTAT code. Keep identifiers as strings to preserve leading zeroes. | Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali."
+          example: '004130'
+        name:
+          type: string
+          example: Mondovì
+        province:
+          allOf:
+            - $ref: '#/components/schemas/Province'
+          description: Province associated with the municipality, used to fill in the province automatically after selection. | Provincia associata al comune, da compilare automaticamente dopo la selezione.
     Lecture:
       type: object
       required:
@@ -5161,6 +5399,35 @@ components:
           type: string
         name:
           type: string
+    ProfileAddress:
+      type: object
+      description: "TODO: Define the address fields. This object is provisional. | Definire i campi dell'indirizzo. L'oggetto è provvisorio."
+    ProfileContact:
+      type: object
+      required:
+        - label
+        - value
+      properties:
+        label:
+          type: string
+          example: Email personale
+        value:
+          type: string
+          example: mario.rossi@example.com
+    Province:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the province identifier coding; the example uses the province abbreviation. | Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale."
+          example: CN
+        name:
+          type: string
+          example: Cuneo
+      description: Province or equivalent territorial unit, including metropolitan cities and autonomous provinces. | Provincia o unità territoriale equivalente, comprese città metropolitane e province autonome.
     RelatedVirtualClassroom:
       type: object
       required:
