@@ -13,7 +13,7 @@ model FacultyPublication {
   id: string;
 
   @example("Dispensa di Informatica")
-  name: string;
+  title: string;
 
   @example("application/pdf")
   mimeType: string;
@@ -21,57 +21,65 @@ model FacultyPublication {
   @example(2456)
   sizeInKiloBytes: integer;
 
+  /** TODO: Verify whether this is the record creation, file upload or publication date. | Verificare se indica la creazione del record, il caricamento del file o la pubblicazione. */
   @example(utcDateTime.fromISO("2026-03-04T12:27:38.153Z"))
   createdAt: utcDateTime;
 
+  /** TODO: Verify whether publications can be downloaded through this URL by checking how the web directory behaves. | Verificare se sia possibile scaricare la pubblicazione da questo URL, controllando il comportamento della rubrica web. */
   @example("https://example.com/download/pub-001")
   downloadUrl: string;
 }
 
 model AssignedCourse {
   @example("02JSKOV")
-  courseId: string;
+  shortcode: string;
 
   @example("Human Computer Interaction")
   name: string;
 
-  @example("2025/2026 - Secondo semestre")
-  period: string;
+  @example("2025")
+  year: string;
+
+  /** The semester(s) this course belongs to | Semestre o semestri a cui appartiene il corso */
+  @example("2-2")
+  teachingPeriod: string;
 
   @example(120)
-  enrolledCount: integer;
+  enrolledStudentCount: integer;
 }
 
 model FacultyProfile {
-  @example("2154")
-  id: string;
+  @example(2154)
+  id: integer;
 
-  @example("Marco Torchiano")
-  name: string;
+  @example("Mario")
+  firstName: string;
 
-  @example("marco.torchiano@gmail.com")
-  personal_email: string;
+  @example("Rossi")
+  lastName: string;
 
-  @example("marco.torchiano@polito.it")
-  academic_email: string;
+  @example("mario.rossi@example.com")
+  personalEmail: string;
+
+  @example("mario.rossi@polito.it")
+  academicEmail: string;
 
   @example("+39 011 090 7654")
   phone: string;
 
   @example("Torino, Via Roma 1")
-  residence: string;
+  residenceAddress: string;
 
+  /** TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione. */
   @example("Torino, Via Roma 1")
   fiscalResidence: string;
 
   @example("XK238804602955671016")
   iban: string;
 
+  /** TODO: Verify the department data structure; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento: probabilmente sarà disponibile anche l’acronimo. */
   @example("Dipartimento di Automatica e Informatica")
-  department: string;
-
-  publications: FacultyPublication[];
-  assignedCourses: AssignedCourse[];
+  departmentName: string;
 }
 
 model PaginatedFacultyPublicationList {
@@ -89,19 +97,20 @@ model PaginatedFacultyPublicationList {
 
 model FacultyProfileUpdateRequest {
   @example("Torino, Via Garibaldi 10")
-  residence?: string;
+  residenceAddress?: string;
 
+  /** TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione. */
   @example("Torino, Via Garibaldi 10")
   fiscalResidence?: string;
 
   @example("+39 011 090 1234")
   phone?: string;
 
-  @example("marco.torchiano@gmail.com")
-  personal_email?: string;
+  @example("mario.rossi@example.com")
+  personalEmail?: string;
 
-  @example("marco.torchiano@polito.it")
-  academic_email?: string;
+  @example("mario.rossi@polito.it")
+  academicEmail?: string;
 }
 
 @tag("Faculty - Profile")
@@ -109,11 +118,12 @@ model FacultyProfileUpdateRequest {
 interface FacultyProfile_Routes {
   @get
   @summary("Get faculty profile | Profilo docente")
-  @doc("Restituisce i dati anagrafici e informativi del docente autenticato (pubblicazioni, corsi assegnati – se disponibili).")
+  @doc("Returns the personal data of the authenticated faculty member. | Restituisce i dati personali del docente autenticato.")
   @opExample(_ex_getFacultyProfile_resp)
-  getFacultyProfile(): OkDataResponse<FacultyProfile> | NotAuthorized | ServerError;
+  getFacultyProfile(
+  ): OkDataResponse<FacultyProfile> | NotAuthorized | ServerError;
 
-  @patch(#{implicitOptionality: true})
+  @patch(#{ implicitOptionality: true })
   @summary("Update faculty profile | Aggiorna dati anagrafici del docente")
   @opExample(_ex_updateFacultyProfile_resp)
   updateFacultyProfile(
@@ -123,12 +133,20 @@ interface FacultyProfile_Routes {
   @route("/publications")
   @get
   @summary("List faculty publications | Elenca pubblicazioni del docente")
-  @doc("Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.")
+  @doc("Returns the paginated publications of the authenticated faculty member. | Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.")
   @opExample(_ex_listFacultyPublications_resp)
   listFacultyPublications(
     @query page?: integer = 1,
     @query pageSize?: integer = 20,
   ): OkResponse<PaginatedFacultyPublicationList> | NotAuthorized | ServerError;
+
+  @route("/courses")
+  @get
+  @summary("List assigned courses | Elenca corsi assegnati")
+  @doc("Returns the courses assigned to the authenticated faculty member. | Restituisce i corsi assegnati al docente autenticato.")
+  @opExample(_ex_listAssignedCourses_resp)
+  listAssignedCourses(
+  ): OkDataResponse<AssignedCourse[]> | NotAuthorized | ServerError;
 
   @route("/publications/{publicationId}")
   @get

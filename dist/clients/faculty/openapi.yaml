@@ -1585,7 +1585,7 @@ paths:
     get:
       operationId: FacultyProfile_Routes_getFacultyProfile
       summary: Get faculty profile | Profilo docente
-      description: Restituisce i dati anagrafici e informativi del docente autenticato (pubblicazioni, corsi assegnati – se disponibili).
+      description: Returns the personal data of the authenticated faculty member. | Restituisce i dati personali del docente autenticato.
       parameters: []
       responses:
         '200':
@@ -1601,27 +1601,16 @@ paths:
                   - data
               example:
                 data:
-                  id: '2154'
-                  name: Marco Torchiano
-                  personal_email: marco.torchiano@gmail.com
-                  academic_email: marco.torchiano@polito.it
+                  id: 2154
+                  firstName: Mario
+                  lastName: Rossi
+                  personalEmail: mario.rossi@example.com
+                  academicEmail: mario.rossi@polito.it
                   phone: +39 011 090 7654
-                  residence: Torino, Via Roma 1
+                  residenceAddress: Torino, Via Roma 1
                   fiscalResidence: Torino, Via Roma 1
                   iban: XK238804602955671016
-                  department: Dipartimento di Automatica e Informatica
-                  publications:
-                    - id: pub-001
-                      name: Dispensa di Informatica
-                      mimeType: application/pdf
-                      sizeInKiloBytes: 2456
-                      createdAt: '2026-03-04T12:27:38.153Z'
-                      downloadUrl: https://example.com/download/pub-001
-                  assignedCourses:
-                    - courseId: 02JSKOV
-                      name: Human Computer Interaction
-                      period: 2025/2026 - Secondo semestre
-                      enrolledCount: 120
+                  departmentName: Dipartimento di Automatica e Informatica
         '401':
           description: Access is unauthorized.
           content:
@@ -1654,27 +1643,16 @@ paths:
                   - data
               example:
                 data:
-                  id: '2154'
-                  name: Marco Torchiano
-                  personal_email: marco.torchiano@gmail.com
-                  academic_email: marco.torchiano@polito.it
+                  id: 2154
+                  firstName: Mario
+                  lastName: Rossi
+                  personalEmail: mario.rossi@example.com
+                  academicEmail: mario.rossi@polito.it
                   phone: +39 011 090 1234
-                  residence: Torino, Via Garibaldi 10
+                  residenceAddress: Torino, Via Garibaldi 10
                   fiscalResidence: Torino, Via Garibaldi 10
                   iban: IT60X0542811101000000123456
-                  department: Dipartimento di Automatica e Informatica
-                  publications:
-                    - id: pub-001
-                      name: Dispensa di Informatica
-                      mimeType: application/pdf
-                      sizeInKiloBytes: 2456
-                      createdAt: '2026-03-04T12:27:38.153Z'
-                      downloadUrl: https://example.com/download/pub-001
-                  assignedCourses:
-                    - courseId: 02JSKOV
-                      name: Human Computer Interaction
-                      period: 2025/2026 - Secondo semestre
-                      enrolledCount: 120
+                  departmentName: Dipartimento di Automatica e Informatica
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1701,11 +1679,52 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/FacultyProfileUpdateRequest'
+  /faculty/me/courses:
+    get:
+      operationId: FacultyProfile_Routes_listAssignedCourses
+      summary: List assigned courses | Elenca corsi assegnati
+      description: Returns the courses assigned to the authenticated faculty member. | Restituisce i corsi assegnati al docente autenticato.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignedCourse'
+                required:
+                  - data
+              example:
+                data:
+                  - shortcode: 02JSKOV
+                    name: Human Computer Interaction
+                    year: '2025'
+                    teachingPeriod: 2-2
+                    enrolledStudentCount: 120
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Faculty - Profile
   /faculty/me/publications:
     get:
       operationId: FacultyProfile_Routes_listFacultyPublications
       summary: List faculty publications | Elenca pubblicazioni del docente
-      description: Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.
+      description: Returns the paginated publications of the authenticated faculty member. | Restituisce l'elenco paginato delle pubblicazioni associate al docente autenticato.
       parameters:
         - name: page
           in: query
@@ -1731,7 +1750,7 @@ paths:
               example:
                 data:
                   - id: pub-001
-                    name: Dispensa di Informatica
+                    title: Dispensa di Informatica
                     mimeType: application/pdf
                     sizeInKiloBytes: 2456
                     createdAt: '2026-03-04T12:29:26.681Z'
@@ -3188,21 +3207,26 @@ components:
     AssignedCourse:
       type: object
       required:
-        - courseId
+        - shortcode
         - name
-        - period
-        - enrolledCount
+        - year
+        - teachingPeriod
+        - enrolledStudentCount
       properties:
-        courseId:
+        shortcode:
           type: string
           example: 02JSKOV
         name:
           type: string
           example: Human Computer Interaction
-        period:
+        year:
           type: string
-          example: 2025/2026 - Secondo semestre
-        enrolledCount:
+          example: '2025'
+        teachingPeriod:
+          type: string
+          description: The semester(s) this course belongs to | Semestre o semestri a cui appartiene il corso
+          example: 2-2
+        enrolledStudentCount:
           type: integer
           example: 120
     AuthProfile:
@@ -4266,75 +4290,72 @@ components:
       type: object
       required:
         - id
-        - name
-        - personal_email
-        - academic_email
+        - firstName
+        - lastName
+        - personalEmail
+        - academicEmail
         - phone
-        - residence
+        - residenceAddress
         - fiscalResidence
         - iban
-        - department
-        - publications
-        - assignedCourses
+        - departmentName
       properties:
         id:
+          type: integer
+          example: 2154
+        firstName:
           type: string
-          example: '2154'
-        name:
+          example: Mario
+        lastName:
           type: string
-          example: Marco Torchiano
-        personal_email:
+          example: Rossi
+        personalEmail:
           type: string
-          example: marco.torchiano@gmail.com
-        academic_email:
+          example: mario.rossi@example.com
+        academicEmail:
           type: string
-          example: marco.torchiano@polito.it
+          example: mario.rossi@polito.it
         phone:
           type: string
           example: +39 011 090 7654
-        residence:
+        residenceAddress:
           type: string
           example: Torino, Via Roma 1
         fiscalResidence:
           type: string
+          description: 'TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione.'
           example: Torino, Via Roma 1
         iban:
           type: string
           example: XK238804602955671016
-        department:
+        departmentName:
           type: string
+          description: 'TODO: Verify the department data structure; an acronym will probably also be available. | Verificare la struttura dei dati del dipartimento: probabilmente sarà disponibile anche l’acronimo.'
           example: Dipartimento di Automatica e Informatica
-        publications:
-          type: array
-          items:
-            $ref: '#/components/schemas/FacultyPublication'
-        assignedCourses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssignedCourse'
     FacultyProfileUpdateRequest:
       type: object
       properties:
-        residence:
+        residenceAddress:
           type: string
           example: Torino, Via Garibaldi 10
         fiscalResidence:
           type: string
+          description: 'TODO: Verify whether this means tax domicile or tax residence before confirming the field name. | Verificare se indica il domicilio fiscale o la residenza fiscale prima di confermare la denominazione.'
           example: Torino, Via Garibaldi 10
         phone:
           type: string
           example: +39 011 090 1234
-        personal_email:
+        personalEmail:
           type: string
-          example: marco.torchiano@gmail.com
-        academic_email:
+          example: mario.rossi@example.com
+        academicEmail:
           type: string
-          example: marco.torchiano@polito.it
+          example: mario.rossi@polito.it
     FacultyPublication:
       type: object
       required:
         - id
-        - name
+        - title
         - mimeType
         - sizeInKiloBytes
         - createdAt
@@ -4343,7 +4364,7 @@ components:
         id:
           type: string
           example: pub-001
-        name:
+        title:
           type: string
           example: Dispensa di Informatica
         mimeType:
@@ -4355,9 +4376,11 @@ components:
         createdAt:
           type: string
           format: date-time
+          description: 'TODO: Verify whether this is the record creation, file upload or publication date. | Verificare se indica la creazione del record, il caricamento del file o la pubblicazione.'
           example: '2026-03-04T12:27:38.153Z'
         downloadUrl:
           type: string
+          description: 'TODO: Verify whether publications can be downloaded through this URL by checking how the web directory behaves. | Verificare se sia possibile scaricare la pubblicazione da questo URL, controllando il comportamento della rubrica web.'
           example: https://example.com/download/pub-001
     FcmRegistrationRequest:
       type: object
