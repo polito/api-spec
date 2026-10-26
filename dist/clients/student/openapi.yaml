@@ -12,6 +12,7 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Geography
   - name: News
   - name: People
   - name: Places
@@ -894,6 +895,46 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /countries:
+    get:
+      operationId: Countries_getCountries
+      summary: List countries | Elenca Stati
+      description: Returns the countries available for residence, correspondence and tax domicile addresses. | Restituisce gli Stati selezionabili per gli indirizzi di residenza, recapito e domicilio fiscale.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+                required:
+                  - data
+              example:
+                data:
+                  - id: IT
+                    name: Italia
+                  - id: FR
+                    name: Francia
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -1984,6 +2025,47 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Student
+  /italian-municipalities:
+    get:
+      operationId: ItalianMunicipalities_getItalianMunicipalities
+      summary: List Italian municipalities | Elenca comuni italiani
+      description: Returns Italian municipalities with their associated provinces. | Restituisce i comuni italiani con le rispettive province.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItalianMunicipality'
+                required:
+                  - data
+              example:
+                data:
+                  - id: '004130'
+                    name: Mondovì
+                    province:
+                      id: CN
+                      name: Cuneo
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /job-offers:
     get:
       operationId: JobOffers_getJobOffers
@@ -4984,6 +5066,19 @@ components:
         appVersion:
           type: string
           example: 1.6.2
+    Country:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the country identifier coding with the webservice; the example uses an ISO alpha-2 code. | Confermare la codifica dell'identificativo dello Stato con il webservice; l'esempio usa un codice ISO alpha-2."
+          example: IT
+        name:
+          type: string
+          example: Italia
     Course:
       type: object
       required:
@@ -6109,6 +6204,24 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    ItalianMunicipality:
+      type: object
+      required:
+        - id
+        - name
+        - province
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the municipality identifier coding with the webservice; the example uses an ISTAT code. Keep identifiers as strings to preserve leading zeroes. | Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali."
+          example: '004130'
+        name:
+          type: string
+          example: Mondovì
+        province:
+          allOf:
+            - $ref: '#/components/schemas/Province'
+          description: Province associated with the municipality, used to fill in the province automatically after selection. | Provincia associata al comune, da compilare automaticamente dopo la selezione.
     JobOffer:
       type: object
       required:
@@ -7075,6 +7188,20 @@ components:
       example:
         rating: 3
         createdAt: '2022-08-31T14:00:00Z'
+    Province:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: "TODO: Confirm the province identifier coding; the example uses the province abbreviation. | Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale."
+          example: CN
+        name:
+          type: string
+          example: Cuneo
+      description: Province or equivalent territorial unit, including metropolitan cities and autonomous provinces. | Provincia o unità territoriale equivalente, comprese città metropolitane e province autonome.
     ProvisionalGrade:
       type: object
       required:
