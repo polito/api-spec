@@ -12,6 +12,7 @@ model FacultyPublication {
   @example("pub-001")
   id: string;
 
+  /** TODO: Check whether an English title is available and can be returned when called with `Accept-Language: en`. | Approfondire se esista una versione inglese del titolo e se possa essere restituita chiamando con header `Accept-Language: en`. */
   @example("Dispensa di Informatica")
   title: string;
 
@@ -52,6 +53,7 @@ model AssignedCourse {
 model ProfileAddress {}
 
 model ProfileContact {
+  /** TODO: Check whether the webservice can return this field in English when called with `Accept-Language: en`. | Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`. */
   @example("Email personale")
   label: string;
 
@@ -89,7 +91,7 @@ model FacultyPersonalData {
   @example(plainDate.fromISO("1980-01-01"))
   birthDate: plainDate;
 
-  /** TODO: Verify the available values and their representation. | Verificare i valori disponibili e la loro rappresentazione. */
+  /** TODO: Verify the available values, their representation and whether the webservice can return them in English when called with `Accept-Language: en`. | Verificare i valori disponibili, la loro rappresentazione e la possibilità di ottenerli in inglese chiamando il webservice con header `Accept-Language: en`. */
   @example("Coniugato/a")
   maritalStatus: string;
 

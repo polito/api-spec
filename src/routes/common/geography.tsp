@@ -13,6 +13,7 @@ model Country {
   @example("IT")
   id: string;
 
+  /** TODO: Check whether the webservice can return this field in English when called with `Accept-Language: en`. | Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`. */
   @example("Italia")
   name: string;
 }
