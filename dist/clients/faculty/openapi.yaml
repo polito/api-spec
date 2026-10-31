@@ -15,6 +15,7 @@ tags:
   - name: News
   - name: People
   - name: Places
+  - name: Departmental Spaces
 paths:
   /announcements:
     get:
@@ -828,6 +829,558 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateBookingRequest'
+  /bookings/departmental-spaces:
+    get:
+      operationId: DepartmentalSpacesService_getDepartmentalSpaces
+      summary: List departmental spaces | Elenca gli spazi dipartimentali
+      description: List departmental spaces grouped by city and site. | Elenca gli spazi dipartimentali raggruppati per città e sede.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DepartmentalSpaceCity'
+                required:
+                  - data
+              example:
+                data:
+                  - name: Torino
+                    sites:
+                      - name: Sede Centrale
+                        spaces:
+                          - id: sala riunioni ISAD
+                            name: Sala riunioni ISAD
+                            description: Saletta ISIAD
+                            numSeats: 120
+                            type:
+                              id: S
+                              label: Sale Riunioni
+                            size: L
+                            placeId: TO_CIT11_XP01_03XC
+                            permissionLevel: 1
+                      - name: Cittadella del Design
+                        spaces: []
+                  - name: Mondovì
+                    sites: []
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Departmental Spaces
+  /bookings/departmental-spaces/event-types:
+    get:
+      operationId: DepartmentalSpacesService_getDepartmentalSpaceEventTypes
+      summary: List event types | Elenca le tipologie di evento
+      description: List event types. | Elenca le tipologie di evento.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - label
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                required:
+                  - data
+              example:
+                data:
+                  - id: 1
+                    label: Riunione
+                  - id: 2
+                    label: Lezione
+                  - id: 4
+                    label: Congresso
+                  - id: 7
+                    label: Concorso
+                  - id: 9
+                    label: Gruppi di studio
+                  - id: 11
+                    label: Seminario
+                  - id: 12
+                    label: Corsi Esterni
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Departmental Spaces
+  /bookings/departmental-spaces/events:
+    get:
+      operationId: DepartmentalSpacesService_getDepartmentalSpaceEvents
+      summary: List events for a departmental space in a date range | Elenca gli eventi di uno spazio dipartimentale in un intervallo di date
+      description: List calendar events for a space in a date range. | Elenca gli eventi del calendario di uno spazio in un intervallo di date.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DepartmentalSpaceEvent'
+                required:
+                  - data
+              example:
+                data:
+                  - id: 9183864
+                    recurrenceId: null
+                    isCreatedByDepartment: true
+                    isPubliclyVisible: false
+                    space:
+                      id: sala riunioni ISAD
+                      name: Sala riunioni ISAD
+                      description: Saletta ISIAD
+                    placeId: TO_CIT11_XP01_03XC
+                    seatsOccupied: 10
+                    type:
+                      id: 1
+                      label: Riunione
+                    note: Prepararsi in anticipo secondo documentazione inviata
+                    startsAt: '2026-10-20T08:00:00Z'
+                    endsAt: '2026-10-20T09:30:00Z'
+                    isTeachingEvent: false
+                    details:
+                      description: Riunione di dipartimento
+                      requestedBy:
+                        id: '028889'
+                        name: Mario Rossi
+                      bookedBy:
+                        id: '004435'
+                  - id: 9183865
+                    isCreatedByDepartment: false
+                    isPubliclyVisible: true
+                    space:
+                      id: sala riunioni ISAD
+                      name: Sala riunioni ISAD
+                      description: Saletta ISIAD
+                    placeId: TO_CIT11_XP01_03XC
+                    seatsOccupied: 100
+                    type:
+                      id: 2
+                      label: Lezione
+                    note: ''
+                    recurrenceId: 12961
+                    startsAt: '2026-10-20T12:00:00Z'
+                    endsAt: '2026-10-20T14:00:00Z'
+                    isTeachingEvent: true
+                    details:
+                      year: '2026'
+                      teachingPeriod: 1-1
+                      moduleName: Programming Module A
+                      surnameRange: AAA-ZZZ
+                      courseName: System and device programming
+                      teacherId: 2893
+                      teacherName: Mario Rossi
+                      classroomTeacherId: 3001
+                      classroomTeacherName: Giovanni Verdi
+                      idImt: ''
+                      courseShortcode: 01NYHOV
+                      courseInstanceId: 0
+        '403':
+          description: The user is not enabled for the requested space. | L’utente non è abilitato sullo spazio richiesto.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non è abilitato sullo spazio richiesto
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Departmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentalSpaceCalendarRequest'
+    post:
+      operationId: DepartmentalSpacesService_createSpaceEvent
+      summary: Create an event in a departmental space | Crea un evento in uno spazio dipartimentale
+      description: Create a single event in a departmental space. | Crea un evento singolo in uno spazio dipartimentale.
+      parameters: []
+      responses:
+        '200':
+          description: Operation completed; returns the event identifier. | Operazione completata; restituisce l'identificativo dell'evento.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpaceEventResult'
+                required:
+                  - data
+              example:
+                data:
+                  id: 9183888
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente richiedente non esiste
+        '403':
+          description: Insufficient permissions for this operation. | Permessi insufficienti per questa operazione.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per inserire l'evento
+        '409':
+          description: The space is already occupied in the requested interval. | Lo spazio è già occupato nell'intervallo richiesto.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: 'Aula già occupata (Id messaggio: 6871622)'
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+  /bookings/departmental-spaces/events/{eventId}:
+    patch:
+      operationId: DepartmentalSpacesService_updateSpaceEvent
+      summary: Update an event in a departmental space | Modifica un evento in uno spazio dipartimentale
+      description: Update a single event in a departmental space. | Modifica un evento singolo in uno spazio dipartimentale.
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operation completed; returns the event identifier. | Operazione completata; restituisce l'identificativo dell'evento.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpaceEventResult'
+                required:
+                  - data
+              example:
+                data:
+                  id: 9183888
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '403':
+          description: The user lacks the required permission level, or the event was not created through the departmental application. | Il livello di abilitazione dell'utente è insufficiente oppure l'evento non è stato creato tramite l'applicazione degli spazi dipartimentali.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per modificare l'evento
+        '404':
+          description: The event does not exist. | L'evento non esiste.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceEventRequest'
+            example:
+              spaceId: sala riunioni ISAD
+              requestedById: '028889'
+              typeId: 1
+              eventDescription: Riunione di dipartimento
+              notes: Prepararsi in anticipo secondo documentazione inviata
+              isPubliclyVisible: false
+              startsAt: '2026-10-20T08:00:00Z'
+              endsAt: '2026-10-20T09:30:00Z'
+              seatsToAllocate: 15
+    delete:
+      operationId: DepartmentalSpacesService_deleteSpaceEvent
+      summary: Delete an event in a departmental space | Elimina un evento da uno spazio dipartimentale
+      description: Delete a single event from a departmental space. | Elimina un evento singolo da uno spazio dipartimentale.
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletion completed; no response body. | Eliminazione completata; nessun body di risposta.
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '403':
+          description: The user lacks the required permission level, or the event was not created through the departmental application. | Il livello di abilitazione dell'utente è insufficiente oppure l'evento non è stato creato tramite l'applicazione degli spazi dipartimentali.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per eliminare l'evento
+        '404':
+          description: The event does not exist. | L'evento non esiste.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'evento non esiste
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
+  /bookings/departmental-spaces/recurrences:
+    post:
+      operationId: DepartmentalSpacesService_createSpaceRecurrence
+      summary: Create a recurrence | Crea una ricorrenza
+      description: Create a recurrence on the selected weekdays within a date range. | Crea una ricorrenza nei giorni della settimana selezionati in un intervallo di date.
+      parameters: []
+      responses:
+        '200':
+          description: Complete or partial success. Returns the recurrence identifier and failed_dates, always present and empty on complete success. | Successo completo o parziale. Restituisce l'identificativo della ricorrenza e failed_dates, sempre presente e vuoto in caso di successo completo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpaceRecurrenceResult'
+                required:
+                  - data
+              examples:
+                example0:
+                  value:
+                    data:
+                      id: 12960
+                      failed_dates:
+                        - '2026-10-22'
+                example1:
+                  value:
+                    data:
+                      id: 12960
+                      failed_dates: []
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '403':
+          description: Insufficient permissions for this operation. | Permessi insufficienti per questa operazione.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per inserire la ricorrenza
+        '409':
+          description: No occurrences were created because the space is occupied on all requested dates. | Nessuna occorrenza creata perché lo spazio è occupato in tutte le date richieste.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: Non è stato possibile inserire la ricorrenza. Lo spazio risulta già occupato nelle date richieste
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpaceRecurrenceRequest'
+  /bookings/departmental-spaces/recurrences/{recurrenceId}:
+    patch:
+      operationId: DepartmentalSpacesService_updateSpaceRecurrence
+      summary: Update a recurrence | Modifica una ricorrenza
+      description: Update the requester, type, description, notes and visibility of a recurrence. | Modifica richiedente, tipologia, descrizione, note e visibilità di una ricorrenza.
+      parameters:
+        - name: recurrenceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Complete or partial success. Returns the recurrence identifier and failed_dates, always present and empty on complete success. | Successo completo o parziale. Restituisce l'identificativo della ricorrenza e failed_dates, sempre presente e vuoto in caso di successo completo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpaceRecurrenceResult'
+                required:
+                  - data
+              examples:
+                example0:
+                  value:
+                    data:
+                      id: 12960
+                      failed_dates:
+                        - '2026-10-22'
+                example1:
+                  value:
+                    data:
+                      id: 12960
+                      failed_dates: []
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '403':
+          description: The user lacks the required permission level, or the event was not created through the departmental application. | Il livello di abilitazione dell'utente è insufficiente oppure l'evento non è stato creato tramite l'applicazione degli spazi dipartimentali.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per modificare la ricorrenza
+        '404':
+          description: The recurrence does not exist. | La ricorrenza non esiste.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSpaceRecurrenceRequest'
+            example:
+              typeId: 1
+              eventDescription: Riunione di dipartimento - aggiornamento piano attività
+              notes: Prepararsi in anticipo secondo documentazione inviata
+              isPubliclyVisible: false
+    delete:
+      operationId: DepartmentalSpacesService_deleteSpaceRecurrence
+      summary: Delete a recurrence | Elimina una ricorrenza
+      description: Delete a recurrence. | Elimina una ricorrenza.
+      parameters:
+        - name: recurrenceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deletion completed; no response body. | Eliminazione completata; nessun body di risposta.
+        '400':
+          description: Invalid input. | Dati di input non validi.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+        '403':
+          description: The user lacks the required permission level, or the event was not created through the departmental application. | Il livello di abilitazione dell'utente è insufficiente oppure l'evento non è stato creato tramite l'applicazione degli spazi dipartimentali.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: L'utente non ha i permessi necessari per eliminare la ricorrenza
+        '404':
+          description: The recurrence does not exist. | La ricorrenza non esiste.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+              example:
+                message: La ricorrenza non esiste
+        '500':
+          description: The operation failed because of an internal error. | Operazione fallita per un errore interno.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentalSpaceErrorResponse'
+      tags:
+        - Departmental Spaces
   /bookings/{bookingId}:
     delete:
       operationId: BookingsManagement_deleteBooking
@@ -3879,6 +4432,122 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreateSpaceEventRequest:
+      type: object
+      required:
+        - spaceId
+        - startsAt
+        - endsAt
+        - seatsToAllocate
+      properties:
+        spaceId:
+          type: string
+          description: Space identifier; corresponds to NomeSpazio.
+          example: sala riunioni ISAD
+        startsAt:
+          type: string
+          format: date-time
+          description: Event start in UTC. | Inizio dell'evento in UTC.
+          example: '2026-10-20T08:00:00Z'
+        endsAt:
+          type: string
+          format: date-time
+          description: Event end in UTC. | Fine dell'evento in UTC.
+          example: '2026-10-20T09:30:00Z'
+        seatsToAllocate:
+          type: integer
+          description: Number of seats requested; corresponds to NumPostiOccupati.
+          example: 10
+      allOf:
+        - $ref: '#/components/schemas/UpdateSpaceRecurrenceRequest'
+      example:
+        spaceId: sala riunioni ISAD
+        requestedById: '028889'
+        typeId: 1
+        eventDescription: Riunione di dipartimento
+        notes: Prepararsi in anticipo secondo documentazione inviata
+        isPubliclyVisible: false
+        startsAt: '2026-10-20T08:00:00Z'
+        endsAt: '2026-10-20T09:30:00Z'
+        seatsToAllocate: 10
+    CreateSpaceRecurrenceRequest:
+      type: object
+      required:
+        - spaceId
+        - fromDate
+        - toDate
+        - startsAt
+        - endsAt
+        - seatsToAllocate
+        - recurrenceDays
+      properties:
+        spaceId:
+          type: string
+          description: Space identifier; corresponds to NomeSpazio.
+          example: sala riunioni ISAD
+        fromDate:
+          type: string
+          format: date
+          description: Start date of the recurrence period (DataInizio).
+          example: '2026-10-20'
+        toDate:
+          type: string
+          format: date
+          description: End date of the recurrence period (DataFine).
+          example: '2026-10-29'
+        startsAt:
+          type: string
+          format: time
+          description: Start time of each occurrence, local to Europe/Rome (OraInizio).
+          example: '10:00:00'
+        endsAt:
+          type: string
+          format: time
+          description: End time of each occurrence, local to Europe/Rome (OraFine).
+          example: '11:30:00'
+        seatsToAllocate:
+          type: integer
+          description: Number of seats requested; corresponds to NumPostiOccupati.
+          example: 10
+        recurrenceDays:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayOfWeek'
+          description: |-
+            Weekdays on which the event repeats (GiorniRicorrenza):
+            0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday,
+            4 = Thursday, 5 = Friday, 6 = Saturday.
+            Each occurrence uses the same Europe/Rome local times, including across
+            daylight-saving transitions.
+          example:
+            - 2
+            - 4
+      allOf:
+        - $ref: '#/components/schemas/UpdateSpaceRecurrenceRequest'
+      example:
+        spaceId: sala riunioni ISAD
+        typeId: 1
+        eventDescription: Riunione di dipartimento
+        notes: Prepararsi in anticipo secondo documentazione inviata
+        isPubliclyVisible: false
+        fromDate: '2026-10-20'
+        toDate: '2026-10-29'
+        startsAt: '10:00:00'
+        endsAt: '11:30:00'
+        seatsToAllocate: 10
+        recurrenceDays:
+          - 2
+          - 4
+    DayOfWeek:
+      type: number
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
     Department:
       type: object
       required:
@@ -3893,6 +4562,335 @@ components:
           nullable: true
         type:
           type: string
+    DepartmentalSpace:
+      type: object
+      required:
+        - numSeats
+        - type
+        - size
+        - placeId
+        - permissionLevel
+      properties:
+        numSeats:
+          type: integer
+          example: 120
+        type:
+          type: object
+          required:
+            - id
+            - label
+          properties:
+            id:
+              anyOf:
+                - type: string
+                - type: number
+            label:
+              type: string
+          example:
+            id: S
+            label: Sale Riunioni
+        size:
+          type: string
+          example: L
+        placeId:
+          type: string
+          description: |-
+            Place identifier used by /v2/places/{placeId}.
+            Format: buildingId_floorId_roomId (Fabbricato_Piano_Locale).
+          example: TO_CIT11_XP01_03XC
+        permissionLevel:
+          type: number
+          enum:
+            - 1
+            - 2
+            - 3
+          description: |-
+            User permission level | Livello di abilitazione dell'utente:
+            - 1: view the calendar | visualizzazione del calendario
+            - 2: manage events for which the user is the requester | scrittura individuale
+            - 3: manage all events | gestione
+            Modification and deletion always require isCreatedByDepartment = true,
+            including for permission level 3.
+          example: 1
+      allOf:
+        - $ref: '#/components/schemas/DepartmentalSpaceRef'
+    DepartmentalSpaceCalendarRequest:
+      type: object
+      required:
+        - spaceId
+        - fromDate
+        - toDate
+      properties:
+        spaceId:
+          type: string
+          description: Space identifier; corresponds to NomeSpazio.
+          example: sala riunioni ISAD
+        fromDate:
+          type: string
+          format: date
+          example: '2026-10-20'
+        toDate:
+          type: string
+          format: date
+          example: '2026-10-26'
+    DepartmentalSpaceCity:
+      type: object
+      required:
+        - name
+        - sites
+      properties:
+        name:
+          type: string
+          example: Torino
+        sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentalSpaceSite'
+      description: Sites grouped under a named city.
+    DepartmentalSpaceDepartmentEvent:
+      type: object
+      required:
+        - isTeachingEvent
+        - details
+      properties:
+        isTeachingEvent:
+          type: boolean
+          enum:
+            - false
+          description: Corresponds to FlagDidattico = false.
+        details:
+          $ref: '#/components/schemas/DepartmentalSpaceDepartmentEventDetails'
+      allOf:
+        - $ref: '#/components/schemas/DepartmentalSpaceEventBase'
+    DepartmentalSpaceDepartmentEventDetails:
+      type: object
+      required:
+        - description
+        - requestedBy
+        - bookedBy
+      properties:
+        description:
+          type: string
+          description: Department event description; corresponds to DescEvento. | Descrizione dell'evento dipartimentale.
+          example: Riunione di dipartimento
+        requestedBy:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Requester's ID (matricola), without the user-type prefix.
+            name:
+              type: string
+              description: Corresponds to NominativoRichiedente.
+              example: Mario Rossi
+          required:
+            - id
+            - name
+          description: Person for whom the booking is made; also used for permission level 2 checks.
+        bookedBy:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Booking author's ID (matricola), without the user-type prefix.
+          required:
+            - id
+          description: Person who entered the booking; corresponds to MatricolaInsert.
+      description: Department event details (FlagDidattico = false).
+    DepartmentalSpaceErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    DepartmentalSpaceEvent:
+      oneOf:
+        - $ref: '#/components/schemas/DepartmentalSpaceTeachingEvent'
+        - $ref: '#/components/schemas/DepartmentalSpaceDepartmentEvent'
+    DepartmentalSpaceEventBase:
+      type: object
+      required:
+        - id
+        - isCreatedByDepartment
+        - isPubliclyVisible
+        - space
+        - placeId
+        - seatsOccupied
+        - type
+        - note
+        - recurrenceId
+        - startsAt
+        - endsAt
+      properties:
+        id:
+          type: integer
+          description: Calendar event identifier; corresponds to IdEventoCalendario.
+          example: 9183864
+        isCreatedByDepartment:
+          type: boolean
+          description: |-
+            Whether the event was created through the departmental spaces application
+            (FlagInsertedFromDip). If false, the event cannot be modified or deleted,
+            even with permission level 3. If true, the user's permission level still applies.
+          example: true
+        isPubliclyVisible:
+          type: boolean
+          description: Whether the event is publicly visible. | Indica se l'evento è visibile pubblicamente.
+          example: false
+        space:
+          allOf:
+            - $ref: '#/components/schemas/DepartmentalSpaceRef'
+          description: Bookable space; NomeSpazio maps to space.id and DescSpazio to space.description.
+        placeId:
+          type: string
+          description: |-
+            Place identifier used by /v2/places/{placeId}.
+            Format: buildingId_floorId_roomId (Fabbricato_Piano_Locale).
+          example: TO_CIT11_XP01_03XC
+        seatsOccupied:
+          type: integer
+          description: Number of occupied seats; corresponds to NumPostiOccupati.
+          example: 10
+        type:
+          type: object
+          required:
+            - id
+            - label
+          properties:
+            id:
+              type: integer
+            label:
+              type: string
+          description: Event type identifier and display name (DescTipologiaEvento).
+          example:
+            id: 1
+            label: Riunione
+        note:
+          type: string
+          example: Prepararsi in anticipo secondo documentazione inviata
+        recurrenceId:
+          type: integer
+          nullable: true
+          description: Identifier of the recurrence series. Always present; null for non-recurring events.
+          example: 456
+        startsAt:
+          type: string
+          format: date-time
+          description: Event start in UTC. | Inizio dell'evento in UTC.
+          example: '2026-02-15T10:00:00Z'
+        endsAt:
+          type: string
+          format: date-time
+          description: Event end in UTC. | Fine dell'evento in UTC.
+          example: '2026-02-15T12:00:00Z'
+    DepartmentalSpaceRef:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          type: string
+          description: Space identifier; corresponds to NomeSpazio in calendar and booking requests.
+          example: sala riunioni ISAD
+        name:
+          type: string
+          example: Sala riunioni ISAD
+        description:
+          type: string
+          example: Saletta ISIAD
+    DepartmentalSpaceSite:
+      type: object
+      required:
+        - name
+        - spaces
+      properties:
+        name:
+          type: string
+          example: Sede Centrale
+        spaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentalSpace'
+      description: Departmental spaces grouped under a named site.
+    DepartmentalSpaceTeachingEvent:
+      type: object
+      required:
+        - isTeachingEvent
+        - details
+      properties:
+        isTeachingEvent:
+          type: boolean
+          enum:
+            - true
+          description: Corresponds to FlagDidattico = true.
+        details:
+          $ref: '#/components/schemas/DepartmentalSpaceTeachingEventDetails'
+      allOf:
+        - $ref: '#/components/schemas/DepartmentalSpaceEventBase'
+    DepartmentalSpaceTeachingEventDetails:
+      type: object
+      required:
+        - year
+        - teachingPeriod
+        - moduleName
+        - surnameRange
+        - courseName
+        - teacherId
+        - teacherName
+        - classroomTeacherId
+        - classroomTeacherName
+        - idImt
+        - courseShortcode
+        - courseInstanceId
+      properties:
+        year:
+          type: string
+          description: Academic year; corresponds to AnnoAccademico, as year in courses.
+          example: '2026'
+        teachingPeriod:
+          type: string
+          description: Teaching period; corresponds to Pd.
+          example: 1-1
+        moduleName:
+          type: string
+          description: Module title; corresponds to TitoloModulo.
+          example: Programming Module A
+        surnameRange:
+          type: string
+          description: Alphabetical surname range; corresponds to Alfabetica.
+          example: AAA-ZZZ
+        courseName:
+          type: string
+          description: Corresponds to TitoloMateria.
+          example: System and device programming
+        teacherId:
+          type: integer
+          description: Course holder's ID; corresponds to MatricolaTitolare.
+          example: 2893
+        teacherName:
+          type: string
+          description: Course holder's name; corresponds to NominativoTitolare.
+          example: Mario Rossi
+        classroomTeacherId:
+          type: integer
+          description: Classroom teacher's ID; corresponds to MatricolaDocenteAula.
+        classroomTeacherName:
+          type: string
+          description: Classroom teacher's name; corresponds to NominativoDocenteAula.
+        idImt:
+          type: string
+        courseShortcode:
+          type: string
+          description: Corresponds to CodIns.
+          example: 01NYHOV
+        courseInstanceId:
+          type: integer
+          description: Course instance identifier; corresponds to NumCor.
+          example: 0
+      description: Teaching event details (FlagDidattico = true).
     Device:
       type: object
       required:
@@ -4877,6 +5875,35 @@ components:
           description: |-
             A delta in degrees that applied to the centroid
             coordinates of the site determines its extent
+    SpaceEventResult:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Identifier of the created or updated event.
+          example: 9183888
+    SpaceRecurrenceResult:
+      type: object
+      required:
+        - id
+        - failed_dates
+      properties:
+        id:
+          type: integer
+          description: Identifier of the created or updated recurrence.
+          example: 12960
+        failed_dates:
+          type: array
+          items:
+            type: string
+            format: date
+          description: |-
+            Dates on which the operation failed, including occupied dates.
+            Always present: empty on complete success, non-empty on partial success.
+            Dates use ISO format (YYYY-MM-DD).
+          example: []
     SwitchCareerRequest:
       type: object
       required:
@@ -4957,6 +5984,34 @@ components:
             - it
             - en
           example: it
+    UpdateSpaceRecurrenceRequest:
+      type: object
+      required:
+        - typeId
+        - eventDescription
+        - notes
+        - isPubliclyVisible
+      properties:
+        requestedById:
+          type: string
+          description: |-
+            ID (matricola), without the user-type prefix, of the person for whom the space is requested;
+            corresponds to MatRichiedente. Optional; this may differ from the authenticated caller.
+          example: '028889'
+        typeId:
+          type: integer
+          description: Identifier returned by /event-types; corresponds to IdTipologiaEvento.
+          example: 1
+        eventDescription:
+          type: string
+          example: Riunione di dipartimento
+        notes:
+          type: string
+          example: Prepararsi in anticipo secondo documentazione inviata
+        isPubliclyVisible:
+          type: boolean
+          example: false
+      description: Fields that can be updated on both a single event and a recurrence.
     ValidateMfaRequest:
       type: object
       required:
