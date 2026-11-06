@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join, resolve, isAbsolute } from 'path';
 import { existsSync, readdirSync, statSync, readFileSync, mkdtempSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
+import { orderOpenApiOperations } from './order-openapi.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
@@ -85,6 +86,7 @@ async function compileClient(clientName) {
   const { srcDir, outputDir } = getClientConfig(clientName);
   log(colors.cyan, `Compiling ${clientName}...`);
   await runCommand("tsp", ["compile", srcDir, "--output-dir", outputDir]);
+  orderOpenApiOperations(join(outputDir, "openapi.yaml"));
   log(colors.green, `Compiled ${clientName}`);
 }
 
@@ -161,6 +163,7 @@ async function checkClient(clientName) {
   try {
     log(colors.cyan, `Checking ${clientName}...`);
     await runCommand("tsp", ["compile", srcDir, "--output-dir", tmpDir]);
+    orderOpenApiOperations(join(tmpDir, "openapi.yaml"));
 
     const currentFile = join(ROOT_DIR, outputDir, "openapi.yaml");
     const tmpFile = join(tmpDir, "openapi.yaml");
