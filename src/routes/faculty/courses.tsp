@@ -242,11 +242,17 @@ model FacultyCourseAssignmentOverview {
 model FacultyCourseAssignmentDetail {
   ...CourseAssignment;
   student: FacultyAssignmentAuthor;
+
+  /** TODO: Verify whether `status` is meaningful and can actually be managed on the server. | Verificare se `status` abbia senso e possa essere effettivamente gestito sul server. */
   status: FacultyAssignmentStatus;
 
   /** Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato. */
   isRemovalRequested: boolean;
 }
+
+@@doc(FacultyCourseAssignmentDetail.deletedAt,
+  "TODO: Review whether this field is useful: if deleted assignments are not returned, it may be unnecessary. Consider `removalRequestedAt` for the removal request date, distinguishing it from the withdrawal/restore behavior defined by the student PATCH. | Verificare l'utilità del campo: se gli elaborati cancellati non vengono restituiti, potrebbe non servire. Valutare `removalRequestedAt` per la data della richiesta di rimozione, distinguendola dal comportamento di ritiro/ripristino definito dalla PATCH studenti."
+);
 
 model AssignmentAnswerRequest {
   @maxLength(4000)

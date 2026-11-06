@@ -5222,6 +5222,7 @@ components:
           type: string
           format: date-time
           nullable: true
+          description: "TODO: Review whether this field is useful: if deleted assignments are not returned, it may be unnecessary. Consider `removalRequestedAt` for the removal request date, distinguishing it from the withdrawal/restore behavior defined by the student PATCH. | Verificare l'utilità del campo: se gli elaborati cancellati non vengono restituiti, potrebbe non servire. Valutare `removalRequestedAt` per la data della richiesta di rimozione, distinguendola dal comportamento di ritiro/ripristino definito dalla PATCH studenti."
         url:
           type: string
           example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
@@ -5231,7 +5232,9 @@ components:
         student:
           $ref: '#/components/schemas/FacultyAssignmentAuthor'
         status:
-          $ref: '#/components/schemas/FacultyAssignmentStatus'
+          allOf:
+            - $ref: '#/components/schemas/FacultyAssignmentStatus'
+          description: 'TODO: Verify whether `status` is meaningful and can actually be managed on the server. | Verificare se `status` abbia senso e possa essere effettivamente gestito sul server.'
         isRemovalRequested:
           type: boolean
           description: Whether the student has requested removal of the assignment. | Indica se lo studente ha richiesto la rimozione dell'elaborato.
