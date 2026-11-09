@@ -12,6 +12,7 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Emergencies
   - name: News
   - name: People
   - name: Places
@@ -1625,10 +1626,10 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
-  /emergencecies:
+  /emergencies:
     get:
-      operationId: StudentNs_getEmergencies
-      summary: Show emergencecies text and number | Mostra testi e numeri di emergenza
+      operationId: Emergencies_getEmergencies
+      summary: Show emergency procedures and contacts | Mostra procedure e contatti di emergenza
       parameters: []
       responses:
         '200':
@@ -1636,7 +1637,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmergencyResponse'
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmergencyData'
+                required:
+                  - data
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1650,7 +1656,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
-        - Student
+        - Emergencies
   /esc:
     delete:
       operationId: Esc_escDelete
@@ -5674,42 +5680,158 @@ components:
         unreadEmails:
           type: string
           example: 99+
+    Emergency:
+      type: object
+      required:
+        - id
+        - name
+        - title
+        - icon
+        - content
+        - cta
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        icon:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyContent'
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+      example:
+        id: fire
+        name: Incendio
+        title: Come comportarsi in caso di incendio
+        icon: faHouseFire
+        content:
+          - htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+            cta: []
+        cta:
+          - text: Chiama Soccorsi PoliTo
+            type: sites
+            icon: faPhone
+            primary: true
     EmergencyContent:
       type: object
       required:
-        - content
+        - htmlContent
         - cta
       properties:
         title:
           type: string
-          example: Emergency Title
-        content:
+          description: Card title, omitted when the emergency has a single card
+        htmlContent:
           type: string
-          example: Important information regarding the emergency.
         cta:
-          $ref: '#/components/schemas/EmergencyCta'
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+      example:
+        htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+        cta: []
     EmergencyCta:
       type: object
       required:
         - text
-        - action
-        - color
+        - type
         - primary
       properties:
         text:
           type: string
-          example: Emergenza 112
-        action:
-          $ref: '#/components/schemas/EmergencySite'
+        type:
+          $ref: '#/components/schemas/EmergencyCtaType'
+        phoneNumber:
+          type: string
+          description: Set when `type` is `call`
+        url:
+          type: string
+          format: uri
+          description: Set when `type` is `link`
         icon:
           type: string
-          example: fa-phone
-        color:
-          type: string
-          example: '#E11D48'
+          description: Font Awesome icon name shown in the button
         primary:
           type: boolean
-          example: true
+      example:
+        text: Emergenza 112
+        type: call
+        phoneNumber: '112'
+        icon: faPhone
+        primary: false
+    EmergencyCtaType:
+      type: string
+      enum:
+        - call
+        - link
+        - sites
+    EmergencyData:
+      type: object
+      required:
+        - emergencies
+        - sites
+        - cta
+      properties:
+        emergencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Emergency'
+          description: Content depends on the authenticated user's role
+        sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencySite'
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+          description: Actions shown on the emergencies list
+      example:
+        emergencies:
+          - id: fire
+            name: Incendio
+            title: Come comportarsi in caso di incendio
+            icon: faHouseFire
+            content:
+              - htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+                cta: []
+            cta:
+              - text: Chiama Soccorsi PoliTo
+                type: sites
+                icon: faPhone
+                primary: true
+        sites:
+          - siteId: TO_CEN
+            name: Torino - Sede Centrale
+            places:
+              - buildingId: TO_CEN01
+                floorId: XP00
+                roomId: TO_CEN01_XP00_001
+                siteId: TO_CEN
+                name: Portineria
+            phoneNumber: +39 011 090 1234
+            hours:
+              - day: Monday
+                open: '09:00'
+                close: '18:00'
+            backup: false
+        cta:
+          - text: Chiama Soccorsi PoliTo
+            type: sites
+            icon: faPhone
+            primary: true
+          - text: Emergenza 112
+            type: call
+            phoneNumber: '112'
+            icon: faPhone
+            primary: false
     EmergencyHour:
       type: object
       required:
@@ -5719,57 +5841,57 @@ components:
       properties:
         day:
           type: string
-          example: Monday
         open:
           type: string
-          example: '09:00'
         close:
           type: string
-          example: '18:00'
-    EmergencyResponse:
-      type: object
-      required:
-        - icon
-        - name
-        - content
-        - cta
-      properties:
-        icon:
-          type: string
-          example: fa-warning
-        name:
-          type: string
-          example: Emergency Name
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmergencyContent'
-        cta:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmergencyCta'
+      example:
+        day: Monday
+        open: '09:00'
+        close: '18:00'
     EmergencySite:
       type: object
       required:
+        - siteId
+        - name
         - places
         - phoneNumber
         - hours
         - backup
       properties:
+        siteId:
+          type: string
+          description: 'Matches `Site.id`: clients use its coordinates to find the nearest site'
+        name:
+          type: string
         places:
           type: array
           items:
             $ref: '#/components/schemas/PlaceRef'
+          description: Places where the emergency service is located
         phoneNumber:
           type: string
-          example: +39 011 090 1234
         hours:
           type: array
           items:
             $ref: '#/components/schemas/EmergencyHour'
         backup:
           type: boolean
-          example: true
+      example:
+        siteId: TO_CEN
+        name: Torino - Sede Centrale
+        places:
+          - buildingId: TO_CEN01
+            floorId: XP00
+            roomId: TO_CEN01_XP00_001
+            siteId: TO_CEN
+            name: Portineria
+        phoneNumber: +39 011 090 1234
+        hours:
+          - day: Monday
+            open: '09:00'
+            close: '18:00'
+        backup: false
     EnrolMfaRequest:
       type: object
       required:

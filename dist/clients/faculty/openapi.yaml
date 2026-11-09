@@ -12,6 +12,7 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Emergencies
   - name: News
   - name: People
   - name: Places
@@ -1547,6 +1548,37 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+  /emergencies:
+    get:
+      operationId: Emergencies_getEmergencies
+      summary: Show emergency procedures and contacts | Mostra procedure e contatti di emergenza
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmergencyData'
+                required:
+                  - data
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Emergencies
   /event-admissions:
     get:
       operationId: EventAdmission_getEventAdmissions
@@ -3911,6 +3943,218 @@ components:
           type: string
         toothPicCompatible:
           type: boolean
+    Emergency:
+      type: object
+      required:
+        - id
+        - name
+        - title
+        - icon
+        - content
+        - cta
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        icon:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyContent'
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+      example:
+        id: fire
+        name: Incendio
+        title: Come comportarsi in caso di incendio
+        icon: faHouseFire
+        content:
+          - htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+            cta: []
+        cta:
+          - text: Chiama Soccorsi PoliTo
+            type: sites
+            icon: faPhone
+            primary: true
+    EmergencyContent:
+      type: object
+      required:
+        - htmlContent
+        - cta
+      properties:
+        title:
+          type: string
+          description: Card title, omitted when the emergency has a single card
+        htmlContent:
+          type: string
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+      example:
+        htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+        cta: []
+    EmergencyCta:
+      type: object
+      required:
+        - text
+        - type
+        - primary
+      properties:
+        text:
+          type: string
+        type:
+          $ref: '#/components/schemas/EmergencyCtaType'
+        phoneNumber:
+          type: string
+          description: Set when `type` is `call`
+        url:
+          type: string
+          format: uri
+          description: Set when `type` is `link`
+        icon:
+          type: string
+          description: Font Awesome icon name shown in the button
+        primary:
+          type: boolean
+      example:
+        text: Emergenza 112
+        type: call
+        phoneNumber: '112'
+        icon: faPhone
+        primary: false
+    EmergencyCtaType:
+      type: string
+      enum:
+        - call
+        - link
+        - sites
+    EmergencyData:
+      type: object
+      required:
+        - emergencies
+        - sites
+        - cta
+      properties:
+        emergencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Emergency'
+          description: Content depends on the authenticated user's role
+        sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencySite'
+        cta:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyCta'
+          description: Actions shown on the emergencies list
+      example:
+        emergencies:
+          - id: fire
+            name: Incendio
+            title: Come comportarsi in caso di incendio
+            icon: faHouseFire
+            content:
+              - htmlContent: <ul><li>Non utilizzare gli <b>ascensori</b>.</li></ul>
+                cta: []
+            cta:
+              - text: Chiama Soccorsi PoliTo
+                type: sites
+                icon: faPhone
+                primary: true
+        sites:
+          - siteId: TO_CEN
+            name: Torino - Sede Centrale
+            places:
+              - buildingId: TO_CEN01
+                floorId: XP00
+                roomId: TO_CEN01_XP00_001
+                siteId: TO_CEN
+                name: Portineria
+            phoneNumber: +39 011 090 1234
+            hours:
+              - day: Monday
+                open: '09:00'
+                close: '18:00'
+            backup: false
+        cta:
+          - text: Chiama Soccorsi PoliTo
+            type: sites
+            icon: faPhone
+            primary: true
+          - text: Emergenza 112
+            type: call
+            phoneNumber: '112'
+            icon: faPhone
+            primary: false
+    EmergencyHour:
+      type: object
+      required:
+        - day
+        - open
+        - close
+      properties:
+        day:
+          type: string
+        open:
+          type: string
+        close:
+          type: string
+      example:
+        day: Monday
+        open: '09:00'
+        close: '18:00'
+    EmergencySite:
+      type: object
+      required:
+        - siteId
+        - name
+        - places
+        - phoneNumber
+        - hours
+        - backup
+      properties:
+        siteId:
+          type: string
+          description: 'Matches `Site.id`: clients use its coordinates to find the nearest site'
+        name:
+          type: string
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceRef'
+          description: Places where the emergency service is located
+        phoneNumber:
+          type: string
+        hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmergencyHour'
+        backup:
+          type: boolean
+      example:
+        siteId: TO_CEN
+        name: Torino - Sede Centrale
+        places:
+          - buildingId: TO_CEN01
+            floorId: XP00
+            roomId: TO_CEN01_XP00_001
+            siteId: TO_CEN
+            name: Portineria
+        phoneNumber: +39 011 090 1234
+        hours:
+          - day: Monday
+            open: '09:00'
+            close: '18:00'
+        backup: false
     EnrolMfaRequest:
       type: object
       required:
