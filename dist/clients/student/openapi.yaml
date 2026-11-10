@@ -2066,6 +2066,48 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Geography
+  /italian-municipalities/{municipalityId}/postal-codes:
+    get:
+      operationId: ItalianMunicipalities_getMunicipalityPostalCodes
+      summary: List municipality postal codes | Elenca CAP del comune
+      description: Return the postal codes available for the selected Italian municipality. | Restituisce i CAP selezionabili per il comune italiano scelto.
+      parameters:
+        - name: municipalityId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - data
+              example:
+                data:
+                  - '12084'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /job-offers:
     get:
       operationId: JobOffers_getJobOffers
@@ -5074,11 +5116,11 @@ components:
       properties:
         id:
           type: string
-          description: "TODO: Confirm the country identifier coding with the webservice; the example uses an ISO alpha-2 code. | Confermare la codifica dell'identificativo dello Stato con il webservice; l'esempio usa un codice ISO alpha-2."
+          description: 'NOTA: Confermare gli identificativi degli Stati e se indirizzi e verifica IBAN usino lo stesso elenco.'
           example: IT
         name:
           type: string
-          description: 'TODO: Check whether the webservice can return this field in English when called with `Accept-Language: en`. | Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`.'
+          description: 'NOTA: Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`.'
           example: Italia
     Course:
       type: object
@@ -6214,7 +6256,7 @@ components:
       properties:
         id:
           type: string
-          description: "TODO: Confirm the municipality identifier coding with the webservice; the example uses an ISTAT code. Keep identifiers as strings to preserve leading zeroes. | Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali."
+          description: "NOTA: Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali."
           example: '004130'
         name:
           type: string
@@ -7197,7 +7239,7 @@ components:
       properties:
         id:
           type: string
-          description: "TODO: Confirm the province identifier coding; the example uses the province abbreviation. | Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale."
+          description: "NOTA: Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale."
           example: CN
         name:
           type: string

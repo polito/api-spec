@@ -9,18 +9,18 @@ using Http;
 namespace PolitoAPI;
 
 model Country {
-  /** TODO: Confirm the country identifier coding with the webservice; the example uses an ISO alpha-2 code. | Confermare la codifica dell'identificativo dello Stato con il webservice; l'esempio usa un codice ISO alpha-2. */
+  /** NOTA: Confermare gli identificativi degli Stati e se indirizzi e verifica IBAN usino lo stesso elenco. */
   @example("IT")
   id: string;
 
-  /** TODO: Check whether the webservice can return this field in English when called with `Accept-Language: en`. | Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`. */
+  /** NOTA: Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`. */
   @example("Italia")
   name: string;
 }
 
 /** Province or equivalent territorial unit, including metropolitan cities and autonomous provinces. | Provincia o unità territoriale equivalente, comprese città metropolitane e province autonome. */
 model Province {
-  /** TODO: Confirm the province identifier coding; the example uses the province abbreviation. | Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale. */
+  /** NOTA: Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale. */
   @example("CN")
   id: string;
 
@@ -29,7 +29,7 @@ model Province {
 }
 
 model ItalianMunicipality {
-  /** TODO: Confirm the municipality identifier coding with the webservice; the example uses an ISTAT code. Keep identifiers as strings to preserve leading zeroes. | Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali. */
+  /** NOTA: Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali. */
   @example("004130")
   id: string;
 
@@ -59,4 +59,13 @@ interface ItalianMunicipalities {
   @opExample(_ex_getItalianMunicipalities_resp)
   getItalianMunicipalities(
   ): OkDataResponse<ItalianMunicipality[]> | BaseErrors;
+
+  @route("/{municipalityId}/postal-codes")
+  @get
+  @summary("List municipality postal codes | Elenca CAP del comune")
+  @doc("Return the postal codes available for the selected Italian municipality. | Restituisce i CAP selezionabili per il comune italiano scelto.")
+  @opExample(_ex_getMunicipalityPostalCodes_resp)
+  getMunicipalityPostalCodes(
+    @path municipalityId: string,
+  ): OkDataResponse<string[]> | BaseErrors;
 }

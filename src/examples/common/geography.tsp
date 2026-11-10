@@ -27,3 +27,8 @@ const _ex_getItalianMunicipalities_resp = #{
     },
   },
 };
+
+const _ex_getMunicipalityPostalCodes_resp = #{
+  parameters: #{ municipalityId: "004130" },
+  returnType: #{ statusCode: 200, body: #{ data: #["12084"] } },
+};
