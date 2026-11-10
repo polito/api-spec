@@ -277,7 +277,7 @@ model FacultyProfileUpdateRequest {
   publicData?: FacultyPublicDataUpdateRequest;
 }
 
-@tag("Faculty - Profile")
+@tag("Profile")
 @route("/faculty/me")
 interface FacultyProfile_Routes {
   @get
