@@ -12,9 +12,11 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
+  - name: Geography
   - name: News
   - name: People
   - name: Places
+  - name: Profile
 paths:
   /announcements:
     get:
@@ -887,6 +889,46 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateBookingRequest'
+  /countries:
+    get:
+      operationId: Countries_getCountries
+      summary: List countries | Elenca Stati
+      description: Returns the countries available for residence, correspondence and tax domicile addresses. | Restituisce gli Stati selezionabili per gli indirizzi di residenza, recapito e domicilio fiscale.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+                required:
+                  - data
+              example:
+                data:
+                  - id: IT
+                    name: Italia
+                  - id: FR
+                    name: Francia
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /courses/{courseId}:
     get:
       operationId: Courses_getCourse
@@ -1580,6 +1622,579 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Event Admissions
+  /faculty/me:
+    get:
+      operationId: FacultyProfile_Routes_getFacultyProfile
+      summary: Get faculty profile | Profilo docente
+      description: Returns the personal data of the authenticated faculty member. | Restituisce i dati personali del docente autenticato.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyProfile'
+                required:
+                  - data
+              example:
+                data:
+                  personalData:
+                    id: '002154'
+                    firstName: Mario
+                    lastName: Rossi
+                    fiscalCode: RSSMRA80A01L219K
+                    birthPlace:
+                      city: Torino
+                      province:
+                        id: TO
+                        name: Torino
+                      country:
+                        id: IT
+                        name: Italia
+                    birthDate: '1980-01-01'
+                    maritalStatus: Coniugato/a
+                    residenceAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Roma 1
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                  taxData:
+                    iban: IT60X0542811101000000123456
+                    taxDomicileAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Roma 1
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                  personalContacts:
+                    contactAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Roma 1
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                    contacts:
+                      - type: email
+                        label: Email personale
+                        value: mario.rossi@example.com
+                      - type: mobile
+                        label: Cellulare personale
+                        value: +39 333 7654321
+                  institutionalContacts:
+                    - type: email
+                      label: email
+                      value: mario.rossi@polito.it
+                      isVisibleInDirectory: true
+                    - type: phone
+                      label: Telefono ufficio
+                      value: +39 011 090 7654
+                      isVisibleInDirectory: false
+                  publicData:
+                    personalWebsiteUrl: https://example.com/mario-rossi
+                    curricula:
+                      - language: it
+                        uploadedAt: '2026-10-20T08:00:00Z'
+                        downloadUrl: https://example.com/cv/mario-rossi-it.pdf
+                      - language: en
+                        uploadedAt: '2026-10-21T09:00:00Z'
+                        downloadUrl: https://example.com/cv/mario-rossi-en.pdf
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+    patch:
+      operationId: FacultyProfile_Routes_updateFacultyProfile
+      summary: Update faculty profile | Aggiorna dati anagrafici del docente
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FacultyProfile'
+                required:
+                  - data
+              example:
+                data:
+                  personalData:
+                    id: '002154'
+                    firstName: Mario
+                    lastName: Rossi
+                    fiscalCode: RSSMRA80A01L219K
+                    birthPlace:
+                      city: Torino
+                      province:
+                        id: TO
+                        name: Torino
+                      country:
+                        id: IT
+                        name: Italia
+                    birthDate: '1980-01-01'
+                    maritalStatus: Coniugato/a
+                    residenceAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Garibaldi 10
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                  taxData:
+                    iban: IT60X0542811101000000123456
+                    taxDomicileAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Garibaldi 10
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                  personalContacts:
+                    contactAddress:
+                      country:
+                        id: IT
+                        name: Italia
+                      address: Via Garibaldi 10
+                      municipality:
+                        id: '004130'
+                        name: Mondovì
+                        province:
+                          id: CN
+                          name: Cuneo
+                      postalCode: '12084'
+                    contacts:
+                      - type: email
+                        label: Email personale
+                        value: mario.rossi@example.com
+                      - type: mobile
+                        label: Cellulare personale
+                        value: +39 333 7654321
+                  institutionalContacts:
+                    - type: email
+                      label: email
+                      value: mario.rossi@polito.it
+                      isVisibleInDirectory: true
+                    - type: phone
+                      label: Telefono ufficio
+                      value: +39 011 090 7654
+                      isVisibleInDirectory: false
+                  publicData:
+                    personalWebsiteUrl: https://example.com/mario-rossi
+                    curricula:
+                      - language: it
+                        uploadedAt: '2026-10-20T08:00:00Z'
+                        downloadUrl: https://example.com/cv/mario-rossi-it.pdf
+                      - language: en
+                        uploadedAt: '2026-10-21T09:00:00Z'
+                        downloadUrl: https://example.com/cv/mario-rossi-en.pdf
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacultyProfileUpdateRequest'
+            examples:
+              example0:
+                value:
+                  personalData:
+                    residenceAddress:
+                      countryId: IT
+                      address: Via Garibaldi 10
+                      municipalityId: '004130'
+                      postalCode: '12084'
+                      validFrom: '2026-11-10'
+                      hasConfirmedAddressTruthfulness: true
+                      copyToContactAddress: true
+                      copyToTaxDomicileAddress: true
+              example1:
+                value:
+                  personalContacts:
+                    contactAddress:
+                      countryId: BD
+                      address: 12 Example Road
+                      city: Dhaka
+                      postalCode: '1000'
+                      validFrom: '2026-11-10'
+                      hasConfirmedAddressTruthfulness: true
+  /faculty/me/bank-details:
+    patch:
+      operationId: FacultyProfile_Routes_updateFacultyBankDetails
+      summary: Update bank details | Modifica coordinate bancarie
+      description: Update bank details with the required identity document. | Modifica le coordinate bancarie allegando il documento di identità obbligatorio.
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FacultyBankDetailsUpdateRequest'
+            encoding:
+              identityDocument:
+                contentType: application/pdf, image/jpeg, image/png
+  /faculty/me/curricula/{language}:
+    put:
+      operationId: FacultyProfile_Routes_uploadFacultyCurriculum
+      summary: Upload or replace CV | Carica o sostituisci CV
+      description: Upload or replace the CV in the selected language. | Carica o sostituisce il CV nella lingua selezionata.
+      parameters:
+        - name: language
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - it
+              - en
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FacultyCurriculumUpload'
+  /faculty/me/iban/validation:
+    post:
+      operationId: FacultyProfile_Routes_validateFacultyIban
+      summary: Validate IBAN | Verifica IBAN
+      description: Validate an IBAN and return its country and, for Italy, bank information when valid. | Verifica un IBAN e, se valido, restituisce lo Stato e, per l'Italia, l'istituto bancario.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/IbanValidationResult'
+                required:
+                  - data
+              examples:
+                example0:
+                  value:
+                    data:
+                      isValid: false
+                example1:
+                  value:
+                    data:
+                      isValid: true
+                      country: Francia
+                example2:
+                  value:
+                    data:
+                      isValid: true
+                      country: Italia
+                      bankName: Banca di esempio
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanValidationRequest'
+            examples:
+              example0:
+                value:
+                  iban: IT00INVALID
+              example1:
+                value:
+                  iban: FR1420041010050500013M02606
+              example2:
+                value:
+                  iban: IT60X0542811101000000123456
+  /faculty/me/personal-contacts:
+    post:
+      operationId: FacultyProfile_Routes_createPersonalContact
+      summary: Add personal contact | Aggiungi contatto personale
+      description: Add a personal contact of a type not already present. | Aggiunge un contatto personale di un tipo non ancora presente.
+      parameters: []
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePersonalContactRequest'
+            example:
+              type: phone
+              value: +39 011 1234567
+  /faculty/me/personal-contacts/{contactType}:
+    patch:
+      operationId: FacultyProfile_Routes_updatePersonalContact
+      summary: Update personal contact | Modifica contatto personale
+      description: Update the value of the personal contact identified by its type. | Modifica il valore del contatto personale identificato dal tipo.
+      parameters:
+        - name: contactType
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePersonalContactRequest'
+            example:
+              value: +39 333 1234567
+  /italian-municipalities:
+    get:
+      operationId: ItalianMunicipalities_getItalianMunicipalities
+      summary: List Italian municipalities | Elenca comuni italiani
+      description: Returns Italian municipalities with their associated provinces. | Restituisce i comuni italiani con le rispettive province.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItalianMunicipality'
+                required:
+                  - data
+              example:
+                data:
+                  - id: '004130'
+                    name: Mondovì
+                    province:
+                      id: CN
+                      name: Cuneo
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
+  /italian-municipalities/{municipalityId}/postal-codes:
+    get:
+      operationId: ItalianMunicipalities_getMunicipalityPostalCodes
+      summary: List municipality postal codes | Elenca CAP del comune
+      description: Return the postal codes available for the selected Italian municipality. | Restituisce i CAP selezionabili per il comune italiano scelto.
+      parameters:
+        - name: municipalityId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - data
+              example:
+                data:
+                  - '12084'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Geography
   /lectures:
     get:
       operationId: Lectures_getLectures
@@ -3455,6 +4070,20 @@ components:
         appVersion:
           type: string
           example: 1.6.2
+    Country:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: 'NOTA: Confermare gli identificativi degli Stati e se indirizzi e verifica IBAN usino lo stesso elenco.'
+          example: IT
+        name:
+          type: string
+          description: 'NOTA: Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`.'
+          example: Italia
     Course:
       type: object
       required:
@@ -3879,6 +4508,19 @@ components:
         seatId:
           type: integer
           example: 20018
+    CreatePersonalContactRequest:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          description: Only one personal contact per type is allowed. | È consentito un solo contatto personale per tipo.
+          example: phone
+        value:
+          type: string
+          example: +39 011 1234567
     Department:
       type: object
       required:
@@ -4033,6 +4675,189 @@ components:
         remainingAdmissions:
           type: integer
           example: 8
+    FacultyBankDetailsUpdateRequest:
+      type: object
+      properties:
+        iban:
+          type: string
+          description: New IBAN. The server must validate it before saving. | Nuovo IBAN. Il server deve verificarlo prima del salvataggio.
+        bankName:
+          type: string
+          description: "Required for foreign bank details, entered by the user. Omit for an Italian IBAN: the bank is obtained from validation on the server. | Obbligatorio per coordinate bancarie estere, inserito dall'utente. Omettere per IBAN italiani: l'istituto è ricavato dalla verifica sul server."
+        bicSwift:
+          type: string
+          description: BIC/SWIFT code, required for non-Italian SEPA transfers and non-SEPA transfers. | Codice BIC/SWIFT obbligatorio per bonifici SEPA non italiani e bonifici non SEPA.
+        identityDocument:
+          type: string
+          format: binary
+          description: |-
+            Identity document required for every IBAN change. Allowed formats: PDF, JPG, JPEG and PNG. | Documento di identità obbligatorio per ogni modifica dell'IBAN. Formati ammessi: PDF, JPG, JPEG e PNG.
+            NOTA: chiedere al webservice la dimensione massima consentita del documento di identità.
+      required:
+        - iban
+        - identityDocument
+    FacultyCurriculum:
+      type: object
+      required:
+        - language
+        - uploadedAt
+        - downloadUrl
+      properties:
+        language:
+          type: string
+          enum:
+            - it
+            - en
+          example: it
+        uploadedAt:
+          type: string
+          format: date-time
+          example: '2026-10-20T08:00:00Z'
+        downloadUrl:
+          type: string
+          example: https://example.com/cv/mario-rossi-it.pdf
+      description: "NOTA: Chiedere al webservice il supporto a caricamento, sostituzione e download del CV, i formati ammessi, la dimensione massima e l'eventuale rimozione."
+    FacultyCurriculumUpload:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+        - file
+    FacultyPersonalContacts:
+      type: object
+      required:
+        - contactAddress
+        - contacts
+      properties:
+        contactAddress:
+          allOf:
+            - $ref: '#/components/schemas/ProfileAddress'
+          description: Correspondence address. | Indirizzo di recapito.
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileContact'
+          description: Personal email addresses and phone numbers, with at most one contact per type. Type is the unique key; there is no separate contact ID. | Email e telefoni personali, al massimo un contatto per tipo. Il tipo è la chiave univoca; non è previsto un ID separato.
+    FacultyPersonalContactsUpdateRequest:
+      type: object
+      properties:
+        contactAddress:
+          $ref: '#/components/schemas/ProfileAddressUpdateRequest'
+    FacultyPersonalData:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - fiscalCode
+        - birthPlace
+        - birthDate
+        - maritalStatus
+        - residenceAddress
+      properties:
+        id:
+          type: string
+          example: '002154'
+        firstName:
+          type: string
+          example: Mario
+        lastName:
+          type: string
+          example: Rossi
+        fiscalCode:
+          type: string
+          example: RSSMRA80A01L219K
+        birthPlace:
+          $ref: '#/components/schemas/ProfileBirthPlace'
+        birthDate:
+          type: string
+          format: date
+          example: '1980-01-01'
+        maritalStatus:
+          type: string
+          description: 'NOTA: Verificare i valori disponibili, la loro rappresentazione e la possibilità di ottenerli in inglese chiamando il webservice con header `Accept-Language: en`.'
+          example: Coniugato/a
+        residenceAddress:
+          $ref: '#/components/schemas/ProfileAddress'
+    FacultyPersonalDataUpdateRequest:
+      type: object
+      properties:
+        residenceAddress:
+          $ref: '#/components/schemas/ResidenceAddressUpdateRequest'
+      description: Only the residence address can be updated. | È modificabile solo l'indirizzo di residenza.
+    FacultyProfile:
+      type: object
+      required:
+        - personalData
+        - taxData
+        - personalContacts
+        - institutionalContacts
+        - publicData
+      properties:
+        personalData:
+          $ref: '#/components/schemas/FacultyPersonalData'
+        taxData:
+          $ref: '#/components/schemas/FacultyTaxData'
+        personalContacts:
+          $ref: '#/components/schemas/FacultyPersonalContacts'
+        institutionalContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstitutionalProfileContact'
+        publicData:
+          $ref: '#/components/schemas/FacultyPublicData'
+    FacultyProfileUpdateRequest:
+      type: object
+      properties:
+        personalData:
+          $ref: '#/components/schemas/FacultyPersonalDataUpdateRequest'
+        taxData:
+          $ref: '#/components/schemas/FacultyTaxDataUpdateRequest'
+        personalContacts:
+          $ref: '#/components/schemas/FacultyPersonalContactsUpdateRequest'
+        publicData:
+          $ref: '#/components/schemas/FacultyPublicDataUpdateRequest'
+      description: Omitted sections and fields are left unchanged. Institutional contacts cannot be updated. | Le sezioni e i campi omessi restano invariati. I contatti istituzionali non sono modificabili.
+    FacultyPublicData:
+      type: object
+      required:
+        - personalWebsiteUrl
+        - curricula
+      properties:
+        personalWebsiteUrl:
+          type: string
+          example: https://example.com/mario-rossi
+        curricula:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacultyCurriculum'
+          description: Italian and English CVs, identified by language. | CV italiano e inglese, identificati dalla lingua.
+    FacultyPublicDataUpdateRequest:
+      type: object
+      properties:
+        personalWebsiteUrl:
+          type: string
+          example: https://example.com/mario-rossi
+    FacultyTaxData:
+      type: object
+      required:
+        - iban
+        - taxDomicileAddress
+      properties:
+        iban:
+          type: string
+          example: IT60X0542811101000000123456
+        taxDomicileAddress:
+          allOf:
+            - $ref: '#/components/schemas/ProfileAddress'
+          description: Tax domicile address. | Indirizzo del domicilio fiscale.
+    FacultyTaxDataUpdateRequest:
+      type: object
+      properties:
+        taxDomicileAddress:
+          $ref: '#/components/schemas/ProfileAddressUpdateRequest'
     FcmRegistrationRequest:
       type: object
       properties:
@@ -4136,6 +4961,18 @@ components:
         content:
           type: string
           example: HTML content
+    IbanValidationRequest:
+      type: object
+      required:
+        - iban
+      properties:
+        iban:
+          type: string
+          example: IT60X0542811101000000123456
+    IbanValidationResult:
+      oneOf:
+        - $ref: '#/components/schemas/ValidIbanValidationResult'
+        - $ref: '#/components/schemas/InvalidIbanValidationResult'
     Identity:
       type: object
       required:
@@ -4161,6 +4998,56 @@ components:
         type: student
         clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
         token: c679fa38ff665df6a676acd833194385
+    IdentityDocumentUpload:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          format: byte
+    InstitutionalProfileContact:
+      type: object
+      properties:
+        isVisibleInDirectory:
+          type: boolean
+          description: Directory visibility, provided only for institutional contacts. | Visibilità in rubrica, fornita solo per i contatti istituzionali.
+          example: true
+      allOf:
+        - $ref: '#/components/schemas/ProfileContact'
+      example:
+        type: email
+        label: email
+        value: mario.rossi@polito.it
+        isVisibleInDirectory: true
+    InvalidIbanValidationResult:
+      type: object
+      required:
+        - isValid
+      properties:
+        isValid:
+          type: boolean
+          enum:
+            - false
+          description: 'Invalid IBAN: country and bank information are not returned. | IBAN non valido: non vengono restituiti Stato e istituto bancario.'
+    ItalianMunicipality:
+      type: object
+      required:
+        - id
+        - name
+        - province
+      properties:
+        id:
+          type: string
+          description: "NOTA: Confermare la codifica dell'identificativo del comune con il webservice; l'esempio usa un codice ISTAT. Mantenere gli identificativi come stringhe per conservare gli zeri iniziali."
+          example: '004130'
+        name:
+          type: string
+          example: Mondovì
+        province:
+          allOf:
+            - $ref: '#/components/schemas/Province'
+          description: Province associated with the municipality, used to fill in the province automatically after selection. | Provincia associata al comune, da compilare automaticamente dopo la selezione.
     Lecture:
       type: object
       required:
@@ -4791,6 +5678,131 @@ components:
           type: string
         name:
           type: string
+    ProfileAddress:
+      type: object
+      required:
+        - country
+        - address
+        - postalCode
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        address:
+          type: string
+          example: Corso Duca degli Abruzzi 24
+        municipality:
+          allOf:
+            - $ref: '#/components/schemas/ItalianMunicipality'
+          description: Required for Italian addresses; absent for foreign addresses. The province is included in the municipality. | Obbligatorio per indirizzi italiani; assente per indirizzi esteri. La provincia è contenuta nel comune.
+        city:
+          type: string
+          description: Free-text city for foreign addresses; absent for Italian addresses. | Città estera come testo libero; assente per indirizzi italiani.
+          example: Dhaka
+        district:
+          type: string
+          description: Optional hamlet for Italian addresses. | Frazione facoltativa per gli indirizzi italiani.
+          example: Borgata San Giovanni
+        postalCode:
+          type: string
+          example: '10129'
+    ProfileAddressInput:
+      type: object
+      required:
+        - countryId
+        - address
+        - postalCode
+      properties:
+        countryId:
+          type: string
+          example: IT
+        address:
+          type: string
+          example: Corso Duca degli Abruzzi 24
+        municipalityId:
+          type: string
+          description: Required for Italy; omit for other countries. | Obbligatorio per l'Italia; omettere per gli altri Stati.
+          example: '001272'
+        city:
+          type: string
+          description: Required as free text for countries other than Italy; omit for Italy. | Obbligatorio come testo libero per Stati diversi dall'Italia; omettere per l'Italia.
+          example: Dhaka
+        district:
+          type: string
+          description: Optional hamlet for Italian addresses. | Frazione facoltativa per gli indirizzi italiani.
+        postalCode:
+          type: string
+          description: For Italy, select from the postal codes of the selected municipality; free text abroad. | Per l'Italia, selezionare tra i CAP del comune scelto; testo libero per l'estero.
+          example: '10129'
+      description: "Address data sent for updates. Do not send a province separately: it is determined by municipalityId. | Dati dell'indirizzo inviati in aggiornamento. Non inviare separatamente la provincia: deriva da municipalityId."
+    ProfileAddressUpdateRequest:
+      type: object
+      required:
+        - validFrom
+        - hasConfirmedAddressTruthfulness
+      properties:
+        validFrom:
+          type: string
+          format: date
+          description: Date declared by the user from which the new address must be used. Sent only on update, not returned by GET. | Data dichiarata dall'utente dalla quale utilizzare il nuovo indirizzo. Inviata solo in aggiornamento, non restituita dalla GET.
+          example: '2026-11-10'
+        hasConfirmedAddressTruthfulness:
+          type: boolean
+          enum:
+            - true
+          description: "Must be true: the caller confirms the declaration that the supplied address details are truthful and acknowledges responsibility for false declarations. Required also for direct API calls outside the frontend. | Deve essere true: il chiamante conferma la dichiarazione di veridicità dei dati dell'indirizzo e la consapevolezza delle responsabilità per dichiarazioni false. Obbligatorio anche per chiamate API esterne al frontend."
+          example: true
+      allOf:
+        - $ref: '#/components/schemas/ProfileAddressInput'
+    ProfileBirthPlace:
+      type: object
+      required:
+        - city
+        - country
+      properties:
+        city:
+          type: string
+          example: Torino
+        province:
+          allOf:
+            - $ref: '#/components/schemas/Province'
+          description: Italian province, when applicable. | Provincia italiana, se pertinente.
+        country:
+          $ref: '#/components/schemas/Country'
+      description: 'NOTA: Chiedere se comune o città, provincia e Stato di nascita siano disponibili separatamente nel webservice.'
+    ProfileContact:
+      type: object
+      required:
+        - type
+        - label
+        - value
+      properties:
+        type:
+          type: string
+          description: |-
+            Contact type used for icons and validation. | Tipo di contatto usato per icone e validazione.
+            NOTA: Confermare i codici disponibili con il webservice; gli esempi usano email, mobile e phone.
+          example: email
+        label:
+          type: string
+          description: 'NOTA: Approfondire la possibilità di ottenere questo campo in inglese chiamando il webservice con header `Accept-Language: en`.'
+          example: Email personale
+        value:
+          type: string
+          example: mario.rossi@example.com
+    Province:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: "NOTA: Confermare la codifica dell'identificativo della provincia; l'esempio usa la sigla provinciale."
+          example: CN
+        name:
+          type: string
+          example: Cuneo
+      description: Province or equivalent territorial unit, including metropolitan cities and autonomous provinces. | Provincia o unità territoriale equivalente, comprese città metropolitane e province autonome.
     RelatedVirtualClassroom:
       type: object
       required:
@@ -4803,6 +5815,19 @@ components:
         title:
           type: string
           example: Lecture 1
+    ResidenceAddressUpdateRequest:
+      type: object
+      properties:
+        copyToContactAddress:
+          type: boolean
+          description: Also update the correspondence address using the same address and effective date. Omission means no copy. | Aggiornare anche il recapito con gli stessi dati e decorrenza. Se omesso, non copiare.
+          example: false
+        copyToTaxDomicileAddress:
+          type: boolean
+          description: Also update the tax domicile using the same address and effective date. Omission means no copy. | Aggiornare anche il domicilio fiscale con gli stessi dati e decorrenza. Se omesso, non copiare.
+          example: false
+      allOf:
+        - $ref: '#/components/schemas/ProfileAddressUpdateRequest'
     RootPlaceCategory:
       type: object
       required:
@@ -4948,6 +5973,14 @@ components:
       properties:
         suggestUpdate:
           type: boolean
+    UpdatePersonalContactRequest:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          example: +39 333 1234567
     UpdatePreferencesRequest:
       type: object
       properties:
@@ -4957,6 +5990,26 @@ components:
             - it
             - en
           example: it
+    ValidIbanValidationResult:
+      type: object
+      required:
+        - isValid
+        - country
+      properties:
+        isValid:
+          type: boolean
+          enum:
+            - true
+        country:
+          type: string
+          description: Country name. | Nome dello Stato.
+          example: Italia
+        bankName:
+          type: string
+          description: |-
+            Bank name, returned for a valid Italian IBAN only. | Istituto bancario, restituito solo per un IBAN italiano valido.
+            NOTA: Confermare i dati dell'istituto restituiti dal webservice.
+          example: Banca di esempio
     ValidateMfaRequest:
       type: object
       required:
