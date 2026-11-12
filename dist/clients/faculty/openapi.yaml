@@ -2648,6 +2648,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+      security:
+        - {}
   /v2/places:
     get:
       operationId: Places_getPlaces
@@ -2794,6 +2796,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
         - Places
+      security:
+        - {}
   /v2/sites/{siteId}/buildings:
     get:
       operationId: Sites_getBuildings

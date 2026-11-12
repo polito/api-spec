@@ -146,6 +146,7 @@ model Place {
 interface PlaceCategories {
   @get
   @summary("List place categories | Elenca categorie luoghi")
+  @useAuth(NoAuth)
   getPlaceCategories(
     @query siteId?: string,
   ): OkDataResponse<RootPlaceCategory[]> | BaseErrors;
@@ -156,6 +157,7 @@ interface PlaceCategories {
 interface Sites {
   @get
   @summary("List sites | Elenca sedi")
+  @useAuth(NoAuth)
   getSites(): OkDataResponse<Site[]> | BaseErrors;
 
   @route("/{siteId}/free-rooms")
