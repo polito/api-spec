@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Polito Faculty API
   version: 0.0.1
@@ -133,7 +133,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AppInfoRequest'
+              type: object
+              properties:
+                buildNumber:
+                  type: string
+                  examples:
+                    - '1060200'
+                appVersion:
+                  type: string
+                  examples:
+                    - 1.6.2
+                fcmRegistrationToken:
+                  type: string
+                  examples:
+                    - a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+              description: The template for adding optional properties.
   /auth/login:
     post:
       operationId: Auth_login
@@ -210,10 +224,9 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: object
-                    allOf:
+                    anyOf:
                       - $ref: '#/components/schemas/MfaChallenge'
-                    nullable: true
+                      - type: 'null'
                 required:
                   - data
               example:
@@ -254,7 +267,8 @@ paths:
                     properties:
                       serial:
                         type: string
-                        example: EDUP000123456
+                        examples:
+                          - EDUP000123456
                     required:
                       - serial
                 required:
@@ -331,7 +345,8 @@ paths:
                     properties:
                       success:
                         type: boolean
-                        example: true
+                        examples:
+                          - true
                     required:
                       - success
                 required:
@@ -401,8 +416,7 @@ paths:
           content:
             image/jpeg:
               schema:
-                type: string
-                format: binary
+                contentMediaType: image/jpeg
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -1178,7 +1192,7 @@ paths:
           content:
             application/json:
               schema:
-                nullable: true
+                type: 'null'
         '302':
           description: Redirection
         '400':
@@ -2927,38 +2941,45 @@ components:
       properties:
         id:
           type: string
-          example: abc-123
+          examples:
+            - abc-123
         title:
           type: string
-          example: Welcome to the app
+          examples:
+            - Welcome to the app
         contents:
           type: string
-          example: Here is a quick guide to get started.
+          examples:
+            - Here is a quick guide to get started.
         description:
           type: string
-          example: Onboarding announcement
+          examples:
+            - Onboarding announcement
         scope:
-          allOf:
-            - $ref: '#/components/schemas/AnnouncementScope'
-          example: onboarding
+          $ref: '#/components/schemas/AnnouncementScope'
+          examples:
+            - onboarding
         seen:
           type: boolean
-          example: false
+          examples:
+            - false
         date:
           type: string
           format: date-time
-          example: '2026-01-01T12:00:00Z'
+          examples:
+            - '2026-01-01T12:00:00Z'
         cover:
           type: string
-          example: https://example.com/announcement-cover.jpg
-      example:
-        id: abc-123
-        title: Welcome to the app
-        contents: Here is a quick guide to get started.
-        description: Onboarding announcement
-        scope: onboarding
-        seen: false
-        date: '2026-01-01T12:00:00Z'
+          examples:
+            - https://example.com/announcement-cover.jpg
+      examples:
+        - id: abc-123
+          title: Welcome to the app
+          contents: Here is a quick guide to get started.
+          description: Onboarding announcement
+          scope: onboarding
+          seen: false
+          date: '2026-01-01T12:00:00Z'
     AnnouncementScope:
       type: string
       enum:
@@ -2966,16 +2987,22 @@ components:
         - appInfo
     AppInfoRequest:
       type: object
+      required:
+        - buildNumber
+        - appVersion
       properties:
         buildNumber:
           type: string
-          example: '1060200'
+          examples:
+            - '1060200'
         appVersion:
           type: string
-          example: 1.6.2
+          examples:
+            - 1.6.2
         fcmRegistrationToken:
           type: string
-          example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+          examples:
+            - a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
     AuthProfile:
       type: object
       required:
@@ -2986,20 +3013,23 @@ components:
       properties:
         username:
           type: string
-          example: s290683
+          examples:
+            - s290683
         firstName:
           type: string
-          example: Luca
+          examples:
+            - Luca
         lastName:
           type: string
-          example: Pezzolla
+          examples:
+            - Pezzolla
         allUsernames:
           type: array
           items:
             type: string
-          example:
-            - S290683
-            - S213956
+          examples:
+            - - S290683
+              - S213956
     Booking:
       type: object
       required:
@@ -3015,39 +3045,44 @@ components:
       properties:
         id:
           type: integer
-          example: 258674
+          examples:
+            - 258674
         description:
           type: string
-          example: ''
+          examples:
+            - ''
         topic:
           $ref: '#/components/schemas/BookingTopicOverview'
         subtopic:
-          type: object
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/BookingTopicOverview'
-          nullable: true
+            - type: 'null'
         startsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:00:00Z'
+          examples:
+            - '2021-10-05T10:00:00Z'
         endsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:15:00Z'
+          examples:
+            - '2021-10-05T10:15:00Z'
         seat:
-          type: object
-          properties:
-            id:
-              type: integer
-            row:
-              type: string
-            column:
-              type: string
-          nullable: true
+          anyOf:
+            - type: object
+              properties:
+                id:
+                  type: integer
+                row:
+                  type: string
+                column:
+                  type: string
+            - type: 'null'
         cancelableUntil:
           type: string
           format: date-time
-          example: '2021-10-05T09:00:00Z'
+          examples:
+            - '2021-10-05T09:00:00Z'
         location:
           $ref: '#/components/schemas/BookingPlaceRef'
         locationCheck:
@@ -3066,14 +3101,17 @@ components:
         checked:
           type: boolean
         latitude:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         longitude:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         radiusInKm:
-          type: number
-          nullable: true
+          anyOf:
+            - type: number
+            - type: 'null'
     BookingPhysicalPlaceRef:
       type: object
       required:
@@ -3102,17 +3140,20 @@ components:
       properties:
         id:
           type: integer
-          example: 20018
+          examples:
+            - 20018
         status:
           type: string
           enum:
             - available
             - booked
             - unavailable
-          example: available
+          examples:
+            - available
         label:
           type: string
-          example: A5
+          examples:
+            - A5
     BookingSeats:
       type: object
       required:
@@ -3162,31 +3203,40 @@ components:
       properties:
         id:
           type: integer
-          example: 103051
+          examples:
+            - 103051
         description:
           type: string
-          example: ''
+          examples:
+            - ''
         isBooked:
           type: boolean
-          example: false
+          examples:
+            - false
         canBeBooked:
           type: boolean
-          example: false
+          examples:
+            - false
         hasSeats:
           type: boolean
-          example: false
+          examples:
+            - false
         hasSeatSelection:
           type: boolean
-          example: false
+          examples:
+            - false
         places:
           type: integer
-          example: 2
+          examples:
+            - 2
         bookedPlaces:
           type: integer
-          example: 2
+          examples:
+            - 2
         feedback:
           type: string
-          example: Il turno è pieno
+          examples:
+            - Il turno è pieno
         location:
           type: object
           properties:
@@ -3201,38 +3251,42 @@ components:
         startsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:00:00Z'
+          examples:
+            - '2021-10-05T10:00:00Z'
         endsAt:
           type: string
           format: date-time
-          example: '2021-10-05T10:15:00Z'
+          examples:
+            - '2021-10-05T10:15:00Z'
         bookingStartsAt:
           type: string
           format: date-time
-          example: '2021-10-01T00:00:00Z'
+          examples:
+            - '2021-10-01T00:00:00Z'
         bookingEndsAt:
           type: string
           format: date-time
-          example: '2021-10-05T09:00:00Z'
-      example:
-        id: 103051
-        description: ''
-        isBooked: false
-        canBeBooked: false
-        hasSeats: false
-        hasSeatSelection: false
-        places: 2
-        bookedPlaces: 2
-        feedback: Il turno è pieno
-        location:
-          name: Virtual Classroom della Segreteria Generale Studenti
+          examples:
+            - '2021-10-05T09:00:00Z'
+      examples:
+        - id: 103051
           description: ''
-          type: VC
-          address: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
-        startsAt: '2021-10-05T10:00:00Z'
-        endsAt: '2021-10-05T10:15:00Z'
-        bookingStartsAt: '2021-10-01T00:00:00Z'
-        bookingEndsAt: '2021-10-05T09:00:00Z'
+          isBooked: false
+          canBeBooked: false
+          hasSeats: false
+          hasSeatSelection: false
+          places: 2
+          bookedPlaces: 2
+          feedback: Il turno è pieno
+          location:
+            name: Virtual Classroom della Segreteria Generale Studenti
+            description: ''
+            type: VC
+            address: https://didattica.polito.it/pls/portal30/sviluppo.bbb_corsi.queueRoom?id=SEGRETERIA_GENERALE&p_tipo=SEGRETERIA_GENERALE
+          startsAt: '2021-10-05T10:00:00Z'
+          endsAt: '2021-10-05T10:15:00Z'
+          bookingStartsAt: '2021-10-01T00:00:00Z'
+          bookingEndsAt: '2021-10-05T09:00:00Z'
     BookingSubtopic:
       type: object
       required:
@@ -3260,39 +3314,39 @@ components:
             $ref: '#/components/schemas/BookingSubtopic'
       allOf:
         - $ref: '#/components/schemas/BookingTopicLeaf'
-      example:
-        id: DIDATTICA_ING
-        title: Segreteria Didattica Ingegneria
-        description: Servizi della Segreteria Didattica Ingegneria
-        isEnabled: true
-        disclaimer: ''
-        showCalendar: true
-        slotLength: 15
-        slotsPerHour: 4
-        startDate: null
-        startHour: 8
-        endHour: 18
-        maxBookingsPerDay: 2
-        canBeCancelled: true
-        daysPerWeek: 5
-        agendaView: false
-        subtopics:
-          - id: DID_ING_VC_EN
-            title: Aspetti didattici di carriera - Sportello virtuale in inglese
-            description: ''
-            isEnabled: true
-            disclaimer: ''
-            showCalendar: true
-            slotLength: 15
-            slotsPerHour: 4
-            startDate: null
-            startHour: 8
-            endHour: 18
-            maxBookingsPerDay: 2
-            canBeCancelled: true
-            daysPerWeek: 5
-            agendaView: false
-            requirements: []
+      examples:
+        - id: DIDATTICA_ING
+          title: Segreteria Didattica Ingegneria
+          description: Servizi della Segreteria Didattica Ingegneria
+          isEnabled: true
+          disclaimer: ''
+          showCalendar: true
+          slotLength: 15
+          slotsPerHour: 4
+          startDate: null
+          startHour: 8
+          endHour: 18
+          maxBookingsPerDay: 2
+          canBeCancelled: true
+          daysPerWeek: 5
+          agendaView: false
+          subtopics:
+            - id: DID_ING_VC_EN
+              title: Aspetti didattici di carriera - Sportello virtuale in inglese
+              description: ''
+              isEnabled: true
+              disclaimer: ''
+              showCalendar: true
+              slotLength: 15
+              slotsPerHour: 4
+              startDate: null
+              startHour: 8
+              endHour: 18
+              maxBookingsPerDay: 2
+              canBeCancelled: true
+              daysPerWeek: 5
+              agendaView: false
+              requirements: []
     BookingTopicLeaf:
       type: object
       required:
@@ -3311,44 +3365,56 @@ components:
       properties:
         isEnabled:
           type: boolean
-          example: true
+          examples:
+            - true
         disclaimer:
           type: string
-          example: ''
+          examples:
+            - ''
         showCalendar:
           type: boolean
-          example: true
+          examples:
+            - true
         slotLength:
           type: integer
-          example: 15
+          examples:
+            - 15
         slotsPerHour:
           type: integer
-          example: 4
+          examples:
+            - 4
         startDate:
-          type: string
-          format: date
-          nullable: true
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
           description: Start date of the booking period
         startHour:
           type: integer
-          example: 8
+          examples:
+            - 8
         endHour:
           type: integer
-          example: 18
+          examples:
+            - 18
         maxBookingsPerDay:
           type: integer
-          example: 2
+          examples:
+            - 2
         canBeCancelled:
           type: boolean
-          example: true
+          examples:
+            - true
         daysPerWeek:
           type: integer
           description: Number of days per week the booking is available, starting from startDate weekday, or monday if missing
-          example: 5
+          examples:
+            - 5
         agendaView:
           type: boolean
           description: Specifies if the topic requires the agenda display
-          example: false
+          examples:
+            - false
       allOf:
         - $ref: '#/components/schemas/BookingTopicOverview'
     BookingTopicOverview:
@@ -3360,13 +3426,16 @@ components:
       properties:
         id:
           type: string
-          example: DIDATTICA_ING
+          examples:
+            - DIDATTICA_ING
         title:
           type: string
-          example: Segreteria Didattica Ingegneria
+          examples:
+            - Segreteria Didattica Ingegneria
         description:
           type: string
-          example: Servizi della Segreteria Didattica Ingegneria
+          examples:
+            - Servizi della Segreteria Didattica Ingegneria
     BookingVirtualPlaceRef:
       type: object
       required:
@@ -3399,10 +3468,12 @@ components:
           $ref: '#/components/schemas/GeoJsonPolygon'
         latitude:
           type: number
-          example: 45.064254
+          examples:
+            - 45.064254
         longitude:
           type: number
-          example: 7.657823
+          examples:
+            - 7.657823
     BuildingOverview:
       type: object
       required:
@@ -3430,19 +3501,24 @@ components:
       properties:
         buildNumber:
           type: string
-          example: '1060200'
+          examples:
+            - '1060200'
         appVersion:
           type: string
-          example: 1.6.2
+          examples:
+            - 1.6.2
         fcmRegistrationToken:
           type: string
-          example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+          examples:
+            - a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
         name:
           type: string
-          example: Students app
+          examples:
+            - Students app
         id:
           type: string
-          example: 5a54f626-4b7e-488e-a0e3-300f54051510
+          examples:
+            - 5a54f626-4b7e-488e-a0e3-300f54051510
     ClientVersionRequest:
       type: object
       required:
@@ -3451,10 +3527,12 @@ components:
       properties:
         buildNumber:
           type: string
-          example: '1060200'
+          examples:
+            - '1060200'
         appVersion:
           type: string
-          example: 1.6.2
+          examples:
+            - 1.6.2
     Course:
       type: object
       required:
@@ -3468,7 +3546,8 @@ components:
       properties:
         cfu:
           type: integer
-          example: 10
+          examples:
+            - 10
         links:
           type: array
           items:
@@ -3476,32 +3555,37 @@ components:
             properties:
               url:
                 type: string
-                example: https://docs.google.com/document/d/13hpWEDQxziSkhSU0PuqxMXntqZYp3ffDKZ2-umQ7Ywo/edit?usp=sharing
+                examples:
+                  - https://docs.google.com/document/d/13hpWEDQxziSkhSU0PuqxMXntqZYp3ffDKZ2-umQ7Ywo/edit?usp=sharing
               description:
                 type: string
-                example: Calendario settimanale dei contenuti del corso
+                examples:
+                  - Calendario settimanale dei contenuti del corso
             required:
               - url
         moodleCourses:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Analisi Matematica I
-              id:
-                type: string
-                example: '645376'
-          nullable: true
+          anyOf:
+            - type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    examples:
+                      - Analisi Matematica I
+                  id:
+                    type: string
+                    examples:
+                      - '645376'
+            - type: 'null'
         vcPreviousYears:
           type: array
           items:
             $ref: '#/components/schemas/CourseModuleEdition'
-          example:
-            - id: 244577
-              name: Fisica I
-              year: '2021'
+          examples:
+            - - id: 244577
+                name: Fisica I
+                year: '2021'
         vcOtherCourses:
           type: array
           items:
@@ -3509,13 +3593,16 @@ components:
             properties:
               year:
                 type: string
-                example: '2021'
+                examples:
+                  - '2021'
               name:
                 type: string
-                example: Fisica II
+                examples:
+                  - Fisica II
               id:
                 type: integer
-                example: 244577
+                examples:
+                  - 244577
             required:
               - year
               - name
@@ -3526,13 +3613,16 @@ components:
           properties:
             notices:
               type: boolean
-              example: true
+              examples:
+                - true
             files:
               type: boolean
-              example: true
+              examples:
+                - true
             lectures:
               type: boolean
-              example: true
+              examples:
+                - true
           required:
             - notices
             - files
@@ -3546,7 +3636,8 @@ components:
                 type: string
               id:
                 type: number
-                example: 244577
+                examples:
+                  - 244577
             required:
               - role
               - id
@@ -3566,38 +3657,44 @@ components:
       properties:
         id:
           type: integer
-          example: 947503
+          examples:
+            - 947503
         description:
           type: string
-          example: laboratorio 3
+          examples:
+            - laboratorio 3
         mimeType:
           type: string
-          example: application/x-zip-compressed
+          examples:
+            - application/x-zip-compressed
         filename:
           type: string
-          example: lab_03.zip
+          examples:
+            - lab_03.zip
         uploadedAt:
           type: string
           format: date-time
-          example: '2022-09-02T14:00:00Z'
+          examples:
+            - '2022-09-02T14:00:00Z'
         deletedAt:
-          type: string
-          format: date-time
-          nullable: true
+          anyOf:
+            - type: string
+              format: date-time
+            - type: 'null'
         url:
           type: string
-          example: https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
+          examples:
+            - https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/6791f0016c78599138828211522fa84d/62cebc94
         sizeInKiloBytes:
           type: integer
-          example: 305
+          examples:
+            - 305
     CourseAssignmentUpload:
       type: object
       properties:
         description:
           type: string
-        file:
-          type: string
-          format: binary
+        file: {}
       required:
         - description
         - file
@@ -3619,15 +3716,15 @@ components:
           type: string
           enum:
             - directory
-      example:
-        name: Root
-        id: '1234'
-        type: directory
-        files:
-          - type: directory
-            id: '1'
-            name: Week 1
-            files: []
+      examples:
+        - name: Root
+          id: '1234'
+          type: directory
+          files:
+            - type: directory
+              id: '1'
+              name: Week 1
+              files: []
     CourseDirectoryContent:
       type: array
       items:
@@ -3662,35 +3759,41 @@ components:
       properties:
         id:
           type: string
-          example: '33352562'
+          examples:
+            - '33352562'
         name:
           type: string
-          example: Laboratori
+          examples:
+            - Laboratori
         sizeInKiloBytes:
           type: integer
-          example: 305
+          examples:
+            - 305
         mimeType:
           type: string
-          example: application/x-zip-compressed
+          examples:
+            - application/x-zip-compressed
         createdAt:
           type: string
           format: date-time
-          example: '2022-08-31T14:00:00Z'
+          examples:
+            - '2022-08-31T14:00:00Z'
         type:
           type: string
           enum:
             - file
         checksum:
           type: string
-          example: deadbeefcafebabe0000000000000000
-      example:
-        type: file
-        id: '2'
-        name: Lecture1.pdf
-        sizeInKiloBytes: 2048
-        mimeType: application/pdf
-        createdAt: '2024-06-01T10:00:00Z'
-        checksum: deadbeefcafebabe0000000000000000
+          examples:
+            - deadbeefcafebabe0000000000000000
+      examples:
+        - type: file
+          id: '2'
+          name: Lecture1.pdf
+          sizeInKiloBytes: 2048
+          mimeType: application/pdf
+          createdAt: '2024-06-01T10:00:00Z'
+          checksum: deadbeefcafebabe0000000000000000
     CourseModule:
       type: object
       required:
@@ -3707,72 +3810,83 @@ components:
         - style
       properties:
         id:
-          type: integer
-          nullable: true
+          anyOf:
+            - type: integer
+            - type: 'null'
           description: |-
             The identifier for the current instance of this course.
             If null this is not a teaching (such as thesis), it won't have a course page
-          example: 258674
+          examples:
+            - 258674
         shortcode:
           type: string
-          example: 01NYHOV
+          examples:
+            - 01NYHOV
         name:
           type: string
-          example: System and device programming
+          examples:
+            - System and device programming
         teachingPeriod:
           type: string
           description: The semester(s) this course belongs to
-          example: 2-2
+          examples:
+            - 2-2
         teacherId:
-          type: integer
-          nullable: true
-          example: 2893
+          anyOf:
+            - type: integer
+            - type: 'null'
+          examples:
+            - 2893
         teacherName:
-          type: string
-          nullable: true
-          example: Mario Rossi
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - Mario Rossi
         isOverBooking:
           type: boolean
-          example: false
+          examples:
+            - false
         category:
           type: string
           description: |-
             Defines the course type and whether the course page should be opened
             when no instructor is assigned to the course.
-          example: I
+          examples:
+            - I
         enrollmentRole:
-          allOf:
-            - $ref: '#/components/schemas/CourseEnrollmentRole'
+          $ref: '#/components/schemas/CourseEnrollmentRole'
           description: Type of enrollment of the user for this course
-          example: student
+          examples:
+            - student
         year:
           type: string
-          example: '2022'
+          examples:
+            - '2022'
         style:
-          type: object
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/Symbol'
-          nullable: true
+            - type: 'null'
           description: Custom icon, color and label (acronym) chosen by the user for this course. `null` if never set
-          example:
-            color: '#2563EB'
+          examples:
+            - color: '#2563EB'
+              icon: faCode
+              label: SDP
+      examples:
+        - id: 251008
+          name: Programming Module A
+          shortcode: ProgModA
+          teachingPeriod: 2-2
+          teacherId: 3001
+          teacherName: Mario Rossi
+          isOverBooking: false
+          category: I
+          enrollmentRole: student
+          year: '2025'
+          style:
+            color: '#4F46E5'
             icon: faCode
-            label: SDP
-      example:
-        id: 251008
-        name: Programming Module A
-        shortcode: ProgModA
-        teachingPeriod: 2-2
-        teacherId: 3001
-        teacherName: Mario Rossi
-        isOverBooking: false
-        category: I
-        enrollmentRole: student
-        year: '2025'
-        style:
-          color: '#4F46E5'
-          icon: faCode
-          label: PMA
+            label: PMA
     CourseModuleEdition:
       type: object
       required:
@@ -3782,13 +3896,16 @@ components:
       properties:
         year:
           type: string
-          example: '2021'
+          examples:
+            - '2021'
         name:
           type: string
-          example: Fisica II
+          examples:
+            - Fisica II
         id:
           type: integer
-          example: 244577
+          examples:
+            - 244577
     CourseModuleOverview:
       type: object
       required:
@@ -3799,10 +3916,10 @@ components:
           items:
             $ref: '#/components/schemas/CourseModuleEdition'
           description: Previous editions of this course that were part of the student's PSP
-          example:
-            - id: 244577
-              name: Fisica I
-              year: '2021'
+          examples:
+            - - id: 244577
+                name: Fisica I
+                year: '2021'
       allOf:
         - $ref: '#/components/schemas/CourseModule'
     CourseNotices:
@@ -3815,18 +3932,22 @@ components:
       properties:
         id:
           type: integer
-          example: 360724
+          examples:
+            - 360724
         publishedAt:
           type: string
           format: date-time
-          example: '2022-07-03T14:00:00Z'
+          examples:
+            - '2022-07-03T14:00:00Z'
         expiresAt:
-          type: string
-          format: date-time
-          nullable: true
+          anyOf:
+            - type: string
+              format: date-time
+            - type: 'null'
         content:
           type: string
-          example: <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
+          examples:
+            - <p>Conferma spostamento orario esame:</p><p><b>Ore 15</b></p>
     CourseOverview:
       type: object
       required:
@@ -3835,12 +3956,14 @@ components:
       properties:
         cfu:
           type: integer
-          example: 10
+          examples:
+            - 10
         modules:
-          type: array
-          items:
-            $ref: '#/components/schemas/CourseModuleOverview'
-          nullable: true
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/CourseModuleOverview'
+            - type: 'null'
       allOf:
         - $ref: '#/components/schemas/CourseModuleOverview'
     CoursePreferencesRequest:
@@ -3851,23 +3974,25 @@ components:
           properties:
             notices:
               type: boolean
-              example: true
+              examples:
+                - true
             files:
               type: boolean
-              example: true
+              examples:
+                - true
             lectures:
               type: boolean
-              example: true
+              examples:
+                - true
         style:
-          type: object
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/Symbol'
-          nullable: true
+            - type: 'null'
           description: Custom icon, color and label (acronym) for the course, `null` to reset it
-          example:
-            color: '#2563EB'
-            icon: faCode
-            label: SDP
+          examples:
+            - color: '#2563EB'
+              icon: faCode
+              label: SDP
     CreateBookingRequest:
       type: object
       required:
@@ -3875,10 +4000,12 @@ components:
       properties:
         slotId:
           type: integer
-          example: 103051
+          examples:
+            - 103051
         seatId:
           type: integer
-          example: 20018
+          examples:
+            - 20018
     Department:
       type: object
       required:
@@ -3889,8 +4016,9 @@ components:
         id:
           type: string
         name:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         type:
           type: string
     Device:
@@ -3919,13 +4047,15 @@ components:
       properties:
         description:
           type: string
-          example: some identifier you chose
+          examples:
+            - some identifier you chose
         pubkey:
           type: string
-          example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
-      example:
-        description: some identifier you chose
-        pubkey: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
+          examples:
+            - dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
+      examples:
+        - description: some identifier you chose
+          pubkey: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
     ErrorResponse:
       type: object
       properties:
@@ -3938,13 +4068,16 @@ components:
       properties:
         code:
           type: integer
-          example: 500
+          examples:
+            - 500
         message:
           type: string
-          example: An error occurred
+          examples:
+            - An error occurred
         careerId:
           type: integer
-          example: 123456
+          examples:
+            - 123456
     EuropeanStudentCard:
       type: object
       required:
@@ -3954,30 +4087,32 @@ components:
         canBeRequested:
           type: boolean
         details:
-          type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - active
-                - inactive
-                - expired
-            inactiveStatusReason:
-              type: string
-              nullable: true
-            cardNumber:
-              type: string
-            expiresAt:
-              type: string
-            qrCode:
-              type: string
-          required:
-            - status
-            - inactiveStatusReason
-            - cardNumber
-            - expiresAt
-            - qrCode
-          nullable: true
+          anyOf:
+            - type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - active
+                    - inactive
+                    - expired
+                inactiveStatusReason:
+                  anyOf:
+                    - type: string
+                    - type: 'null'
+                cardNumber:
+                  type: string
+                expiresAt:
+                  type: string
+                qrCode:
+                  type: string
+              required:
+                - status
+                - inactiveStatusReason
+                - cardNumber
+                - expiresAt
+                - qrCode
+            - type: 'null'
     Event:
       type: object
       required:
@@ -3995,50 +4130,65 @@ components:
       properties:
         id:
           type: string
-          example: graduation-2026-01
+          examples:
+            - graduation-2026-01
         contextName:
           type: string
-          example: Lauree
+          examples:
+            - Lauree
         contextId:
           type: string
-          example: LAUREE
+          examples:
+            - LAUREE
         title:
           type: string
-          example: Cerimonia di proclamazione
+          examples:
+            - Cerimonia di proclamazione
         eventStartsAt:
           type: string
           format: date-time
-          example: '2026-07-20T09:00:00Z'
+          examples:
+            - '2026-07-20T09:00:00Z'
         eventEndsAt:
           type: string
           format: date-time
-          example: '2026-07-20T12:00:00Z'
+          examples:
+            - '2026-07-20T12:00:00Z'
         accessInfo:
           type: string
-          example: La invitiamo a presentarsi mezz’ora prima dell’orario previsto
+          examples:
+            - La invitiamo a presentarsi mezz’ora prima dell’orario previsto
         description:
           type: string
-          example: Cerimonia di proclamazione e consegna dei diplomi
+          examples:
+            - Cerimonia di proclamazione e consegna dei diplomi
         place:
-          type: string
-          nullable: true
-          example: TO_CEN03_XPTE_000
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - TO_CEN03_XPTE_000
         placeName:
-          type: string
-          nullable: true
-          example: Aula Magna
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - Aula Magna
         totalAdmissions:
           type: integer
-          example: 15
+          examples:
+            - 15
         remainingAdmissions:
           type: integer
-          example: 8
+          examples:
+            - 8
     FcmRegistrationRequest:
       type: object
       properties:
         fcmRegistrationToken:
           type: string
-          example: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+          examples:
+            - a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
     Floor:
       type: object
       required:
@@ -4117,13 +4267,15 @@ components:
       properties:
         latitude:
           type: number
-          example: 45.064254
+          examples:
+            - 45.064254
         longitude:
           type: number
-          example: 7.657823
-      example:
-        latitude: 45.064254
-        longitude: 7.657823
+          examples:
+            - 7.657823
+      examples:
+        - latitude: 45.064254
+          longitude: 7.657823
     GuideSection:
       type: object
       required:
@@ -4132,10 +4284,12 @@ components:
       properties:
         title:
           type: string
-          example: Title
+          examples:
+            - Title
         content:
           type: string
-          example: HTML content
+          examples:
+            - HTML content
     Identity:
       type: object
       required:
@@ -4146,21 +4300,25 @@ components:
       properties:
         username:
           type: string
-          example: s290683
+          examples:
+            - s290683
         type:
           type: string
-          example: student
+          examples:
+            - student
         clientId:
           type: string
-          example: 5a54f626-4b7e-488e-a0e3-300f54051510
+          examples:
+            - 5a54f626-4b7e-488e-a0e3-300f54051510
         token:
           type: string
-          example: c679fa38ff665df6a676acd833194385
-      example:
-        username: s290683
-        type: student
-        clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
-        token: c679fa38ff665df6a676acd833194385
+          examples:
+            - c679fa38ff665df6a676acd833194385
+      examples:
+        - username: s290683
+          type: student
+          clientId: 5a54f626-4b7e-488e-a0e3-300f54051510
+          token: c679fa38ff665df6a676acd833194385
     Lecture:
       type: object
       required:
@@ -4190,15 +4348,17 @@ components:
           items:
             $ref: '#/components/schemas/RelatedVirtualClassroom'
         description:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         courseId:
           type: integer
         courseName:
           type: string
         teacherId:
           type: integer
-          example: 150157
+          examples:
+            - 150157
         place:
           $ref: '#/components/schemas/PlaceRef'
     LinkToService:
@@ -4217,10 +4377,12 @@ components:
       properties:
         username:
           type: string
-          example: s290683
+          examples:
+            - s290683
         password:
           type: string
-          example: moreSecret
+          examples:
+            - moreSecret
         loginType:
           type: string
           enum:
@@ -4236,10 +4398,12 @@ components:
       properties:
         uid:
           type: string
-          example: 123456-1234-5678-123456
+          examples:
+            - 123456-1234-5678-123456
         key:
           type: string
-          example: abcdef-abcd-efgh-abcdef
+          examples:
+            - abcdef-abcd-efgh-abcdef
         loginType:
           type: string
           enum:
@@ -4277,18 +4441,22 @@ components:
       properties:
         serial:
           type: string
-          example: EDUP000123456
+          examples:
+            - EDUP000123456
         challenge:
           type: string
-          example: dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
+          examples:
+            - dGhpcyBzaG91bGQgYmUgYW4gZWNkcyBwdWJsaWMga2V5Li4uIHdoYXQgZGlkIHlvdSB0aGluayB0aGlzIHdhcz8hIPCfp5AK
         requestTs:
           type: string
           format: date-time
-          example: '2025-01-01T00:00:00Z'
+          examples:
+            - '2025-01-01T00:00:00Z'
         expirationTs:
           type: string
           format: date-time
-          example: '2025-01-01T01:00:00Z'
+          examples:
+            - '2025-01-01T01:00:00Z'
     MfaStatusResponse:
       type: object
       required:
@@ -4305,25 +4473,30 @@ components:
             - needsReauth
           description: Current MFA status for the user
         details:
-          type: object
-          properties:
-            lastAuth:
-              type: string
-              format: date-time
-              example: '2021-09-30T00:00:00Z'
-            authCount:
-              type: integer
-              example: 1
-            serial:
-              type: string
-              example: EDUP0000123456
-            description:
-              type: string
-              example: My phone
-          required:
-            - lastAuth
-            - authCount
-          nullable: true
+          anyOf:
+            - type: object
+              properties:
+                lastAuth:
+                  type: string
+                  format: date-time
+                  examples:
+                    - '2021-09-30T00:00:00Z'
+                authCount:
+                  type: integer
+                  examples:
+                    - 1
+                serial:
+                  type: string
+                  examples:
+                    - EDUP0000123456
+                description:
+                  type: string
+                  examples:
+                    - My phone
+              required:
+                - lastAuth
+                - authCount
+            - type: 'null'
           description: |-
             Additional information about the MFA session.
             Present only if status is `active` or `locked`
@@ -4336,31 +4509,33 @@ components:
       properties:
         location:
           type: string
-          example: Energy Center - Via Paolo Borsellino 38, Torino
+          examples:
+            - Energy Center - Via Paolo Borsellino 38, Torino
         htmlContent:
           type: string
-          example: Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium dell'Energy Center del Politecnico</strong>...
+          examples:
+            - Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium dell'Energy Center del Politecnico</strong>...
         extras:
           type: array
           items:
             $ref: '#/components/schemas/NewsItemExtra'
       allOf:
         - $ref: '#/components/schemas/NewsItemOverview'
-      example:
-        id: 123
-        title: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
-        isEvent: false
-        shortDescription: Seminario di presentazione del progetto
-        eventStartTime: Dal 30 agosto 2023
-        eventEndTime: Al 30 agosto 2023
-        createdAt: '2022-08-31T14:00:00Z'
-        location: Energy Center - Via Paolo Borsellino 38, Torino
-        htmlContent: Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium dell'Energy Center del Politecnico</strong>...
-        extras:
-          - url: https://
-            description: Bando
-            type: image
-            sizeInKiloBytes: 305
+      examples:
+        - id: 123
+          title: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
+          isEvent: false
+          shortDescription: Seminario di presentazione del progetto
+          eventStartTime: Dal 30 agosto 2023
+          eventEndTime: Al 30 agosto 2023
+          createdAt: '2022-08-31T14:00:00Z'
+          location: Energy Center - Via Paolo Borsellino 38, Torino
+          htmlContent: Martedì <strong>18 aprile 2023 - </strong>presso l'<strong>Auditorium dell'Energy Center del Politecnico</strong>...
+          extras:
+            - url: https://
+              description: Bando
+              type: image
+              sizeInKiloBytes: 305
     NewsItemExtra:
       type: object
       required:
@@ -4371,26 +4546,31 @@ components:
       properties:
         url:
           type: string
-          example: https://
+          examples:
+            - https://
         description:
           type: string
-          example: Bando
+          examples:
+            - Bando
         type:
           type: string
           enum:
             - link
             - file
             - image
-          example: image
+          examples:
+            - image
         sizeInKiloBytes:
-          type: integer
-          nullable: true
-          example: 305
-      example:
-        url: https://
-        description: Bando
-        type: image
-        sizeInKiloBytes: 305
+          anyOf:
+            - type: integer
+            - type: 'null'
+          examples:
+            - 305
+      examples:
+        - url: https://
+          description: Bando
+          type: image
+          sizeInKiloBytes: 305
     NewsItemOverview:
       type: object
       required:
@@ -4404,36 +4584,45 @@ components:
       properties:
         id:
           type: number
-          example: 123
+          examples:
+            - 123
         title:
           type: string
-          example: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
+          examples:
+            - Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
         isEvent:
           type: boolean
-          example: false
+          examples:
+            - false
         shortDescription:
           type: string
-          example: Seminario di presentazione del progetto
+          examples:
+            - Seminario di presentazione del progetto
         eventStartTime:
-          type: string
-          nullable: true
-          example: Dal 30 agosto 2023
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - Dal 30 agosto 2023
         eventEndTime:
-          type: string
-          nullable: true
-          example: Al 30 agosto 2023
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - Al 30 agosto 2023
         createdAt:
           type: string
           format: date-time
-          example: '2022-08-31T14:00:00Z'
-      example:
-        id: 123
-        title: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
-        isEvent: false
-        shortDescription: Seminario di presentazione del progetto
-        eventStartTime: Dal 30 agosto 2023
-        eventEndTime: Al 30 agosto 2023
-        createdAt: '2022-08-31T14:00:00Z'
+          examples:
+            - '2022-08-31T14:00:00Z'
+      examples:
+        - id: 123
+          title: Partecipazione, co-progettazione e impatto sociale. Sfide e opportunità per l'inclusione sociale
+          isEvent: false
+          shortDescription: Seminario di presentazione del progetto
+          eventStartTime: Dal 30 agosto 2023
+          eventEndTime: Al 30 agosto 2023
+          createdAt: '2022-08-31T14:00:00Z'
     Person:
       type: object
       required:
@@ -4445,43 +4634,48 @@ components:
       properties:
         email:
           type: string
-          example: fulvio.corno@polito.it
+          examples:
+            - fulvio.corno@polito.it
         phoneNumbers:
           type: array
           items:
             $ref: '#/components/schemas/PhoneNumber'
         facilityShortName:
-          type: string
-          nullable: true
-          example: DAUIN
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - DAUIN
         profileUrl:
           type: string
-          example: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
+          examples:
+            - https://www.dauin.polito.it/personale/scheda/(matricola)/002154
         courses:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonCourse'
-          nullable: true
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/PersonCourse'
+            - type: 'null'
       allOf:
         - $ref: '#/components/schemas/PersonOverview'
-      example:
-        id: 2154
-        firstName: Fulvio
-        lastName: Corno
-        picture: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
-        role: Docente
-        email: fulvio.corno@polito.it
-        phoneNumbers:
-          - full: '0110907053'
-            internal: '7053'
-        facilityShortName: DAUIN
-        profileUrl: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
-        courses:
-          - id: 258674
-            shortcode: 01NYHOV
-            name: Computer sciences
-            role: Collaboratore
-            year: 2021
+      examples:
+        - id: 2154
+          firstName: Fulvio
+          lastName: Corno
+          picture: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+          role: Docente
+          email: fulvio.corno@polito.it
+          phoneNumbers:
+            - full: '0110907053'
+              internal: '7053'
+          facilityShortName: DAUIN
+          profileUrl: https://www.dauin.polito.it/personale/scheda/(matricola)/002154
+          courses:
+            - id: 258674
+              shortcode: 01NYHOV
+              name: Computer sciences
+              role: Collaboratore
+              year: 2021
     PersonCourse:
       type: object
       required:
@@ -4493,29 +4687,34 @@ components:
         id:
           type: integer
           description: The identifier for this course
-          example: 258674
+          examples:
+            - 258674
         shortcode:
           type: string
           description: The shortcode for this course
-          example: 01NYHOV
+          examples:
+            - 01NYHOV
         name:
           type: string
           description: The name of the course
-          example: Computer sciences
+          examples:
+            - Computer sciences
         role:
           type: string
           description: The role of the person in this course
-          example: Collaboratore
+          examples:
+            - Collaboratore
         year:
           type: number
           description: The year this course was given in
-          example: 2021
-      example:
-        id: 258674
-        shortcode: 01NYHOV
-        name: Computer sciences
-        role: Collaboratore
-        year: 2021
+          examples:
+            - 2021
+      examples:
+        - id: 258674
+          shortcode: 01NYHOV
+          name: Computer sciences
+          role: Collaboratore
+          year: 2021
     PersonOverview:
       type: object
       required:
@@ -4527,26 +4726,32 @@ components:
       properties:
         id:
           type: number
-          example: 2154
+          examples:
+            - 2154
         firstName:
           type: string
-          example: Fulvio
+          examples:
+            - Fulvio
         lastName:
           type: string
-          example: Corno
+          examples:
+            - Corno
         picture:
-          type: string
-          nullable: true
-          example: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+          anyOf:
+            - type: string
+            - type: 'null'
+          examples:
+            - https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
         role:
           type: string
-          example: Docente
-      example:
-        id: 2154
-        firstName: Fulvio
-        lastName: Corno
-        picture: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
-        role: Docente
+          examples:
+            - Docente
+      examples:
+        - id: 2154
+          firstName: Fulvio
+          lastName: Corno
+          picture: https://www.swas.polito.it/_library/image_pub.asp?matricola=002154
+          role: Docente
     PhoneNumber:
       type: object
       required:
@@ -4555,13 +4760,15 @@ components:
       properties:
         full:
           type: string
-          example: '0110907053'
+          examples:
+            - '0110907053'
         internal:
           type: string
-          example: '7053'
-      example:
-        full: '0110907053'
-        internal: '7053'
+          examples:
+            - '7053'
+      examples:
+        - full: '0110907053'
+          internal: '7053'
     Place:
       type: object
       required:
@@ -4581,10 +4788,12 @@ components:
       properties:
         latitude:
           type: number
-          example: 45.064254
+          examples:
+            - 45.064254
         longitude:
           type: number
-          example: 7.657823
+          examples:
+            - 7.657823
         id:
           type: string
         room:
@@ -4619,26 +4828,30 @@ components:
           $ref: '#/components/schemas/GeoJsonPolygon'
         capacity:
           type: integer
-          example: 300
+          examples:
+            - 300
         structure:
-          type: object
-          properties:
-            name:
-              type: string
-            shortName:
-              type: string
-            email:
-              type: string
-              nullable: true
-            phone:
-              type: string
-              nullable: true
-          required:
-            - name
-            - shortName
-            - email
-            - phone
-          nullable: true
+          anyOf:
+            - type: object
+              properties:
+                name:
+                  type: string
+                shortName:
+                  type: string
+                email:
+                  anyOf:
+                    - type: string
+                    - type: 'null'
+                phone:
+                  anyOf:
+                    - type: string
+                    - type: 'null'
+              required:
+                - name
+                - shortName
+                - email
+                - phone
+            - type: 'null'
         resources:
           type: array
           items:
@@ -4662,15 +4875,18 @@ components:
       properties:
         id:
           type: string
-          example: AULA
+          examples:
+            - AULA
         name:
           type: string
-          example: Aula
+          examples:
+            - Aula
         showInMenu:
           type: boolean
         color:
           type: string
-          example: lightBlue
+          examples:
+            - lightBlue
           default: gray
         markerUrl:
           type: string
@@ -4678,19 +4894,21 @@ components:
         priority:
           type: number
           description: A MapBox style priority number. 0 means most important, larger numbers are less important
-          example: 60
+          examples:
+            - 60
           default: 100
         highlighted:
           type: boolean
           description: If true, markers of this category should be shown initially on the map
-          example: false
-      example:
-        id: AULA
-        name: Aula
-        showInMenu: false
-        color: lightBlue
-        priority: 60
-        highlighted: false
+          examples:
+            - false
+      examples:
+        - id: AULA
+          name: Aula
+          showInMenu: false
+          color: lightBlue
+          priority: 60
+          highlighted: false
     PlaceCategoryOverview:
       type: object
       required:
@@ -4699,15 +4917,18 @@ components:
       properties:
         id:
           type: string
-          example: AULA
+          examples:
+            - AULA
         name:
           type: string
-          example: Aula
+          examples:
+            - Aula
         showInMenu:
           type: boolean
         color:
           type: string
-          example: lightBlue
+          examples:
+            - lightBlue
           default: gray
         markerUrl:
           type: string
@@ -4715,12 +4936,14 @@ components:
         priority:
           type: number
           description: A MapBox style priority number. 0 means most important, larger numbers are less important
-          example: 60
+          examples:
+            - 60
           default: 100
         highlighted:
           type: boolean
           description: If true, markers of this category should be shown initially on the map
-          example: false
+          examples:
+            - false
         subCategory:
           $ref: '#/components/schemas/PlaceCategory'
     PlaceOverview:
@@ -4738,10 +4961,12 @@ components:
       properties:
         latitude:
           type: number
-          example: 45.064254
+          examples:
+            - 45.064254
         longitude:
           type: number
-          example: 7.657823
+          examples:
+            - 7.657823
         id:
           type: string
         room:
@@ -4799,10 +5024,12 @@ components:
       properties:
         id:
           type: integer
-          example: 150157
+          examples:
+            - 150157
         title:
           type: string
-          example: Lecture 1
+          examples:
+            - Lecture 1
     RootPlaceCategory:
       type: object
       required:
@@ -4811,15 +5038,18 @@ components:
       properties:
         id:
           type: string
-          example: AULA
+          examples:
+            - AULA
         name:
           type: string
-          example: Aula
+          examples:
+            - Aula
         showInMenu:
           type: boolean
         color:
           type: string
-          example: lightBlue
+          examples:
+            - lightBlue
           default: gray
         markerUrl:
           type: string
@@ -4827,12 +5057,14 @@ components:
         priority:
           type: number
           description: A MapBox style priority number. 0 means most important, larger numbers are less important
-          example: 60
+          examples:
+            - 60
           default: 100
         highlighted:
           type: boolean
           description: If true, markers of this category should be shown initially on the map
-          example: false
+          examples:
+            - false
         subCategories:
           type: array
           items:
@@ -4854,10 +5086,12 @@ components:
           type: string
         latitude:
           type: number
-          example: 45.064254
+          examples:
+            - 45.064254
         longitude:
           type: number
-          example: 7.657823
+          examples:
+            - 7.657823
         floors:
           type: array
           items:
@@ -4884,13 +5118,14 @@ components:
       properties:
         username:
           type: string
-          example: s290683
+          examples:
+            - s290683
         client:
           $ref: '#/components/schemas/Client'
         device:
           $ref: '#/components/schemas/Device'
-      example:
-        username: s290683
+      examples:
+        - username: s290683
     Symbol:
       type: object
       properties:
@@ -4902,9 +5137,9 @@ components:
             - $ref: '#/components/schemas/ThemeColors'
         icon:
           type: string
-      example:
-        color: '#000095'
-        icon: graduation-cap
+      examples:
+        - color: '#000095'
+          icon: graduation-cap
     ThemeColors:
       type: object
       required:
@@ -4928,11 +5163,13 @@ components:
         - deletedAt
       properties:
         deletedAt:
-          type: string
-          format: date-time
-          nullable: true
+          anyOf:
+            - type: string
+              format: date-time
+            - type: 'null'
           description: Set to a date to withdraw the assignment, `null` to restore it
-          example: '2022-09-03T10:00:00Z'
+          examples:
+            - '2022-09-03T10:00:00Z'
     UpdateBookingRequest:
       type: object
       required:
@@ -4940,7 +5177,8 @@ components:
       properties:
         isLocationChecked:
           type: boolean
-          example: true
+          examples:
+            - true
     UpdateInfo:
       type: object
       required:
@@ -4956,7 +5194,8 @@ components:
           enum:
             - it
             - en
-          example: it
+          examples:
+            - it
     ValidateMfaRequest:
       type: object
       required:
@@ -4966,21 +5205,25 @@ components:
       properties:
         serial:
           type: string
-          example: EDUP000123456
+          examples:
+            - EDUP000123456
         nonce:
           type: string
-          example: 65ba9e0e5aac421a9150991638a9d697
+          examples:
+            - 65ba9e0e5aac421a9150991638a9d697
         signature:
           type: string
-          example: 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
+          examples:
+            - 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
         decline:
           type: boolean
-          example: false
-      example:
-        serial: EDUP000123456
-        nonce: 65ba9e0e5aac421a9150991638a9d697
-        signature: 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
-        decline: false
+          examples:
+            - false
+      examples:
+        - serial: EDUP000123456
+          nonce: 65ba9e0e5aac421a9150991638a9d697
+          signature: 83e08d9fc4be3de046318eb3c2c9ae4ede1374a5423a1487b92febc70d106994
+          decline: false
     VideoLecture:
       type: object
       required:
@@ -5062,8 +5305,9 @@ components:
         - type
       properties:
         coverUrl:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         videoUrl:
           type: string
         duration:

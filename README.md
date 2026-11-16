@@ -1,3 +1,11 @@
+# QCFENOTE!HISTORY @2026-11-16
+- OpenAPI 3.0: released in July 2017 => active
+- OpenAPI 3.1: released in February 2021. Almost six years ago => openapi generator supports this in BETA only
+- OpenAPI 3.2: released in September 2025. Still not officially supported => hah
+
+TSP supports outputting openapi 3.1+ however needs explicit setting in tspconfig.yaml.
+Maybe they'll change the default when the generator will support it.
+
 # PoliTO API Spec
 The OpenAPI specification for the REST API of Politecnico di Torino.
 

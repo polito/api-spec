@@ -310,7 +310,7 @@ interface StudentNs {
   getUnreadEmailsNumber(): OkDataResponse<EmailBadge> | BaseErrors;
 
   @route("/preferences")
-  @patch(#{ implicitOptionality: true })
+  @patch
   @summary("Update device preferences | Aggiorna preferenze del dispositivo")
   updateDevicePreferences(
     @body body: UpdatePreferencesRequest,
@@ -363,7 +363,7 @@ interface Notifications {
   ): OkDataResponse<NotificationPreferences> | BaseErrors;
 
   @route("/preferences")
-  @patch(#{ implicitOptionality: true })
+  @patch
   @summary("Update notification preferences | Aggiorna preferenze notifiche")
   updateNotificationPreferences(
     @body body: UpdateNotificationPreferencesRequest,

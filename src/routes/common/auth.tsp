@@ -241,10 +241,12 @@ interface Auth {
   @summary("Logout")
   logout(): NoContentResponse | BaseErrors;
 
-  @patch(#{ implicitOptionality: true })
+  @patch
   @route("/client")
   @summary("Update client version fields | Aggiorna i campi di versione del client")
-  appInfo(@body body: AppInfoRequest): OkDataResponse<UpdateInfo> | BaseErrors;
+  appInfo(
+    @body body: OptionalProperties<AppInfoRequest>,
+  ): OkDataResponse<UpdateInfo> | BaseErrors;
 }
 
 @example(_ex_enrolMfa_req)

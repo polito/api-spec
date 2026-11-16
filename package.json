@@ -19,13 +19,16 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.25.2",
-    "@typespec/compiler": "^1.7.0",
-    "@typespec/http": "^1.7.0",
-    "@typespec/openapi": "^1.7.0",
-    "@typespec/openapi3": "^1.7.0",
+    "@openapitools/openapi-generator-cli": "^2.42.2",
+    "@typespec/compiler": "^1.18.0",
+    "@typespec/http": "^1.18.0",
+    "@typespec/openapi": "^1.18.0",
+    "@typespec/openapi3": "^1.18.0",
     "commander": "^14.0.3",
     "husky": "^9.1.7",
     "yaml": "^2.8.2"
+  },
+  "allowScripts": {
+    "@openapitools/openapi-generator-cli@2.42.2": true
   }
 }
