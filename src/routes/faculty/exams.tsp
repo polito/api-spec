@@ -21,7 +21,7 @@ model Student {
 
   /** Whether the student is entitled to extra time (DSA/BES) */
   @example(true)
-  needsExtraTime: boolean;
+  hasSpecialNeeds: boolean;
 
   /** Whether the student is marked as present at the exam */
   @example(false)
@@ -34,6 +34,12 @@ model Student {
   /** Additional notes about the student for this exam */
   @example(#["Necessita di supporto per la lettura"])
   notes: string[];
+}
+
+model ExamEnrolledStudent extends Student {
+  /** Four-digit academic year of attendance for the course (YYYY). | Anno accademico di frequenza dell'insegnamento espresso con quattro cifre (YYYY). */
+  @example("2026")
+  attendanceYear: string;
 }
 
 model ExamStudentsSummary {
@@ -56,7 +62,7 @@ model ExamStudentsSummary {
 
 model ExamStudents {
   summary: ExamStudentsSummary;
-  students: Student[];
+  students: ExamEnrolledStudent[];
 }
 
 model CheckAttendanceRequest {

@@ -1664,7 +1664,7 @@ paths:
                   - studentId: '290683'
                     name: Mario
                     surname: Rossi
-                    needsExtraTime: true
+                    hasSpecialNeeds: true
                     isPresent: true
                     isGraduating: false
                     notes:
@@ -1672,7 +1672,7 @@ paths:
                   - studentId: '291045'
                     name: Laura
                     surname: Bianchi
-                    needsExtraTime: false
+                    hasSpecialNeeds: false
                     isPresent: true
                     isGraduating: true
                     notes: []
@@ -1789,17 +1789,19 @@ paths:
                     - studentId: '290683'
                       name: Mario
                       surname: Rossi
-                      needsExtraTime: true
+                      hasSpecialNeeds: true
                       isPresent: false
                       isGraduating: false
+                      attendanceYear: '2026'
                       notes:
                         - Necessita di supporto per la lettura
                     - studentId: '291045'
                       name: Laura
                       surname: Bianchi
-                      needsExtraTime: false
+                      hasSpecialNeeds: false
                       isPresent: false
                       isGraduating: true
+                      attendanceYear: '2025'
                       notes: []
         '401':
           description: Access is unauthorized.
@@ -4434,6 +4436,17 @@ components:
           type: string
           nullable: true
           description: Not returned for faculty calls
+    ExamEnrolledStudent:
+      type: object
+      required:
+        - attendanceYear
+      properties:
+        attendanceYear:
+          type: string
+          description: Four-digit academic year of attendance for the course (YYYY). | Anno accademico di frequenza dell'insegnamento espresso con quattro cifre (YYYY).
+          example: '2026'
+      allOf:
+        - $ref: '#/components/schemas/Student'
     ExamNotificationRequest:
       type: object
       required:
@@ -4489,7 +4502,7 @@ components:
         students:
           type: array
           items:
-            $ref: '#/components/schemas/Student'
+            $ref: '#/components/schemas/ExamEnrolledStudent'
     ExamStudentsSummary:
       type: object
       required:
@@ -5369,7 +5382,7 @@ components:
         - studentId
         - name
         - surname
-        - needsExtraTime
+        - hasSpecialNeeds
         - isPresent
         - isGraduating
         - notes
@@ -5383,7 +5396,7 @@ components:
         surname:
           type: string
           example: Rossi
-        needsExtraTime:
+        hasSpecialNeeds:
           type: boolean
           description: Whether the student is entitled to extra time (DSA/BES)
           example: true
