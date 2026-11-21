@@ -1268,7 +1268,7 @@ paths:
     patch:
       operationId: DepartmentalSpacesService_updateSpaceRecurrence
       summary: Update a recurrence | Modifica una ricorrenza
-      description: Update the requester, type, description, notes and visibility of a recurrence. | Modifica richiedente, tipologia, descrizione, note e visibilità di una ricorrenza.
+      description: Update only the requester, type, description, notes and visibility of a recurrence. Dates, weekdays and times cannot be changed. | Modifica solo richiedente, tipologia, descrizione, note e visibilità di una ricorrenza. Date, giorni di ricorrenza e orari non possono essere modificati.
       parameters:
         - name: recurrenceId
           in: path
@@ -1277,28 +1277,19 @@ paths:
             type: integer
       responses:
         '200':
-          description: Complete or partial success. Returns the recurrence identifier and failed_dates, always present and empty on complete success. | Successo completo o parziale. Restituisce l'identificativo della ricorrenza e failed_dates, sempre presente e vuoto in caso di successo completo.
+          description: Update completed; returns the recurrence identifier. | Modifica completata; restituisce l'identificativo della ricorrenza.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SpaceRecurrenceResult'
+                    $ref: '#/components/schemas/SpaceRecurrenceUpdateResult'
                 required:
                   - data
-              examples:
-                example0:
-                  value:
-                    data:
-                      id: 12960
-                      failed_dates:
-                        - '2026-10-22'
-                example1:
-                  value:
-                    data:
-                      id: 12960
-                      failed_dates: []
+              example:
+                data:
+                  id: 12960
         '400':
           description: Invalid input. | Dati di input non validi.
           content:
@@ -1334,6 +1325,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateSpaceRecurrenceRequest'
             example:
+              requestedById: '028889'
               typeId: 1
               eventDescription: Riunione di dipartimento - aggiornamento piano attività
               notes: Prepararsi in anticipo secondo documentazione inviata
@@ -4432,6 +4424,7 @@ components:
         - $ref: '#/components/schemas/UpdateSpaceRecurrenceRequest'
       example:
         spaceId: sala riunioni ISAD
+        requestedById: '028889'
         typeId: 1
         eventDescription: Riunione di dipartimento
         notes: Prepararsi in anticipo secondo documentazione inviata
@@ -5794,7 +5787,7 @@ components:
       properties:
         id:
           type: integer
-          description: Identifier of the created or updated recurrence.
+          description: Identifier of the created recurrence.
           example: 12960
         failed_dates:
           type: array
@@ -5806,6 +5799,15 @@ components:
             Always present: empty on complete success, non-empty on partial success.
             Dates use ISO format (YYYY-MM-DD).
           example: []
+    SpaceRecurrenceUpdateResult:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Identifier of the updated recurrence.
+          example: 12960
     SwitchCareerRequest:
       type: object
       required:
@@ -5862,6 +5864,7 @@ components:
     UpdateSpaceRecurrenceRequest:
       type: object
       required:
+        - requestedById
         - typeId
         - eventDescription
         - notes
@@ -5869,9 +5872,7 @@ components:
       properties:
         requestedById:
           type: string
-          description: |-
-            ID (matricola), without the user-type prefix, of the person for whom the space is requested;
-            corresponds to MatRichiedente. Optional; this may differ from the authenticated caller.
+          description: Requester's ID (matricola), without the user-type prefix; corresponds to MatRichiedente. Required on creation and update; may differ from the authenticated caller. | Matricola dell'utente richiedente, senza prefisso del tipo utente. Obbligatoria in creazione e modifica; può differire dal chiamante autenticato.
           example: '028889'
         typeId:
           type: integer
@@ -5886,7 +5887,7 @@ components:
         isPubliclyVisible:
           type: boolean
           example: false
-      description: Fields that can be updated on both a single event and a recurrence.
+      description: Descriptive fields shared by event and recurrence requests. Recurrence updates cannot change dates, weekdays or times. | Campi descrittivi condivisi tra richieste di eventi e ricorrenze. La modifica di una ricorrenza non consente di cambiare date, giorni di ricorrenza o orari.
     ValidateMfaRequest:
       type: object
       required:

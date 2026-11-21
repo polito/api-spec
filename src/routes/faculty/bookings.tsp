@@ -223,19 +223,11 @@ enum DayOfWeek {
   saturday: 6,
 }
 
-/** Fields that can be updated on both a single event and a recurrence. */
-// TODO: verificare il supporto all'omissione dei campi facoltativi non valorizzati
-// nei payload, senza inviare null o stringhe vuote (es. requestedById).
-// Verificare insieme l'elenco completo dei campi facoltativi e la loro obbligatorietà
-// per ciascuna operazione, inclusa la semantica dell'omissione negli aggiornamenti.
+/** Descriptive fields shared by event and recurrence requests. Recurrence updates cannot change dates, weekdays or times. | Campi descrittivi condivisi tra richieste di eventi e ricorrenze. La modifica di una ricorrenza non consente di cambiare date, giorni di ricorrenza o orari. */
 model UpdateSpaceRecurrenceRequest {
-  // TODO: chiarire il richiedente effettivo quando requestedById è omesso,
-  // anche ai fini dei controlli con permissionLevel = 2.
-  /** ID (matricola), without the user-type prefix, of the person for whom the space is requested;
-   * corresponds to MatRichiedente. Optional; this may differ from the authenticated caller.
-   */
+  /** Requester's ID (matricola), without the user-type prefix; corresponds to MatRichiedente. Required on creation and update; may differ from the authenticated caller. | Matricola dell'utente richiedente, senza prefisso del tipo utente. Obbligatoria in creazione e modifica; può differire dal chiamante autenticato. */
   @example("028889")
-  requestedById?: string;
+  requestedById: string;
 
   /** Identifier returned by /event-types; corresponds to IdTipologiaEvento. */
   // Example ID 1 is fictitious; the actual code for Riunione is not yet known.
@@ -317,7 +309,7 @@ model SpaceEventResult {
 }
 
 model SpaceRecurrenceResult {
-  /** Identifier of the created or updated recurrence. */
+  /** Identifier of the created recurrence. */
   @example(12960)
   id: integer;
 
@@ -327,6 +319,12 @@ model SpaceRecurrenceResult {
    */
   @example(#[])
   failed_dates: plainDate[];
+}
+
+model SpaceRecurrenceUpdateResult {
+  /** Identifier of the updated recurrence. */
+  @example(12960)
+  id: integer;
 }
 
 model DepartmentalSpaceCalendarRequest {
@@ -410,6 +408,10 @@ alias DepartmentalSpaceEventResponse = DepartmentalSpaceDataResponse<
 alias DepartmentalSpaceRecurrenceResponse = DepartmentalSpaceDataResponse<
   SpaceRecurrenceResult,
   "Complete or partial success. Returns the recurrence identifier and failed_dates, always present and empty on complete success. | Successo completo o parziale. Restituisce l'identificativo della ricorrenza e failed_dates, sempre presente e vuoto in caso di successo completo."
+>;
+alias DepartmentalSpaceRecurrenceUpdateResponse = DepartmentalSpaceDataResponse<
+  SpaceRecurrenceUpdateResult,
+  "Update completed; returns the recurrence identifier. | Modifica completata; restituisce l'identificativo della ricorrenza."
 >;
 
 @doc("Deletion completed; no response body. | Eliminazione completata; nessun body di risposta.")
@@ -499,19 +501,14 @@ interface DepartmentalSpacesService {
   @route("/recurrences/{recurrenceId}")
   @patch(#{ implicitOptionality: false })
   @summary("Update a recurrence | Modifica una ricorrenza")
-  // TODO REST: se più occorrenze costituiscono un'unica risorsa ricorrenza,
-  // il successo parziale di PATCH richiede una revisione rispetto all'atomicità (RFC 5789).
-  // TODO: verificare il supporto all'aggiornamento parziale della ricorrenza
-  // con risposta 200 contenente id e failed_dates, obbligatorio anche se vuoto.
-  @opExample(_ex_updateSpaceRecurrence_full_resp)
-  @opExample(_ex_updateSpaceRecurrence_partial_resp)
+  @opExample(_ex_updateSpaceRecurrence_resp)
   @opExample(_ex_updateSpaceRecurrence_req)
   @opExample(_ex_updateSpaceRecurrence_403_resp)
-  @doc("Update the requester, type, description, notes and visibility of a recurrence. | Modifica richiedente, tipologia, descrizione, note e visibilità di una ricorrenza.")
+  @doc("Update only the requester, type, description, notes and visibility of a recurrence. Dates, weekdays and times cannot be changed. | Modifica solo richiedente, tipologia, descrizione, note e visibilità di una ricorrenza. Date, giorni di ricorrenza e orari non possono essere modificati.")
   updateSpaceRecurrence(
     @path recurrenceId: integer,
     @body body: UpdateSpaceRecurrenceRequest,
-  ): DepartmentalSpaceRecurrenceResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceRecurrenceNotFound;
+  ): DepartmentalSpaceRecurrenceUpdateResponse | DepartmentalSpaceModificationErrors | DepartmentalSpaceRecurrenceNotFound;
 
   @route("/recurrences/{recurrenceId}")
   @delete

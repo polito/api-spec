@@ -140,6 +140,7 @@ const _ex_createSpaceEvent_req_body = #{
 // Occurrences stay at 10:00–11:30 Europe/Rome across the DST change.
 const _ex_createSpaceRecurrence_req_body = #{
   spaceId: "sala riunioni ISAD",
+  requestedById: "028889",
   typeId: 1,
   eventDescription: "Riunione di dipartimento",
   notes: "Prepararsi in anticipo secondo documentazione inviata",
@@ -165,19 +166,11 @@ const _ex_updateSpaceRecurrence_req = #{
   parameters: #{
     recurrenceId: 12960,
     body: #{
+      requestedById: "028889",
       typeId: 1,
       eventDescription: "Riunione di dipartimento - aggiornamento piano attività",
       notes: "Prepararsi in anticipo secondo documentazione inviata",
       isPubliclyVisible: false,
-    },
-  },
-};
-
-const _ex_updateSpaceRecurrence_partial_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{
-      data: #{ id: 12960, failed_dates: #[plainDate.fromISO("2026-10-22")] },
     },
   },
 };
@@ -197,11 +190,8 @@ const _ex_createSpaceRecurrence_full_resp = #{
   },
 };
 
-const _ex_updateSpaceRecurrence_full_resp = #{
-  returnType: #{
-    statusCode: 200,
-    body: #{ data: #{ id: 12960, failed_dates: #[] } },
-  },
+const _ex_updateSpaceRecurrence_resp = #{
+  returnType: #{ statusCode: 200, body: #{ data: #{ id: 12960 } } },
 };
 
 // Error messages transcribed from the supplied webservice document.
