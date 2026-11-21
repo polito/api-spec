@@ -12,10 +12,10 @@ tags:
   - name: Bookings
   - name: Courses
   - name: Lectures
-  - name: Geography
   - name: News
   - name: People
   - name: Places
+  - name: Geography
   - name: Profile
 paths:
   /announcements:
