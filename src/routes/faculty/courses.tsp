@@ -33,6 +33,21 @@ model FacultyCourseStudentOverview {
   };
 }
 
+model FacultyCourseEnrolledStudentOverview
+  extends FacultyCourseStudentOverview {
+  /** Whether the student is entitled to extra time (DSA/BES) */
+  @example(true)
+  hasSpecialNeeds: boolean;
+
+  /** Whether the student is about to graduate */
+  @example(false)
+  isGraduating: boolean;
+
+  /** Additional notes about the student */
+  @example(#["Necessita di supporto per la lettura"])
+  notes: string[];
+}
+
 model FacultyCourseStudentsStats {
   @example(204)
   totalEnrolled: integer;
@@ -63,7 +78,7 @@ model FacultyCourseExamResult {
 }
 
 model FacultyCourseStudentDetail {
-  ...FacultyCourseStudentOverview;
+  ...FacultyCourseEnrolledStudentOverview;
   course: {
     @example("02JSKPD")
     shortcode: string;
@@ -80,15 +95,12 @@ model FacultyCourseStudentDetail {
 
   examResult: FacultyCourseExamResult | null;
 
-  /** Academic year of subscription. */
-  @example("2025/2026")
-  subscription: string;
+  /** Four-digit academic year of attendance for the course (YYYY). | Anno accademico di frequenza dell'insegnamento espresso con quattro cifre (YYYY). */
+  @example("2025")
+  attendanceYear: string;
 
   @example("Italian")
   citizenship: string;
-
-  @example(true)
-  hasSpecialNeeds: boolean;
 }
 
 model CompensativeMeasuresDocument {
@@ -299,7 +311,7 @@ interface FacultyCourseStudents {
   @doc("Returns an overview of students enrolled in the course. | Restituisce la vista overview degli studenti iscritti al corso.")
   @opExample(_ex_listFacultyCourseStudents_resp)
   listFacultyCourseStudents(@path courseId: integer):
-    | OkDataResponse<FacultyCourseStudentOverview[]>
+    | OkDataResponse<FacultyCourseEnrolledStudentOverview[]>
     | NotAuthorized
     | NotFound
     | BaseErrors;
