@@ -3763,51 +3763,6 @@ components:
           type: integer
         message:
           type: string
-    EscError:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 500
-        message:
-          type: string
-          example: An error occurred
-        careerId:
-          type: integer
-          example: 123456
-    EuropeanStudentCard:
-      type: object
-      required:
-        - canBeRequested
-        - details
-      properties:
-        canBeRequested:
-          type: boolean
-        details:
-          type: object
-          properties:
-            status:
-              type: string
-              enum:
-                - active
-                - inactive
-                - expired
-            inactiveStatusReason:
-              type: string
-              nullable: true
-            cardNumber:
-              type: string
-            expiresAt:
-              type: string
-            qrCode:
-              type: string
-          required:
-            - status
-            - inactiveStatusReason
-            - cardNumber
-            - expiresAt
-            - qrCode
-          nullable: true
     Event:
       type: object
       required:

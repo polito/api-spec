@@ -8,6 +8,35 @@ namespace PolitoAPI;
 
 using Http;
 
+model EuropeanStudentCard {
+  canBeRequested: boolean;
+  details: {
+    status: "active" | "inactive" | "expired";
+    inactiveStatusReason: string | null;
+    cardNumber: string;
+    expiresAt: string;
+    qrCode: string;
+  } | null;
+}
+
+model EscError {
+  @example(500)
+  code?: integer;
+
+  @example("An error occurred")
+  message?: string;
+
+  @example(123456)
+  careerId?: integer;
+}
+
+alias EscServerError = {
+  @statusCode statusCode: 500;
+  @body body: ErrorResponse & {
+    errors: EscError[];
+  };
+};
+
 @tag("Esc")
 @route("/esc")
 interface Esc {

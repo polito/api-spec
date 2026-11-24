@@ -2,6 +2,7 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
+import "../../models/shared.tsp";
 
 import "../../examples/common/courses.tsp";
 
@@ -9,6 +10,30 @@ using Http;
 using OpenAPI;
 
 namespace PolitoAPI;
+
+model RelatedVirtualClassroom {
+  @example(150157)
+  id: integer;
+
+  @example("Lecture 1")
+  title: string;
+}
+
+model Lecture {
+  id: numeric;
+  startsAt: utcDateTime;
+  endsAt: utcDateTime;
+  type: string;
+  virtualClassrooms: RelatedVirtualClassroom[];
+  description: string | null;
+  courseId: integer;
+  courseName: string;
+
+  @example(150157)
+  teacherId: integer;
+
+  place: PlaceRef;
+}
 
 model CourseModuleEdition {
   @example("2021")

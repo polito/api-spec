@@ -6,77 +6,12 @@ namespace PolitoAPI;
 
 /* MODELS */
 
-model UpdatePreferencesRequest {
-  @example("it")
-  language?: "it" | "en";
-}
-
 model PlaceRef {
   buildingId: string;
   floorId: string;
   roomId: string;
   siteId: string;
   name: string;
-}
-
-model EuropeanStudentCard {
-  canBeRequested: boolean;
-  details: {
-    status: "active" | "inactive" | "expired";
-    inactiveStatusReason: string | null;
-    cardNumber: string;
-    expiresAt: string;
-    qrCode: string;
-  } | null;
-}
-
-model RelatedVirtualClassroom {
-  @example(150157)
-  id: integer;
-
-  @example("Lecture 1")
-  title: string;
-}
-
-model Lecture {
-  id: numeric;
-  startsAt: utcDateTime;
-  endsAt: utcDateTime;
-  type: string;
-  virtualClassrooms: RelatedVirtualClassroom[];
-  description: string | null;
-  courseId: integer;
-  courseName: string;
-
-  @example(150157)
-  teacherId: integer;
-
-  place: PlaceRef;
-}
-
-model GuideSection {
-  @example("Title")
-  title: string;
-
-  @example("HTML content")
-  content: string;
-}
-
-model ThemeColors {
-  /** Color used in light mode. */
-  light: string;
-
-  /** Color used in dark mode. */
-  dark: string;
-}
-
-alias Color = string | ThemeColors;
-
-@example(#{ color: "#000095", icon: "graduation-cap" })
-model Symbol {
-  label?: string;
-  color?: Color;
-  icon?: string;
 }
 
 /* UTILS */
@@ -130,21 +65,3 @@ alias OkDataCreatedResponse<T> = CreatedResponse<{
 }>;
 
 alias BaseErrors = BadRequest | ServerError;
-
-model EscError {
-  @example(500)
-  code?: integer;
-
-  @example("An error occurred")
-  message?: string;
-
-  @example(123456)
-  careerId?: integer;
-}
-
-alias EscServerError = {
-  @statusCode statusCode: 500;
-  @body body: ErrorResponse & {
-    errors: EscError[];
-  };
-};
