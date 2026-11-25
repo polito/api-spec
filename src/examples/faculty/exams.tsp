@@ -39,7 +39,7 @@ const _ex_getExams_resp = #{
   },
 };
 
-// List students in exam example (with attendance + extra time info)
+// List students in exam example (with attendance, withdrawal and special needs info)
 const _ex_listStudentsInExam_resp = #{
   returnType: #{
     statusCode: 200,
@@ -58,6 +58,7 @@ const _ex_listStudentsInExam_resp = #{
             surname: "Rossi",
             hasSpecialNeeds: true,
             isPresent: false,
+            isWithdrawn: false,
             isGraduating: false,
             attendanceYear: "2026",
             notes: #["Necessita di supporto per la lettura"],
@@ -68,6 +69,7 @@ const _ex_listStudentsInExam_resp = #{
             surname: "Bianchi",
             hasSpecialNeeds: false,
             isPresent: false,
+            isWithdrawn: false,
             isGraduating: true,
             attendanceYear: "2025",
             notes: #[],
@@ -80,6 +82,15 @@ const _ex_listStudentsInExam_resp = #{
 
 // Check exam attendance example
 const _ex_checkAttendance_resp = #{
+  parameters: #{
+    examId: 888122,
+    body: #{
+      students: #[
+        #{ studentId: "290683", isPresent: true, isWithdrawn: false },
+        #{ studentId: "291045", isPresent: true, isWithdrawn: true }
+      ],
+    },
+  },
   returnType: #{
     statusCode: 200,
     body: #{
@@ -90,6 +101,7 @@ const _ex_checkAttendance_resp = #{
           surname: "Rossi",
           hasSpecialNeeds: true,
           isPresent: true,
+          isWithdrawn: false,
           isGraduating: false,
           notes: #["Necessita di supporto per la lettura"],
         },
@@ -99,6 +111,7 @@ const _ex_checkAttendance_resp = #{
           surname: "Bianchi",
           hasSpecialNeeds: false,
           isPresent: true,
+          isWithdrawn: true,
           isGraduating: true,
           notes: #[],
         }

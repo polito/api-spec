@@ -27,6 +27,10 @@ model Student {
   @example(false)
   isPresent: boolean;
 
+  /** Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame. */
+  @example(false)
+  isWithdrawn: boolean;
+
   /** Whether the student is about to graduate */
   @example(false)
   isGraduating: boolean;
@@ -65,10 +69,23 @@ model ExamStudents {
   students: ExamEnrolledStudent[];
 }
 
+model ExamStudentAttendance {
+  /** Student ID (matricola). | Matricola dello studente. */
+  @example("290683")
+  studentId: string;
+
+  /** Whether the student is marked as present at the exam. | Indica se lo studente è segnato come presente all'esame. */
+  @example(true)
+  isPresent: boolean;
+
+  /** Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame. */
+  @example(false)
+  isWithdrawn: boolean;
+}
+
 model CheckAttendanceRequest {
-  /** Student IDs of the students marked as present */
-  @example(#["290683", "291045"])
-  studentIds: string[];
+  /** Complete list of students enrolled in the exam, each exactly once. Include both statuses for every student. | Elenco completo degli iscritti all'appello, ciascuno una sola volta. Includere entrambi gli stati per ogni studente. */
+  students: ExamStudentAttendance[];
 }
 
 union NotificationChannel {
@@ -131,8 +148,8 @@ interface FacultyExams extends Exams<Exam> {
 
   @route("/{examId}/attendance")
   @post
-  @summary("Check exam attendance | Verifica presenze all'esame")
-  @doc("Registra le presenze passando l'array delle matricole presenti. Restituisce lo stato aggiornato delle presenze.")
+  @summary("Record exam attendance and withdrawals | Registra presenze e ritiri all'esame")
+  @doc("Submit the complete list of students enrolled in the exam, with presence and withdrawal status for each. The response returns their updated statuses. | Invia l'elenco completo degli iscritti all'appello, con lo stato di presenza e ritiro di ciascuno. La risposta restituisce gli stati aggiornati.")
   @opExample(_ex_checkAttendance_resp)
   checkAttendance(@path examId: integer, @body body: CheckAttendanceRequest):
     | OkDataResponse<Student[]>

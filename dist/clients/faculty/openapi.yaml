@@ -1637,8 +1637,8 @@ paths:
   /exams/{examId}/attendance:
     post:
       operationId: FacultyExams_checkAttendance
-      summary: Check exam attendance | Verifica presenze all'esame
-      description: Registra le presenze passando l'array delle matricole presenti. Restituisce lo stato aggiornato delle presenze.
+      summary: Record exam attendance and withdrawals | Registra presenze e ritiri all'esame
+      description: Submit the complete list of students enrolled in the exam, with presence and withdrawal status for each. The response returns their updated statuses. | Invia l'elenco completo degli iscritti all'appello, con lo stato di presenza e ritiro di ciascuno. La risposta restituisce gli stati aggiornati.
       parameters:
         - name: examId
           in: path
@@ -1666,6 +1666,7 @@ paths:
                     surname: Rossi
                     hasSpecialNeeds: true
                     isPresent: true
+                    isWithdrawn: false
                     isGraduating: false
                     notes:
                       - Necessita di supporto per la lettura
@@ -1674,6 +1675,7 @@ paths:
                     surname: Bianchi
                     hasSpecialNeeds: false
                     isPresent: true
+                    isWithdrawn: true
                     isGraduating: true
                     notes: []
         '401':
@@ -1702,6 +1704,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CheckAttendanceRequest'
+            example:
+              students:
+                - studentId: '290683'
+                  isPresent: true
+                  isWithdrawn: false
+                - studentId: '291045'
+                  isPresent: true
+                  isWithdrawn: true
   /exams/{examId}/notify:
     post:
       operationId: FacultyExams_notifyExamSubscribers
@@ -1791,6 +1801,7 @@ paths:
                       surname: Rossi
                       hasSpecialNeeds: true
                       isPresent: false
+                      isWithdrawn: false
                       isGraduating: false
                       attendanceYear: '2026'
                       notes:
@@ -1800,6 +1811,7 @@ paths:
                       surname: Bianchi
                       hasSpecialNeeds: false
                       isPresent: false
+                      isWithdrawn: false
                       isGraduating: true
                       attendanceYear: '2025'
                       notes: []
@@ -3714,16 +3726,13 @@ components:
     CheckAttendanceRequest:
       type: object
       required:
-        - studentIds
+        - students
       properties:
-        studentIds:
+        students:
           type: array
           items:
-            type: string
-          description: Student IDs of the students marked as present
-          example:
-            - '290683'
-            - '291045'
+            $ref: '#/components/schemas/ExamStudentAttendance'
+          description: Complete list of students enrolled in the exam, each exactly once. Include both statuses for every student. | Elenco completo degli iscritti all'appello, ciascuno una sola volta. Includere entrambi gli stati per ogni studente.
     Client:
       type: object
       required:
@@ -4491,6 +4500,25 @@ components:
         - requestAccepted
         - requestRejected
         - unavailable
+    ExamStudentAttendance:
+      type: object
+      required:
+        - studentId
+        - isPresent
+        - isWithdrawn
+      properties:
+        studentId:
+          type: string
+          description: Student ID (matricola). | Matricola dello studente.
+          example: '290683'
+        isPresent:
+          type: boolean
+          description: Whether the student is marked as present at the exam. | Indica se lo studente è segnato come presente all'esame.
+          example: true
+        isWithdrawn:
+          type: boolean
+          description: Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame.
+          example: false
     ExamStudents:
       type: object
       required:
@@ -5384,6 +5412,7 @@ components:
         - surname
         - hasSpecialNeeds
         - isPresent
+        - isWithdrawn
         - isGraduating
         - notes
       properties:
@@ -5403,6 +5432,10 @@ components:
         isPresent:
           type: boolean
           description: Whether the student is marked as present at the exam
+          example: false
+        isWithdrawn:
+          type: boolean
+          description: Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame.
           example: false
         isGraduating:
           type: boolean
