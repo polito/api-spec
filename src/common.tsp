@@ -4,16 +4,6 @@ using Http;
 
 namespace PolitoAPI;
 
-/* MODELS */
-
-model PlaceRef {
-  buildingId: string;
-  floorId: string;
-  roomId: string;
-  siteId: string;
-  name: string;
-}
-
 /* UTILS */
 
 @error

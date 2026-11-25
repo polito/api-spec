@@ -4,14 +4,6 @@ using Http;
 
 namespace PolitoAPI;
 
-model GuideSection {
-  @example("Title")
-  title: string;
-
-  @example("HTML content")
-  content: string;
-}
-
 model ThemeColors {
   /** Color used in light mode. */
   light: string;

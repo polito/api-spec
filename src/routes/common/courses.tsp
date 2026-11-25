@@ -2,7 +2,9 @@ import "@typespec/http";
 import "@typespec/openapi3";
 
 import "../../common.tsp";
-import "../../models/shared.tsp";
+import "../../models/guide.tsp";
+import "../../models/places.tsp";
+import "../../models/symbol.tsp";
 
 import "../../examples/common/courses.tsp";
 

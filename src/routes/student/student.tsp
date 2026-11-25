@@ -3,7 +3,8 @@ import "@typespec/openapi3";
 
 import "../../common.tsp";
 import "../../models/auth.tsp";
-import "../../models/shared.tsp";
+import "../../models/guide.tsp";
+import "../../models/symbol.tsp";
 import "../../examples/student/student.tsp";
 
 using Http;
