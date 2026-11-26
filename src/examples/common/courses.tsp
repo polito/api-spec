@@ -1360,3 +1360,19 @@ const _ex_getNextLecture_resp = #{
     },
   },
 };
+
+const _ex_updateCourseNotifications_req = #{
+  parameters: #{
+    courseId: 251007,
+    body: #{ notifications: #{ notices: true, files: false } },
+  },
+  returnType: #{ statusCode: 204 },
+};
+
+const _ex_updateCourseStyle_req = #{
+  parameters: #{
+    courseId: 251007,
+    body: #{ style: #{ color: "#2563EB", icon: null, label: "SDP" } },
+  },
+  returnType: #{ statusCode: 204 },
+};

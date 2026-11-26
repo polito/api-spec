@@ -267,6 +267,20 @@ model CourseNotices {
   content: string;
 }
 
+model CourseStylePreferencesPatch {
+  /** Six-digit hexadecimal color in #RRGGBB format. | Colore esadecimale a sei cifre nel formato #RRGGBB. */
+  @pattern("^#[0-9A-Fa-f]{6}$")
+  @example("#2563EB")
+  color?: string;
+
+  @example("faCode")
+  icon?: string | null;
+
+  /** Short course label (acronym). | Etichetta breve dell'insegnamento (acronimo). */
+  @example("SDP")
+  label?: string | null;
+}
+
 model CoursePreferencesRequest {
   notifications?: {
     @example(true)
@@ -279,9 +293,9 @@ model CoursePreferencesRequest {
     lectures?: boolean;
   };
 
-  /** Custom icon, color and label (acronym) for the course, `null` to reset it */
+  /** Custom icon, color and label for the course. | Icona, colore ed etichetta personalizzati per l'insegnamento. */
   @example(#{ color: "#2563EB", icon: "faCode", label: "SDP" })
-  style?: Symbol | null;
+  style?: CourseStylePreferencesPatch;
 }
 
 model UpdateAssignmentRequest {
@@ -387,6 +401,8 @@ interface Courses {
   @route("/{courseId}/preferences")
   @patch(#{ implicitOptionality: false })
   @summary("Update course preferences | Aggiorna preferenze del corso")
+  @opExample(_ex_updateCourseNotifications_req)
+  @opExample(_ex_updateCourseStyle_req)
   updateCoursePreferences(
     @path courseId: integer,
     @body body: CoursePreferencesRequest,

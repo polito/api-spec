@@ -1386,6 +1386,18 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CoursePreferencesRequest'
+            examples:
+              example0:
+                value:
+                  style:
+                    color: '#2563EB'
+                    icon: null
+                    label: SDP
+              example1:
+                value:
+                  notifications:
+                    notices: true
+                    files: false
   /courses/{courseId}/videolectures:
     get:
       operationId: Courses_getCourseVideolectures
@@ -3891,15 +3903,30 @@ components:
               type: boolean
               example: true
         style:
-          type: object
           allOf:
-            - $ref: '#/components/schemas/Symbol'
-          nullable: true
-          description: Custom icon, color and label (acronym) for the course, `null` to reset it
+            - $ref: '#/components/schemas/CourseStylePreferencesPatch'
+          description: Custom icon, color and label for the course. | Icona, colore ed etichetta personalizzati per l'insegnamento.
           example:
             color: '#2563EB'
             icon: faCode
             label: SDP
+    CourseStylePreferencesPatch:
+      type: object
+      properties:
+        color:
+          type: string
+          pattern: ^#[0-9A-Fa-f]{6}$
+          description: 'Six-digit hexadecimal color in #RRGGBB format. | Colore esadecimale a sei cifre nel formato #RRGGBB.'
+          example: '#2563EB'
+        icon:
+          type: string
+          nullable: true
+          example: faCode
+        label:
+          type: string
+          nullable: true
+          description: Short course label (acronym). | Etichetta breve dell'insegnamento (acronimo).
+          example: SDP
     CreateBookingRequest:
       type: object
       required:
