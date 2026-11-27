@@ -79,6 +79,7 @@ const _ex_listFacultyCourseStudents_resp = #{
           picture: #{ url: "https://didattica.polito.it/photos/s123456.jpg" },
           hasSpecialNeeds: true,
           isGraduating: false,
+          hasTakenExam: true,
           notes: #["Necessita di supporto per la lettura"],
         },
         #{
@@ -90,6 +91,7 @@ const _ex_listFacultyCourseStudents_resp = #{
           picture: #{ url: "https://didattica.polito.it/photos/s234567.jpg" },
           hasSpecialNeeds: false,
           isGraduating: true,
+          hasTakenExam: false,
           notes: #[],
         }
       ],
@@ -157,7 +159,7 @@ const _ex_getCourseStudentsStats_resp = #{
       data: #{
         totalEnrolled: 204,
         withAttendanceIssues: 10,
-        tookExam: 0,
+        tookExam: 1,
         withExamDebts: 42,
         eligibleForExam: 194,
         firstTimeInAcademicYear: 152,

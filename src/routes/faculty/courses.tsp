@@ -48,6 +48,13 @@ model FacultyCourseEnrolledStudentOverview
   notes: string[];
 }
 
+model FacultyCourseStudentListItem
+  extends FacultyCourseEnrolledStudentOverview {
+  /** Whether the student has already taken the exam for this course. | Indica se lo studente ha già sostenuto l'esame di questo insegnamento. */
+  @example(true)
+  hasTakenExam: boolean;
+}
+
 model FacultyCourseStudentsStats {
   @example(204)
   totalEnrolled: integer;
@@ -311,7 +318,7 @@ interface FacultyCourseStudents {
   @doc("Returns an overview of students enrolled in the course. | Restituisce la vista overview degli studenti iscritti al corso.")
   @opExample(_ex_listFacultyCourseStudents_resp)
   listFacultyCourseStudents(@path courseId: integer):
-    | OkDataResponse<FacultyCourseEnrolledStudentOverview[]>
+    | OkDataResponse<FacultyCourseStudentListItem[]>
     | NotAuthorized
     | NotFound
     | BaseErrors;

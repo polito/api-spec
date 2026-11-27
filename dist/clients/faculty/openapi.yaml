@@ -2382,7 +2382,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FacultyCourseEnrolledStudentOverview'
+                      $ref: '#/components/schemas/FacultyCourseStudentListItem'
                 required:
                   - data
               example:
@@ -2396,6 +2396,7 @@ paths:
                       url: https://didattica.polito.it/photos/s123456.jpg
                     hasSpecialNeeds: true
                     isGraduating: false
+                    hasTakenExam: true
                     notes:
                       - Necessita di supporto per la lettura
                   - id: 234567
@@ -2407,6 +2408,7 @@ paths:
                       url: https://didattica.polito.it/photos/s234567.jpg
                     hasSpecialNeeds: false
                     isGraduating: true
+                    hasTakenExam: false
                     notes: []
         '400':
           description: The server could not understand the request due to invalid syntax.
@@ -2657,7 +2659,7 @@ paths:
                 data:
                   totalEnrolled: 204
                   withAttendanceIssues: 10
-                  tookExam: 0
+                  tookExam: 1
                   withExamDebts: 42
                   eligibleForExam: 194
                   firstTimeInAcademicYear: 152
@@ -5395,6 +5397,17 @@ components:
         citizenship:
           type: string
           example: Italian
+    FacultyCourseStudentListItem:
+      type: object
+      required:
+        - hasTakenExam
+      properties:
+        hasTakenExam:
+          type: boolean
+          description: Whether the student has already taken the exam for this course. | Indica se lo studente ha già sostenuto l'esame di questo insegnamento.
+          example: true
+      allOf:
+        - $ref: '#/components/schemas/FacultyCourseEnrolledStudentOverview'
     FacultyCourseStudentOverview:
       type: object
       required:
