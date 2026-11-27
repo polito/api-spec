@@ -1,0 +1,126 @@
+namespace PolitoAPI;
+
+const _ex_getCourseAssignments_resp = #{
+  returnType: #{
+    statusCode: 200,
+    body: #{
+      data: #[
+        #{
+          id: 1003948,
+          description: "extrapoints2",
+          mimeType: "application/x-zip-compressed",
+          filename: "extrapoints2.zip",
+          uploadedAt: utcDateTime.fromISO("2022-01-21T14:38:00Z"),
+          deletedAt: null,
+          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6",
+          sizeInKiloBytes: 195,
+        },
+        #{
+          id: 993784,
+          description: "extrapoints1",
+          mimeType: "application/x-zip-compressed",
+          filename: "extrapoints1.zip",
+          uploadedAt: utcDateTime.fromISO("2022-01-10T18:53:00Z"),
+          deletedAt: null,
+          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6",
+          sizeInKiloBytes: 401,
+        },
+        #{
+          id: 982517,
+          description: "lab_09",
+          mimeType: "application/zip",
+          filename: "lab_09.zip",
+          uploadedAt: utcDateTime.fromISO("2021-12-16T22:48:00Z"),
+          deletedAt: null,
+          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6",
+          sizeInKiloBytes: 126,
+        },
+        #{
+          id: 934034,
+          description: "lab_01",
+          mimeType: "application/x-zip-compressed",
+          filename: "lab_01.zip",
+          uploadedAt: utcDateTime.fromISO("2021-10-13T11:20:00Z"),
+          deletedAt: null,
+          url: "https://file.didattica.polito.it/down/ELABORATI_PRE/934034/S290683/fd675d8a411d0747885b24e473a5d683/6305eae6",
+          sizeInKiloBytes: 144,
+        }
+      ],
+    },
+  },
+};
+
+const _ex_course_assignments = #{
+  data: #[
+    #{
+      id: 1003948,
+      description: "extrapoints2",
+      mimeType: "application/x-zip-compressed",
+      filename: "extrapoints2.zip",
+      uploadedAt: utcDateTime.fromISO("2022-01-21T14:38:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/1003948/S290683/14576f69df588d55b631c3c3c30de3f5/6305eae6",
+      sizeInKiloBytes: 195,
+    },
+    #{
+      id: 993784,
+      description: "extrapoints1",
+      mimeType: "application/x-zip-compressed",
+      filename: "extrapoints1.zip",
+      uploadedAt: utcDateTime.fromISO("2022-01-10T18:53:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/993784/S290683/15c275f7f7682c6acb5acd07d24590a9/6305eae6",
+      sizeInKiloBytes: 401,
+    },
+    #{
+      id: 982517,
+      description: "lab_09",
+      mimeType: "application/zip",
+      filename: "lab_09.zip",
+      uploadedAt: utcDateTime.fromISO("2021-12-16T22:48:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/982517/S290683/29288344d27567de6ddf0fa718b980a5/6305eae6",
+      sizeInKiloBytes: 126,
+    },
+    #{
+      id: 979076,
+      description: "lab_08",
+      mimeType: "application/x-zip-compressed",
+      filename: "lab8.zip",
+      uploadedAt: utcDateTime.fromISO("2021-12-10T20:13:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/979076/S290683/3fecdf972707d6cbc439ed0fbbbe726a/6305eae6",
+      sizeInKiloBytes: 136,
+    },
+    #{
+      id: 970722,
+      description: "lab_06",
+      mimeType: "application/x-zip-compressed",
+      filename: "lab_06.zip",
+      uploadedAt: utcDateTime.fromISO("2021-11-26T12:11:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/970722/S290683/bc51c37cf1368917a24de8d571b069bd/6305eae6",
+      sizeInKiloBytes: 169,
+    },
+    #{
+      id: 948012,
+      description: "lab_04",
+      mimeType: "application/zip",
+      filename: "lab_04.zip",
+      uploadedAt: utcDateTime.fromISO("2021-10-30T17:26:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/948012/S290683/ca52325301df0130d718c7a0525df288/6305eae6",
+      sizeInKiloBytes: 259,
+    },
+    #{
+      id: 947503,
+      description: "lab_03",
+      mimeType: "application/x-zip-compressed",
+      filename: "lab_03.zip",
+      uploadedAt: utcDateTime.fromISO("2021-10-29T10:59:00Z"),
+      deletedAt: null,
+      url: "https://file.didattica.polito.it/down/ELABORATI_PRE/947503/S290683/050d6985107364d73d9ea3a387813882/6305eae6",
+      sizeInKiloBytes: 305,
+    }
+  ],
+};
