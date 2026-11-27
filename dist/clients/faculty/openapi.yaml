@@ -1665,7 +1665,7 @@ paths:
                     name: Mario
                     surname: Rossi
                     hasSpecialNeeds: true
-                    isPresent: true
+                    isPresent: null
                     isWithdrawn: false
                     isGraduating: false
                     notes:
@@ -1707,7 +1707,7 @@ paths:
             example:
               students:
                 - studentId: '290683'
-                  isPresent: true
+                  isPresent: null
                   isWithdrawn: false
                 - studentId: '291045'
                   isPresent: true
@@ -1800,7 +1800,7 @@ paths:
                       name: Mario
                       surname: Rossi
                       hasSpecialNeeds: true
-                      isPresent: false
+                      isPresent: null
                       isWithdrawn: false
                       isGraduating: false
                       attendanceYear: '2026'
@@ -4513,7 +4513,8 @@ components:
           example: '290683'
         isPresent:
           type: boolean
-          description: Whether the student is marked as present at the exam. | Indica se lo studente è segnato come presente all'esame.
+          nullable: true
+          description: Whether the student is marked as present at the exam. Null means the teacher has not yet marked the student as present or absent. | Indica se lo studente è segnato come presente all'esame. Null indica che il docente non ha ancora segnato lo studente come presente o assente.
           example: true
         isWithdrawn:
           type: boolean
@@ -5431,7 +5432,8 @@ components:
           example: true
         isPresent:
           type: boolean
-          description: Whether the student is marked as present at the exam
+          nullable: true
+          description: Whether the student is marked as present at the exam. Null means the teacher has not yet marked the student as present or absent. | Indica se lo studente è segnato come presente all'esame. Null indica che il docente non ha ancora segnato lo studente come presente o assente.
           example: false
         isWithdrawn:
           type: boolean

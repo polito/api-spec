@@ -57,7 +57,7 @@ const _ex_listStudentsInExam_resp = #{
             name: "Mario",
             surname: "Rossi",
             hasSpecialNeeds: true,
-            isPresent: false,
+            isPresent: null,
             isWithdrawn: false,
             isGraduating: false,
             attendanceYear: "2026",
@@ -86,7 +86,7 @@ const _ex_checkAttendance_resp = #{
     examId: 888122,
     body: #{
       students: #[
-        #{ studentId: "290683", isPresent: true, isWithdrawn: false },
+        #{ studentId: "290683", isPresent: null, isWithdrawn: false },
         #{ studentId: "291045", isPresent: true, isWithdrawn: true }
       ],
     },
@@ -100,7 +100,7 @@ const _ex_checkAttendance_resp = #{
           name: "Mario",
           surname: "Rossi",
           hasSpecialNeeds: true,
-          isPresent: true,
+          isPresent: null,
           isWithdrawn: false,
           isGraduating: false,
           notes: #["Necessita di supporto per la lettura"],

@@ -23,9 +23,9 @@ model Student {
   @example(true)
   hasSpecialNeeds: boolean;
 
-  /** Whether the student is marked as present at the exam */
+  /** Whether the student is marked as present at the exam. Null means the teacher has not yet marked the student as present or absent. | Indica se lo studente è segnato come presente all'esame. Null indica che il docente non ha ancora segnato lo studente come presente o assente. */
   @example(false)
-  isPresent: boolean;
+  isPresent: boolean | null;
 
   /** Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame. */
   @example(false)
@@ -74,9 +74,9 @@ model ExamStudentAttendance {
   @example("290683")
   studentId: string;
 
-  /** Whether the student is marked as present at the exam. | Indica se lo studente è segnato come presente all'esame. */
+  /** Whether the student is marked as present at the exam. Null means the teacher has not yet marked the student as present or absent. | Indica se lo studente è segnato come presente all'esame. Null indica che il docente non ha ancora segnato lo studente come presente o assente. */
   @example(true)
-  isPresent: boolean;
+  isPresent: boolean | null;
 
   /** Whether the student withdrew from the exam. | Indica se lo studente si è ritirato dall'esame. */
   @example(false)
