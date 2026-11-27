@@ -80,7 +80,7 @@ const _ex_listFacultyCourseStudents_resp = #{
           hasSpecialNeeds: true,
           isGraduating: false,
           hasTakenExam: true,
-          notes: #["Necessita di supporto per la lettura"],
+          notes: #["Dual Career"],
         },
         #{
           id: 234567,
@@ -181,7 +181,7 @@ const _ex_getFacultyCourseStudent_resp = #{
         picture: #{ url: "https://didattica.polito.it/photos/s123456.jpg" },
         hasSpecialNeeds: true,
         isGraduating: false,
-        notes: #["Necessita di supporto per la lettura"],
+        notes: #["Dual Career"],
         course: #{ shortcode: "02JSKPD", cfu: 6 },
         degreeCode: "CINZT3",
         degreeName: "COMPUTER ENGINEERING",

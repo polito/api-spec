@@ -44,7 +44,7 @@ model FacultyCourseEnrolledStudentOverview
   isGraduating: boolean;
 
   /** Additional notes about the student */
-  @example(#["Necessita di supporto per la lettura"])
+  @example(#["Dual Career"])
   notes: string[];
 }
 

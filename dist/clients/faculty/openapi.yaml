@@ -2398,7 +2398,7 @@ paths:
                     isGraduating: false
                     hasTakenExam: true
                     notes:
-                      - Necessita di supporto per la lettura
+                      - Dual Career
                   - id: 234567
                     firstName: Luigi
                     lastName: Verdi
@@ -2729,7 +2729,7 @@ paths:
                   hasSpecialNeeds: true
                   isGraduating: false
                   notes:
-                    - Necessita di supporto per la lettura
+                    - Dual Career
                   course:
                     shortcode: 02JSKPD
                     cfu: 6
@@ -5293,7 +5293,7 @@ components:
             type: string
           description: Additional notes about the student
           example:
-            - Necessita di supporto per la lettura
+            - Dual Career
       allOf:
         - $ref: '#/components/schemas/FacultyCourseStudentOverview'
     FacultyCourseExamResult:
@@ -5342,7 +5342,7 @@ components:
             type: string
           description: Additional notes about the student
           example:
-            - Necessita di supporto per la lettura
+            - Dual Career
         id:
           type: integer
           example: 123456
